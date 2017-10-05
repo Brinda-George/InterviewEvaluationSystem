@@ -11,7 +11,6 @@ namespace InterviewEvaluationSystem.Controllers
         // GET: Interview
         public ActionResult Index()
         {
-            int i = 0;
             return View();
         }
     }
