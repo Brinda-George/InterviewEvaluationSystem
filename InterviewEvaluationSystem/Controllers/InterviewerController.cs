@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace InterviewEvaluationSystem.Controllers
 {
-    public class InterviewController : Controller
+    public class InterviewerController : Controller
     {
-        // GET: Interview
+        // GET: Interviewer
         public ActionResult Index()
         {
             return View();

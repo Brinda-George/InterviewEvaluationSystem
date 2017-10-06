@@ -1,0 +1,20 @@
+﻿@model IEnumerable<InterviewEvaluationSystem.Models.tblSkillCategory> 
+
+@{
+    ViewBag.Title = "SkillCategory";
+    WebGrid grid = new WebGrid(Model);
+}
+
+<h2>SkillCategory</h2>
+
+@grid.GetHtml(tableStyle: "table table-bordered table-responsive table-hover",
+    columns: new[]
+
+{
+    grid.Column("SkillCategory"),
+    grid.Column("Description")
+}
+)
+
+
+
