@@ -2,19 +2,53 @@
 
 @{
     ViewBag.Title = "SkillCategory";
-    WebGrid grid = new WebGrid(Model);
+    //WebGrid grid = new WebGrid(Model);
 }
 
 <h2>SkillCategory</h2>
 
+<div id="grid1">
+    @{
+        var grid = new WebGrid(source: Model, rowsPerPage: 5);
+    }
+</div>
+
 @grid.GetHtml(tableStyle: "table table-bordered table-responsive table-hover",
+    columns: new[]
+
+{
+        grid.Column("", style: "button",
+                format:
+                @<text>
+                    <button class="edit-case read" id="@item.SkillCategoryID">Edit</button>
+                    <button class="delete-case read" id="@item.SkillCategoryID">Delete</button>
+                    <button class="update-case edit" id="@item.SkillCategoryID">Update</button>
+                    <button class="cancel-case edit" id="@item.SkillCategoryID">Cancel</button>
+                </text>),
+         grid.Column(columnName:"SkillCategoryID", header: "SkillCategoryID",format: @<span>
+                    <span id="Id" class="read">@item.SkillCategoryID</span>
+                    @Html.TextBox("skillid", (int)item.SkillCategoryID, new { @class = "edit" ,@style="display:none" })
+                </span>),
+
+     grid.Column(columnName:"SkillCategory", header: "SkillCategory",format: @<span>
+                    <span id="skill" class="read">@item.SkillCategory</span>
+                    @Html.TextBox("skillcategory", (string)item.SkillCategory, new { @class = "edit" ,@style="display:none" })
+                </span>),
+     grid.Column(columnName: "Description", header: "Description", format: @<span>
+                    <span id="Descriptions" class="read">@item.Description</span>
+                    @Html.TextBox("description", (string)item.Description, new { @class = "edit",@style="display:none" })
+                </span> )
+    }
+    )
+
+@*@grid.GetHtml(tableStyle: "table table-bordered table-responsive table-hover",
     columns: new[]
 
 {
     grid.Column("SkillCategory"),
     grid.Column("Description")
 }
-)
+)*@
 
 
 
