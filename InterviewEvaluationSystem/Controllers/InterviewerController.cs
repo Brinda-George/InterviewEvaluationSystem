@@ -26,6 +26,7 @@ namespace InterviewEvaluationSystem.Controllers
             evaluationViewModel.Skills1 = GetSkills(1);
             evaluationViewModel.Skills2 = GetSkills(2);
             evaluationViewModel.Rounds = GetRounds();
+            evaluationViewModel.Status = GetStatus(1);
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             foreach (RatingScaleModel rateScale in evaluationViewModel.RatingScale)
             {
@@ -43,6 +44,8 @@ namespace InterviewEvaluationSystem.Controllers
             //    skills.AddRange(GetSkills(i));
             //}
             //ViewBag.Skills = skills;
+
+      
             return View(evaluationViewModel);
         }
         [NonAction]
@@ -93,5 +96,33 @@ namespace InterviewEvaluationSystem.Controllers
                 }).ToList();
             return Rounds;
         }
+        [NonAction]
+        public List<EvaluationModel> GetEvaluation()
+        {
+            List<EvaluationModel> Evaluations = dbContext.tblEvaluations.Where(e => e.IsDeleted == false)
+                .Select(e => new EvaluationModel
+                {
+                    EvaluationID = e.EvaluationID,
+                    CandidateID = e.CandidateID,
+                    RoundID = e.RoundID,
+                    UserID = e.UserID,
+                    Comment = e.Comment,
+                    Recommended = e.Recommended
+                }).ToList();
+            return Evaluations;
+        }
+        [NonAction]
+        public List<StatusViewModel> GetStatus(int UserID)
+        {
+            List<StatusViewModel> Statuses = dbContext.spGetStatus(1)
+                .Select(e => new StatusViewModel
+                {
+                    Name = e.Name,
+                    RoundName = e.RoundName,
+                    status = e.Recommended,
+                }).ToList();
+            return Statuses;
+        }
+
     }
 }

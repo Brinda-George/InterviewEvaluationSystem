@@ -7,7 +7,8 @@ namespace InterviewEvaluationSystem.Models
 {
     public class StatusViewModel
     {
-        public List<EvaluationModel> Evaluation = new List<EvaluationModel>();
-        public List<ScoreModel> Score = new List<ScoreModel>();
+        public string Name { get; set; }
+        public string RoundName { get; set; }
+        public bool status { get; set; }
     }
 }

@@ -46,5 +46,14 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetSkillsBySkillCategory_Result>("spGetSkillsBySkillCategory", skillCategoryIDParameter);
         }
+    
+        public virtual ObjectResult<spGetStatus_Result> spGetStatus(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetStatus_Result>("spGetStatus", userIDParameter);
+        }
     }
 }

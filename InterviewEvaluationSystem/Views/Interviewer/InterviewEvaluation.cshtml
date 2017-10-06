@@ -2,16 +2,33 @@
 @{
     ViewBag.Title = "Interview Evaluation";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
+    WebGrid webgridStatus = new WebGrid(source: Model.Status, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
+    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid2", fieldNamePrefix: "f2", pageFieldName: "p2");
     WebGrid webgridSkills1 = new WebGrid(source: Model.Skills1, canPage: true, canSort: true,
-               defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid2", fieldNamePrefix: "f2", pageFieldName: "p2");
-    WebGrid webgridSkills2 = new WebGrid(source: Model.Skills2, canPage: true, canSort: true,
                defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid3", fieldNamePrefix: "f3", pageFieldName: "p3");
+    WebGrid webgridSkills2 = new WebGrid(source: Model.Skills2, canPage: true, canSort: true,
+               defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid4", fieldNamePrefix: "f4", pageFieldName: "p4");
 }
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Interview Evaluation</h2>
+<h3>Interview Evaluation Status</h3>
+<div id="grid1">
+    @webgridStatus.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+    headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+    alternatingRowStyle: "webgrid-alternating-row",
+    selectedRowStyle: "webgrid-selected-row",
+    rowStyle: "webgrid-row-style",
+    mode: WebGridPagerModes.All,
+    columns: webgridStatus.Columns(
+        webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => item.GetSelectLink(item.Name.ToString())),
+        webgridStatus.Column(columnName: "RoundName", header: "RoundName"),
+        webgridStatus.Column(columnName: "status", header: "status")
+        )
+    )
+</div>
 <h3>Rating Scale</h3>
-<div id="=grid1">
+<div id="grid2">
     @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
     headerStyle: "webgrid-header",
     footerStyle: "webgrid-footer",
@@ -27,7 +44,7 @@
     )
 </div>
 <h3>Behavioural Skills</h3>
-<div id="=grid2">
+<div id="grid3">
     @webgridSkills1.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
@@ -52,7 +69,7 @@
     }
 </div>
 <h3>Technical Skills</h3>
-<div id="=grid3">
+<div id="grid4">
     @webgridSkills2.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",

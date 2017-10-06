@@ -206,6 +206,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CandidateModel.cs" />
     <Compile Include="Models\EvaluationModel.cs" />
     <Compile Include="Models\EvaluationViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -231,6 +232,9 @@
     <Compile Include="Models\SkillCategoryModel.cs" />
     <Compile Include="Models\SkillModel.cs" />
     <Compile Include="Models\spGetSkillsBySkillCategory_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetStatus_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StatusViewModel.cs" />

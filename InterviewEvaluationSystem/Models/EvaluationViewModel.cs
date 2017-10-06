@@ -12,5 +12,6 @@ namespace InterviewEvaluationSystem.Models
         public List<SkillModel> Skills1 = new List<SkillModel>();
         public List<SkillModel> Skills2 = new List<SkillModel>();
         public List<RoundModel> Rounds = new List<RoundModel>();
+        public List<StatusViewModel> Status = new List<StatusViewModel>();
     }
 }

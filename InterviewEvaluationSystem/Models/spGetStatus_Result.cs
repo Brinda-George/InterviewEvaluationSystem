@@ -11,9 +11,10 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spGetSkillsBySkillCategory_Result
+    public partial class spGetStatus_Result
     {
-        public int SkillID { get; set; }
-        public string SkillName { get; set; }
+        public string Name { get; set; }
+        public string RoundName { get; set; }
+        public bool Recommended { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblCandidate">
           <Key>
             <PropertyRef Name="CandidateID" />
@@ -36,7 +36,7 @@
           <Property Name="EvaluationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CandidateID" Type="int" />
           <Property Name="RoundID" Type="int" />
-          <Property Name="InterviewerID" Type="int" />
+          <Property Name="UserID" Type="int" />
           <Property Name="Comment" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="Recommended" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="100" />
@@ -155,7 +155,7 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
-        <Association Name="FK__tblEvalua__Candi__73BA3083">
+        <Association Name="FK__tblEvalua__Candi__7F2BE32F">
           <End Role="tblCandidate" Type="Self.tblCandidate" Multiplicity="0..1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -167,19 +167,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblEvalua__Inter__75A278F5">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
-          <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="tblEvaluation">
-              <PropertyRef Name="InterviewerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tblEvalua__Round__74AE54BC">
+        <Association Name="FK__tblEvalua__Round__00200768">
           <End Role="tblRound" Type="Self.tblRound" Multiplicity="0..1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -188,6 +176,18 @@
             </Principal>
             <Dependent Role="tblEvaluation">
               <PropertyRef Name="RoundID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblEvalua__UserI__01142BA1">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
+          <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tblEvaluation">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -203,7 +203,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__Evalua__787EE5A0">
+        <Association Name="FK__tblScore__Evalua__03F0984C">
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="0..1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -215,7 +215,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__RateSc__7A672E12">
+        <Association Name="FK__tblScore__RateSc__05D8E0BE">
           <End Role="tblRatingScale" Type="Self.tblRatingScale" Multiplicity="0..1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -227,7 +227,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__SkillI__797309D9">
+        <Association Name="FK__tblScore__SkillI__04E4BC85">
           <End Role="tblSkill" Type="Self.tblSkill" Multiplicity="0..1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -266,6 +266,9 @@
         <Function Name="spGetSkillsBySkillCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SkillCategoryID" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="InterviewEvaluationDbModelStoreContainer">
           <EntitySet Name="tblCandidate" EntityType="Self.tblCandidate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEvaluation" EntityType="Self.tblEvaluation" Schema="dbo" store:Type="Tables" />
@@ -277,31 +280,31 @@
           <EntitySet Name="tblSkillCategory" EntityType="Self.tblSkillCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserType" EntityType="Self.tblUserType" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__tblEvalua__Candi__73BA3083" Association="Self.FK__tblEvalua__Candi__73BA3083">
+          <AssociationSet Name="FK__tblEvalua__Candi__7F2BE32F" Association="Self.FK__tblEvalua__Candi__7F2BE32F">
             <End Role="tblCandidate" EntitySet="tblCandidate" />
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__Inter__75A278F5" Association="Self.FK__tblEvalua__Inter__75A278F5">
-            <End Role="tblUser" EntitySet="tblUser" />
+          <AssociationSet Name="FK__tblEvalua__Round__00200768" Association="Self.FK__tblEvalua__Round__00200768">
+            <End Role="tblRound" EntitySet="tblRound" />
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__Round__74AE54BC" Association="Self.FK__tblEvalua__Round__74AE54BC">
-            <End Role="tblRound" EntitySet="tblRound" />
+          <AssociationSet Name="FK__tblEvalua__UserI__01142BA1" Association="Self.FK__tblEvalua__UserI__01142BA1">
+            <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
           </AssociationSet>
           <AssociationSet Name="FK__tblPrevio__Candi__4E88ABD4" Association="Self.FK__tblPrevio__Candi__4E88ABD4">
             <End Role="tblCandidate" EntitySet="tblCandidate" />
             <End Role="tblPreviousCompany" EntitySet="tblPreviousCompany" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__Evalua__787EE5A0" Association="Self.FK__tblScore__Evalua__787EE5A0">
+          <AssociationSet Name="FK__tblScore__Evalua__03F0984C" Association="Self.FK__tblScore__Evalua__03F0984C">
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
             <End Role="tblScore" EntitySet="tblScore" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__RateSc__7A672E12" Association="Self.FK__tblScore__RateSc__7A672E12">
+          <AssociationSet Name="FK__tblScore__RateSc__05D8E0BE" Association="Self.FK__tblScore__RateSc__05D8E0BE">
             <End Role="tblRatingScale" EntitySet="tblRatingScale" />
             <End Role="tblScore" EntitySet="tblScore" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__SkillI__797309D9" Association="Self.FK__tblScore__SkillI__797309D9">
+          <AssociationSet Name="FK__tblScore__SkillI__04E4BC85" Association="Self.FK__tblScore__SkillI__04E4BC85">
             <End Role="tblSkill" EntitySet="tblSkill" />
             <End Role="tblScore" EntitySet="tblScore" />
           </AssociationSet>
@@ -314,7 +317,8 @@
             <End Role="tblUser" EntitySet="tblUser" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InterviewEvaluationDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -341,7 +345,7 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="tblEvaluations" Relationship="Self.FK__tblEvalua__Candi__73BA3083" FromRole="tblCandidate" ToRole="tblEvaluation" />
+          <NavigationProperty Name="tblEvaluations" Relationship="Self.FK__tblEvalua__Candi__7F2BE32F" FromRole="tblCandidate" ToRole="tblEvaluation" />
           <NavigationProperty Name="tblPreviousCompanies" Relationship="Self.FK__tblPrevio__Candi__4E88ABD4" FromRole="tblCandidate" ToRole="tblPreviousCompany" />
         </EntityType>
         <EntityType Name="tblEvaluation">
@@ -351,7 +355,7 @@
           <Property Name="EvaluationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CandidateID" Type="Int32" />
           <Property Name="RoundID" Type="Int32" />
-          <Property Name="InterviewerID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
           <Property Name="Comment" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Recommended" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -359,10 +363,10 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="tblCandidate" Relationship="Self.FK__tblEvalua__Candi__73BA3083" FromRole="tblEvaluation" ToRole="tblCandidate" />
-          <NavigationProperty Name="tblUser" Relationship="Self.FK__tblEvalua__Inter__75A278F5" FromRole="tblEvaluation" ToRole="tblUser" />
-          <NavigationProperty Name="tblRound" Relationship="Self.FK__tblEvalua__Round__74AE54BC" FromRole="tblEvaluation" ToRole="tblRound" />
-          <NavigationProperty Name="tblScores" Relationship="Self.FK__tblScore__Evalua__787EE5A0" FromRole="tblEvaluation" ToRole="tblScore" />
+          <NavigationProperty Name="tblCandidate" Relationship="Self.FK__tblEvalua__Candi__7F2BE32F" FromRole="tblEvaluation" ToRole="tblCandidate" />
+          <NavigationProperty Name="tblRound" Relationship="Self.FK__tblEvalua__Round__00200768" FromRole="tblEvaluation" ToRole="tblRound" />
+          <NavigationProperty Name="tblUser" Relationship="Self.FK__tblEvalua__UserI__01142BA1" FromRole="tblEvaluation" ToRole="tblUser" />
+          <NavigationProperty Name="tblScores" Relationship="Self.FK__tblScore__Evalua__03F0984C" FromRole="tblEvaluation" ToRole="tblScore" />
         </EntityType>
         <EntityType Name="tblPreviousCompany">
           <Key>
@@ -391,7 +395,7 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="tblScores" Relationship="Self.FK__tblScore__RateSc__7A672E12" FromRole="tblRatingScale" ToRole="tblScore" />
+          <NavigationProperty Name="tblScores" Relationship="Self.FK__tblScore__RateSc__05D8E0BE" FromRole="tblRatingScale" ToRole="tblScore" />
         </EntityType>
         <EntityType Name="tblRound">
           <Key>
@@ -404,7 +408,7 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="tblEvaluations" Relationship="Self.FK__tblEvalua__Round__74AE54BC" FromRole="tblRound" ToRole="tblEvaluation" />
+          <NavigationProperty Name="tblEvaluations" Relationship="Self.FK__tblEvalua__Round__00200768" FromRole="tblRound" ToRole="tblEvaluation" />
         </EntityType>
         <EntityType Name="tblScore">
           <Key>
@@ -419,9 +423,9 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="tblEvaluation" Relationship="Self.FK__tblScore__Evalua__787EE5A0" FromRole="tblScore" ToRole="tblEvaluation" />
-          <NavigationProperty Name="tblRatingScale" Relationship="Self.FK__tblScore__RateSc__7A672E12" FromRole="tblScore" ToRole="tblRatingScale" />
-          <NavigationProperty Name="tblSkill" Relationship="Self.FK__tblScore__SkillI__797309D9" FromRole="tblScore" ToRole="tblSkill" />
+          <NavigationProperty Name="tblEvaluation" Relationship="Self.FK__tblScore__Evalua__03F0984C" FromRole="tblScore" ToRole="tblEvaluation" />
+          <NavigationProperty Name="tblRatingScale" Relationship="Self.FK__tblScore__RateSc__05D8E0BE" FromRole="tblScore" ToRole="tblRatingScale" />
+          <NavigationProperty Name="tblSkill" Relationship="Self.FK__tblScore__SkillI__04E4BC85" FromRole="tblScore" ToRole="tblSkill" />
         </EntityType>
         <EntityType Name="tblSkill">
           <Key>
@@ -435,7 +439,7 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="tblScores" Relationship="Self.FK__tblScore__SkillI__797309D9" FromRole="tblSkill" ToRole="tblScore" />
+          <NavigationProperty Name="tblScores" Relationship="Self.FK__tblScore__SkillI__04E4BC85" FromRole="tblSkill" ToRole="tblScore" />
           <NavigationProperty Name="tblSkillCategory" Relationship="Self.FK__tblSkill__SkillC__46E78A0C" FromRole="tblSkill" ToRole="tblSkillCategory" />
         </EntityType>
         <EntityType Name="tblSkillCategory">
@@ -470,7 +474,7 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="tblEvaluations" Relationship="Self.FK__tblEvalua__Inter__75A278F5" FromRole="tblUser" ToRole="tblEvaluation" />
+          <NavigationProperty Name="tblEvaluations" Relationship="Self.FK__tblEvalua__UserI__01142BA1" FromRole="tblUser" ToRole="tblEvaluation" />
           <NavigationProperty Name="tblUserType" Relationship="Self.FK__tblUser__UserTyp__70DDC3D8" FromRole="tblUser" ToRole="tblUserType" />
         </EntityType>
         <EntityType Name="tblUserType">
@@ -486,7 +490,7 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="tblUsers" Relationship="Self.FK__tblUser__UserTyp__70DDC3D8" FromRole="tblUserType" ToRole="tblUser" />
         </EntityType>
-        <Association Name="FK__tblEvalua__Candi__73BA3083">
+        <Association Name="FK__tblEvalua__Candi__7F2BE32F">
           <End Role="tblCandidate" Type="Self.tblCandidate" Multiplicity="0..1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -510,19 +514,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblEvalua__Inter__75A278F5">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
-          <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="tblEvaluation">
-              <PropertyRef Name="InterviewerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tblEvalua__Round__74AE54BC">
+        <Association Name="FK__tblEvalua__Round__00200768">
           <End Role="tblRound" Type="Self.tblRound" Multiplicity="0..1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -534,7 +526,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__Evalua__787EE5A0">
+        <Association Name="FK__tblEvalua__UserI__01142BA1">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
+          <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tblEvaluation">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tblScore__Evalua__03F0984C">
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="0..1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -546,7 +550,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__RateSc__7A672E12">
+        <Association Name="FK__tblScore__RateSc__05D8E0BE">
           <End Role="tblRatingScale" Type="Self.tblRatingScale" Multiplicity="0..1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -558,7 +562,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__SkillI__797309D9">
+        <Association Name="FK__tblScore__SkillI__04E4BC85">
           <End Role="tblSkill" Type="Self.tblSkill" Multiplicity="0..1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -605,7 +609,7 @@
           <EntitySet Name="tblSkillCategories" EntityType="Self.tblSkillCategory" />
           <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
           <EntitySet Name="tblUserTypes" EntityType="Self.tblUserType" />
-          <AssociationSet Name="FK__tblEvalua__Candi__73BA3083" Association="Self.FK__tblEvalua__Candi__73BA3083">
+          <AssociationSet Name="FK__tblEvalua__Candi__7F2BE32F" Association="Self.FK__tblEvalua__Candi__7F2BE32F">
             <End Role="tblCandidate" EntitySet="tblCandidates" />
             <End Role="tblEvaluation" EntitySet="tblEvaluations" />
           </AssociationSet>
@@ -613,23 +617,23 @@
             <End Role="tblCandidate" EntitySet="tblCandidates" />
             <End Role="tblPreviousCompany" EntitySet="tblPreviousCompanies" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__Inter__75A278F5" Association="Self.FK__tblEvalua__Inter__75A278F5">
-            <End Role="tblUser" EntitySet="tblUsers" />
-            <End Role="tblEvaluation" EntitySet="tblEvaluations" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__Round__74AE54BC" Association="Self.FK__tblEvalua__Round__74AE54BC">
+          <AssociationSet Name="FK__tblEvalua__Round__00200768" Association="Self.FK__tblEvalua__Round__00200768">
             <End Role="tblRound" EntitySet="tblRounds" />
             <End Role="tblEvaluation" EntitySet="tblEvaluations" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__Evalua__787EE5A0" Association="Self.FK__tblScore__Evalua__787EE5A0">
+          <AssociationSet Name="FK__tblEvalua__UserI__01142BA1" Association="Self.FK__tblEvalua__UserI__01142BA1">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblEvaluation" EntitySet="tblEvaluations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tblScore__Evalua__03F0984C" Association="Self.FK__tblScore__Evalua__03F0984C">
             <End Role="tblEvaluation" EntitySet="tblEvaluations" />
             <End Role="tblScore" EntitySet="tblScores" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__RateSc__7A672E12" Association="Self.FK__tblScore__RateSc__7A672E12">
+          <AssociationSet Name="FK__tblScore__RateSc__05D8E0BE" Association="Self.FK__tblScore__RateSc__05D8E0BE">
             <End Role="tblRatingScale" EntitySet="tblRatingScales" />
             <End Role="tblScore" EntitySet="tblScores" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__SkillI__797309D9" Association="Self.FK__tblScore__SkillI__797309D9">
+          <AssociationSet Name="FK__tblScore__SkillI__04E4BC85" Association="Self.FK__tblScore__SkillI__04E4BC85">
             <End Role="tblSkill" EntitySet="tblSkills" />
             <End Role="tblScore" EntitySet="tblScores" />
           </AssociationSet>
@@ -642,18 +646,20 @@
             <End Role="tblUser" EntitySet="tblUsers" />
           </AssociationSet>
           <FunctionImport Name="spGetSkillsBySkillCategory" ReturnType="Collection(InterviewEvaluationDbModel.spGetSkillsBySkillCategory_Result)">
-          <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
+            <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetStatus_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetSkillsBySkillCategory_Result">
           <Property Type="Int32" Name="SkillID" Nullable="false" />
           <Property Type="String" Name="SkillName" Nullable="false" MaxLength="100" />
-          <Property Type="Int32" Name="SkillCategoryID" Nullable="true" />
-          <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="100" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
-          <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="100" />
-          <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
-          <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetStatus_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="RoundName" Nullable="false" MaxLength="100" />
+          <Property Type="Boolean" Name="Recommended" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -692,7 +698,7 @@
                 <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
                 <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
-                <ScalarProperty Name="InterviewerID" ColumnName="InterviewerID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="Recommended" ColumnName="Recommended" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -826,12 +832,15 @@
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetSkillsBySkillCategory_Result">
                 <ScalarProperty Name="SkillID" ColumnName="SkillID" />
                 <ScalarProperty Name="SkillName" ColumnName="SkillName" />
-                <ScalarProperty Name="SkillCategoryID" ColumnName="SkillCategoryID" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetStatus" FunctionName="InterviewEvaluationDbModel.Store.spGetStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetStatus_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RoundName" ColumnName="RoundName" />
+                <ScalarProperty Name="Recommended" ColumnName="Recommended" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
