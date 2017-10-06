@@ -3,6 +3,37 @@
 @{
     ViewBag.Title = "AddInterviewers";
 }
+<style type="text/css">
+    .webgrid-table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        font-size: 1.2em;
+        width: 100%;
+        display: table;
+        border-collapse: separate;
+        border: solid 1px #000000;
+        background-color: white;
+    }
+
+        .webgrid-table td, th {
+            border: 1px solid #00ff21;
+            padding: 5px 7px 5px;
+        }
+
+    .webgrid-header {
+        background-color: #000000;
+        color: #ffffff !important;
+        padding-bottom: 4px;
+        padding-top: 5px;
+        text-align: left;
+    }
+
+    .webgrid-footer {
+    }
+
+    .webgrid-row-style {
+        padding: 3px 7px 2px;
+    }
+</style>
 
 <h2>AddInterviewers</h2>
 
@@ -72,14 +103,14 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RoleID, "RoleID", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.UserTypeID, "UserTypeID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+                @Html.DropDownList("userType", "Select Item")
+               @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
@@ -119,20 +150,51 @@
                     @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
+      
+
     </div>
+
 }
+
+@{
+    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 5,
+    selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);}
+
+
+    @grid.GetHtml(tableStyle: "webGrid",
+    headerStyle: "header",
+    alternatingRowStyle: "alt",
+    selectedRowStyle: "select",
+    columns: grid.Columns(
+    grid.Column("Name", " Name"),
+    grid.Column("Email", "Email"),
+    grid.Column("Designation", "Designation"),
+    grid.Column(header: "Edit", format: (item) =>
+    {
+        var link = Html.ActionLink("Edit", "Edit", new { id = item.UserID });
+        return link;
+    }),
+            grid.Column(header: "Delete", format: (item) =>
+            {
+                var link = Html.ActionLink("Delete", "Delete", new { id = item.UserID });
+                return link;
+            })
+
+
+    ))
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
+<script src="~/Scripts/Interviewer.js"></script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
