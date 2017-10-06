@@ -12,6 +12,8 @@ namespace InterviewEvaluationSystem.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class InterviewEvaluationDbEntities : DbContext
     {
@@ -35,5 +37,14 @@ namespace InterviewEvaluationSystem.Models
         public virtual DbSet<tblSkillCategory> tblSkillCategories { get; set; }
         public virtual DbSet<tblUser> tblUsers { get; set; }
         public virtual DbSet<tblUserType> tblUserTypes { get; set; }
+    
+        public virtual ObjectResult<spGetSkillsBySkillCategory_Result> spGetSkillsBySkillCategory(Nullable<int> skillCategoryID)
+        {
+            var skillCategoryIDParameter = skillCategoryID.HasValue ?
+                new ObjectParameter("SkillCategoryID", skillCategoryID) :
+                new ObjectParameter("SkillCategoryID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetSkillsBySkillCategory_Result>("spGetSkillsBySkillCategory", skillCategoryIDParameter);
+        }
     }
 }

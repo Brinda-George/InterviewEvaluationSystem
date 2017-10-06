@@ -22,13 +22,13 @@ namespace InterviewEvaluationSystem.Models
     
         public int UserID { get; set; }
         public string Name { get; set; }
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
         public string Designation { get; set; }
         public string Address { get; set; }
         public string Pincode { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public Nullable<int> RoleID { get; set; }
+        public Nullable<int> UserTypeID { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
