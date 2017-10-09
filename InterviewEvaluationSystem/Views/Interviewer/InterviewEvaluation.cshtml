@@ -1,95 +1,68 @@
-﻿@model InterviewEvaluationSystem.Models.EvaluationViewModel
+﻿@model InterviewEvaluationSystem.Models.InterviewEvaluationViewModel
 @{
     ViewBag.Title = "Interview Evaluation";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    WebGrid webgridStatus = new WebGrid(source: Model.Status, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
-    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid2", fieldNamePrefix: "f2", pageFieldName: "p2");
-    WebGrid webgridSkills1 = new WebGrid(source: Model.Skills1, canPage: true, canSort: true,
-               defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid3", fieldNamePrefix: "f3", pageFieldName: "p3");
-    WebGrid webgridSkills2 = new WebGrid(source: Model.Skills2, canPage: true, canSort: true,
-               defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid4", fieldNamePrefix: "f4", pageFieldName: "p4");
+    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
+    List<WebGrid> webgrids = new List<WebGrid>(10);
+    for (int i = 0; i < Model.SkillCategories.Count; i++)
+    {
+        webgrids.Add(new WebGrid(source: ViewBag.Skills[i], canPage: true, canSort: true,
+            defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid" + i, fieldNamePrefix: "f" + i, pageFieldName: "p" + i));
+    }
+
 }
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Interview Evaluation</h2>
-<h3>Interview Evaluation Status</h3>
-<div id="grid1">
-    @webgridStatus.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-    headerStyle: "webgrid-header",
-    footerStyle: "webgrid-footer",
-    alternatingRowStyle: "webgrid-alternating-row",
-    selectedRowStyle: "webgrid-selected-row",
-    rowStyle: "webgrid-row-style",
-    mode: WebGridPagerModes.All,
-    columns: webgridStatus.Columns(
-        webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => item.GetSelectLink(item.Name.ToString())),
-        webgridStatus.Column(columnName: "RoundName", header: "RoundName"),
-        webgridStatus.Column(columnName: "status", header: "status")
-        )
-    )
-</div>
-<h3>Rating Scale</h3>
-<div id="grid2">
-    @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-    headerStyle: "webgrid-header",
-    footerStyle: "webgrid-footer",
-    alternatingRowStyle: "webgrid-alternating-row",
-    selectedRowStyle: "webgrid-selected-row",
-    rowStyle: "webgrid-row-style",
-    mode: WebGridPagerModes.All,
-    columns: webgridRatingScale.Columns(
-        webgridRatingScale.Column(columnName: "RateScale", header: "RateScale", format: (item) => item.GetSelectLink(item.RateScale.ToString())),
-        webgridRatingScale.Column(columnName: "Value", header: "Value"),
-        webgridRatingScale.Column(columnName: "Description", header: "Description")
-        )
-    )
-</div>
-<h3>Behavioural Skills</h3>
-<div id="grid3">
-    @webgridSkills1.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-        headerStyle: "webgrid-header",
-        footerStyle: "webgrid-footer",
-        alternatingRowStyle: "webgrid-alternating-row",
-        selectedRowStyle: "webgrid-selected-row",
-        rowStyle: "webgrid-row-style",
-        mode: WebGridPagerModes.All,
-        columns: webgridSkills1.Columns(
-            webgridSkills1.Column(columnName: "SkillName", header: "Skill Name", format: (item) => item.GetSelectLink(item.SkillName.ToString())),
-            webgridSkills1.Column(columnName: "Round 1", header: "Round 1", format: item => Html.DropDownList("RateScale", "Select Rate")),
-            webgridSkills1.Column(columnName: "Round 2", header: "Round 2", format: item => Html.DropDownList("RateScale", "Select Rate")),
-            webgridSkills1.Column(columnName: "Round 3", header: "Round 3", format: item => Html.DropDownList("RateScale", "Select Rate")),
-            webgridSkills1.Column(columnName: "Round 4", header: "Round 4", format: item => Html.DropDownList("RateScale", "Select Rate"))
-            )
-        )
-    @if (webgridSkills1.HasSelection)
+<p>Candidate Name: @Session["candidate"].ToString()</p>
+<p>Current Round: @Session["round"].ToString()</p>
+@using (Html.BeginForm())
+{
+    <h3>Rating Scale</h3>
+    if (Model.RatingScale.Any())
     {
-        <h3>Selected row</h3>
-        var skill = (InterviewEvaluationSystem.Models.SkillModel)webgridSkills1.Rows[webgridSkills1.SelectedIndex].Value;
-        <p>Skill ID: @skill.SkillID</p>
-        <p>Skill Name: @skill.SkillName</p>
-    }
-</div>
-<h3>Technical Skills</h3>
-<div id="grid4">
-    @webgridSkills2.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-        headerStyle: "webgrid-header",
-        footerStyle: "webgrid-footer",
-        alternatingRowStyle: "webgrid-alternating-row",
-        selectedRowStyle: "webgrid-selected-row",
-        rowStyle: "webgrid-row-style",
-        mode: WebGridPagerModes.All,
-        columns: webgridSkills2.Columns(
-            webgridSkills2.Column(columnName: "SkillName", header: "Skill Name", format: (item) => item.GetSelectLink(item.SkillName.ToString())),
-            webgridSkills2.Column(columnName: "Round 1", header: "Round 1", format: item => Html.DropDownList("RateScale", "Select Rate")),
-            webgridSkills2.Column(columnName: "Round 2", header: "Round 2", format: item => Html.DropDownList("RateScale", "Select Rate")),
-            webgridSkills2.Column(columnName: "Round 3", header: "Round 3", format: item => Html.DropDownList("RateScale", "Select Rate")),
-            webgridSkills2.Column(columnName: "Round 4", header: "Round 4", format: item => Html.DropDownList("RateScale", "Select Rate"))
+        <div id="grid1">
+            @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            mode: WebGridPagerModes.All,
+            columns: webgridRatingScale.Columns(
+                webgridRatingScale.Column(columnName: "RateScale", header: "RateScale"),
+                webgridRatingScale.Column(columnName: "Value", header: "Value"),
+                webgridRatingScale.Column(columnName: "Description", header: "Description")
+                )
             )
-        )
-    @if (webgridSkills2.HasSelection)
-    {
-        <h3>Selected row</h3>
-        var skill = (InterviewEvaluationSystem.Models.SkillModel)webgridSkills2.Rows[webgridSkills2.SelectedIndex].Value;
-        <p>Skill ID: @skill.SkillID</p>
-        <p>Skill Name: @skill.SkillName</p>
+        </div>
     }
-</div>
+
+    for (int i = 0; i < Model.SkillCategories.Count; i++)
+    {
+        <h3>@Model.SkillCategories[i].SkillCategory</h3>
+        <div id="grid">
+            @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            mode: WebGridPagerModes.All,
+            columns: webgrids[i].Columns(
+                webgrids[i].Column(columnName: "SkillName", header: "Skill Name"),
+                webgrids[i].Column(columnName: "Round1", header: "Round 1", format: item => Html.DropDownList("RateScale", "Select Rate")),
+                webgrids[i].Column(columnName: "Round2", header: "Round 2", format: item => Html.DropDownList("RateScale", "Select Rate")),
+                webgrids[i].Column(columnName: "Round3", header: "Round 3", format: item => Html.DropDownList("RateScale", "Select Rate")),
+                webgrids[i].Column(columnName: "Round4", header: "Round 4", format: item => Html.DropDownList("RateScale", "Select Rate"))
+                )
+            )
+        </div>
+        if (webgrids[i].HasSelection)
+        {
+            <h3>Selected row</h3>
+            var skill = (InterviewEvaluationSystem.Models.SkillViewModel)webgrids[i].Rows[webgrids[i].SelectedIndex].Value;
+            <p>Skill ID: @skill.SkillID</p>
+                <p>Skill Name: @skill.SkillName</p>
+        }
+    }
+        <input type="submit" value="Submit" class="btn btn-default" />
+}

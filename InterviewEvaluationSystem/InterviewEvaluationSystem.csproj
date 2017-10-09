@@ -197,6 +197,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Business Logic\Services.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HRController.cs" />
@@ -206,10 +207,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\CandidateModel.cs" />
-    <Compile Include="Models\EvaluationModel.cs" />
-    <Compile Include="Models\EvaluationViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\InterviewerViewModels.cs" />
     <Compile Include="Models\InterviewModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -226,18 +225,12 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\RatingScaleModel.cs" />
-    <Compile Include="Models\RoundModel.cs" />
-    <Compile Include="Models\ScoreModel.cs" />
-    <Compile Include="Models\SkillCategoryModel.cs" />
-    <Compile Include="Models\SkillModel.cs" />
     <Compile Include="Models\spGetSkillsBySkillCategory_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetStatus_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\StatusViewModel.cs" />
     <Compile Include="Models\tblCandidate.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -352,10 +345,11 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Interviewer\InterviewEvaluation.cshtml" />
+    <Content Include="Views\Interviewer\EvaluationStatus.cshtml" />
+    <Content Include="Views\HR\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\HR\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<InterviewEvaluationSystem.Models.StatusViewModel>
+
+@{
+    ViewBag.Title = "Evaluation Status";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebGrid webgridStatus = new WebGrid(source: Model, canSort: true, defaultSort: "Name", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
+}
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
+<h2>Evaluation Status</h2>
+
+<div id="grid1">
+    @webgridStatus.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+    headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+    alternatingRowStyle: "webgrid-alternating-row",
+    selectedRowStyle: "webgrid-selected-row",
+    rowStyle: "webgrid-row-style",
+    mode: WebGridPagerModes.All,
+    columns: webgridStatus.Columns(
+        webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => item.GetSelectLink(item.Name.ToString())),
+        webgridStatus.Column(columnName: "RoundName", header: "Current Round")
+        )
+    )
+    @if (webgridStatus.HasSelection)
+    {
+        var candidate = (InterviewEvaluationSystem.Models.StatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
+        Session["candidate"] = @candidate.Name;
+        Session["round"] = @candidate.RoundName;
+        Response.Redirect("InterviewEvaluation");
+    }
+</div>
+

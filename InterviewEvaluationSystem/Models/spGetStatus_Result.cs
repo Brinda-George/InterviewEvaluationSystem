@@ -15,6 +15,5 @@ namespace InterviewEvaluationSystem.Models
     {
         public string Name { get; set; }
         public string RoundName { get; set; }
-        public bool Recommended { get; set; }
     }
 }

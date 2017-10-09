@@ -25,7 +25,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> RoundID { get; set; }
         public Nullable<int> UserID { get; set; }
         public string Comment { get; set; }
-        public bool Recommended { get; set; }
+        public Nullable<bool> Recommended { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
