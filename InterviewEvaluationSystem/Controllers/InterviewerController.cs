@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using InterviewEvaluationSystem.Business_Logic;
+using System.Web.Helpers;
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -45,8 +46,8 @@ namespace InterviewEvaluationSystem.Controllers
             interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
             interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
             interviewEvaluationViewModel.Rounds = services.GetRounds();
-            interviewEvaluationViewModel.Status = services.GetStatus(1);
 
+            //get values in dropdown list
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             foreach (RatingScaleViewModel rateScale in interviewEvaluationViewModel.RatingScale)
             {
@@ -58,17 +59,18 @@ namespace InterviewEvaluationSystem.Controllers
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.RateScale = selectedlist;
+            //get skills by category
             for (int i = 0; i < interviewEvaluationViewModel.SkillCategories.Count; i++)
             {
                 SkillsByCategory[i] = services.GetSkills(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
             }
             ViewBag.Skills = SkillsByCategory;
-            //var skills = new List<SkillModel>();
-            //for (int i = 1; i <= skillCategoryCount; i++)
+            //List<WebGridColumn> columnSet = new List<WebGridColumn>();
+            //foreach (RoundViewModel round in Rounds)
             //{
-            //    skills.AddRange(GetSkills(i));
+            //    columnSet.Add(new WebGridColumn().ColumnName round.RoundName);
             //}
-            //ViewBag.Skills = skills;
+            //ViewBag.GridCols = columnSet;
             return View(interviewEvaluationViewModel);
         }
         [HttpPost]

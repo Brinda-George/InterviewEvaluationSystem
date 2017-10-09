@@ -85,8 +85,6 @@ namespace InterviewEvaluationSystem.Models
     {
         public List<RatingScaleViewModel> RatingScale = new List<RatingScaleViewModel>();
         public List<SkillCategoryViewModel> SkillCategories = new List<SkillCategoryViewModel>();
-        public List<SkillViewModel> Skills = new List<SkillViewModel>();
-        public List<SkillViewModel> Skills2 = new List<SkillViewModel>();
         public List<RoundViewModel> Rounds = new List<RoundViewModel>();
         public List<StatusViewModel> Status = new List<StatusViewModel>();
     }
