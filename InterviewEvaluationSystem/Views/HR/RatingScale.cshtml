@@ -45,7 +45,7 @@
     columns: new[]
 
 {
-        grid.Column("", style: "button",
+        @*grid.Column("", style: "button",
                 format:
                 @<text>
                     <button class="edit-case read" id="@item.RateScaleID">Edit</button>
@@ -71,10 +71,17 @@
      grid.Column(columnName: "Description", header: "Description", format: @<span>
                     <span id="Descriptions" class="read">@item.Description</span>
                     @Html.TextBox("description", (string)item.Description, new { @class = "edit",@style="display:none" })
-                </span> )
+                </span> )*@
+
+   grid.Column("RateScaleID",
+        format:
+        @<text>
+            <span id="ratescaleid" class="read">@item.RateScale</span>
+            @Html.TextBox("Ratescaleid", (int)item.RateScale, new { @class = "edit" })
+        </text>),
 
 
-    @*grid.Column("RateScale",
+    grid.Column("RateScale",
         format:
         @<text>
             <span id="ratescale" class="read">@item.RateScale</span>
@@ -85,7 +92,7 @@
         format:
         @<text>
             <span id="value" class="read">@item.Value</span>
-            @Html.TextBox("Values", null, new { @class = "edit" })
+            @Html.TextBox("Values", (int)item.Value, new { @class = "edit" })
            
 
         </text>),
@@ -104,7 +111,8 @@
                     <button class="delete-case read" id="@item.RateScaleID">Delete</button>
                     <button class="update-case edit" id="@item.RateScaleID">Update</button>
                     <button class="cancel-case edit" id="@item.RateScaleID">Cancel</button>
-                </text>)*@
+                </text>)
+
 
     }
 )

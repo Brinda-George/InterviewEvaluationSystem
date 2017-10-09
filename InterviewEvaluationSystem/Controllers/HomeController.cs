@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -44,6 +45,7 @@ namespace InterviewEvaluationSystem.Controllers
             var item = (from s in db.tblUsers where s.Name == username && s.Password == password select s).FirstOrDefault();
             if (item != null)
             {
+                Session["Name"] = item.Name.ToString();
                 return RedirectToAction("About");
             }
             else
