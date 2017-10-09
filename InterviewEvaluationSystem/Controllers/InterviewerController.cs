@@ -14,13 +14,6 @@ namespace InterviewEvaluationSystem.Controllers
     {
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
         Services services = new Services();
-        static List<List<SkillViewModel>> SkillsByCategory = new List<List<SkillViewModel>>{
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-        };
         public ActionResult Index()
         {
             return View();
@@ -46,38 +39,16 @@ namespace InterviewEvaluationSystem.Controllers
             interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
             interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
             interviewEvaluationViewModel.Rounds = services.GetRounds();
-
-            //get values in dropdown list
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (RatingScaleViewModel rateScale in interviewEvaluationViewModel.RatingScale)
-            {
-                SelectListItem selectlistitem = new SelectListItem
-                {
-                    Text = Convert.ToString(rateScale.Value),
-                    Value = rateScale.RateScaleID.ToString()
-                };
-                selectedlist.Add(selectlistitem);
-            }
-            ViewBag.RateScale = selectedlist;
-            //get skills by category
             for (int i = 0; i < interviewEvaluationViewModel.SkillCategories.Count; i++)
             {
-                SkillsByCategory[i] = services.GetSkills(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
+                interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkills(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
             }
-            ViewBag.Skills = SkillsByCategory;
-            //List<WebGridColumn> columnSet = new List<WebGridColumn>();
-            //foreach (RoundViewModel round in Rounds)
-            //{
-            //    columnSet.Add(new WebGridColumn().ColumnName round.RoundName);
-            //}
-            //ViewBag.GridCols = columnSet;
             return View(interviewEvaluationViewModel);
         }
         [HttpPost]
-        public JsonResult InterviewEvaluation(StatusViewModel status)
+        public ActionResult InterviewEvaluation(int rate)
         {
-            string message = "Success";
-            return Json(message, JsonRequestBehavior.AllowGet);
+            return View();
         }
     }
 }

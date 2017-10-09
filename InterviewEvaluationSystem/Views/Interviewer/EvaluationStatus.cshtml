@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Evaluation Status";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     WebGrid webgridStatus = new WebGrid(source: Model, canSort: true, defaultSort: "Name", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
 }
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />

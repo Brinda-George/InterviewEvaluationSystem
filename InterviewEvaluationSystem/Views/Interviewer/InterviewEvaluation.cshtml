@@ -5,11 +5,12 @@
     List<WebGrid> webgrids = new List<WebGrid>(10);
     for (int i = 0; i < Model.SkillCategories.Count; i++)
     {
-        webgrids.Add(new WebGrid(source: ViewBag.Skills[i], canPage: true, canSort: true,
+        webgrids.Add(new WebGrid(source: Model.SkillsByCategory[i], canPage: true, canSort: true,
             defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid" + i, fieldNamePrefix: "f" + i, pageFieldName: "p" + i));
     }
 
 }
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Interview Evaluation</h2>
 <p>Candidate Name: @Session["candidate"].ToString()</p>
@@ -42,10 +43,11 @@
         List<WebGridColumn> columns = new List<WebGridColumn>();
         WebGridColumn column = new WebGridColumn();
         column.ColumnName = "SkillName";
+        column.Format = (item) => item.GetSelectLink(item.SkillName.ToString());
         columns.Add(column);
         foreach (var round in Model.Rounds)
         {
-            columns.Add(new WebGridColumn() { ColumnName = round.RoundName, Header = round.RoundName ,Format = item => Html.DropDownList("RateScale", "Select Rate") });
+            columns.Add(new WebGridColumn() { ColumnName = round.RoundName, Header = round.RoundName ,Format = item => Html.DropDownListFor(m=>m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--Select--", new { @id = "id"+ round.RoundID.ToString()}) });
         }
         <div id="grid">
             @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
@@ -68,3 +70,20 @@
     }
         <input type="submit" value="Submit" class="btn btn-default" />
 }
+<script type="text/javascript">
+    function AddBus() {
+        var rate = $("#RateScale").val();
+        $.ajax({
+            url: '/Interviewer/InterviewEvaluation',
+            type: 'post',
+            data: { rate: rate },
+            success: function (data) {
+                //$("#divAddBus").html(data);
+                alert("sucess");
+            },
+            error: function () {
+                alert("failed");
+            }
+        });
+    }
+</script>
