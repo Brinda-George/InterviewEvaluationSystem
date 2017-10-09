@@ -64,7 +64,7 @@
           </Key>
           <Property Name="RateScaleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RateScale" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Value" Type="int" Nullable="false" />
+          <Property Name="RateValue" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" />
@@ -386,7 +386,7 @@
           </Key>
           <Property Name="RateScaleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RateScale" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Value" Type="Int32" Nullable="false" />
+          <Property Name="RateValue" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
@@ -715,7 +715,7 @@
               <MappingFragment StoreEntitySet="tblRatingScale">
                 <ScalarProperty Name="RateScaleID" ColumnName="RateScaleID" />
                 <ScalarProperty Name="RateScale" ColumnName="RateScale" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="RateValue" ColumnName="RateValue" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />

@@ -22,7 +22,7 @@ namespace InterviewEvaluationSystem.Models
     
         public int RateScaleID { get; set; }
         public string RateScale { get; set; }
-        public int Value { get; set; }
+        public int RateValue { get; set; }
         public string Description { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

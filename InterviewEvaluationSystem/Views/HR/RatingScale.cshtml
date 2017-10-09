@@ -6,38 +6,15 @@
 }
 
 <h2>RatingScale</h2>
-@*<div class="form-horizontal">
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/Rscale.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 
-        <div class="col-md-offset-2">
-            @Html.Label("Name")
-            <div class="col-md-offset-2 col-md-10">
-                @Html.TextBox("txtAmount")
-            </div>
-        </div>
-
-        <div class="col-md-offset-2">
-            @Html.Label("Value")
-            <div class="col-md-offset-2 col-md-10">
-                @Html.TextBox("txtValue")
-            </div>
-        </div>
-
-        <div class="col-md-offset-2">
-            @Html.Label("Description")
-            <div class="col-md-offset-2 col-md-10">
-                @Html.TextBox("txtDescription")
-            </div>
-         </div>
-
-        <div class="col-md-offset-2">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>*@
 <div id="grid1">
     @{
-        var grid = new WebGrid(source: Model, rowsPerPage: 5);
+        var grid = new WebGrid(ViewBag.Roles, ajaxUpdateContainerId: "grid1", rowsPerPage: 5);
     }
 </div>
 
@@ -45,39 +22,12 @@
     columns: new[]
 
 {
-        @*grid.Column("", style: "button",
-                format:
-                @<text>
-                    <button class="edit-case read" id="@item.RateScaleID">Edit</button>
-                    <button class="delete-case read" id="@item.RateScaleID">Delete</button>
-                    <button class="update-case edit" id="@item.RateScaleID">Update</button>
-                    <button class="cancel-case edit" id="@item.RateScaleID">Cancel</button>
-                </text>),
-         grid.Column(columnName:"RateScaleID", header: "RateScaleId",format: @<span>
-      <span id="Id" class="read">@item.RateScaleID</span>
-     @Html.TextBox("rateid", (int)item.RateScaleID, new { @class = "edit" ,@style="display:none" })
-      </span>),
-
-     grid.Column(columnName:"RateScale", header: "RateScale",format: @<span>
-                    <span id="scale" class="read">@item.RateScale</span>
-                    @Html.TextBox("ratescale", (string)item.RateScale, new { @class = "edit" ,@style="display:none" })
-                </span>),
-
-     grid.Column(columnName:"Value", header: "Value",format: @<span>
-                    <span id="value" class="read" >@item.Value</span>
-                    @Html.TextBox("Value", (int)item.Value, new { @class = "edit",@style="display:none" })
-                </span>),
-
-     grid.Column(columnName: "Description", header: "Description", format: @<span>
-                    <span id="Descriptions" class="read">@item.Description</span>
-                    @Html.TextBox("description", (string)item.Description, new { @class = "edit",@style="display:none" })
-                </span> )*@
-
+       
    grid.Column("RateScaleID",
         format:
         @<text>
-            <span id="ratescaleid" class="read">@item.RateScale</span>
-            @Html.TextBox("Ratescaleid", (int)item.RateScale, new { @class = "edit" })
+            <span id="ratescaleid" class="read">@item.RateScaleID</span>
+            @Html.TextBox("RateScaleID", (int)item.RateScaleID, new { @class = "edit" })
         </text>),
 
 
@@ -85,23 +35,21 @@
         format:
         @<text>
             <span id="ratescale" class="read">@item.RateScale</span>
-            @Html.TextBox("Ratescale", (string)item.RateScale, new { @class = "edit" })
+            @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit" })
         </text>),
 
     grid.Column("Value",
         format:
         @<text>
-            <span id="value" class="read">@item.Value</span>
-            @Html.TextBox("Values", (int)item.Value, new { @class = "edit" })
-           
-
+            <span id="value" class="read">@item.RateValue</span>
+            @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit" })
         </text>),
 
     grid.Column("Description",
          format:
         @<text>
             <span id="description" class="read">@item.Description</span>
-            @Html.TextBox("Descriptions", (string)item.Description, new { @class = "edit" })
+            @Html.TextBox("Description", (string)item.Description, new { @class = "edit" })
         </text>),
 
     grid.Column("", style: "button",
@@ -116,6 +64,3 @@
 
     }
 )
-
-
-
