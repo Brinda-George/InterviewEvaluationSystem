@@ -127,8 +127,13 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Skill()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var data = db.tblSkills;
-            return View(data.ToList());
+            NewModel obj = new NewModel
+            {
+                List1 = db.tblSkillCategories.ToList(),
+                List2 = db.tblSkills.ToList()
+            };
+            ViewBag.Roles = obj;
+            return View(obj);
         }
     }
 }

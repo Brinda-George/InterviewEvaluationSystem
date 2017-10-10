@@ -227,6 +227,7 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\NewModel.cs" />
     <Compile Include="Models\tblCandidate.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
