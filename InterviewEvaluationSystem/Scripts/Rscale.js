@@ -3,11 +3,11 @@
                 $('.edit').hide();
                 $('.edit-case').on('click', function () {
                     var tr = $(this).parents('tr:first');
-                    var RateScaleID = tr.find('#ratescaleid').text();
+                   // var RateScaleID = tr.find('#ratescaleid').text();
                     var RateScale = tr.find('#ratescale').text();
-                    var RateValue = tr.find('#value').text();
+                    var RateValue = tr.find('#ratevalue').text();
                     var Description = tr.find('#description').text();
-                    tr.find('#RateScaleID').val(RateScaleID);
+                    //tr.find('#RateScaleID').val(RateScaleID);
                     tr.find('#RateScale').val(RateScale);
                     tr.find('#RateValue').val(RateValue);
                     tr.find('#Description').val(Description);
@@ -20,31 +20,24 @@
                     var RateScale = tr.find('#RateScale').val();
                     var RateValue = tr.find('#RateValue').val();
                     var Description = tr.find('#Description').val();
-                    //var ratescaleid = tr.find('#Ratescaleid').val();
-                    //var ratescale = tr.find('#Ratescale').val();
-                    // var value = tr.find('#Values').val();
-                    //var description = tr.find('#Descriptions').val();
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
-                        url: "/HR/Edit",
-                        data: JSON.stringify({ "RateScale": RateScale,"RateValue": RateValue,"Description": Description }),
+                        url: "http://localhost:58074/HR/RateEdit",
+                        data: JSON.stringify({ "RateScaleID":RateScaleID ,"RateScale": RateScale,"RateValue": RateValue,"Description": Description }),
                         dataType: "json",
                         success: function (data) {
                             tr.find('.edit, .read').toggle();
                             $('.edit').hide();
-                            //tr.find('#ratescale').text(data.rate.RateScale);
-                            //  tr.find('#ratescale').text(data.person.ratescale);
-                            //tr.find('#value').text(data.rate.RateValue);
-                            //tr.find('#description').text(data.rate.Description);
                             tr.find('#ratescale').text(data.RateScale);
-                            tr.find('#value').text(data.RateValue);
+                            tr.find('#ratevalue').text(data.RateValue);
                             tr.find('#description').text(data.Description);
+                            window.location = "http://localhost:58074/HR/RatingScale";
+                        
+                        },
+                        error: function (err) {
+                            alert("error");
                         }
-                        //},
-                        //error: function (err) {
-                        //    alert("error");
-                        //}
                     });
                 });
                 $('.cancel-case').on('click', function (e) {
@@ -61,7 +54,7 @@
                     $.ajax({
                         type: 'POST',
                         contentType: "application/json; charset=utf-8",
-                        url: "http://localhost:58074/HR/RatingScale/Delete" + id,
+                        url: "http://localhost:58074/HR/RateDelete/" + id,
                         dataType: "json",
                         success: function (data) {
                             alert('Delete success');

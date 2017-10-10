@@ -1,19 +1,159 @@
-﻿@model IEnumerable<InterviewEvaluationSystem.Models.tblSkill> 
+﻿@model InterviewEvaluationSystem.Models.tblSkill
 
 @{
     ViewBag.Title = "Skill";
-    WebGrid grid = new WebGrid(Model);
 }
 
 <h2>Skill</h2>
 
-@grid.GetHtml(tableStyle: "table table-bordered table-responsive table-hover",
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>tblSkill</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.SkillName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SkillName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SkillName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.SkillCategoryID, "SkillCategoryID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SkillCategoryID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SkillCategoryID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModifiedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ModifiedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ModifiedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ModifiedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ModifiedDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ModifiedDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsDeleted)
+                    @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+
+
+<div id="ajaxgrid">
+    @{
+        var gridview = new WebGrid(ViewBag.Roles, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
+    }
+
+    @gridview.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
     columns: new[]
 
 {
-    grid.Column("SkillName"),
-    grid.Column("SkillCategoryID")
-}
+    gridview.Column("SkillName",
+        format:
+        @<text>
+            <span id="skillname" class="read">@item.SkillName</span>
+            @Html.TextBox("SkillName", (string)item.SkillName, new { @class = "edit" })
+        </text>),
+
+    gridview.Column("", style: "button",
+                format:
+                @<text>
+                    <button class="edit-case read" id="@item.SkillID">Edit</button>
+                    <button class="delete-case read" id="@item.SkillID">Delete</button>
+                    <button class="update-case edit" id="@item.SkillID">Update</button>
+                    <button class="cancel-case edit" id="@item.SkillID">Cancel</button>
+                </text>)
+    }
 )
+</div>
 
+<style type="text/css">
+    #form1 {
+        font-family: "Times New Roman", Arial, Helvetica, sans-serif;
+        font-size: 1.2em;
+        color: dodgerblue !important;
+    }
 
+    .webgrid-table {
+        font-family: "Times New Roman", Arial, Helvetica, sans-serif;
+        font-size: 1.2em;
+        width: 100%;
+        display: table;
+        border-collapse: separate;
+        border: solid 1px dodgerblue;
+        background-color: white;
+    }
+
+        .webgrid-table td, th {
+            border: 1px solid dodgerblue;
+            padding: 3px 7px 2px;
+        }
+
+    .webgrid-header {
+        background-color: black;
+        color: black !important;
+        padding-bottom: 4px;
+        padding-top: 5px;
+        text-align: left;
+    }
+
+    .webgrid-footer {
+    }
+
+    .webgrid-row-style {
+        padding: 3px 7px 2px;
+    }
+</style>
