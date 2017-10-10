@@ -29,6 +29,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             int skillCategoryCount = dbContext.tblSkillCategories.Count();
             InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
+            interviewEvaluationViewModel.PreviousScores = services.GetPreviousRoundScores(1, 1);
             interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
             interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
             interviewEvaluationViewModel.Rounds = services.GetRounds();

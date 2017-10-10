@@ -225,6 +225,9 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\spGetPreviousRoundScores_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetSkillsBySkillCategory_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>

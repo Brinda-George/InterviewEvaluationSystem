@@ -83,23 +83,19 @@ namespace InterviewEvaluationSystem.Models
 
     public class InterviewEvaluationViewModel
     {
-        public List<RatingScaleViewModel> RatingScale = new List<RatingScaleViewModel>();
-        public List<SkillCategoryViewModel> SkillCategories = new List<SkillCategoryViewModel>();
-        public List<RoundViewModel> Rounds = new List<RoundViewModel>();
-        public List<StatusViewModel> Status = new List<StatusViewModel>();
-        public List<SkillViewModel> Skills = new List<SkillViewModel>();
+        public List<RatingScaleViewModel> RatingScale { get; set; }
+        public List<SkillCategoryViewModel> SkillCategories { get; set; }
+        public List<RoundViewModel> Rounds { get; set; }
+        public List<StatusViewModel> Status { get; set; }
+        public List<SkillViewModel> Skills { get; set; }
         public List<List<SkillViewModel>> SkillsByCategory = new List<List<SkillViewModel>>{
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12)
         };
+        public List<ScoreEvaluationViewModel> PreviousScores { get; set; }
     }
 
     public class StatusViewModel
@@ -110,6 +106,14 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> RoundID { get; set; }
         public int EvaluationID { get; set; }
         public Nullable<bool> Recommended { get; set; }
+    }
+
+    public class ScoreEvaluationViewModel
+    {
+        public int EvaluationID { get; set; }
+        public Nullable<int> RateScaleID { get; set; }
+        public Nullable<int> CandidateID { get; set; }
+        public Nullable<int> RoundID { get; set; }
     }
 
 }

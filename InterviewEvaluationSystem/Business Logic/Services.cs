@@ -96,5 +96,18 @@ namespace InterviewEvaluationSystem.Business_Logic
                 }).ToList();
             return Statuses;
         }
+
+        public List<ScoreEvaluationViewModel> GetPreviousRoundScores(int candidateID, int roundID)
+        {
+            List<ScoreEvaluationViewModel> Statuses = dbContext.spGetPreviousRoundScores(candidateID, roundID)
+                .Select(s => new ScoreEvaluationViewModel
+                {
+                    CandidateID = s.CandidateID,
+                    RoundID = s.RoundID,
+                    EvaluationID = s.EvaluationID,
+                    RateScaleID = s.RateScaleID
+                }).ToList();
+            return Statuses;
+        }
     }
 }
