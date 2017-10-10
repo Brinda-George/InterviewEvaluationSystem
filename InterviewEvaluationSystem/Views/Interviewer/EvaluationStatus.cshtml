@@ -23,8 +23,9 @@
     @if (webgridStatus.HasSelection)
     {
         var candidate = (InterviewEvaluationSystem.Models.StatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
-        Session["candidate"] = @candidate.Name;
-        Session["round"] = @candidate.RoundName;
+        Session["candidateID"] = @candidate.CandidateID;
+        Session["roundID"] = @candidate.RoundID;
+        Session["evaluationID"] = @candidate.EvaluationID;
         Response.Redirect("InterviewEvaluation");
     }
 </div>

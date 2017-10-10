@@ -87,12 +87,18 @@ namespace InterviewEvaluationSystem.Models
         public List<SkillCategoryViewModel> SkillCategories = new List<SkillCategoryViewModel>();
         public List<RoundViewModel> Rounds = new List<RoundViewModel>();
         public List<StatusViewModel> Status = new List<StatusViewModel>();
+        public List<SkillViewModel> Skills = new List<SkillViewModel>();
         public List<List<SkillViewModel>> SkillsByCategory = new List<List<SkillViewModel>>{
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
+            new List<SkillViewModel>(12),
+            new List<SkillViewModel>(12),
+            new List<SkillViewModel>(12),
+            new List<SkillViewModel>(12),
+            new List<SkillViewModel>(12)
         };
     }
 
@@ -100,7 +106,10 @@ namespace InterviewEvaluationSystem.Models
     {
         public string Name { get; set; }
         public string RoundName { get; set; }
-        public Nullable<bool> status { get; set; }
+        public Nullable<int> CandidateID { get; set; }
+        public Nullable<int> RoundID { get; set; }
+        public int EvaluationID { get; set; }
+        public Nullable<bool> Recommended { get; set; }
     }
 
 }

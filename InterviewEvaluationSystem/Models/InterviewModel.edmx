@@ -658,6 +658,10 @@
         <ComplexType Name="spGetStatus_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="RoundName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="CandidateID" Nullable="true" />
+          <Property Type="Int32" Name="RoundID" Nullable="true" />
+          <Property Type="Int32" Name="EvaluationID" Nullable="false" />
+          <Property Type="Boolean" Name="Recommended" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -838,6 +842,10 @@
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetStatus_Result">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RoundName" ColumnName="RoundName" />
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+                <ScalarProperty Name="RoundID" ColumnName="RoundID" />
+                <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
+                <ScalarProperty Name="Recommended" ColumnName="Recommended" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

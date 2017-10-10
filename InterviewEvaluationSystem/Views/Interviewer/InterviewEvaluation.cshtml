@@ -13,9 +13,10 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Interview Evaluation</h2>
-<p>Candidate Name: @Session["candidate"].ToString()</p>
-<p>Current Round: @Session["round"].ToString()</p>
-@using (Html.BeginForm())
+<p>Candidate Name: @Session["candidateID"].ToString()</p>
+<p>Current Round: @Session["roundID"].ToString()</p>
+<p>Evaluation ID: @Session["evaluationID"].ToString()</p>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signupform" }))
 {
     <h3>Rating Scale</h3>
     if (Model.RatingScale.Any())
@@ -43,13 +44,19 @@
         List<WebGridColumn> columns = new List<WebGridColumn>();
         WebGridColumn column = new WebGridColumn();
         column.ColumnName = "SkillName";
+        column.Header = "Skill Name";
         column.Format = (item) => item.GetSelectLink(item.SkillName.ToString());
         columns.Add(column);
         foreach (var round in Model.Rounds)
         {
-            columns.Add(new WebGridColumn() { ColumnName = round.RoundName, Header = round.RoundName ,Format = item => Html.DropDownListFor(m=>m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--Select--", new { @id = "id"+ round.RoundID.ToString()}) });
+            columns.Add(new WebGridColumn()
+            {
+                ColumnName = round.RoundName,
+                Header = round.RoundName,
+                Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--Select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @name = "name" + item.SkillID })
+            });
         }
-        <div id="grid">
+        <div class="grid">
             @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
             headerStyle: "webgrid-header",
             footerStyle: "webgrid-footer",
@@ -65,25 +72,34 @@
             <h3>Selected row</h3>
             var skill = (InterviewEvaluationSystem.Models.SkillViewModel)webgrids[i].Rows[webgrids[i].SelectedIndex].Value;
             <p>Skill ID: @skill.SkillID</p>
-                <p>Skill Name: @skill.SkillName</p>
+            <p>Skill Name: @skill.SkillName</p>
         }
     }
-        <input type="submit" value="Submit" class="btn btn-default" />
+    @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
+    <input type="submit" value="Proceed" class="btn btn-default"/>
+    <input type="button" value="Reject" class="btn btn-default" />
 }
 <script type="text/javascript">
-    function AddBus() {
-        var rate = $("#RateScale").val();
+    $(".grid").find("select").attr("disabled", true);
+    $(".class@(@Session["roundID"])").attr("disabled", false);
+    $("#signupform").submit (function getValues(){
+        var count = $(".class@(@Session["roundID"])").length;
+        var valueArray = [];
+        for(var i = 1; i <= count; i++){
+            var itemid ="id" + @(@Session["roundID"]) + i ;
+            valueArray[i] = $('#'+itemid).find('option:selected').val();
+        }
+        var evaluationID = @(@Session["evaluationID"]);
+        var comments = $('#Comments').val();
         $.ajax({
             url: '/Interviewer/InterviewEvaluation',
             type: 'post',
-            data: { rate: rate },
+            data: { evaluationID : evaluationID, values : valueArray, comments : comments },
             success: function (data) {
-                //$("#divAddBus").html(data);
-                alert("sucess");
+                alert("success");
             },
             error: function () {
-                alert("failed");
             }
         });
-    }
+    });
 </script>

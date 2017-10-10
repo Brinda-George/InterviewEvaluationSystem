@@ -9,7 +9,6 @@ namespace InterviewEvaluationSystem.Business_Logic
     public class Services
     {
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-        static int count;
         public List<SkillCategoryViewModel> GetSkillCategories()
         {
             List<SkillCategoryViewModel> SkillCategories = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false)
@@ -33,8 +32,19 @@ namespace InterviewEvaluationSystem.Business_Logic
                 }).ToList();
             return RatingScales;
         }
+        public List<SkillViewModel> GetSkills()
+        {
+            var skills = dbContext.tblSkills.Where(s => s.IsDeleted == false).ToList();
+            List<SkillViewModel> Skills = skills.Select(s => new SkillViewModel
+            {
+                SkillID = s.SkillID,
+                SkillName = s.SkillName,
+                SkillCategoryID = s.SkillCategoryID
+            }).ToList();
+            return Skills;
+        }
 
-        public List<SkillViewModel> GetSkills(int skillCategoryID)
+        public List<SkillViewModel> GetSkillsByCategory(int skillCategoryID)
         {
             var skills = dbContext.tblSkills.Where(s => s.SkillCategoryID == skillCategoryID && s.IsDeleted == false).ToList();
             List<SkillViewModel> Skills = skills.Select(s => new SkillViewModel
@@ -43,7 +53,6 @@ namespace InterviewEvaluationSystem.Business_Logic
                 SkillName = s.SkillName,
                 SkillCategoryID = s.SkillCategoryID
             }).ToList();
-            count = Skills.Count();
             return Skills;
         }
 
@@ -79,7 +88,11 @@ namespace InterviewEvaluationSystem.Business_Logic
                 .Select(e => new StatusViewModel
                 {
                     Name = e.Name,
-                    RoundName = e.RoundName
+                    RoundName = e.RoundName,
+                    CandidateID = e.CandidateID,
+                    RoundID = e.RoundID,
+                    EvaluationID = e.EvaluationID,
+                    Recommended = e.Recommended
                 }).ToList();
             return Statuses;
         }

@@ -21,16 +21,9 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult EvaluationStatus()
         {
-            List<StatusViewModel> Statuses = services.GetStatus(2);
+            List<StatusViewModel> Statuses = services.GetStatus(4);
             return View(Statuses);
         }
-        //[HttpPost]
-        //public ActionResult EvaluationStatus(StatusViewModel status)
-        //{
-        //    dbContext.tblScores.Add
-        //    string message = "Success";
-        //    return Json(message, JsonRequestBehavior.AllowGet);
-        //}
 
         public ActionResult InterviewEvaluation()
         {
@@ -39,16 +32,35 @@ namespace InterviewEvaluationSystem.Controllers
             interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
             interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
             interviewEvaluationViewModel.Rounds = services.GetRounds();
+            interviewEvaluationViewModel.Skills = services.GetSkills();
             for (int i = 0; i < interviewEvaluationViewModel.SkillCategories.Count; i++)
             {
-                interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkills(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
+                interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkillsByCategory(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
             }
             return View(interviewEvaluationViewModel);
         }
         [HttpPost]
-        public ActionResult InterviewEvaluation(int rate)
+        public ActionResult InterviewEvaluation(string evaluationID,string[] values, string comments)
         {
-            return View();
+            for(int i =1; i < values.Length; i++){
+                dbContext.tblScores.Add(new tblScore
+                {
+                    EvaluationID = Convert.ToInt32(evaluationID),
+                    SkillID = i,
+                    RateScaleID = Convert.ToInt32(values[i]),
+                    CreatedBy = "4",
+                    CreatedDate = DateTime.Now
+                });
+                dbContext.SaveChanges();
+            }
+            int EvaluationID = Convert.ToInt16(evaluationID);
+            tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
+            evaluation.Comment = comments;
+            evaluation.Recommended = true;
+            evaluation.ModifiedBy = "2";
+            evaluation.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+            return RedirectToAction("vgbftd");
         }
     }
 }
