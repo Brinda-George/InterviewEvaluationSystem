@@ -3,6 +3,14 @@
 @{
     ViewBag.Title = "AddInterviewers";
 }
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/Interviewer.js"></script>
+
+}
+
+
 <style type="text/css">
     .webgrid-table {
         font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -15,7 +23,7 @@
     }
 
         .webgrid-table td, th {
-            border: 1px solid #00ff21;
+            border: 1px solid #000000;
             padding: 5px 7px 5px;
         }
 
@@ -169,32 +177,32 @@
     grid.Pager(WebGridPagerModes.All);}
 
 
-    @grid.GetHtml(tableStyle: "webGrid",
-    headerStyle: "header",
-    alternatingRowStyle: "alt",
-    selectedRowStyle: "select",
-    columns: grid.Columns(
-    grid.Column("Name", " Name"),
-    grid.Column("Email", "Email"),
-    grid.Column("Designation", "Designation"),
-    grid.Column(header: "Edit", format: (item) =>
-    {
-        var link = Html.ActionLink("Edit", "Edit", new { id = item.UserID });
-        return link;
-    }),
-            grid.Column(header: "Delete", format: (item) =>
-            {
-                var link = Html.ActionLink("Delete", "Delete", new { id = item.UserID });
-                return link;
-            })
+    @grid.GetHtml(tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row", 
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
+    columns:
+            grid.Columns(
+             @*grid.Column("ID", format: @<text>  <span class="display-mode">@item.ID </span> <label id="UserID" class="edit-mode">@item.ID</label> </text>, style: "col1Width"),*@
+             grid.Column("Name", "Name", format: @<text>  <span class="display-mode"> <label id="lblName">@item.Name</label> </span> <input type="text" id="Name" value="@item.Name" class="edit-mode" /></text>, style: "col2Width"),
+             grid.Column("EmployeeId", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>, style: "col1Width"),
+             grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>, style: "col2Width"),
+             grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> </text>, style: "col2Width"),
 
+                grid.Column("Action", format: @<text>
+                    <button class="edit-user display-mode">Edit</button>
+                    <button class="save-user edit-mode">Save</button>
+                    <button class="cancel-user edit-mode">Cancel</button>
+                    <button class="delete-user">Delete</button>
+            </text>, style: "col3Width", canSort: false)
+           ))
 
-    ))
+    
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-<script src="~/Scripts/Interviewer.js"></script>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+

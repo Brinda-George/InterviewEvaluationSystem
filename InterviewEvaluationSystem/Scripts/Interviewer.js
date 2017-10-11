@@ -1,34 +1,57 @@
-﻿
-    $(function () {  
-        $('.edit-mode').hide();  
-        $('.edit-user, .cancel-user').on('click', function () {  
-            var tr = $(this).parents('tr:first');  
-            tr.find('.edit-mode, .display-mode').toggle();  
-        });  
-   
-        $('.save-user').on('click', function () {  
-            var tr = $(this).parents('tr:first');  
-            var Name = tr.find("#Name").val();  
-            var SurName = tr.find("#SurName").val();  
-            var UserID = tr.find("#UserID").html();  
-            tr.find("#lblName").text(Name);  
-            tr.find("#lblSurName").text(SurName);  
-            tr.find('.edit-mode, .display-mode').toggle();  
-            var UserModel =  
-            {  
-                "ID": UserID,  
-                "Name": Name,  
-                "SurName": SurName  
-            };  
-            $.ajax({  
-                url: '/User/ChangeUser/',  
-                data: JSON.stringify(UserModel),  
-                type: 'POST',  
-                contentType: 'application/json; charset=utf-8',  
-                success: function (data) {  
-                    alert(data);  
-                }  
-            });  
-   
-        });  
-    })  
+﻿$(document).ready(function () {
+    $(function () {
+        $('.edit-mode').hide();
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var Name = tr.find("#Name").val();
+            var Email = tr.find("#Email").val();
+            var Designation = tr.find("#Designation").val();
+            var EmployeeId = tr.find("#lblEmployeeId").html();
+            //tr.find("#lblName").text(Name);
+            //tr.find("#lblEmail").text(Email);
+            //tr.find("#lblDesignation").text(Designation);
+            //tr.find('.edit-mode, .display-mode').toggle();
+            //var tblNewUser =
+            //{
+            //    "EmployeeId": EmployeeId,
+            //    "Name": Name,
+            //    "Email": Email,
+            //    "Designation": Designation
+            //};
+            $.ajax({
+                url: '/HR/UpdateInterviewer/',
+                // data: JSON.stringify(tblNewUser),
+                data:JSON.stringify({"EmployeeId": EmployeeId,"Name": Name,"Email": Email,"Designation": Designation}),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    alert('Successfully Updated Interviewer');
+                    tr.find('.edit-mode, .display-mode').toggle();
+                    tr.find("#lblName").val(data.Name);
+                    tr.find("#lblDesignation").val(data.Designation);
+                    tr.find("#lblEmail").val(data.Email);
+                }
+            });
+
+        });
+
+        $('.delete-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var EmployeeId = tr.find("#lblEmployeeId").html();
+            $.ajax({
+                url: '/HR/DeleteInterviewer/',
+                data: JSON.stringify({ "EmployeeId": EmployeeId }),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    alert('Successfully Deleted Interviewer');
+                }
+            })
+        });
+    });
+});
