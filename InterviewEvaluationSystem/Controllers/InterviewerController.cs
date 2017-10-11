@@ -13,6 +13,7 @@ namespace InterviewEvaluationSystem.Controllers
     public class InterviewerController : Controller
     {
         Services services = new Services();
+
         public ActionResult HomePage()
         {
             return View();
@@ -20,16 +21,9 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult EvaluationStatus()
         {
-            List<StatusViewModel> Statuses = services.GetStatus(2);
+            List<StatusViewModel> Statuses = services.GetStatus(4);
             return View(Statuses);
         }
-        //[HttpPost]
-        //public ActionResult EvaluationStatus(int candidateID, int roundID, int evaluationID)
-        //{
-        //    List<StatusViewModel> Statuses = services.GetStatus(2);
-        //    return View(Statuses);
-        //}
-
 
         public ActionResult InterviewEvaluation(string Name)
         {
@@ -74,9 +68,9 @@ namespace InterviewEvaluationSystem.Controllers
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
-            var redirectUrl = new UrlHelper(Request.RequestContext).Action("HomePage", "Interviewer");
             //string message = "Review successfuly submitted!!";
             //return Json(message, JsonRequestBehavior.AllowGet);
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("HomePage", "Interviewer");
             return Json(new { Url = redirectUrl });
         }
 

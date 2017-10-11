@@ -68,5 +68,10 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPreviousRoundScores_Result>("spGetPreviousRoundScores", candidateIDParameter, roundIDParameter);
         }
+    
+        public virtual ObjectResult<spGetCurrentStatus_Result> spGetCurrentStatus()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentStatus_Result>("spGetCurrentStatus");
+        }
     }
 }

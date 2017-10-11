@@ -1,11 +1,10 @@
-﻿@model IEnumerable<InterviewEvaluationSystem.Models.StatusViewModel>
-
+﻿@model IEnumerable<InterviewEvaluationSystem.Models.CurrentStatusViewModel>
 @{
-    ViewBag.Title = "Evaluation Status";
+    ViewBag.Title = "CandidateStatus";
     WebGrid webgridStatus = new WebGrid(source: Model, canSort: true, defaultSort: "Name", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
 }
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
-<h2>Evaluation Status</h2>
+<h2>Candidate Status</h2>
 
 <div id="grid1">
     @if (Model.Any())
@@ -19,7 +18,8 @@
                      mode: WebGridPagerModes.All,
                      columns: webgridStatus.Columns(
                          webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => item.GetSelectLink(item.Name.ToString())),
-                         webgridStatus.Column(columnName: "RoundName", header: "Current Round")
+                         webgridStatus.Column(columnName: "Email", header: "Email"),
+                         webgridStatus.Column(columnName: "RoundID", header: "Status")
                          )
                      )
 
@@ -31,10 +31,10 @@
     @if (webgridStatus.HasSelection)
     {
 
-        var candidate = (InterviewEvaluationSystem.Models.StatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
-        TempData["candidateID"] = @candidate.CandidateID;
-        TempData["roundID"] = @candidate.RoundID;
-        TempData["evaluationID"] = @candidate.EvaluationID;
-        Response.Redirect("InterviewEvaluation");
+        var candidate = (InterviewEvaluationSystem.Models.CurrentStatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
+        TempData["Name"] = @candidate.Name;
+        TempData["Email"] = @candidate.Email;
+        TempData["RoundID"] = @candidate.RoundID;
+        Response.Redirect("HREvaluation");
     }
 </div>

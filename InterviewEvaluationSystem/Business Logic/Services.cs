@@ -109,5 +109,17 @@ namespace InterviewEvaluationSystem.Business_Logic
                 }).ToList();
             return Statuses;
         }
+
+        public List<CurrentStatusViewModel> GetCurrentStatus()
+        {
+            List<CurrentStatusViewModel> CurrentStatuses = dbContext.spGetCurrentStatus()
+                .Select(c => new CurrentStatusViewModel
+                {
+                    Name = c.Name,
+                    Email = c.Email,
+                    RoundID = c.RoundID
+                }).ToList();
+            return CurrentStatuses;
+        }
     }
 }

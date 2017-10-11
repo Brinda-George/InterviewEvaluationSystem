@@ -1,6 +1,6 @@
 ﻿@model InterviewEvaluationSystem.Models.InterviewEvaluationViewModel
 @{
-    ViewBag.Title = "Interview Evaluation";
+    ViewBag.Title = "HREvaluation";
     WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
     List<WebGrid> webgrids = new List<WebGrid>(10);
     for (int i = 0; i < Model.SkillCategories.Count; i++)
@@ -9,12 +9,10 @@
             defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid" + i, fieldNamePrefix: "f" + i, pageFieldName: "p" + i));
     }
 }
+
+<h2>HR Evaluation</h2>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
-<h2>Interview Evaluation</h2>
-<p>Candidate Name: @TempData["candidateID"].ToString()</p>
-<p>Current Round: @TempData["roundID"].ToString()</p>
-<p>Evaluation ID: @TempData["evaluationID"].ToString()</p>
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signupform" }))
 {
     <h3>Rating Scale</h3>
@@ -54,7 +52,7 @@
                 {
                     ColumnName = round.RoundName,
                     Header = round.RoundName,
-                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID-1][@item.SkillID-1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
                 });
             }
             else
@@ -88,7 +86,7 @@
         }
     }
     @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
-    <input type="submit" value="Proceed" class="btn btn-default"/>
+    <input type="submit" value="Proceed" class="btn btn-default" />
     <input type="button" value="Reject" class="btn btn-default" />
 }
 <script type="text/javascript">
@@ -104,7 +102,7 @@
         var evaluationID = @(@TempData["evaluationID"]);
         var comments = $('#Comments').val();
         $.ajax({
-            url: '/Interviewer/InterviewEvaluation',
+            url: '/HR/HREvaluation',
             type: 'post',
             data: { evaluationID : evaluationID, values : valueArray, comments : comments },
             success: function (response) {
