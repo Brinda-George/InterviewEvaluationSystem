@@ -95,7 +95,13 @@ namespace InterviewEvaluationSystem.Models
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12)
         };
-        public List<ScoreEvaluationViewModel> PreviousScores { get; set; }
+        public List<List<ScoreEvaluationViewModel>> ScoresByRound = new List<List<ScoreEvaluationViewModel>>{
+            new List<ScoreEvaluationViewModel>(12),
+            new List<ScoreEvaluationViewModel>(12),
+            new List<ScoreEvaluationViewModel>(12),
+            new List<ScoreEvaluationViewModel>(12),
+            new List<ScoreEvaluationViewModel>(12)
+        };
     }
 
     public class StatusViewModel

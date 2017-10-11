@@ -103,8 +103,8 @@ namespace InterviewEvaluationSystem.Business_Logic
                 .Select(s => new ScoreEvaluationViewModel
                 {
                     CandidateID = s.CandidateID,
-                    RoundID = s.RoundID,
                     EvaluationID = s.EvaluationID,
+                    RoundID = s.RoundID,
                     RateScaleID = s.RateScaleID
                 }).ToList();
             return Statuses;

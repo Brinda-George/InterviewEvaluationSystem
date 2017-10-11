@@ -20,14 +20,23 @@
         webgridStatus.Column(columnName: "RoundName", header: "Current Round")
         )
     )
-    @if (webgridStatus.HasSelection)
-    {
-        var candidate = (InterviewEvaluationSystem.Models.StatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
-        Session["candidateID"] = @candidate.CandidateID;
-        Session["roundID"] = @candidate.RoundID;
-        Session["evaluationID"] = @candidate.EvaluationID;
-        Response.Redirect("InterviewEvaluation");
-        //Response.Redirect("EvaluationStatus");
-    }
+        @if (webgridStatus.HasSelection)
+        {
+            
+            var candidate = (InterviewEvaluationSystem.Models.StatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
+            TempData["candidateID"] = @candidate.CandidateID;
+            TempData["roundID"] = @candidate.RoundID;
+            TempData["evaluationID"] = @candidate.EvaluationID;
+            Response.Redirect("InterviewEvaluation");
+        }
+    @*<script type="text/javascript">
+        function getDetails() {
+            item => new HtmlString(Html.ActionLink((string)item.Name.ToString(), "InterviewEvaluation", new { id = item.Name }, new { onclick = "getDetails();" }).ToString())
+            var candidate = (InterviewEvaluationSystem.Models.StatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
+            TempData["candidateID"] = @candidate.CandidateID;
+            TempData["roundID"] = @candidate.RoundID;
+            TempData["evaluationID"] = @candidate.EvaluationID;
+        }
+    </script>*@
 </div>
 

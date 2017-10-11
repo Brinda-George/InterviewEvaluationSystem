@@ -350,6 +350,7 @@
     <Content Include="Views\Interviewer\InterviewEvaluation.cshtml" />
     <Content Include="Views\Interviewer\EvaluationStatus.cshtml" />
     <Content Include="Views\HR\Login.cshtml" />
+    <Content Include="Views\Interviewer\HomePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

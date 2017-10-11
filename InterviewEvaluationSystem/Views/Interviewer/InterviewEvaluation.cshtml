@@ -13,9 +13,9 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Interview Evaluation</h2>
-<p>Candidate Name: @Session["candidateID"].ToString()</p>
-<p>Current Round: @Session["roundID"].ToString()</p>
-<p>Evaluation ID: @Session["evaluationID"].ToString()</p>
+<p>Candidate Name: @TempData["candidateID"].ToString()</p>
+<p>Current Round: @TempData["roundID"].ToString()</p>
+<p>Evaluation ID: @TempData["evaluationID"].ToString()</p>
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signupform" }))
 {
     <h3>Rating Scale</h3>
@@ -49,12 +49,25 @@
         columns.Add(column);
         foreach (var round in Model.Rounds)
         {
-            columns.Add(new WebGridColumn()
+            if (round.RoundID < Convert.ToInt32(@TempData["roundID"]))
             {
-                ColumnName = round.RoundName,
-                Header = round.RoundName,
-                Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--Select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @name = "name" + item.SkillID })
-            });
+                columns.Add(new WebGridColumn()
+                {
+                    ColumnName = round.RoundName,
+                    Header = round.RoundName,
+                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID-1][@item.SkillID-1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                });
+            }
+            else
+            {
+                columns.Add(new WebGridColumn()
+                {
+                    ColumnName = round.RoundName,
+                    Header = round.RoundName,
+                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                });
+            }
+
         }
         <div class="grid">
             @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
@@ -81,22 +94,24 @@
 }
 <script type="text/javascript">
     $(".grid").find("select").attr("disabled", true);
-    $(".class@(@Session["roundID"])").attr("disabled", false);
+    $(".class@(@TempData["roundID"])").attr("disabled", false);
     $("#signupform").submit (function getValues(){
-        var count = $(".class@(@Session["roundID"])").length;
+        var count = $(".class@(@TempData["roundID"])").length;
         var valueArray = [];
         for(var i = 1; i <= count; i++){
-            var itemid ="id" + @(@Session["roundID"]) + i ;
+            var itemid ="id" + @(@TempData["roundID"]) + i ;
             valueArray[i] = $('#'+itemid).find('option:selected').val();
         }
-        var evaluationID = @(@Session["evaluationID"]);
+        var evaluationID = @(@TempData["evaluationID"]);
         var comments = $('#Comments').val();
         $.ajax({
             url: '/Interviewer/InterviewEvaluation',
             type: 'post',
             data: { evaluationID : evaluationID, values : valueArray, comments : comments },
-            success: function (data) {
-                alert("success");
+            success: function (response) {
+                alert(response);
+                window.location.href = response.Url;
+                //window.location.href = "/Interviewer/HomePage";
             },
             error: function () {
             }

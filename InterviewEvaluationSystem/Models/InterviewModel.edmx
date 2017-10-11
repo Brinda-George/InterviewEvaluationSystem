@@ -672,11 +672,11 @@
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
         </ComplexType>
         <ComplexType Name="spGetPreviousRoundScores_Result">
-          <Property Type="Int32" Name="EvaluationID" Nullable="false" />
           <Property Type="Int32" Name="RateScaleID" Nullable="true" />
+          <Property Type="Int32" Name="EvaluationID" Nullable="false" />
           <Property Type="Int32" Name="CandidateID" Nullable="true" />
           <Property Type="Int32" Name="RoundID" Nullable="true" />
-        </ComplexType>
+          </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -866,11 +866,11 @@
           <FunctionImportMapping FunctionImportName="spGetPreviousRoundScores" FunctionName="InterviewEvaluationDbModel.Store.spGetPreviousRoundScores">
             <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetPreviousRoundScores_Result">
-                <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
                 <ScalarProperty Name="RateScaleID" ColumnName="RateScaleID" />
+                <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
                 <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
-              </ComplexTypeMapping>
+                </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
         </EntityContainerMapping>
