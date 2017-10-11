@@ -2,30 +2,30 @@
     $('.edit').hide();
     $('.edit-case').on('click', function () {
         var tr = $(this).parents('tr:first');
-        var SkillCategory = tr.find('#skillcategory').text();
-        var Description = tr.find('#description').text();
-        tr.find('#SkillCategory').val(SkillCategory);
-        tr.find('#Description').val(Description);
+       var SkillType = tr.find('#skillcategory').text();
+       var SkillName = tr.find('#skillname').text();
+       var SkillName = tr.find('#skillname').text();
+       // tr.find('#SkillCategory').val(SkillType);
+        tr.find('#SkillName').val(SkillName);
         tr.find('.edit, .read').toggle();
     });
     $('.update-case').on('click', function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
-        SkillCategoryID = $(this).prop('id');
-        var SkillCategory = tr.find('#SkillCategory').val();
-        var Description = tr.find('#Description').val();
+        SkillID = $(this).prop('id');
+      //  var SkillCategoryID = tr.find('#SkillName').val();
+        var SkillName = tr.find('#SkillName').val();
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:58074/HR/CategoryEdit",
-            data: JSON.stringify({ "SkillCategoryID": SkillCategoryID, "SkillCategory": SkillCategory,"Description": Description }),
+            url: "http://localhost:58074/HR/SkillEdit",
+            data: JSON.stringify({ "SkillID": SkillID, "SkillName": SkillName}),
             dataType: "json",
             success: function (data) {
                 tr.find('.edit, .read').toggle();
                 $('.edit').hide();
-                tr.find('#skillcategory').text(data.SkillCategory);
-                tr.find('#description').text(data.Description);
-                window.location = "http://localhost:58074/HR/SkillCategory";
+                tr.find('#skillname').text(data.SkillName);
+                window.location = "http://localhost:58074/HR/Skill";
             },
             error: function (err) {
                 alert("Error occured during update.");
@@ -46,11 +46,11 @@
         $.ajax({
             type: 'POST',
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:58074/HR/CategoryDelete/" + id,
+            url: "http://localhost:58074/HR/SkillDelete" + id,
             dataType: "json",
             success: function (data) {
                 alert('Delete success');
-                window.location.href = "http://localhost:58074/HR/SkillCategory";
+                window.location.href = "http://localhost:58074/HR/Skill";
             },
             error: function () {
                 alert('Error occured during delete.');

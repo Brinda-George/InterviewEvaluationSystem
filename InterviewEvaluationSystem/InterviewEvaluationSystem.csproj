@@ -304,6 +304,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Scategory.js" />
+    <Content Include="Scripts\Skills.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Scripts\Rscale.js" />
     <Content Include="Web.config">

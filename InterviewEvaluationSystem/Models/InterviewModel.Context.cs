@@ -36,7 +36,7 @@ namespace InterviewEvaluationSystem.Models
         public virtual DbSet<tblSkill> tblSkills { get; set; }
         public virtual DbSet<tblSkillCategory> tblSkillCategories { get; set; }
         public virtual DbSet<tblUser> tblUsers { get; set; }
-        public virtual DbSet<tblUserType> tblUserTypes { get; set; }
+        public virtual DbSet<tblUserType> tblSkillCategory { get; set; }
     
         public virtual ObjectResult<Nullable<int>> LoginProc(string username, string passWord)
         {

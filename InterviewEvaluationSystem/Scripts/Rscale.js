@@ -36,7 +36,7 @@
                         
                         },
                         error: function (err) {
-                            alert("error");
+                            alert("Error occured during update.");
                         }
                     });
                 });

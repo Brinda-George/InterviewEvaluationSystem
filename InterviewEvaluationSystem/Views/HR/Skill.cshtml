@@ -1,17 +1,49 @@
-﻿@model InterviewEvaluationSystem.Models.NewModel
+﻿@model InterviewEvaluationSystem.Models.tblSkill
 
 @{
-    ViewBag.Title = "GetDetails";
-    WebGrid gridview = new WebGrid(rowsPerPage: 10);
-    //gridview.Bind(Model.NewModel, autoSortAndPage: false, rowCount: Model.RowCo);
+    ViewBag.Title = "Skill";
 }
 
-<h2>Skills</h2>
+<h2>Skill</h2>
 
-@*<div id="ajaxgrid">
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div ID="form1"  class="form-horizontal">
+       
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SkillCategoryID, "SkillCategoryID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("category", "Select Item")
+                @Html.ValidationMessageFor(model => model.SkillCategoryID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SkillName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SkillName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SkillName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+<div id="ajaxgrid">
     @{
-
-    }*@
+        var gridview = new WebGrid(ViewBag.Skillcategories, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
+    }
 
     @gridview.GetHtml(
         tableStyle: "webgrid-table",
@@ -23,33 +55,41 @@
     columns: new[]
 
 {
-          gridview.Column("SkillCategory",
-         format:
-        @<text>
-            <span id="skillcategory" class="read">@item.SkillCategory</span>
-            @*@Html.TextBox("skillcategory", (string)item.SkillCategory, new { @class = "edit" })*@
-        </text>),
-
-    gridview.Column("SkillName",
+    
+    gridview.Column("S.No",
         format:
         @<text>
-            <span id="skillname" class="read">@item.SkillName</span>
-            @Html.TextBox("SkillName", (string)item.SkillName, new { @class = "edit" })
+            <span id="skillid" >@item.skillno</span>
         </text>),
 
-    gridview.Column("", style: "button",
+    gridview.Column("Skill Type",
+        format:
+        @<text>
+            <span id="skillcategory" >@item.skillcat</span>
+        </text>),
+   
+    gridview.Column("Skill Name",
+         format:
+        @<text>
+            <span id="skillname" class="read">@item.skillname</span>
+            @Html.TextBox("SkillName", (string)item.skillname, new { @class = "edit" })
+        </text>),
+
+    gridview.Column("Action", style: "button",
                 format:
                 @<text>
-                    <button class="edit-case read" id="@item.SkillCategoryID">Edit</button>
-                    <button class="delete-case read" id="@item.SkillCategoryID">Delete</button>
-                    <button class="update-case edit" id="@item.SkillCategoryID">Update</button>
-                    <button class="cancel-case edit" id="@item.SkillCategoryID">Cancel</button>
+                    <button class="edit-case read" id="@item.skillno">Edit</button>
+                    <button class="delete-case read" id="@item.skillno">Delete</button>
+                    <button class="update-case edit" id="@item.skillno">Update</button>
+                    <button class="cancel-case edit" id="@item.skillno">Cancel</button>
                 </text>)
     }
 )
 </div>
 
+
 <style type="text/css">
+
     #form1 {
         font-family: "Times New Roman", Arial, Helvetica, sans-serif;
         font-size: 1.2em;
@@ -86,44 +126,10 @@
         padding: 3px 7px 2px;
     }
 </style>
-
-@*@{var skills = Model.List2; }
-
-<table>
-    <tr>
-        <th>
-            SkillCategory
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            SkillName
-        </th>
-      
-    </tr>
-    @foreach (var item in skills)
-    {
-        <tr>
-            <td>
-                @item.tblSkillCategory.SkillCategory
-            </td>
-            <td>
-                @item.tblSkillCategory.Description
-            </td>
-
-            <td>
-                @item.SkillName
-            </td>
-        </tr>
-    }
-</table>*@
-
-
-
-
-
-
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/Skills.js"></script>
 
 
 

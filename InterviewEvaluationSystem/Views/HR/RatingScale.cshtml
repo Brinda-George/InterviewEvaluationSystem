@@ -131,7 +131,7 @@
             @Html.TextBox("Description", (string)item.Description, new { @class = "edit" })
         </text>),
 
-    gridview.Column("", style: "button",
+    gridview.Column("Action", style: "button",
                 format:
                 @<text>
                     <button class="edit-case read" id="@item.RateScaleID">Edit</button>

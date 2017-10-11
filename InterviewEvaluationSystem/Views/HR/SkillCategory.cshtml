@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
+    <div ID="form1"  class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -109,7 +109,7 @@
             @Html.TextBox("Description", (string)item.Description, new { @class = "edit" })
         </text>),
 
-    gridview.Column("", style: "button",
+    gridview.Column("Action", style: "button",
                 format:
                 @<text>
                     <button class="edit-case read" id="@item.SkillCategoryID">Edit</button>
