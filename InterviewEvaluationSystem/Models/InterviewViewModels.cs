@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -36,7 +37,7 @@ namespace InterviewEvaluationSystem.Models
     public class UserViewModel
     {
         public int UserID { get; set; }
-        public string Name { get; set; }
+        public string UserName { get; set; }
         public string EmployeeId { get; set; }
         public string Designation { get; set; }
         public string Address { get; set; }
@@ -63,7 +64,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<System.DateTime> DateOfJoining { get; set; }
     }
 
-    public class EvaluationModel
+    public class EvaluationViewModel
     {
         public int EvaluationID { get; set; }
         public Nullable<int> CandidateID { get; set; }
@@ -88,6 +89,7 @@ namespace InterviewEvaluationSystem.Models
         public List<RoundViewModel> Rounds { get; set; }
         public List<StatusViewModel> Status { get; set; }
         public List<SkillViewModel> Skills { get; set; }
+        public List<CommentViewModel> Comments { get; set; }
         public List<List<SkillViewModel>> SkillsByCategory = new List<List<SkillViewModel>>{
             new List<SkillViewModel>(12),
             new List<SkillViewModel>(12),
@@ -121,5 +123,27 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> CandidateID { get; set; }
         public Nullable<int> RoundID { get; set; }
     }
-
+    public class CurrentStatusViewModel
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public Nullable<int> RoundID { get; set; }
+        public int EvaluationID { get; set; }
+        public Nullable<int> CandidateID { get; set; }
+        public Nullable<bool> Recommended { get; set; }
+    }
+    public class CommentViewModel
+    {
+        public string RoundName { get; set; }
+        public string UserName { get; set; }
+        public string Comment { get; set; }
+        public Nullable<bool> Recommended { get; set; }
+    }
+    public class JoinViewModel
+    {
+        public int CandidateID { get; set; }
+        public Nullable<decimal> OfferedSalary { get; set; }
+        [DataType(DataType.Date)]
+        public Nullable<System.DateTime> DateOfJoining { get; set; }
+    }
 }

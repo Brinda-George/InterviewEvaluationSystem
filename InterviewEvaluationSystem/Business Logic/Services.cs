@@ -67,21 +67,6 @@ namespace InterviewEvaluationSystem.Business_Logic
             return Rounds;
         }
 
-        public List<EvaluationModel> GetEvaluation()
-        {
-            List<EvaluationModel> Evaluations = dbContext.tblEvaluations.Where(e => e.IsDeleted == false)
-                .Select(e => new EvaluationModel
-                {
-                    EvaluationID = e.EvaluationID,
-                    CandidateID = e.CandidateID,
-                    RoundID = e.RoundID,
-                    UserID = e.UserID,
-                    Comment = e.Comment,
-                    Recommended = e.Recommended
-                }).ToList();
-            return Evaluations;
-        }
-
         public List<StatusViewModel> GetStatus(int UserId)
         {
             List<StatusViewModel> Statuses = dbContext.spGetStatus(UserId)
@@ -123,6 +108,19 @@ namespace InterviewEvaluationSystem.Business_Logic
                     Recommended =c.Recommended
                 }).ToList();
             return CurrentStatuses;
+        }
+
+        public List<CommentViewModel> GetComments(int CandidateID)
+        {
+            List<CommentViewModel> comments = dbContext.spGetComments(CandidateID)
+                .Select(c => new CommentViewModel
+                {
+                    RoundName = c.RoundName,
+                    UserName = c.UserName,
+                    Comment = c.Comment,
+                    Recommended = c.Recommended
+                }).ToList();
+            return comments;
         }
     }
 }

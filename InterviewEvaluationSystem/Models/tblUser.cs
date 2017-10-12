@@ -21,7 +21,6 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int UserID { get; set; }
-        public string Name { get; set; }
         public string EmployeeId { get; set; }
         public string Designation { get; set; }
         public string Address { get; set; }
@@ -34,6 +33,7 @@ namespace InterviewEvaluationSystem.Models
         public string ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public string UserName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblEvaluation> tblEvaluations { get; set; }

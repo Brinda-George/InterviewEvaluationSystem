@@ -1,12 +1,11 @@
 ﻿@model InterviewEvaluationSystem.Models.InterviewEvaluationViewModel
 @{
     ViewBag.Title = "Interview Evaluation";
-    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
+    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: false);
     List<WebGrid> webgrids = new List<WebGrid>(10);
     for (int i = 0; i < Model.SkillCategories.Count; i++)
     {
-        webgrids.Add(new WebGrid(source: Model.SkillsByCategory[i], canPage: true, canSort: true,
-            defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid" + i, fieldNamePrefix: "f" + i, pageFieldName: "p" + i));
+        webgrids.Add(new WebGrid(source: Model.SkillsByCategory[i], canPage: true, canSort: false, rowsPerPage: 15));
     }
 }
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
@@ -43,7 +42,6 @@
         WebGridColumn column = new WebGridColumn();
         column.ColumnName = "SkillName";
         column.Header = "Skill Name";
-        column.Format = (item) => item.GetSelectLink(item.SkillName.ToString());
         columns.Add(column);
         foreach (var round in Model.Rounds)
         {
@@ -78,13 +76,6 @@
             columns: columns
             )
         </div>
-        if (webgrids[i].HasSelection)
-        {
-            <h3>Selected row</h3>
-            var skill = (InterviewEvaluationSystem.Models.SkillViewModel)webgrids[i].Rows[webgrids[i].SelectedIndex].Value;
-            <p>Skill ID: @skill.SkillID</p>
-            <p>Skill Name: @skill.SkillName</p>
-        }
     }
     @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
     <input type="button" id="proceed" value="Proceed" class="btn btn-default" onclick="getValues(this)" />
@@ -115,7 +106,6 @@
             data: { recommended : recommended, evaluationID : evaluationID, values : valueArray, comments : comments },
             success: function (response) {
                 window.location.href = response.Url;
-                //window.location.href = "/Interviewer/HomePage";
             },
             error: function () {
             }

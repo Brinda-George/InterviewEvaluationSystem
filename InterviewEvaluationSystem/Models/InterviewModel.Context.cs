@@ -73,5 +73,35 @@ namespace InterviewEvaluationSystem.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentStatus_Result>("spGetCurrentStatus");
         }
+    
+        public virtual ObjectResult<spGetComments_Result> spGetComments(Nullable<int> candidateID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetComments_Result>("spGetComments", candidateIDParameter);
+        }
+    
+        public virtual int spInsertJoinDetails(Nullable<int> userID, Nullable<int> candidateID, Nullable<decimal> offeredSalary, Nullable<System.DateTime> dateOfJoining)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            var offeredSalaryParameter = offeredSalary.HasValue ?
+                new ObjectParameter("OfferedSalary", offeredSalary) :
+                new ObjectParameter("OfferedSalary", typeof(decimal));
+    
+            var dateOfJoiningParameter = dateOfJoining.HasValue ?
+                new ObjectParameter("DateOfJoining", dateOfJoining) :
+                new ObjectParameter("DateOfJoining", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertJoinDetails", userIDParameter, candidateIDParameter, offeredSalaryParameter, dateOfJoiningParameter);
+        }
     }
 }

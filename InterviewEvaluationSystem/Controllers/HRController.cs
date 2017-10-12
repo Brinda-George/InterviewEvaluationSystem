@@ -16,6 +16,18 @@ namespace InterviewEvaluationSystem.Controllers
         {
             return View();
         }
+        public ActionResult JoinDetails()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult JoinDetails(JoinViewModel joinViewModel)
+        {
+            InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
+            int res = dbContext.spInsertJoinDetails('5',Convert.ToInt32(TempData["candidate"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
+            return RedirectToAction("HRHomePage");
+        }
+        
 
         public ActionResult CandidateStatus()
         {
@@ -34,10 +46,13 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkillsByCategory(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
             }
+            int candidateID = Convert.ToInt32(TempData["candidateID"]);
             for (int i = 0; i < interviewEvaluationViewModel.Rounds.Count; i++)
             {
-                interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(Convert.ToInt32(TempData["candidateID"]), interviewEvaluationViewModel.Rounds[i].RoundID);
+                interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(candidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
             }
+            interviewEvaluationViewModel.Comments = services.GetComments(candidateID);
+            TempData["candidate"] = candidateID;
             return View(interviewEvaluationViewModel);
         }
 
@@ -67,9 +82,15 @@ namespace InterviewEvaluationSystem.Controllers
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
-            //string message = "Review successfuly submitted!!";
-            //return Json(message, JsonRequestBehavior.AllowGet);
-            var redirectUrl = new UrlHelper(Request.RequestContext).Action("HRHomePage", "HR");
+            var redirectUrl = "";
+            if (recommended == true)
+            {
+                redirectUrl = new UrlHelper(Request.RequestContext).Action("JoinDetails", "HR");
+            }
+            else
+            {
+                redirectUrl = new UrlHelper(Request.RequestContext).Action("HRHomePage", "HR");
+            }
             return Json(new { Url = redirectUrl });
         }
     }

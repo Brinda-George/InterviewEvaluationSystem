@@ -21,7 +21,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult EvaluationStatus()
         {
-            List<StatusViewModel> Statuses = services.GetStatus(3);
+            List<StatusViewModel> Statuses = services.GetStatus(4);
             return View(Statuses);
         }
 
@@ -69,8 +69,6 @@ namespace InterviewEvaluationSystem.Controllers
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
-            //string message = "Review successfuly submitted!!";
-            //return Json(message, JsonRequestBehavior.AllowGet);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("HomePage", "Interviewer");
             return Json(new { Url = redirectUrl });
         }

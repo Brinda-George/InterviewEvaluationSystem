@@ -1,13 +1,13 @@
 ﻿@model InterviewEvaluationSystem.Models.InterviewEvaluationViewModel
 @{
     ViewBag.Title = "HREvaluation";
-    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: true, defaultSort: "RateScaleID", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
+    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: false);
     List<WebGrid> webgrids = new List<WebGrid>(10);
     for (int i = 0; i < Model.SkillCategories.Count; i++)
     {
-        webgrids.Add(new WebGrid(source: Model.SkillsByCategory[i], canPage: true, canSort: true,
-            defaultSort: "SkillId", selectionFieldName: "selectedRow", rowsPerPage: 15, ajaxUpdateContainerId: "grid" + i, fieldNamePrefix: "f" + i, pageFieldName: "p" + i));
+        webgrids.Add(new WebGrid(source: Model.SkillsByCategory[i], canSort: false));
     }
+    WebGrid webgridComments = new WebGrid(source: Model.Comments, canSort: false);
 }
 
 <h2>HR Evaluation</h2>
@@ -22,22 +22,22 @@
         {
             <div id="grid1">
                 @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-            headerStyle: "webgrid-header",
-            footerStyle: "webgrid-footer",
-            alternatingRowStyle: "webgrid-alternating-row",
-            selectedRowStyle: "webgrid-selected-row",
-            rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
-            columns: webgridRatingScale.Columns(
-                webgridRatingScale.Column(columnName: "RateScale", header: "RateScale"),
-                webgridRatingScale.Column(columnName: "Value", header: "Value"),
-                webgridRatingScale.Column(columnName: "Description", header: "Description")
-                )
-            )
+                 headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                 mode: WebGridPagerModes.All,
+                 columns: webgridRatingScale.Columns(
+                     webgridRatingScale.Column(columnName: "RateScale", header: "RateScale"),
+                     webgridRatingScale.Column(columnName: "Value", header: "Value"),
+                     webgridRatingScale.Column(columnName: "Description", header: "Description")
+                     )
+                 )
             </div>
         }
     }
-
+    
     for (int i = 0; i < Model.SkillCategories.Count; i++)
     {
         <h3>@Model.SkillCategories[i].SkillCategory</h3>
@@ -45,7 +45,6 @@
         WebGridColumn column = new WebGridColumn();
         column.ColumnName = "SkillName";
         column.Header = "Skill Name";
-        column.Format = (item) => item.GetSelectLink(item.SkillName.ToString());
         columns.Add(column);
         foreach (var round in Model.Rounds)
         {
@@ -82,22 +81,15 @@
         }
         <div class="grid">
             @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-            headerStyle: "webgrid-header",
-            footerStyle: "webgrid-footer",
-            alternatingRowStyle: "webgrid-alternating-row",
-            selectedRowStyle: "webgrid-selected-row",
-            rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
-            columns: columns
-            )
+             headerStyle: "webgrid-header",
+             footerStyle: "webgrid-footer",
+             alternatingRowStyle: "webgrid-alternating-row",
+             selectedRowStyle: "webgrid-selected-row",
+             rowStyle: "webgrid-row-style",
+             mode: WebGridPagerModes.All,
+             columns: columns
+             )
         </div>
-        if (webgrids[i].HasSelection)
-        {
-            <h3>Selected row</h3>
-            var skill = (InterviewEvaluationSystem.Models.SkillViewModel)webgrids[i].Rows[webgrids[i].SelectedIndex].Value;
-            <p>Skill ID: @skill.SkillID</p>
-            <p>Skill Name: @skill.SkillName</p>
-        }
     }
     if (Convert.ToBoolean(@TempData["recommended"]) != true)
     {
@@ -105,11 +97,38 @@
         <input type="button" id="hire" value="Hire" class="btn btn-default" onclick="getValues(this)" />
         <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
     }
+    if (Convert.ToBoolean(@TempData["recommended"]) == true)
+    {
+        <h3>Comments</h3>
+        if (Model.Comments.Any())
+        {
+            <div id="gridcomments">
+                @webgridComments.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+             headerStyle: "webgrid-header",
+             footerStyle: "webgrid-footer",
+             alternatingRowStyle: "webgrid-alternating-row",
+             selectedRowStyle: "webgrid-selected-row",
+             rowStyle: "webgrid-row-style",
+             mode: WebGridPagerModes.All,
+             columns: webgridComments.Columns(
+                 webgridComments.Column(columnName: "RoundName", header: "Round Name"),
+                 webgridComments.Column(columnName: "UserName", header: "Interviewer"),
+                 webgridComments.Column(columnName: "Comment", header: "Comments"),
+                 webgridComments.Column(columnName: "Recommended", header: "Recommended")
+                 )
+             )
+            </div>
+        }
+    }
 }
 <script type="text/javascript">
     $(".grid").find("select").attr("disabled", true);
-    if(@TempData["recommended"] == "false"){
+    var recommended = @((TempData["recommended"] == null).ToString().ToLower());
+    if(recommended == true){
         $(".class@(@TempData["roundID"])").attr("disabled", false);
+    }
+    else if(recommended == false){
+        $(".class@(@TempData["roundID"])").attr("disabled", true);
     }
     function getValues(element){
         var buttonclicked = element.id;
@@ -133,7 +152,6 @@
             data: { recommended : recommended,evaluationID : evaluationID, values : valueArray, comments : comments },
             success: function (response) {
                 window.location.href = response.Url;
-                //window.location.href = "/Interviewer/HomePage";
             },
             error: function () {
             }

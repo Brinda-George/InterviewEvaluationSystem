@@ -129,7 +129,7 @@
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="EmployeeId" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Designation" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="varchar" MaxLength="250" Nullable="false" />
@@ -263,6 +263,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spGetComments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CandidateID" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetCurrentStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPreviousRoundScores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
@@ -273,6 +276,12 @@
         </Function>
         <Function Name="spGetStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spInsertJoinDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="CandidateID" Type="int" Mode="In" />
+          <Parameter Name="OfferedSalary" Type="money" Mode="In" />
+          <Parameter Name="DateOfJoining" Type="date" Mode="In" />
         </Function>
         <EntityContainer Name="InterviewEvaluationDbModelStoreContainer">
           <EntitySet Name="tblCandidate" EntityType="Self.tblCandidate" Schema="dbo" store:Type="Tables" />
@@ -465,7 +474,6 @@
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EmployeeId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
@@ -480,6 +488,7 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="tblEvaluations" Relationship="Self.FK__tblEvalua__UserI__01142BA1" FromRole="tblUser" ToRole="tblEvaluation" />
           <NavigationProperty Name="tblUserType" Relationship="Self.FK__tblUser__UserTyp__70DDC3D8" FromRole="tblUser" ToRole="tblUserType" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tblUserType">
           <Key>
@@ -660,6 +669,15 @@
             <Parameter Name="RoundID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetCurrentStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetCurrentStatus_Result)" />
+          <FunctionImport Name="spGetComments" ReturnType="Collection(InterviewEvaluationDbModel.spGetComments_Result)">
+          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spInsertJoinDetails">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+            <Parameter Name="OfferedSalary" Mode="In" Type="Decimal" />
+            <Parameter Name="DateOfJoining" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetSkillsBySkillCategory_Result">
           <Property Type="Int32" Name="SkillID" Nullable="false" />
@@ -685,6 +703,12 @@
           <Property Type="Int32" Name="RoundID" Nullable="true" />
           <Property Type="Int32" Name="EvaluationID" Nullable="false" />
           <Property Type="Int32" Name="CandidateID" Nullable="true" />
+          <Property Type="Boolean" Name="Recommended" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetComments_Result">
+          <Property Type="String" Name="RoundName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Comment" Nullable="true" MaxLength="250" />
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
         </ComplexType>
       </Schema>
@@ -823,8 +847,8 @@
           <EntitySetMapping Name="tblUsers">
             <EntityTypeMapping TypeName="InterviewEvaluationDbModel.tblUser">
               <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="Designation" ColumnName="Designation" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
@@ -895,6 +919,17 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetComments" FunctionName="InterviewEvaluationDbModel.Store.spGetComments">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetComments_Result">
+                <ScalarProperty Name="RoundName" ColumnName="RoundName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Recommended" ColumnName="Recommended" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spInsertJoinDetails" FunctionName="InterviewEvaluationDbModel.Store.spInsertJoinDetails" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

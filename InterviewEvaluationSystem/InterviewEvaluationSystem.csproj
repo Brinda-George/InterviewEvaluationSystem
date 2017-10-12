@@ -207,9 +207,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\HRViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\InterviewerViewModels.cs" />
+    <Compile Include="Models\InterviewViewModels.cs" />
     <Compile Include="Models\InterviewModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -226,6 +225,9 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\spGetComments_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetCurrentStatus_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -357,6 +359,7 @@
     <Content Include="Views\HR\HREvaluation.cshtml" />
     <Content Include="Views\HR\CandidateStatus.cshtml" />
     <Content Include="Views\HR\HRHomePage.cshtml" />
+    <Content Include="Views\HR\JoinDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

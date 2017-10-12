@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Evaluation Status";
-    WebGrid webgridStatus = new WebGrid(source: Model, canSort: true, defaultSort: "Name", ajaxUpdateContainerId: "grid1", fieldNamePrefix: "f1", pageFieldName: "p1");
+    WebGrid webgridStatus = new WebGrid(source: Model, canSort: false);
 }
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Evaluation Status</h2>
