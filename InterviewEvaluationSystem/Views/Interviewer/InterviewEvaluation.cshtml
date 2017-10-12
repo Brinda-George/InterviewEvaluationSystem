@@ -12,10 +12,9 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Interview Evaluation</h2>
-<p>Candidate Name: @TempData["candidateID"].ToString()</p>
 <p>Current Round: @TempData["roundID"].ToString()</p>
 <p>Evaluation ID: @TempData["evaluationID"].ToString()</p>
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signupform" }))
+@using (Html.BeginForm())
 {
     <h3>Rating Scale</h3>
     if (Model.RatingScale.Any())
@@ -54,7 +53,7 @@
                 {
                     ColumnName = round.RoundName,
                     Header = round.RoundName,
-                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID-1][@item.SkillID-1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
                 });
             }
             else
@@ -88,13 +87,20 @@
         }
     }
     @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
-    <input type="submit" value="Proceed" class="btn btn-default"/>
-    <input type="button" value="Reject" class="btn btn-default" />
+    <input type="button" id="proceed" value="Proceed" class="btn btn-default" onclick="getValues(this)" />
+    <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
 }
 <script type="text/javascript">
     $(".grid").find("select").attr("disabled", true);
     $(".class@(@TempData["roundID"])").attr("disabled", false);
-    $("#signupform").submit (function getValues(){
+    function getValues(element){
+        var buttonclicked = element.id;
+        if(buttonclicked == "proceed"){
+            var recommended = true;
+        }
+        else{
+            var recommended = false;
+        }
         var count = $(".class@(@TempData["roundID"])").length;
         var valueArray = [];
         for(var i = 1; i <= count; i++){
@@ -106,7 +112,7 @@
         $.ajax({
             url: '/Interviewer/InterviewEvaluation',
             type: 'post',
-            data: { evaluationID : evaluationID, values : valueArray, comments : comments },
+            data: { recommended : recommended, evaluationID : evaluationID, values : valueArray, comments : comments },
             success: function (response) {
                 window.location.href = response.Url;
                 //window.location.href = "/Interviewer/HomePage";
@@ -114,5 +120,6 @@
             error: function () {
             }
         });
-    });
+    }
+
 </script>

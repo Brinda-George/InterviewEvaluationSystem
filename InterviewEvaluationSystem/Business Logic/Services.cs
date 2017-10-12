@@ -117,7 +117,10 @@ namespace InterviewEvaluationSystem.Business_Logic
                 {
                     Name = c.Name,
                     Email = c.Email,
-                    RoundID = c.RoundID
+                    RoundID = c.RoundID,
+                    EvaluationID = c.EvaluationID,
+                    CandidateID = c.CandidateID,
+                    Recommended =c.Recommended
                 }).ToList();
             return CurrentStatuses;
         }

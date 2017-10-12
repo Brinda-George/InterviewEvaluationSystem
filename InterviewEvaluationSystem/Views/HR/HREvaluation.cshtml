@@ -13,13 +13,15 @@
 <h2>HR Evaluation</h2>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signupform" }))
+@using (Html.BeginForm())
 {
-    <h3>Rating Scale</h3>
-    if (Model.RatingScale.Any())
+    if (Convert.ToBoolean(@TempData["recommended"]) != true)
     {
-        <div id="grid1">
-            @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        <h3>Rating Scale</h3>
+        if (Model.RatingScale.Any())
+        {
+            <div id="grid1">
+                @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
             headerStyle: "webgrid-header",
             footerStyle: "webgrid-footer",
             alternatingRowStyle: "webgrid-alternating-row",
@@ -32,7 +34,8 @@
                 webgridRatingScale.Column(columnName: "Description", header: "Description")
                 )
             )
-        </div>
+            </div>
+        }
     }
 
     for (int i = 0; i < Model.SkillCategories.Count; i++)
@@ -46,25 +49,36 @@
         columns.Add(column);
         foreach (var round in Model.Rounds)
         {
-            if (round.RoundID < Convert.ToInt32(@TempData["roundID"]))
+            if (Convert.ToBoolean(@TempData["recommended"]) == true)
             {
                 columns.Add(new WebGridColumn()
                 {
                     ColumnName = round.RoundName,
                     Header = round.RoundName,
-                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    Format = (item) => Html.LabelFor(m => m.RatingScale[i].RateScaleID, new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString())
                 });
             }
             else
             {
-                columns.Add(new WebGridColumn()
+                if (round.RoundID < Convert.ToInt32(@TempData["roundID"]))
                 {
-                    ColumnName = round.RoundName,
-                    Header = round.RoundName,
-                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
-                });
+                    columns.Add(new WebGridColumn()
+                    {
+                        ColumnName = round.RoundName,
+                        Header = round.RoundName,
+                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    });
+                }
+                else
+                {
+                    columns.Add(new WebGridColumn()
+                    {
+                        ColumnName = round.RoundName,
+                        Header = round.RoundName,
+                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    });
+                }
             }
-
         }
         <div class="grid">
             @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
@@ -85,14 +99,26 @@
             <p>Skill Name: @skill.SkillName</p>
         }
     }
-    @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
-    <input type="submit" value="Proceed" class="btn btn-default" />
-    <input type="button" value="Reject" class="btn btn-default" />
+    if (Convert.ToBoolean(@TempData["recommended"]) != true)
+    {
+        @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
+        <input type="button" id="hire" value="Hire" class="btn btn-default" onclick="getValues(this)" />
+        <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
+    }
 }
 <script type="text/javascript">
     $(".grid").find("select").attr("disabled", true);
-    $(".class@(@TempData["roundID"])").attr("disabled", false);
-    $("#signupform").submit (function getValues(){
+    if(@TempData["recommended"] == "false"){
+        $(".class@(@TempData["roundID"])").attr("disabled", false);
+    }
+    function getValues(element){
+        var buttonclicked = element.id;
+        if(buttonclicked == "hire"){
+            var recommended = true;
+        }
+        else{
+            var recommended = false;
+        }
         var count = $(".class@(@TempData["roundID"])").length;
         var valueArray = [];
         for(var i = 1; i <= count; i++){
@@ -104,7 +130,7 @@
         $.ajax({
             url: '/HR/HREvaluation',
             type: 'post',
-            data: { evaluationID : evaluationID, values : valueArray, comments : comments },
+            data: { recommended : recommended,evaluationID : evaluationID, values : valueArray, comments : comments },
             success: function (response) {
                 window.location.href = response.Url;
                 //window.location.href = "/Interviewer/HomePage";
@@ -112,5 +138,5 @@
             error: function () {
             }
         });
-    });
+    }
 </script>

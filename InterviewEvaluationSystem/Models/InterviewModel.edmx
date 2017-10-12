@@ -683,6 +683,9 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="RoundID" Nullable="true" />
+          <Property Type="Int32" Name="EvaluationID" Nullable="false" />
+          <Property Type="Int32" Name="CandidateID" Nullable="true" />
+          <Property Type="Boolean" Name="Recommended" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -886,6 +889,9 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
+                <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+                <ScalarProperty Name="Recommended" ColumnName="Recommended" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

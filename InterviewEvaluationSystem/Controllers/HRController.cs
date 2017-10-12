@@ -42,18 +42,18 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult HREvaluation(string evaluationID, string[] values, string comments)
+        public ActionResult HREvaluation(bool recommended, int evaluationID, int[] values, string comments)
         {
-            if (evaluationID != null)
+            if (evaluationID != 0)
             {
                 InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
                 for (int i = 1; i < values.Length; i++)
                 {
                     dbContext.tblScores.Add(new tblScore
                     {
-                        EvaluationID = Convert.ToInt32(evaluationID),
+                        EvaluationID = evaluationID,
                         SkillID = i,
-                        RateScaleID = Convert.ToInt32(values[i]),
+                        RateScaleID = values[i],
                         CreatedBy = "4",
                         CreatedDate = DateTime.Now
                     });
@@ -62,7 +62,7 @@ namespace InterviewEvaluationSystem.Controllers
                 int EvaluationID = Convert.ToInt16(evaluationID);
                 tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
                 evaluation.Comment = comments;
-                evaluation.Recommended = true;
+                evaluation.Recommended = recommended;
                 evaluation.ModifiedBy = "2";
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();

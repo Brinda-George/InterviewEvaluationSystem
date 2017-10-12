@@ -19,7 +19,20 @@
                      columns: webgridStatus.Columns(
                          webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => item.GetSelectLink(item.Name.ToString())),
                          webgridStatus.Column(columnName: "Email", header: "Email"),
-                         webgridStatus.Column(columnName: "RoundID", header: "Status")
+                         webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) => {
+                             if (item.Recommended == true)
+                             {
+                                 return Html.Raw(string.Format("Hired"));
+                             }
+                             else if (item.Recommended == false)
+                             {
+                                 return Html.Raw(string.Format("Rejected"));
+                             }
+                             else
+                             {
+                                 return Html.Raw(string.Format("Proceeded to HR Round"));
+                             }
+                         })
                          )
                      )
 
@@ -32,9 +45,10 @@
     {
 
         var candidate = (InterviewEvaluationSystem.Models.CurrentStatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
-        TempData["Name"] = @candidate.Name;
-        TempData["Email"] = @candidate.Email;
-        TempData["RoundID"] = @candidate.RoundID;
+        TempData["candidateID"] = @candidate.CandidateID;
+        TempData["evaluationID"] = @candidate.EvaluationID;
+        TempData["roundID"] = @candidate.RoundID;
+        TempData["recommended"] = @candidate.Recommended;
         Response.Redirect("HREvaluation");
     }
 </div>
