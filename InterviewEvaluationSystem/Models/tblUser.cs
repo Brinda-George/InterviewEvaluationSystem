@@ -21,7 +21,7 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int UserID { get; set; }
-        public string Name { get; set; }
+        public string UserName { get; set; }
         public string EmployeeId { get; set; }
         public string Designation { get; set; }
         public string Address { get; set; }

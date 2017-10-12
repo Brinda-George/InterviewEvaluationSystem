@@ -280,6 +280,7 @@
     </Content>
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\Askill.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -304,7 +305,6 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Scategory.js" />
-    <Content Include="Scripts\Skills.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Scripts\Rscale.js" />
     <Content Include="Web.config">
@@ -343,14 +343,16 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\HR\RatingScale.cshtml" />
     <Content Include="Views\HR\SkillCategory.cshtml" />
     <Content Include="Views\HR\Skill.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\HR\Register.cshtml" />
+    <Content Include="Views\Interviewer\HomePage.cshtml" />
+    <Content Include="Views\HR\HRHomePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Interviewer\" />
     <Folder Include="Views\Interview\" />
   </ItemGroup>
   <ItemGroup>

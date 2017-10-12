@@ -15,6 +15,44 @@ namespace InterviewEvaluationSystem.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+        public ActionResult HRHomePage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Register(tblUser user)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            db.RegisterProcedure(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
+            string message = string.Empty;
+            switch (user.UserID)
+            {
+                case -1:
+                    message = "Username already exists.\\nPlease choose a different username.";
+                    break;
+                case -2:
+                    message = "EmployeeID has already been used.";
+                    break;
+                case -3:
+                    message = "Email address has already been used.";
+                    break;
+                default:
+                    message = "Registration successful.\\nUser Id: " + user.UserID.ToString();
+                    break;
+
+            }
+            ViewBag.Message = message;
+            db.tblUsers.Add(user);
+            db.SaveChanges();
+            return View();
+        }
+
         public ActionResult RatingScale()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
@@ -31,10 +69,10 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             rate.CreatedBy = "hr";
-           // rate.ModifiedBy="hr";
+            // rate.ModifiedBy="hr";
             rate.CreatedDate = DateTime.Now;
-          //  rate.ModifiedDate = DateTime.Now;
-           // rate.IsDeleted = 0;
+            //  rate.ModifiedDate = DateTime.Now;
+            // rate.IsDeleted = 0;
             db.tblRatingScales.Add(rate);
             db.SaveChanges();
             List<tblRatingScale> rates = db.tblRatingScales.ToList();
@@ -43,7 +81,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public JsonResult RateEdit(int RateScaleId,string Ratescale, int Ratevalue,string description)
+        public JsonResult RateEdit(int RateScaleId, string Ratescale, int Ratevalue, string description)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             tblRatingScale rate = db.tblRatingScales.Find(RateScaleId);
@@ -60,8 +98,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var rate = (from u in db.tblRatingScales
-                       where id == u.RateScaleID
-                       select u).FirstOrDefault();
+                        where id == u.RateScaleID
+                        select u).FirstOrDefault();
             var list = (from u in db.tblRatingScales
                         where id != u.RateScaleID
                         select u).ToList();
@@ -93,7 +131,7 @@ namespace InterviewEvaluationSystem.Controllers
             List<tblSkillCategory> cat = db.tblSkillCategories.ToList();
             ViewBag.Roles = cat;
             return View();
-  
+
         }
 
         [HttpPost]
@@ -113,8 +151,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var category = (from u in db.tblSkillCategories
-                        where id == u.SkillCategoryID
-                        select u).FirstOrDefault();
+                            where id == u.SkillCategoryID
+                            select u).FirstOrDefault();
             var list = (from u in db.tblSkillCategories
                         where id != u.SkillCategoryID
                         select u).ToList();
@@ -161,7 +199,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Skill(tblSkill skill,string category)
+        public ActionResult Skill(tblSkill skill, string category)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             skill.SkillCategoryID = Convert.ToInt32(category);
@@ -183,7 +221,7 @@ namespace InterviewEvaluationSystem.Controllers
                          join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
                          select new
                          {
-                             skillcatid=b.SkillCategoryID,
+                             skillcatid = b.SkillCategoryID,
                              skillno = b.SkillID,
                              skillcat = a.SkillCategory,
                              skillname = b.SkillName
@@ -196,13 +234,13 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public JsonResult SkillEdit(int SkillID, string SkillName)
+        public JsonResult SkillEdit(int SkillID, string Skillname)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             tblSkill skill = db.tblSkills.Find(SkillID);
-            skill.SkillName = SkillName;
+            skill.SkillName = Skillname;
             db.SaveChanges();
-            return Json(new { skill }, JsonRequestBehavior.AllowGet);
+            return Json(new { SkillName=Skillname }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -211,7 +249,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var skill = (from u in db.tblSkills
-                        where id == u.SkillID
+                         where id == u.SkillID
                          select u).FirstOrDefault();
             var list = (from u in db.tblSkills
                         where id != u.SkillID

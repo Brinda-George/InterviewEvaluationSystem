@@ -2,10 +2,7 @@
     $('.edit').hide();
     $('.edit-case').on('click', function () {
         var tr = $(this).parents('tr:first');
-       var SkillType = tr.find('#skillcategory').text();
-       var SkillName = tr.find('#skillname').text();
-       var SkillName = tr.find('#skillname').text();
-       // tr.find('#SkillCategory').val(SkillType);
+        var SkillName = tr.find('#skillname').text();
         tr.find('#SkillName').val(SkillName);
         tr.find('.edit, .read').toggle();
     });
@@ -13,21 +10,21 @@
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         SkillID = $(this).prop('id');
-      //  var SkillCategoryID = tr.find('#SkillName').val();
         var SkillName = tr.find('#SkillName').val();
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: "http://localhost:58074/HR/SkillEdit",
-            data: JSON.stringify({ "SkillID": SkillID, "SkillName": SkillName}),
+            data: JSON.stringify({ "SkillID": SkillID, "SkillName": SkillName }),
             dataType: "json",
             success: function (data) {
                 tr.find('.edit, .read').toggle();
                 $('.edit').hide();
                 tr.find('#skillname').text(data.SkillName);
+               // alert('Update success');
                 window.location = "http://localhost:58074/HR/Skill";
             },
-            error: function (err) {
+            error: function (data) {
                 alert("Error occured during update.");
             }
         });
@@ -46,7 +43,7 @@
         $.ajax({
             type: 'POST',
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:58074/HR/SkillDelete" + id,
+            url: "http://localhost:58074/HR/SkillDelete/" + id,
             dataType: "json",
             success: function (data) {
                 alert('Delete success');

@@ -39,31 +39,43 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string username,string password)
+        public ActionResult Login(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var item = (from s in db.tblUsers where s.Name == username && s.Password == password select s).FirstOrDefault();
-            if (item != null)
+            var count = db.LoginProcedure(user.UserName, user.Password);
+            var item = count.FirstOrDefault();
+            int usercount = Convert.ToInt32(item);
+            int id = Convert.ToInt32(user.UserTypeID);
+            if (id == 1)
             {
-                Session["Name"] = item.Name.ToString();
-                return RedirectToAction("About");
+                if(user.UserTypeID==1)
+                {
+                    return RedirectToAction("HRHomePage","HR");
+                }
+                else
+                {
+                    return RedirectToAction("HomePage", "Interviewer");
+                }
+
             }
             else
             {
-                Response.Write("Sorry,invalid credentials");
+                Response.Write("Invalid credentials");
             }
-            //var count = db.Database.SqlQuery<tblUser>("exec [dbo].[Login] @Username,@Password",
-            //     new SqlParameter("@Username", username),
-            //     new SqlParameter("@Password", password));
-            //int counts = Convert.ToInt32(count);
-            //if(counts==1)
+            //InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            //var item = (from s in db.tblUsers where s.UserName == username && s.Password == password select s).FirstOrDefault();
+            //if (item != null)
             //{
-            //    return RedirectToAction("About");
+            //    Session["Name"] = item.UserName.ToString();
+            //    return RedirectToAction("HRHomePage","HR");
             //}
             //else
             //{
-            //    Response.Write("Invalid credentials");
+            //    Response.Write("Sorry,invalid credentials");
             //}
+
+
+
             return View();
         }
     }
