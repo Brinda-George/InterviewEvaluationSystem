@@ -24,7 +24,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult JoinDetails(JoinViewModel joinViewModel)
         {
             InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-            int res = dbContext.spInsertJoinDetails('5',Convert.ToInt32(TempData["candidate"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
+            int res = dbContext.spInsertJoinDetails('5',Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
             return RedirectToAction("HRHomePage");
         }
 
@@ -46,7 +46,7 @@ namespace InterviewEvaluationSystem.Controllers
             return View(CurrentStatuses);
         }
 
-        public ActionResult HREvaluation()
+        public ActionResult HREvaluation(StatusViewModel statusViewModel)
         {
             InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
             interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
@@ -57,13 +57,15 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkillsByCategory(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
             }
-            int candidateID = Convert.ToInt32(TempData["candidateID"]);
             for (int i = 0; i < interviewEvaluationViewModel.Rounds.Count; i++)
             {
-                interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(candidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
+                interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
             }
-            interviewEvaluationViewModel.Comments = services.GetComments(candidateID);
-            TempData["candidate"] = candidateID;
+            interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
+            TempData["candidateID"] = statusViewModel.CandidateID;
+            TempData["roundID"] = statusViewModel.RoundID;
+            TempData["evaluationID"] = statusViewModel.EvaluationID;
+            TempData["recommended"] = statusViewModel.Recommended;
             return View(interviewEvaluationViewModel);
         }
 

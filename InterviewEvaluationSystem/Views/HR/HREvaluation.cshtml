@@ -37,7 +37,7 @@
             </div>
         }
     }
-    
+
     for (int i = 0; i < Model.SkillCategories.Count; i++)
     {
         <h3>@Model.SkillCategories[i].SkillCategory</h3>
@@ -48,13 +48,13 @@
         columns.Add(column);
         foreach (var round in Model.Rounds)
         {
-            if (Convert.ToBoolean(@TempData["recommended"]) == true)
+            if (Convert.ToBoolean(@TempData["recommended"]) == true || Convert.ToBoolean(@TempData["recommended"]) == false)
             {
                 columns.Add(new WebGridColumn()
                 {
                     ColumnName = round.RoundName,
                     Header = round.RoundName,
-                    Format = (item) => Html.LabelFor(m => m.RatingScale[i].RateScaleID, new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString())
+                    Format = (item) => Html.LabelFor(m => m.RatingScale[i].RateScaleID, new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { style = "font-weight: normal;" })
                 });
             }
             else
@@ -91,13 +91,13 @@
              )
         </div>
     }
-    if (Convert.ToBoolean(@TempData["recommended"]) != true)
+    if (Convert.ToBoolean(@TempData["recommended"]) != true && Convert.ToBoolean(@TempData["recommended"]) != false)
     {
         @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
         <input type="button" id="hire" value="Hire" class="btn btn-default" onclick="getValues(this)" />
         <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
     }
-    if (Convert.ToBoolean(@TempData["recommended"]) == true)
+    if (Convert.ToBoolean(@TempData["recommended"]) == true || Convert.ToBoolean(@TempData["recommended"]) == false)
     {
         <h3>Comments</h3>
         if (Model.Comments.Any())
@@ -149,7 +149,7 @@
         $.ajax({
             url: '/HR/HREvaluation',
             type: 'post',
-            data: { recommended : recommended,evaluationID : evaluationID, values : valueArray, comments : comments },
+            data: { recommended : recommended, evaluationID : evaluationID, values : valueArray, comments : comments },
             success: function (response) {
                 window.location.href = response.Url;
             },

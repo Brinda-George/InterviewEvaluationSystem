@@ -25,7 +25,7 @@ namespace InterviewEvaluationSystem.Controllers
             return View(Statuses);
         }
 
-        public ActionResult InterviewEvaluation(string Name)
+        public ActionResult InterviewEvaluation(StatusViewModel statusViewModel, string Name)
         {
             InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
             interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
@@ -38,8 +38,11 @@ namespace InterviewEvaluationSystem.Controllers
             }
             for (int i = 0; i < interviewEvaluationViewModel.Rounds.Count; i++)
             {
-                interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(Convert.ToInt32(TempData["candidateID"]), interviewEvaluationViewModel.Rounds[i].RoundID);
+                interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
             }
+            TempData["CandidateID"] = statusViewModel.CandidateID;
+            TempData["roundID"] = statusViewModel.RoundID;
+            TempData["evaluationID"] = statusViewModel.EvaluationID;
             return View(interviewEvaluationViewModel);
         }
 

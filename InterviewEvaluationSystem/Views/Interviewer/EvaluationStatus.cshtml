@@ -18,7 +18,12 @@
                      rowStyle: "webgrid-row-style",
                      mode: WebGridPagerModes.All,
                      columns: webgridStatus.Columns(
-                         webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => item.GetSelectLink(item.Name.ToString())),
+                         webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "InterviewEvaluation", new
+                         {
+                             CandidateID = item.CandidateID,
+                             RoundID = item.RoundID,
+                             EvaluationID = item.EvaluationID
+                         })),
                          webgridStatus.Column(columnName: "RoundName", header: "Current Round")
                          )
                      )
@@ -27,14 +32,5 @@
     else
     {
         <h3>You have No Candidates Assigned!!</h3>
-    }
-    @if (webgridStatus.HasSelection)
-    {
-
-        var candidate = (InterviewEvaluationSystem.Models.StatusViewModel)webgridStatus.Rows[webgridStatus.SelectedIndex].Value;
-        TempData["candidateID"] = @candidate.CandidateID;
-        TempData["roundID"] = @candidate.RoundID;
-        TempData["evaluationID"] = @candidate.EvaluationID;
-        Response.Redirect("InterviewEvaluation");
     }
 </div>

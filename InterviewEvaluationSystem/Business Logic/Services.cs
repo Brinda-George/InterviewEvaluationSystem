@@ -82,7 +82,7 @@ namespace InterviewEvaluationSystem.Business_Logic
             return Statuses;
         }
 
-        public List<ScoreEvaluationViewModel> GetPreviousRoundScores(int candidateID, int roundID)
+        public List<ScoreEvaluationViewModel> GetPreviousRoundScores(Nullable<int> candidateID, int roundID)
         {
             List<ScoreEvaluationViewModel> Statuses = dbContext.spGetPreviousRoundScores(candidateID, roundID)
                 .Select(s => new ScoreEvaluationViewModel
@@ -110,7 +110,7 @@ namespace InterviewEvaluationSystem.Business_Logic
             return CurrentStatuses;
         }
 
-        public List<CommentViewModel> GetComments(int CandidateID)
+        public List<CommentViewModel> GetComments(Nullable<int> CandidateID)
         {
             List<CommentViewModel> comments = dbContext.spGetComments(CandidateID)
                 .Select(c => new CommentViewModel
