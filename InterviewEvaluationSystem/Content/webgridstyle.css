@@ -1,0 +1,31 @@
+﻿.webgrid-table td, th {
+    border: 1px solid #C5C5C5;
+    padding: 3px 7px 2px;
+}
+
+.webgrid-header, .webgrid-header a {
+    background-color: #005396;
+    color: #ffffff;
+    text-align: left;
+    text-decoration: none;
+}
+
+.webgrid-footer {
+}
+
+.webgrid-row-style {
+    padding: 3px 7px 2px;
+}
+
+.webgrid-alternating-row {
+    background-color: #fff;
+    padding: 3px 7px 2px;
+}
+
+.col1Width {
+    width: 55px;
+}
+
+.col2Width {
+    width: 220px;
+}
