@@ -43,6 +43,7 @@ namespace InterviewEvaluationSystem.Models
         public string Address { get; set; }
         public string Pincode { get; set; }
         public string Password { get; set; }
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public Nullable<int> UserTypeID { get; set; }
     }
@@ -51,9 +52,10 @@ namespace InterviewEvaluationSystem.Models
     {
         public int CandidateID { get; set; }
         public string Name { get; set; }
-        public System.DateTime DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string Designation { get; set; }
-        public System.DateTime DateOfInterview { get; set; }
+        public DateTime DateOfInterview { get; set; }
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string PAN { get; set; }
         public decimal ExpectedSalary { get; set; }
@@ -61,7 +63,7 @@ namespace InterviewEvaluationSystem.Models
         public int TotalExperience { get; set; }
         public string Qualifications { get; set; }
         public Nullable<decimal> OfferedSalary { get; set; }
-        public Nullable<System.DateTime> DateOfJoining { get; set; }
+        public Nullable<DateTime> DateOfJoining { get; set; }
     }
 
     public class EvaluationViewModel
@@ -126,6 +128,8 @@ namespace InterviewEvaluationSystem.Models
     public class CurrentStatusViewModel
     {
         public string Name { get; set; }
+        [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Please enter valid email id.")]
         public string Email { get; set; }
         public Nullable<int> RoundID { get; set; }
         public int EvaluationID { get; set; }
@@ -144,6 +148,25 @@ namespace InterviewEvaluationSystem.Models
         public int CandidateID { get; set; }
         public Nullable<decimal> OfferedSalary { get; set; }
         [DataType(DataType.Date)]
-        public Nullable<System.DateTime> DateOfJoining { get; set; }
+        public Nullable<DateTime> DateOfJoining { get; set; }
+    }
+    public class ChangePasswordViewModel
+    {
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Current password")]
+        public string OldPassword { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "New password")]
+        public string NewPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new password")]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
     }
 }

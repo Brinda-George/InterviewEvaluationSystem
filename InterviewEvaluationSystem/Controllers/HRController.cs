@@ -27,11 +27,22 @@ namespace InterviewEvaluationSystem.Controllers
             int res = dbContext.spInsertJoinDetails('5',Convert.ToInt32(TempData["candidate"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
             return RedirectToAction("HRHomePage");
         }
-        
 
         public ActionResult CandidateStatus()
         {
             List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
+            return View(CurrentStatuses);
+        }
+
+        [HttpPost]
+        public ActionResult CandidateStatus(string searchString)
+        {
+            List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                CurrentStatuses = CurrentStatuses.Where(s => s.Name.StartsWith(searchString)
+                                       || s.Email.StartsWith(searchString)).ToList();
+            }
             return View(CurrentStatuses);
         }
 

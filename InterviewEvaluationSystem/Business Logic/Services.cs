@@ -122,5 +122,11 @@ namespace InterviewEvaluationSystem.Business_Logic
                 }).ToList();
             return comments;
         }
+
+        public int UpdatePassword(int userId, ChangePasswordViewModel changePasswordViewModel)
+        {
+            int res = dbContext.spUpdatePassword(userId, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
+            return res;
+        }
     }
 }

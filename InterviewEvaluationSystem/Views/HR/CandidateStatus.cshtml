@@ -1,10 +1,18 @@
 ﻿@model IEnumerable<InterviewEvaluationSystem.Models.CurrentStatusViewModel>
 @{
     ViewBag.Title = "CandidateStatus";
-    WebGrid webgridStatus = new WebGrid(source: Model, canSort: false);
+    WebGrid webgridStatus = new WebGrid(source: Model, canSort: false, canPage: true, rowsPerPage: 30);
 }
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Candidate Status</h2>
+
+@using (Html.BeginForm(new { id = "form" }))
+{
+    <p>
+        Search by Name or Email: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
 
 <div id="grid1">
     @if (Model.Any())
@@ -19,7 +27,8 @@
                      columns: webgridStatus.Columns(
                          webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => item.GetSelectLink(item.Name.ToString())),
                          webgridStatus.Column(columnName: "Email", header: "Email"),
-                         webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) => {
+                         webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) =>
+                         {
                              if (item.Recommended == true)
                              {
                                  return Html.Raw(string.Format("Hired"));
@@ -35,11 +44,10 @@
                          })
                          )
                      )
-
     }
     else
     {
-        <h3>You have No Candidates Assigned!!</h3>
+        <h3>No Candidates!!</h3>
     }
     @if (webgridStatus.HasSelection)
     {
