@@ -11,7 +11,7 @@ namespace InterviewEvaluationSystem.Models
     }
 
     public class AddCandidateViewModels
-    {
+    { 
         public string Name { get; set; }
         public string Designation { get; set; }
         [DataType(DataType.Date)]
@@ -27,5 +27,16 @@ namespace InterviewEvaluationSystem.Models
         public string PreviousCompany { get; set; }
         public string Qualifications { get; set; }
         public string Interviewer { get; set; }
+        public List<CandidateGridViewModel> CandidateList { get; set; }
+        public List<tblUser> users { get; set; }
     }
+    public class CandidateGridViewModel
+    {
+        public int CandidateID { get; set; }
+        public string CandidateName { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime DateOfInterview { get; set; }
+        public string InterviewerName { get; set; }
+    }
+
 }

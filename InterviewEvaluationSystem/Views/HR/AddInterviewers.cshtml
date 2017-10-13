@@ -55,10 +55,10 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -187,11 +187,11 @@
     columns:
             grid.Columns(
              @*grid.Column("ID", format: @<text>  <span class="display-mode">@item.ID </span> <label id="UserID" class="edit-mode">@item.ID</label> </text>, style: "col1Width"),*@
-             grid.Column("Name", "Name", format: @<text>  <span class="display-mode"> <label id="lblName">@item.Name</label> </span> <input type="text" id="Name" value="@item.Name" class="edit-mode" /></text>, style: "col2Width"),
+             grid.Column("UserName", "UserName", format: @<text>  <span class="display-mode"> <label id="lblName">@item.UserName</label> </span> <input type="text" id="Name" value="@item.UserName" class="edit-mode" /></text>, style: "col2Width"),
              grid.Column("EmployeeId", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>, style: "col1Width"),
              grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>, style: "col2Width"),
              grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> </text>, style: "col2Width"),
-
+                
                 grid.Column("Action", format: @<text>
                     <button class="edit-user display-mode">Edit</button>
                     <button class="save-user edit-mode">Save</button>

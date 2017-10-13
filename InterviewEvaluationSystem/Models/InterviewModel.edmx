@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblCandidate">
           <Key>
             <PropertyRef Name="CandidateID" />
@@ -37,8 +37,8 @@
           <Property Name="CandidateID" Type="int" />
           <Property Name="RoundID" Type="int" />
           <Property Name="UserID" Type="int" />
-          <Property Name="Comment" Type="varchar" MaxLength="250" Nullable="false" />
-          <Property Name="Recommended" Type="bit" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="250" />
+          <Property Name="Recommended" Type="bit" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="varchar" MaxLength="100" />
@@ -129,7 +129,7 @@
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="EmployeeId" Type="varchar" MaxLength="100" />
           <Property Name="Designation" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="varchar" MaxLength="250" Nullable="false" />
@@ -263,6 +263,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_candidateWebGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_candidateWebGridSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_updateCandidateInterviewer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="candidateid" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="InterviewEvaluationDbModelStoreContainer">
           <EntitySet Name="tblCandidate" EntityType="Self.tblCandidate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEvaluation" EntityType="Self.tblEvaluation" Schema="dbo" store:Type="Tables" />
@@ -311,8 +319,7 @@
             <End Role="tblUser" EntitySet="tblUser" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InterviewEvaluationDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -350,8 +357,8 @@
           <Property Name="CandidateID" Type="Int32" />
           <Property Name="RoundID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
-          <Property Name="Comment" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Recommended" Type="Boolean" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Recommended" Type="Boolean" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -455,7 +462,7 @@
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EmployeeId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
@@ -639,7 +646,29 @@
             <End Role="tblUserType" EntitySet="tblUserTypes" />
             <End Role="tblUser" EntitySet="tblUsers" />
           </AssociationSet>
+          <FunctionImport Name="sp_candidateWebGrid" ReturnType="Collection(InterviewEvaluationDbModel.sp_candidateWebGrid_Result)" />
+          <FunctionImport Name="sp_updateCandidateInterviewer">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="candidateid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_candidateWebGridSearch" ReturnType="Collection(InterviewEvaluationDbModel.sp_candidateWebGridSearch_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_candidateWebGrid_Result">
+          <Property Type="Int32" Name="CandidateID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="DateOfInterview" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="sp_candidateWebGridSearch_Result">
+          <Property Type="Int32" Name="CandidateID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="DateOfInterview" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -777,7 +806,7 @@
             <EntityTypeMapping TypeName="InterviewEvaluationDbModel.tblUser">
               <MappingFragment StoreEntitySet="tblUser">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="Designation" ColumnName="Designation" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
@@ -806,6 +835,29 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_candidateWebGrid" FunctionName="InterviewEvaluationDbModel.Store.sp_candidateWebGrid">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.sp_candidateWebGrid_Result">
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateOfInterview" ColumnName="DateOfInterview" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_updateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.sp_updateCandidateInterviewer" />
+          <FunctionImportMapping FunctionImportName="sp_candidateWebGridSearch" FunctionName="InterviewEvaluationDbModel.Store.sp_candidateWebGridSearch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.sp_candidateWebGridSearch_Result">
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateOfInterview" ColumnName="DateOfInterview" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
