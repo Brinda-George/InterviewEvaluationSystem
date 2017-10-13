@@ -40,7 +40,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             Services services = new Services();
             int returnValue = services.UpdatePassword(2, changePasswordViewModel);
-            if(returnValue == 1)
+            if (returnValue == 1)
             {
                 ViewBag.result = "Password Updated Successfully!";
             }
@@ -48,7 +48,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 ViewBag.result = "Wrong Password!!";
             }
-            
+
             return View();
         }
     }

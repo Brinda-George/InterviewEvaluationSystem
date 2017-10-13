@@ -75,6 +75,5 @@ namespace InterviewEvaluationSystem.Controllers
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("HomePage", "Interviewer");
             return Json(new { Url = redirectUrl });
         }
-
     }
 }

@@ -24,7 +24,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult JoinDetails(JoinViewModel joinViewModel)
         {
             InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-            int res = dbContext.spInsertJoinDetails('5',Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
+            int res = dbContext.spInsertJoinDetails('5', Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
             return RedirectToAction("HRHomePage");
         }
 
