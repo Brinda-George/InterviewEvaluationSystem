@@ -164,30 +164,7 @@
     </div>
 }
 
-@*@{
-        var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 5,
-        selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
-        grid.Pager(WebGridPagerModes.All);}
-
-
-    @grid.GetHtml(tableStyle: "webgrid-table",
-            headerStyle: "webgrid-header",
-            footerStyle: "webgrid-footer",
-            alternatingRowStyle: "webgrid-alternating-row",
-            selectedRowStyle: "webgrid-selected-row",
-            rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
-        columns:
-                grid.Columns(
-                 grid.Column("CandidateID", "CandidateID"),
-                 grid.Column("CandidateName", "CandidateName"),
-                 grid.Column("DateOfInterview", "DateOfInterview"),
-                 grid.Column("InterviewerName", "InterviewerName")
-
-
-               ))*@
-
-@*@{
+@{
     var grid = new WebGrid(Model.users, canPage: true, rowsPerPage: 5,
     selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);}
@@ -208,7 +185,7 @@
              grid.Column("Designation", "Designation")
 
 
-           ))*@
+           ))
 
 <div id="SearchCandidate">
     <table width="100%">
@@ -224,7 +201,6 @@
         selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
         gridCandidate.Pager(WebGridPagerModes.All);}
 
-
     @gridCandidate.GetHtml(tableStyle: "webgrid-table",
             headerStyle: "webgrid-header",
             footerStyle: "webgrid-footer",
@@ -236,7 +212,7 @@
                 gridCandidate.Columns(
                     gridCandidate.Column("CandidateID", format: @<text>  <span class="display-modeCandidate">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label> </text>, style: "col1Width"),
              gridCandidate.Column("CandidateName", "CandidateName", format: @<text>  <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" /></text>, style: "col2Width"),
-             gridCandidate.Column("DateOfInterview", "DateOfInterview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" /></text>, style: "col2Width"),
+             gridCandidate.Column("DateOfInterview", "DateOfInterview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/mm/yyyy")</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" /></text>, style: "col2Width"),
             gridCandidate.Column("InterviewerName", "InterviewerName", format: @<text> <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span>  <input type="text" id="InterviewerName" value="@item.InterviewerName" class="edit-modeCandidate" /> </text>, style: "col2Width"),
 
                 gridCandidate.Column("Action", format: @<text>
@@ -248,41 +224,6 @@
 
                ))
 </div>
-
-
-
-
-
-@*<div id="SearchCandidateResultContent">
-    @{
-        var gridCandidateResult = new WebGrid(ViewBag.candidateListSearch, canPage: true, rowsPerPage: 5,
-        selectionFieldName: "selectedRow", ajaxUpdateContainerId: "SearchCandidateResultContent");
-        gridCandidateResult.Pager(WebGridPagerModes.All);}
-
-
-    @gridCandidateResult.GetHtml(tableStyle: "webgrid-table",
-            headerStyle: "webgrid-header",
-            footerStyle: "webgrid-footer",
-            alternatingRowStyle: "webgrid-alternating-row",
-            selectedRowStyle: "webgrid-selected-row",
-            rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
-        columns:
-                gridCandidateResult.Columns(
-                    gridCandidateResult.Column("CandidateID", format: @<text>  <span class="display-modeCandidate">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label> </text>, style: "col1Width"),
-             gridCandidateResult.Column("CandidateName", "CandidateName", format: @<text>  <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" /></text>, style: "col2Width"),
-             gridCandidateResult.Column("DateOfInterview", "DateOfInterview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" /></text>, style: "col2Width"),
-            gridCandidateResult.Column("InterviewerName", "InterviewerName", format: @<text> <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span>  <input type="text" id="InterviewerName" value="@item.InterviewerName" class="edit-modeCandidate" /> </text>, style: "col2Width"),
-
-                gridCandidateResult.Column("Action", format: @<text>
-                        <button class="edit-userCandidate display-modeCandidate">Edit</button>
-                        <button class="save-userCandidate edit-modeCandidate">Save</button>
-                        <button class="cancel-userCandidate edit-modeCandidate">Cancel</button>
-                        <button class="delete-userCandidate">Delete</button>
-                </text>, style: "col3Width", canSort: false)
-
-               ))
-</div>*@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

@@ -39,4 +39,18 @@ namespace InterviewEvaluationSystem.Models
         public string InterviewerName { get; set; }
     }
 
+    public class NotificationViewModel
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public Nullable<int> RoundID { get; set; }
+        public Nullable<bool> Recommended { get; set; }
+    }
+
+    public class NotificationProceedViewModel
+    {
+        public string Name { get; set; }
+        public int ProceedTo { get; set; }
+        public string Interviewer { get; set; }
+    }
 }

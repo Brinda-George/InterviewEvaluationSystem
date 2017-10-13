@@ -12,21 +12,20 @@
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
             var DateOfInterview = tr.find("#DateOfInterview").val();
-            var UserName = tr.find("#InterviewerName").val();
+            var InterviewerName = tr.find("#InterviewerName").val();
             var CandidateID = tr.find("#lblCandidateID").html();
             $.ajax({
                 url: '/HR/UpdateCandidate/',
                 // data: JSON.stringify(tblNewUser),
-                data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserName": UserName }),
+                data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "InterviewerName": InterviewerName }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     alert('Successfully Updated Interviewer');
                     tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
-                    debugger;
-                    tr.find("#lblCandidateName").text(data.Name);
-                    tr.find("#lblDateOfInterview").text(data.DateOfInterview);
-                    tr.find("#lblInterviewerName").text(data.UserName);
+                    tr.find("#lbCandidateName").val(data.CandidateName);
+                    tr.find("#lblDateOfInterview").val(data.DateOfInterview);
+                    tr.find("#lblInterviewerName").val(data.InterviewerName);
                 }
             });
 
@@ -53,13 +52,13 @@
             $.ajax({
                 type: "post",
                 url: "/HR/SearchCandidateResult",
-                
+
                 data: { Name: $('#CandidateNameText').val() },
                 datatype: "json",
                 success: function (Name) {
                     $('#gridContentCandidate').html(Name);
-                    
-                   
+
+
                 }
             });
         });

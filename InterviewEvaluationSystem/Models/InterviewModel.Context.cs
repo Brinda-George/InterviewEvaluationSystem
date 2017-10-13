@@ -64,5 +64,15 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_candidateWebGridSearch_Result>("sp_candidateWebGridSearch", nameParameter);
         }
+    
+        public virtual ObjectResult<sp_NotificationGrid_Result> sp_NotificationGrid()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_NotificationGrid_Result>("sp_NotificationGrid");
+        }
+    
+        public virtual ObjectResult<sp_HRNotificationGrid_Result> sp_HRNotificationGrid()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_HRNotificationGrid_Result>("sp_HRNotificationGrid");
+        }
     }
 }

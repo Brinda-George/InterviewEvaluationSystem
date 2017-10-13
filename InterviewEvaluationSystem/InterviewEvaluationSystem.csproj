@@ -230,6 +230,12 @@
     <Compile Include="Models\sp_candidateWebGrid_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_HRNotificationGrid_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_NotificationGrid_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblCandidate.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -305,8 +311,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Notification.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\SearchCandidate.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -344,6 +352,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\HR\AddInterviewers.cshtml" />
     <Content Include="Views\HR\AddCandidate.cshtml" />
+    <Content Include="Views\HR\SearchCandidateResult.cshtml" />
+    <Content Include="Views\HR\Notification.cshtml" />
+    <Content Include="Views\HR\NotificationProceed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
