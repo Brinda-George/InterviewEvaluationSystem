@@ -99,14 +99,14 @@
         format:
         @<text>
             <span id="skillcategory" class="read">@item.SkillCategory</span>
-            @Html.TextBox("SkillCategory", (string)item.SkillCategory, new { @class = "edit" })
+            @Html.TextBox("SkillCategory", (string)item.SkillCategory, new { @class = "edit",@style="display:none"  })
         </text>),
 
     gridview.Column("Description",
          format:
         @<text>
             <span id="description" class="read">@item.Description</span>
-            @Html.TextBox("Description", (string)item.Description, new { @class = "edit" })
+            @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
         </text>),
 
     gridview.Column("Action", style: "button",
@@ -114,8 +114,8 @@
                 @<text>
                     <button class="edit-case read" id="@item.SkillCategoryID">Edit</button>
                     <button class="delete-case read" id="@item.SkillCategoryID">Delete</button>
-                    <button class="update-case edit" id="@item.SkillCategoryID">Update</button>
-                    <button class="cancel-case edit" id="@item.SkillCategoryID">Cancel</button>
+                    <button class="update-case edit" style="display:none" id="@item.SkillCategoryID">Update</button>
+                    <button class="cancel-case edit" style="display:none" id="@item.SkillCategoryID">Cancel</button>
                 </text>)
     }
 )

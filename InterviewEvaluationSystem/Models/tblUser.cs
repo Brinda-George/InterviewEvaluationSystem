@@ -11,7 +11,8 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tblUser
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,12 +22,20 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int UserID { get; set; }
+
+        [Required]
         public string UserName { get; set; }
+        [Required]
         public string EmployeeId { get; set; }
+        [Required]
         public string Designation { get; set; }
+        [Required]
         public string Address { get; set; }
+        [Required]
         public string Pincode { get; set; }
+        [Required]
         public string Password { get; set; }
+        [Required]
         public string Email { get; set; }
         public Nullable<int> UserTypeID { get; set; }
         public string CreatedBy { get; set; }

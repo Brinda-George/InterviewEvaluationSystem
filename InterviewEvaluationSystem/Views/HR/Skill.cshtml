@@ -46,6 +46,7 @@
     }
 
     @gridview.GetHtml(
+       
         tableStyle: "webgrid-table",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
@@ -56,11 +57,11 @@
 
 {
     
-    gridview.Column("S.No",
+    @*gridview.Column("S.No",
         format:
         @<text>
             <span id="skillid" >@item.skillno</span>
-        </text>),
+        </text>),*@
 
     gridview.Column("Skill Type",
         format:
@@ -72,7 +73,7 @@
          format:
         @<text>
             <span id="skillname" class="read">@item.skillname</span>
-            @Html.TextBox("SkillName", (string)item.skillname, new { @class = "edit" })
+            @Html.TextBox("SkillName", (string)item.skillname, new { @class = "edit",@style="display:none" })
         </text>),
 
     gridview.Column("Action", style: "button",
@@ -80,8 +81,8 @@
                 @<text>
                     <button class="edit-case read" id="@item.skillno">Edit</button>
                     <button class="delete-case read" id="@item.skillno">Delete</button>
-                    <button class="update-case edit" id="@item.skillno">Update</button>
-                    <button class="cancel-case edit" id="@item.skillno">Cancel</button>
+                    <button class="update-case edit" style="display:none" id="@item.skillno">Update</button>
+                    <button class="cancel-case edit" style="display:none" id="@item.skillno">Cancel</button>
                 </text>)
     }
 )

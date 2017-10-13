@@ -14,13 +14,13 @@ namespace InterviewEvaluationSystem.Controllers
         {
             return View();
         }
-
-        [HttpGet]
-        public ActionResult Register()
+        public ActionResult HRHomePage()
         {
             return View();
         }
-        public ActionResult HRHomePage()
+
+        [HttpGet]
+        public ActionResult Register()
         {
             return View();
         }
@@ -29,9 +29,11 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Register(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            db.RegisterProcedure(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
+            var count = db.RegisterProcedure(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
+            var item = count.FirstOrDefault();
+            int usercount = Convert.ToInt32(item);
             string message = string.Empty;
-            switch (user.UserID)
+            switch (usercount)
             {
                 case -1:
                     message = "Username already exists.\\nPlease choose a different username.";
@@ -44,12 +46,12 @@ namespace InterviewEvaluationSystem.Controllers
                     break;
                 default:
                     message = "Registration successful.\\nUser Id: " + user.UserID.ToString();
+                    db.tblUsers.Add(user);
+                    db.SaveChanges();
                     break;
 
             }
             ViewBag.Message = message;
-            db.tblUsers.Add(user);
-            db.SaveChanges();
             return View();
         }
 
@@ -68,9 +70,9 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale(tblRatingScale rate)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            rate.CreatedBy = "hr";
+           // rate.CreatedBy = "hr";
             // rate.ModifiedBy="hr";
-            rate.CreatedDate = DateTime.Now;
+            //rate.CreatedDate = DateTime.Now;
             //  rate.ModifiedDate = DateTime.Now;
             // rate.IsDeleted = 0;
             db.tblRatingScales.Add(rate);
@@ -89,7 +91,7 @@ namespace InterviewEvaluationSystem.Controllers
             rate.RateValue = Ratevalue;
             rate.Description = description;
             db.SaveChanges();
-            return Json(new { rate }, JsonRequestBehavior.AllowGet);
+            return Json(new { RateScale= Ratescale, RateValue= Ratevalue, Description= description }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -142,7 +144,7 @@ namespace InterviewEvaluationSystem.Controllers
             category.SkillCategory = SkillCategory;
             category.Description = description;
             db.SaveChanges();
-            return Json(new { category }, JsonRequestBehavior.AllowGet);
+            return Json(new { SkillCategory= SkillCategory , Description = description }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -205,32 +207,33 @@ namespace InterviewEvaluationSystem.Controllers
             skill.SkillCategoryID = Convert.ToInt32(category);
             db.tblSkills.Add(skill);
             db.SaveChanges();
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblSkillCategory category1 in db.tblSkillCategories)
-            {
-                SelectListItem selectlistitem = new SelectListItem
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                foreach (tblSkillCategory category1 in db.tblSkillCategories)
                 {
-                    Text = category1.SkillCategory,
-                    Value = category1.SkillCategoryID.ToString()
-                };
-                selectedlist.Add(selectlistitem);
-            }
-            ViewBag.category = selectedlist;
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = category1.SkillCategory,
+                        Value = category1.SkillCategoryID.ToString()
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.category = selectedlist;
 
-            var result = from a in db.tblSkillCategories
-                         join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
-                         select new
-                         {
-                             skillcatid = b.SkillCategoryID,
-                             skillno = b.SkillID,
-                             skillcat = a.SkillCategory,
-                             skillname = b.SkillName
+                var result = from a in db.tblSkillCategories
+                             join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
+                             select new
+                             {
+                                 skillcatid = b.SkillCategoryID,
+                                 skillno = b.SkillID,
+                                 skillcat = a.SkillCategory,
+                                 skillname = b.SkillName
 
-                         };
-            ViewBag.Skillcategories = result;
-            List<tblSkill> skills = db.tblSkills.ToList();
-            ViewBag.Users = skills;
+                             };
+                ViewBag.Skillcategories = result;
+                List<tblSkill> skills = db.tblSkills.ToList();
+                ViewBag.Users = skills;
             return View();
+           
         }
 
         [HttpPost]

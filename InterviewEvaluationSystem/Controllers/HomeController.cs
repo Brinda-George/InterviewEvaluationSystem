@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 
 namespace InterviewEvaluationSystem.Controllers
@@ -32,6 +33,7 @@ namespace InterviewEvaluationSystem.Controllers
 
             return View();
         }
+
         [HttpGet]
         public ActionResult Login()
         {
@@ -45,16 +47,21 @@ namespace InterviewEvaluationSystem.Controllers
             var count = db.LoginProcedure(user.UserName, user.Password);
             var item = count.FirstOrDefault();
             int usercount = Convert.ToInt32(item);
-            int id = Convert.ToInt32(user.UserTypeID);
-            if (id == 1)
+            var usertype = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
+            int id = Convert.ToInt32(usertype.UserTypeID);
+            if (usercount == 1)
             {
-                if(user.UserTypeID==1)
+                FormsAuthentication.SetAuthCookie(user.UserName, false);
+                Session["Name"] = user.UserName;
+                if(id==1)
                 {
-                    return RedirectToAction("HRHomePage","HR");
+                    return RedirectToAction("HRHomePage", "HR");
+                   
                 }
-                else
+                else if(id==2)
                 {
                     return RedirectToAction("HomePage", "Interviewer");
+
                 }
 
             }
@@ -73,10 +80,33 @@ namespace InterviewEvaluationSystem.Controllers
             //{
             //    Response.Write("Sorry,invalid credentials");
             //}
-
-
-
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult ProfileUpdate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ProfileUpdate(tblUser user)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var name = Convert.ToString(Session["Name"]);
+            var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+            item.Address = user.Address;
+            item.Pincode = user.Pincode;
+            db.SaveChanges();
+            int id = Convert.ToInt32(item.UserTypeID);
+            if (id == 1)
+            {
+                return RedirectToAction("HRHomePage", "HR");
+            }
+            else
+            {
+                return RedirectToAction("HomePage", "Interviewer");
+            }
         }
     }
 }

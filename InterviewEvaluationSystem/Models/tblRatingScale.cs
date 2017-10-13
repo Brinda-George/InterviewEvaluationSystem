@@ -11,7 +11,8 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tblRatingScale
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,8 +22,11 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int RateScaleID { get; set; }
+        [Required]
         public string RateScale { get; set; }
+        [Required]
         public int RateValue { get; set; }
+        [Required]
         public string Description { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
