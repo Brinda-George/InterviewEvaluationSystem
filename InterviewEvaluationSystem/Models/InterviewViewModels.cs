@@ -173,4 +173,12 @@ namespace InterviewEvaluationSystem.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+    public class MailViewModel
+    {
+        public string From { get; set; }
+        public string To { get; set; }
+        public string Subject { get; set; }
+        public string Status { get; set; }
+        public string Comments { get; set; }
+    }
 }

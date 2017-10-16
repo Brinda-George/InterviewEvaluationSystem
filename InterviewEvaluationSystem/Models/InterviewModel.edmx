@@ -267,6 +267,9 @@
           <Parameter Name="CandidateID" Type="int" Mode="In" />
         </Function>
         <Function Name="spGetCurrentStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetEmailByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetPreviousRoundScores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
           <Parameter Name="RoundID" Type="int" Mode="In" />
@@ -688,6 +691,9 @@
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(String)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetSkillsBySkillCategory_Result">
           <Property Type="Int32" Name="SkillID" Nullable="false" />
@@ -941,6 +947,7 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spInsertJoinDetails" FunctionName="InterviewEvaluationDbModel.Store.spInsertJoinDetails" />
           <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
+          <FunctionImportMapping FunctionImportName="spGetEmailByUserID" FunctionName="InterviewEvaluationDbModel.Store.spGetEmailByUserID" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
