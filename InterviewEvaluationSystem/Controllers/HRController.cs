@@ -11,7 +11,7 @@ namespace InterviewEvaluationSystem.Controllers
     {
         // GET: HR
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-        List<CandidateGridViewModel> candidateList;
+        //List<CandidateGridViewModel> candidateList;
         public ActionResult Index()
         {
             return View();
@@ -153,6 +153,7 @@ namespace InterviewEvaluationSystem.Controllers
                 candidate.NoticePeriodInMonths = candidateView.NoticePeriodInMonths;
                 candidate.TotalExperience = candidateView.TotalExperience;
                 candidate.Qualifications = candidateView.Qualifications;
+                candidate.IsLocked = true;
                 candidate.CreatedBy = "hr";
                 candidate.CreatedDate = System.DateTime.Now;
                 candidate.ModifiedBy = "hr";
@@ -179,34 +180,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.tblPreviousCompanies.Add(previousCmpny);
                 dbContext.SaveChanges();
             }
-            //if(!string.IsNullOrEmpty(Name))
-            //{
-            //    AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
-            //    //List<CandidateGridViewModel> candidateList = dbContext.sp_candidateWebGrid()
-            //    addCandidateViewModel.CandidateList = dbContext.sp_candidateWebGrid().Where(s => s.Name.StartsWith(Name))
-            //        .Select(s => new CandidateGridViewModel
-            //        {
-            //            CandidateID = s.CandidateID,
-            //            CandidateName = s.Name,
-            //            DateOfInterview = s.DateOfInterview,
-            //            InterviewerName = s.UserName
-            //        }).ToList();
-
-            //    addCandidateViewModel.users = dbContext.tblUsers.ToList();
-            //    List<SelectListItem> selectedlist = new List<SelectListItem>();
-            //    foreach (tblUser userdetails in dbContext.tblUsers)
-            //    {
-            //        SelectListItem selectlistitem = new SelectListItem
-            //        {
-            //            Text = userdetails.UserName,
-            //            Value = userdetails.UserID.ToString()
-            //            // Selected=department.IsSelected.HasValue ? department.IsSelected.Value :false
-            //        };
-            //        selectedlist.Add(selectlistitem);
-            //    }
-            //    ViewBag.user = selectedlist;
-            //    return View(addCandidateViewModel);
-            //}
+           
             return View();
         }
         [HttpPost]
@@ -242,7 +216,8 @@ namespace InterviewEvaluationSystem.Controllers
             List<NotificationViewModel> notificationList = new List<NotificationViewModel>();
             notificationList = dbContext.sp_HRNotificationGrid()
                 .Select(n => new NotificationViewModel
-                {
+                {   
+                    CandidateID=n.CandidateID,
                     Name = n.Name,
                     RoundID = n.RoundID,
                     Recommended = n.Recommended,
@@ -259,6 +234,52 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult NotificationProceed()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ProceedCandidate(int CandidateID,string Name,string Email,int RoundID)
+        {
+            NotificationProceedViewModel candidateProceed = new NotificationProceedViewModel();
+            candidateProceed.CandidateID = CandidateID;
+            candidateProceed.Name = Name;
+            candidateProceed.Email = Email;
+            
+            candidateProceed.ProceedTo = RoundID + 1;
+            TempData["CandidateID"] = CandidateID;
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            List<CandidateInterviewersViewModel> interviewers = dbContext.sp_GetCandidateInterviewers(CandidateID)
+                .Select(i => new CandidateInterviewersViewModel
+                {
+                    UserID = i.UserID,
+                    UserName = i.UserName
+                }).ToList();
+            foreach (CandidateInterviewersViewModel interviewer in interviewers)
+            {
+                SelectListItem selectlistitem = new SelectListItem
+                {
+                    Text = interviewer.UserName,
+                    Value = interviewer.UserID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            ViewBag.interviewers = selectedlist;
+            return PartialView("NotificationProceed", candidateProceed);
+        }
+
+        public ActionResult ProceedCandidateData(NotificationProceedViewModel proceedCandidateData,string interviewers)
+        {
+            InterviewEvaluationDbEntities dbContext1 = new InterviewEvaluationDbEntities();
+            dbContext1.tblEvaluations.Add(new tblEvaluation
+            {
+                CandidateID = Convert.ToInt16(TempData["CandidateID"]),
+                RoundID = proceedCandidateData.ProceedTo,
+                UserID = Convert.ToInt32(interviewers),
+                CreatedBy = "hr",
+                CreatedDate = System.DateTime.Now,
+                IsDeleted = false
+            });
+            dbContext1.SaveChanges();
             return View();
         }
     }

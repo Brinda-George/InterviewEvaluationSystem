@@ -267,6 +267,9 @@
         <Function Name="sp_candidateWebGridSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="name" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="sp_GetCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CandidateID" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_HRNotificationGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_NotificationGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_updateCandidateInterviewer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -658,6 +661,9 @@
           </FunctionImport>
           <FunctionImport Name="sp_NotificationGrid" ReturnType="Collection(InterviewEvaluationDbModel.sp_NotificationGrid_Result)" />
           <FunctionImport Name="sp_HRNotificationGrid" ReturnType="Collection(InterviewEvaluationDbModel.sp_HRNotificationGrid_Result)" />
+          <FunctionImport Name="sp_GetCandidateInterviewers" ReturnType="Collection(InterviewEvaluationDbModel.sp_GetCandidateInterviewers_Result)">
+            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_candidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -683,6 +689,11 @@
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="RoundID" Nullable="true" />
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
+          <Property Type="Int32" Name="CandidateID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_GetCandidateInterviewers_Result">
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="UserID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -889,6 +900,15 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
                 <ScalarProperty Name="Recommended" ColumnName="Recommended" />
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetCandidateInterviewers" FunctionName="InterviewEvaluationDbModel.Store.sp_GetCandidateInterviewers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.sp_GetCandidateInterviewers_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -48,7 +48,7 @@
         $('#searchCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
-            debugger;
+          //  debugger;
             $.ajax({
                 type: "post",
                 url: "/HR/SearchCandidateResult",

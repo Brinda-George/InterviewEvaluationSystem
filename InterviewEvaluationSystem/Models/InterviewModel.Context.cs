@@ -74,5 +74,14 @@ namespace InterviewEvaluationSystem.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_HRNotificationGrid_Result>("sp_HRNotificationGrid");
         }
+    
+        public virtual ObjectResult<sp_GetCandidateInterviewers_Result> sp_GetCandidateInterviewers(Nullable<int> candidateID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetCandidateInterviewers_Result>("sp_GetCandidateInterviewers", candidateIDParameter);
+        }
     }
 }

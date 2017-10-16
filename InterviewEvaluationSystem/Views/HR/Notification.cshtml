@@ -4,6 +4,13 @@
     ViewBag.Title = "Notification";
 }
 
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/Notification.js"></script>
+
+}
+
 <h2>Notification</h2>
 
 <style type="text/css">
@@ -53,9 +60,10 @@
         mode: WebGridPagerModes.All,
     columns:
             grid.Columns(
-             grid.Column("Name", "Name"),
-             grid.Column("Email","Email"),
-             grid.Column("RoundID", "RoundID"),
+             grid.Column("CandidateID", format:@<text><span><label id="lblCandidateID">@item.CandidateID</label></span></text>),
+             grid.Column("Name", format:@<text><span><label id="lblCandidateName">@item.Name</label></span></text>),
+             grid.Column("Email",format:@<text><span><label id="lblCandidateEmail">@item.Email</label></span></text>),
+             grid.Column("RoundID",format:@<text><span><label id="lblCandidateRound">@item.RoundID</label></span></text>),
              grid.Column(columnName: "Recommended", header: "Status", format: (item) =>
                          {
                              if (item.Recommended == true)
@@ -75,3 +83,7 @@
 
 
            ))
+
+<div id="ProceedCandidateDiv">
+
+</div>

@@ -11,12 +11,9 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class sp_HRNotificationGrid_Result
+    public partial class sp_GetCandidateInterviewers_Result
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public Nullable<int> RoundID { get; set; }
-        public Nullable<bool> Recommended { get; set; }
-        public int CandidateID { get; set; }
+        public string UserName { get; set; }
+        public int UserID { get; set; }
     }
 }
