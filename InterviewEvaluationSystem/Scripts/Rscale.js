@@ -52,8 +52,11 @@
                     var tr = $(this).parents('tr:first');
                     id = $(this).prop('id');
                     $.ajax({
+                       // type: 'POST',
+                      //  url: '/Service/ServiceDelete',
                         type: 'POST',
-                        contentType: "application/json; charset=utf-8",
+                       // data: { id:id },
+                         contentType: "application/json; charset=utf-8",
                         url: "http://localhost:58074/HR/RateDelete/" + id,
                         dataType: "json",
                         success: function (data) {

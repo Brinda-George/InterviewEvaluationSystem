@@ -109,6 +109,7 @@ namespace InterviewEvaluationSystem.Controllers
             db.tblRatingScales.Remove(rate);
             db.SaveChanges();
             bool result = true;
+           // var redirectUrl = new UrlHelper(Request.RequestContext).Action("RateDelete", "HR");
             return Json(new { result }, JsonRequestBehavior.AllowGet);
         }
 
@@ -122,6 +123,7 @@ namespace InterviewEvaluationSystem.Controllers
             //return View(data.ToList());
 
         }
+
         [HttpPost]
         public ActionResult SkillCategory(tblSkillCategory category)
         {
