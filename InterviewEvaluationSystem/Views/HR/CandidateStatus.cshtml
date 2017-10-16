@@ -27,6 +27,7 @@
                      columns: webgridStatus.Columns(
                          webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "HREvaluation", new
                          {
+                             Name = item.Name,
                              CandidateID = item.CandidateID,
                              RoundID = item.RoundID,
                              EvaluationID = item.EvaluationID,

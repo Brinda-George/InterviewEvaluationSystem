@@ -62,10 +62,20 @@ namespace InterviewEvaluationSystem.Controllers
                 interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
             }
             interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
+            interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
             TempData["candidateID"] = statusViewModel.CandidateID;
             TempData["roundID"] = statusViewModel.RoundID;
             TempData["evaluationID"] = statusViewModel.EvaluationID;
             TempData["recommended"] = statusViewModel.Recommended;
+            if(TempData["recommended"] == null)
+            {
+                TempData["recommended"] = TempData["recommended"] ?? "null";
+                TempData["evaluationCompleted"] = false;
+            }
+            else
+            {
+                TempData["evaluationCompleted"] = true;
+            }
             return View(interviewEvaluationViewModel);
         }
 

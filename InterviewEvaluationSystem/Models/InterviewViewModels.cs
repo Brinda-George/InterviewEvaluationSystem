@@ -89,6 +89,7 @@ namespace InterviewEvaluationSystem.Models
 
     public class InterviewEvaluationViewModel
     {
+        public string CandidateName { get; set; }
         public List<RatingScaleViewModel> RatingScale { get; set; }
         public List<SkillCategoryViewModel> SkillCategories { get; set; }
         public List<RoundViewModel> Rounds { get; set; }
