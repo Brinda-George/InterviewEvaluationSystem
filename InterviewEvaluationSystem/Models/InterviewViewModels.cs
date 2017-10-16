@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InterviewEvaluationSystem.CustomAttributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -52,7 +53,9 @@ namespace InterviewEvaluationSystem.Models
     {
         public int CandidateID { get; set; }
         public string Name { get; set; }
+        [DateValidation(ErrorMessage = "Sorry, the date can't be later than today's date")]
         public DateTime DateOfBirth { get; set; }
+        [InterviewDateValidation(ErrorMessage = "Sorry, the date can't be earlier than today's date")]
         public string Designation { get; set; }
         public DateTime DateOfInterview { get; set; }
         [DataType(DataType.EmailAddress)]
@@ -86,6 +89,7 @@ namespace InterviewEvaluationSystem.Models
 
     public class InterviewEvaluationViewModel
     {
+        public string CandidateName { get; set; }
         public List<RatingScaleViewModel> RatingScale { get; set; }
         public List<SkillCategoryViewModel> SkillCategories { get; set; }
         public List<RoundViewModel> Rounds { get; set; }

@@ -24,7 +24,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult JoinDetails(JoinViewModel joinViewModel)
         {
             InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-            int res = dbContext.spInsertJoinDetails('5',Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
+            int res = dbContext.spInsertJoinDetails('5', Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
             return RedirectToAction("HRHomePage");
         }
 
@@ -62,10 +62,20 @@ namespace InterviewEvaluationSystem.Controllers
                 interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
             }
             interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
+            interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
             TempData["candidateID"] = statusViewModel.CandidateID;
             TempData["roundID"] = statusViewModel.RoundID;
             TempData["evaluationID"] = statusViewModel.EvaluationID;
             TempData["recommended"] = statusViewModel.Recommended;
+            if(TempData["recommended"] == null)
+            {
+                TempData["recommended"] = TempData["recommended"] ?? "null";
+                TempData["evaluationCompleted"] = false;
+            }
+            else
+            {
+                TempData["evaluationCompleted"] = true;
+            }
             return View(interviewEvaluationViewModel);
         }
 

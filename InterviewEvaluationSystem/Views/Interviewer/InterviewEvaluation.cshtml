@@ -9,10 +9,11 @@
     }
 }
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/interviewevaluation.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Interview Evaluation</h2>
-<p>Current Round: @TempData["roundID"].ToString()</p>
-<p>Evaluation ID: @TempData["evaluationID"].ToString()</p>
+<input type="hidden" id="roundId" value="@TempData["roundID"]" />
+<input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
 @using (Html.BeginForm())
 {
     <h3>Rating Scale</h3>
@@ -81,35 +82,3 @@
     <input type="button" id="proceed" value="Proceed" class="btn btn-default" onclick="getValues(this)" />
     <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
 }
-<script type="text/javascript">
-    $(".grid").find("select").attr("disabled", true);
-    $(".class@(@TempData["roundID"])").attr("disabled", false);
-    function getValues(element){
-        var buttonclicked = element.id;
-        if(buttonclicked == "proceed"){
-            var recommended = true;
-        }
-        else{
-            var recommended = false;
-        }
-        var count = $(".class@(@TempData["roundID"])").length;
-        var valueArray = [];
-        for(var i = 1; i <= count; i++){
-            var itemid ="id" + @(@TempData["roundID"]) + i ;
-            valueArray[i] = $('#'+itemid).find('option:selected').val();
-        }
-        var evaluationID = @(@TempData["evaluationID"]);
-        var comments = $('#Comments').val();
-        $.ajax({
-            url: '/Interviewer/InterviewEvaluation',
-            type: 'post',
-            data: { recommended : recommended, evaluationID : evaluationID, values : valueArray, comments : comments },
-            success: function (response) {
-                window.location.href = response.Url;
-            },
-            error: function () {
-            }
-        });
-    }
-
-</script>
