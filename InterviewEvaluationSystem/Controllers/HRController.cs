@@ -1,4 +1,5 @@
-﻿using InterviewEvaluationSystem.Models;
+﻿using InterviewEvaluationSystem.Business_Logic;
+using InterviewEvaluationSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,9 @@ namespace InterviewEvaluationSystem.Controllers
 {
     public class HRController : Controller
     {
-        // GET: HR
-        public ActionResult Index()
-        {
-            return View();
-        }
+        InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
+        Services services = new Services();
+
         public ActionResult HRHomePage()
         {
             return View();
@@ -29,7 +28,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Register(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var count = db.RegisterProcedure(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
+            var count = db.spRegister(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
             var item = count.FirstOrDefault();
             int usercount = Convert.ToInt32(item);
             string message = string.Empty;
@@ -70,7 +69,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale(tblRatingScale rate)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-           // rate.CreatedBy = "hr";
+            // rate.CreatedBy = "hr";
             // rate.ModifiedBy="hr";
             //rate.CreatedDate = DateTime.Now;
             //  rate.ModifiedDate = DateTime.Now;
@@ -92,7 +91,7 @@ namespace InterviewEvaluationSystem.Controllers
             rate.Description = description;
             db.SaveChanges();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
-            return Json(new { Url = redirectUrl,RateScale = Ratescale, RateValue= Ratevalue, Description= description }, JsonRequestBehavior.AllowGet);
+            return Json(new { Url = redirectUrl, RateScale = Ratescale, RateValue = Ratevalue, Description = description }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -148,7 +147,7 @@ namespace InterviewEvaluationSystem.Controllers
             category.Description = description;
             db.SaveChanges();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
-            return Json(new { Url = redirectUrl,SkillCategory = SkillCategory , Description = description }, JsonRequestBehavior.AllowGet);
+            return Json(new { Url = redirectUrl, SkillCategory = SkillCategory, Description = description }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -196,13 +195,6 @@ namespace InterviewEvaluationSystem.Controllers
                          };
             ViewBag.Skillcategories = result;
             return View();
-            //NewModel obj = new NewModel
-            //{
-            //    List1 = db.tblSkillCategories.ToList(),
-            //    List2 = db.tblSkills.ToList()
-            //};
-            //ViewBag.Roles = obj;
-            //return View(obj);
         }
 
         [HttpPost]
@@ -212,33 +204,33 @@ namespace InterviewEvaluationSystem.Controllers
             skill.SkillCategoryID = Convert.ToInt32(category);
             db.tblSkills.Add(skill);
             db.SaveChanges();
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblSkillCategory category1 in db.tblSkillCategories)
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            foreach (tblSkillCategory category1 in db.tblSkillCategories)
+            {
+                SelectListItem selectlistitem = new SelectListItem
                 {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = category1.SkillCategory,
-                        Value = category1.SkillCategoryID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.category = selectedlist;
+                    Text = category1.SkillCategory,
+                    Value = category1.SkillCategoryID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            ViewBag.category = selectedlist;
 
-                var result = from a in db.tblSkillCategories
-                             join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
-                             select new
-                             {
-                                 skillcatid = b.SkillCategoryID,
-                                 skillno = b.SkillID,
-                                 skillcat = a.SkillCategory,
-                                 skillname = b.SkillName
+            var result = from a in db.tblSkillCategories
+                         join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
+                         select new
+                         {
+                             skillcatid = b.SkillCategoryID,
+                             skillno = b.SkillID,
+                             skillcat = a.SkillCategory,
+                             skillname = b.SkillName
 
-                             };
-                ViewBag.Skillcategories = result;
-                List<tblSkill> skills = db.tblSkills.ToList();
-                ViewBag.Users = skills;
+                         };
+            ViewBag.Skillcategories = result;
+            List<tblSkill> skills = db.tblSkills.ToList();
+            ViewBag.Users = skills;
             return View();
-           
+
         }
 
         [HttpPost]
@@ -249,9 +241,8 @@ namespace InterviewEvaluationSystem.Controllers
             skill.SkillName = Skillname;
             db.SaveChanges();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-            return Json(new { Url = redirectUrl ,SkillName =Skillname }, JsonRequestBehavior.AllowGet);
+            return Json(new { Url = redirectUrl, SkillName = Skillname }, JsonRequestBehavior.AllowGet);
         }
-
 
         [HttpPost]
         public JsonResult SkillDelete(int SkillID)
@@ -268,29 +259,7 @@ namespace InterviewEvaluationSystem.Controllers
             db.SaveChanges();
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-            return Json(new { Url = redirectUrl ,result }, JsonRequestBehavior.AllowGet);
-        }
-
-    }
-}
-using InterviewEvaluationSystem.Business_Logic;
-using InterviewEvaluationSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace InterviewEvaluationSystem.Controllers
-{
-    public class HRController : Controller
-    {
-        InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-        Services services = new Services();
-
-        public ActionResult HRHomePage()
-        {
-            return View();
+            return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult JoinDetails()

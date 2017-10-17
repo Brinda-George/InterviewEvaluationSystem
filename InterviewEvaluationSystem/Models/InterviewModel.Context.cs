@@ -161,11 +161,8 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
         }
-    }
-}
-
     
-        public virtual ObjectResult<Nullable<int>> LoginProcedure(string username, string passWord)
+        public virtual ObjectResult<Nullable<int>> spLogin(string username, string passWord)
         {
             var usernameParameter = username != null ?
                 new ObjectParameter("Username", username) :
@@ -175,10 +172,10 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("PassWord", passWord) :
                 new ObjectParameter("PassWord", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("LoginProcedure", usernameParameter, passWordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", usernameParameter, passWordParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> RegisterProcedure(string username, string employeeid, string designation, string address, string pincode, string password, string email)
+        public virtual ObjectResult<Nullable<int>> spRegister(string username, string employeeid, string designation, string address, string pincode, string password, string email)
         {
             var usernameParameter = username != null ?
                 new ObjectParameter("Username", username) :
@@ -208,7 +205,7 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("email", email) :
                 new ObjectParameter("email", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("RegisterProcedure", usernameParameter, employeeidParameter, designationParameter, addressParameter, pincodeParameter, passwordParameter, emailParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRegister", usernameParameter, employeeidParameter, designationParameter, addressParameter, pincodeParameter, passwordParameter, emailParameter);
         }
     }
 }
