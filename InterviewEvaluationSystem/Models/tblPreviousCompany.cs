@@ -10,12 +10,19 @@
 namespace InterviewEvaluationSystem.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class spGetPreviousRoundScores_Result
+    public partial class tblPreviousCompany
     {
-        public int EvaluationID { get; set; }
-        public Nullable<int> RateScaleID { get; set; }
+        public int PreviousCompanyID { get; set; }
+        public string PreviousCompany { get; set; }
         public Nullable<int> CandidateID { get; set; }
-        public Nullable<int> RoundID { get; set; }
+        public string CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string ModifiedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+    
+        public virtual tblCandidate tblCandidate { get; set; }
     }
 }
