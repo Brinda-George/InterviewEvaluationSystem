@@ -1,0 +1,37 @@
+﻿@model InterviewEvaluationSystem.Models.tblUser
+
+@{
+    ViewBag.Title = "ViewProfile";
+    var det = ViewBag.Details;
+}
+
+<h2>ViewProfile</h2>
+
+<style>
+    table, th, td {
+    border: 1px solid black;
+}
+</style>
+
+<div >
+    <hr />
+    <table>
+        <tr>
+            <th>UserName</th>
+            <th>EmployeeId</th>
+            <th>Designation</th>
+            <th>Address</th>
+            <th>Pincode</th>
+            <th>Email</th>
+        </tr>
+        <tr>
+            <td>@det.UserName</td>
+            <td>@det.EmployeeId</td>
+            <td>@det.Designation</td>
+            <td>@det.Address</td>
+            <td>@det.Pincode</td>
+            <td>@det.Email</td>
+        </tr>
+    </table>
+</div>
+

@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -225,6 +229,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\InterviewModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterviewModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InterviewModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InterviewModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterviewModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\InterviewViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\spCandidateWebGrid_Result.cs">
@@ -309,6 +328,7 @@
     </Content>
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\Askill.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -338,8 +358,12 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\SearchCandidate.js" />
+    <Content Include="Scripts\Scategory.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Scripts\Rscale.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -372,6 +396,16 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\HR\RatingScale.cshtml" />
+    <Content Include="Views\HR\SkillCategory.cshtml" />
+    <Content Include="Views\HR\Skill.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\HR\Register.cshtml" />
+    <Content Include="Views\Interviewer\HomePage.cshtml" />
+    <Content Include="Views\HR\HRHomePage.cshtml" />
+    <Content Include="Views\Home\ProfileUpdate.cshtml" />
+    <Content Include="Views\Home\Logout.cshtml" />
+    <Content Include="Views\Home\ViewProfile.cshtml" />
     <Content Include="Views\Interviewer\InterviewEvaluation.cshtml" />
     <Content Include="Views\Interviewer\EvaluationStatus.cshtml" />
     <Content Include="Views\Interviewer\HomePage.cshtml" />

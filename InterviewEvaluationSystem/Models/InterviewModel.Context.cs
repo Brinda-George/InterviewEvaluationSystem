@@ -163,3 +163,52 @@ namespace InterviewEvaluationSystem.Models
         }
     }
 }
+
+    
+        public virtual ObjectResult<Nullable<int>> LoginProcedure(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("LoginProcedure", usernameParameter, passWordParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> RegisterProcedure(string username, string employeeid, string designation, string address, string pincode, string password, string email)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var employeeidParameter = employeeid != null ?
+                new ObjectParameter("Employeeid", employeeid) :
+                new ObjectParameter("Employeeid", typeof(string));
+    
+            var designationParameter = designation != null ?
+                new ObjectParameter("designation", designation) :
+                new ObjectParameter("designation", typeof(string));
+    
+            var addressParameter = address != null ?
+                new ObjectParameter("address", address) :
+                new ObjectParameter("address", typeof(string));
+    
+            var pincodeParameter = pincode != null ?
+                new ObjectParameter("pincode", pincode) :
+                new ObjectParameter("pincode", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("password", password) :
+                new ObjectParameter("password", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("RegisterProcedure", usernameParameter, employeeidParameter, designationParameter, addressParameter, pincodeParameter, passwordParameter, emailParameter);
+        }
+    }
+}

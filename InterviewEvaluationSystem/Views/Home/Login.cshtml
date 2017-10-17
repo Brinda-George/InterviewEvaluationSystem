@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<form class="form-signin" method="post" action="">
+    <h2 class="form-signin-heading">Please login</h2>
+    <input type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" /><br />
+    <input type="password" class="form-control" name="Password" placeholder="Password" required="" />
+    <button class="btn" type="submit">Login</button>
+</form>
+
+
+    @Html.ActionLink("New user ? Register here..", "Register", "HR", new { @class = "elements" }, null)
+
