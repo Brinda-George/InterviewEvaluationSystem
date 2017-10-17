@@ -227,6 +227,9 @@
     </Compile>
     <Compile Include="Models\InterviewViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\spCandidateWebGridSearch_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spCandidateWebGrid_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -252,6 +255,9 @@
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spHRNotificationGrid_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spNotificationGrid_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblCandidate.cs">
