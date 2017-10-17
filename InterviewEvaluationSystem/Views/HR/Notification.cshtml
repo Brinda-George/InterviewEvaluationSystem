@@ -4,52 +4,14 @@
     ViewBag.Title = "Notification";
 }
 
-@section Scripts {
-    @*@Scripts.Render("~/bundles/jqueryval")*@
-    <script src="~/Scripts/jquery-1.10.2.js"></script>
-    <script src="~/Scripts/Notification.js"></script>
-
-}
-
+<script src="~/Scripts/Notification.js"></script>
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Notification</h2>
-
-<style type="text/css">
-    .webgrid-table {
-        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        font-size: 1.2em;
-        width: 100%;
-        display: table;
-        border-collapse: separate;
-        border: solid 1px #000000;
-        background-color: white;
-    }
-
-        .webgrid-table td, th {
-            border: 1px solid #000000;
-            padding: 5px 7px 5px;
-        }
-
-    .webgrid-header {
-        background-color: #000000;
-        color: #ffffff !important;
-        padding-bottom: 4px;
-        padding-top: 5px;
-        text-align: left;
-    }
-
-    .webgrid-footer {
-    }
-
-    .webgrid-row-style {
-        padding: 3px 7px 2px;
-    }
-</style>
 
 @{
     var grid = new WebGrid(ViewBag.notificationList, canPage: true, rowsPerPage: 5,
     selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);}
-
 
 @grid.GetHtml(tableStyle: "webgrid-table",
         headerStyle: "webgrid-header",
@@ -58,28 +20,23 @@
         selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
-    columns:
-            grid.Columns(
-             grid.Column("CandidateID", format:@<text><span><label id="lblCandidateID">@item.CandidateID</label></span></text>),
-             grid.Column("Name", format:@<text><span><label id="lblCandidateName">@item.Name</label></span></text>),
-             grid.Column("Email",format:@<text><span><label id="lblCandidateEmail">@item.Email</label></span></text>),
-             grid.Column("RoundID",format:@<text><span><label id="lblCandidateRound">@item.RoundID</label></span></text>),
-             grid.Column(columnName: "Recommended", header: "Status", format: (item) =>
-             {
-                 if (item.Recommended == true)
-                 {
-                     return new HtmlString("<input type='button' value='Proceed To Next Round' class='ProceedNext' />");
-                 }
-                 else
-                 {
-                     return Html.Raw(string.Format("Rejected"));
-                 }
-             })
-
-
-
-           ))
+        columns:grid.Columns(
+            grid.Column("CandidateID", format:@<text><span><label id="lblCandidateID">@item.CandidateID</label></span></text>),
+            grid.Column("Name", format:@<text><span><label id="lblCandidateName">@item.Name</label></span></text>),
+            grid.Column("Email",format:@<text><span><label id="lblCandidateEmail">@item.Email</label></span></text>),
+            grid.Column("RoundID",format:@<text><span><label id="lblCandidateRound">@item.RoundID</label></span></text>),
+            grid.Column(columnName: "Recommended", header: "Status", format: (item) =>
+            {
+                if (item.Recommended == true)
+                {
+                    return new HtmlString("<input type='button' value='Proceed To Next Round' class='ProceedNext' />");
+                }
+                else
+                {
+                    return Html.Raw(string.Format("Rejected"));
+                }
+            }))
+            )
 
 <div id="ProceedCandidateDiv">
-
 </div>

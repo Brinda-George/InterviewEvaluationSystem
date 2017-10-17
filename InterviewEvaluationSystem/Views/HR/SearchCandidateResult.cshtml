@@ -4,50 +4,9 @@
     ViewBag.Title = "SearchCandidateResult";
 }
 
-@section Scripts {
-    @*@Scripts.Render("~/bundles/jqueryval")*@
-   
-}
-
-
-<script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/Candidate.js"></script>
-
-
-
-<h2>SearchCandidateResult</h2>
-
-<style type="text/css">
-    .webgrid-table {
-        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        font-size: 1.2em;
-        width: 100%;
-        display: table;
-        border-collapse: separate;
-        border: solid 1px #000000;
-        background-color: white;
-    }
-
-        .webgrid-table td, th {
-            border: 1px solid #000000;
-            padding: 5px 7px 5px;
-        }
-
-    .webgrid-header {
-        background-color: #000000;
-        color: #ffffff !important;
-        padding-bottom: 4px;
-        padding-top: 5px;
-        text-align: left;
-    }
-
-    .webgrid-footer {
-    }
-
-    .webgrid-row-style {
-        padding: 3px 7px 2px;
-    }
-</style>
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
+<h2>Search Candidate</h2>
 
 @{
     var gridCandidate = new WebGrid(Model.CandidateList, canPage: true, rowsPerPage: 5,
@@ -61,18 +20,15 @@
             selectedRowStyle: "webgrid-selected-row",
             rowStyle: "webgrid-row-style",
             mode: WebGridPagerModes.All,
-        columns:
-                gridCandidate.Columns(
-                    gridCandidate.Column("CandidateID", format: @<text>  <span class="display-modeCandidate">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label> </text>, style: "col1Width"),
-             gridCandidate.Column("CandidateName", "CandidateName", format: @<text>  <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" /></text>, style: "col2Width"),
-             gridCandidate.Column("DateOfInterview", "DateOfInterview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" /></text>, style: "col2Width"),
-            gridCandidate.Column("InterviewerName", "InterviewerName", format: @<text> <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span>  <input type="text" id="InterviewerName" value="@item.InterviewerName" class="edit-modeCandidate" /> </text>, style: "col2Width"),
-
+            columns:gridCandidate.Columns(
+                gridCandidate.Column("CandidateID", format: @<text>  <span class="display-modeCandidate">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label> </text>, style: "col1Width"),
+                gridCandidate.Column("CandidateName", "CandidateName", format: @<text>  <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" /></text>, style: "col2Width"),
+                gridCandidate.Column("DateOfInterview", "DateOfInterview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" /></text>, style: "col2Width"),
+                gridCandidate.Column("InterviewerName", "InterviewerName", format: @<text> <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span>  <input type="text" id="InterviewerName" value="@item.InterviewerName" class="edit-modeCandidate" /> </text>, style: "col2Width"),
                 gridCandidate.Column("Action", format: @<text>
                         <button class="edit-userCandidate display-modeCandidate">Edit</button>
                         <button class="save-userCandidate edit-modeCandidate">Save</button>
                         <button class="cancel-userCandidate edit-modeCandidate">Cancel</button>
                         <button class="delete-userCandidate">Delete</button>
-                </text>, style: "col3Width", canSort: false)
-
-               ))
+                </text>, style: "col3Width", canSort: false))
+                     )

@@ -122,7 +122,6 @@ namespace InterviewEvaluationSystem.Controllers
         {
             List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Users = users;
-            
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             foreach (tblUserType userType in dbContext.tblUserTypes)
             {
@@ -130,7 +129,6 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     Text = userType.UserType,
                     Value = userType.UserTypeID.ToString()
-                    // Selected=department.IsSelected.HasValue ? department.IsSelected.Value :false
                 };
                 selectedlist.Add(selectlistitem);
             }
@@ -143,14 +141,12 @@ namespace InterviewEvaluationSystem.Controllers
         
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
-            
             user.UserTypeID = Convert.ToInt32(userType);
             user.CreatedBy = "hr";
             user.CreatedDate = System.DateTime.Now;
             user.ModifiedBy = "hr";
             user.ModifiedDate = System.DateTime.Now;
             user.IsDeleted = false;
-            //user.CreatedDate = DateTime.Now;
             dbContext.tblUsers.Add(user);
             dbContext.SaveChanges();
             List<SelectListItem> selectedlist = new List<SelectListItem>();
@@ -160,7 +156,6 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     Text = userType1.UserType,
                     Value = userType1.UserTypeID.ToString()
-                    // Selected=department.IsSelected.HasValue ? department.IsSelected.Value :false
                 };
                 selectedlist.Add(selectlistitem);
             }
@@ -169,6 +164,7 @@ namespace InterviewEvaluationSystem.Controllers
             ViewBag.Users = users;
             return View();
         }
+
         [HttpPost]
         public ActionResult UpdateInterviewer(string EmployeeId,string Name,string Email,string Designation)
         {
@@ -178,23 +174,19 @@ namespace InterviewEvaluationSystem.Controllers
             updateInterviewer.Designation = Designation;
             dbContext.SaveChanges();
             return RedirectToAction("AddInterviewers");
-           
         }
 
         public ActionResult DeleteInterviewer(string EmployeeId)
         {
             tblUser user = dbContext.tblUsers.Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
             user.IsDeleted = true;
-            //dbContext.tblUsers.Remove(user);
             dbContext.SaveChanges();
             return RedirectToAction("AddInterviewers");
-
         }
 
         public ActionResult AddCandidate()
         { 
             AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
-            //List<CandidateGridViewModel> candidateList = dbContext.sp_candidateWebGrid()
             addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid()
                 .Select(s => new CandidateGridViewModel
                 {
@@ -203,7 +195,6 @@ namespace InterviewEvaluationSystem.Controllers
                     DateOfInterview=s.DateOfInterview,
                     InterviewerName=s.UserName
                 }).ToList();
-
             addCandidateViewModel.users = dbContext.tblUsers.ToList();
 
             List<SelectListItem> selectedlist = new List<SelectListItem>();
@@ -213,29 +204,11 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     Text = user.UserName,
                     Value = user.UserID.ToString()
-                    // Selected=department.IsSelected.HasValue ? department.IsSelected.Value :false
                 };
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.user = selectedlist;
             return View(addCandidateViewModel);
-        }
-        [HttpPost]
-        public ActionResult SearchCandidateResult(string Name)
-        {
-            AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
-            
-            addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.StartsWith(Name))
-                .Select(s => new CandidateGridViewModel
-                {
-                    CandidateID = s.CandidateID,
-                    CandidateName = s.Name,
-                    DateOfInterview = s.DateOfInterview,
-                    InterviewerName = s.UserName
-                }).ToList();
-
-
-            return PartialView("SearchCandidateResult", addCandidateViewModel);
         }
 
         [HttpPost]
@@ -260,7 +233,6 @@ namespace InterviewEvaluationSystem.Controllers
                 candidate.ModifiedBy = "hr";
                 candidate.ModifiedDate = System.DateTime.Now;
                 candidate.IsDeleted = false;
-
                 dbContext.tblCandidates.Add(candidate);
                 dbContext.SaveChanges();
 
@@ -281,9 +253,25 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.tblPreviousCompanies.Add(previousCmpny);
                 dbContext.SaveChanges();
             }
-           
-            return View();
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
+            return Json(new { Url = redirectUrl});
         }
+
+        [HttpPost]
+        public ActionResult SearchCandidateResult(string Name)
+        {
+            AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
+            addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.StartsWith(Name))
+                .Select(s => new CandidateGridViewModel
+                {
+                    CandidateID = s.CandidateID,
+                    CandidateName = s.Name,
+                    DateOfInterview = s.DateOfInterview,
+                    InterviewerName = s.UserName
+                }).ToList();
+            return PartialView("SearchCandidateResult", addCandidateViewModel);
+        }
+
         [HttpPost]
         public ActionResult UpdateCandidate(int CandidateID,string CandidateName,DateTime DateOfInterview,string UserName)
         {
@@ -291,25 +279,20 @@ namespace InterviewEvaluationSystem.Controllers
             updateCandidate.Name = CandidateName;
             updateCandidate.DateOfInterview = DateOfInterview;
             dbContext.SaveChanges();
-
             tblUser uid = dbContext.tblUsers.Where(x => x.UserName == UserName).FirstOrDefault();
             var userid = uid.UserID;
-
             dbContext.spUpdateCandidateInterviewer(userid, CandidateID);
             dbContext.SaveChanges();
-
             return Json(new { Name = CandidateName , DateOfInterview = DateOfInterview ,UserName= UserName },JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public ActionResult DeleteCandidate(int CandidateID)
         {
             tblCandidate deleteCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
             deleteCandidate.IsDeleted = true;
-
-            //dbContext.tblUsers.Remove(user);
             dbContext.SaveChanges();
             return RedirectToAction("AddCandidate");
-
         }
 
         public ActionResult Notification()
@@ -325,12 +308,8 @@ namespace InterviewEvaluationSystem.Controllers
                     Email=n.Email
                     
                 }).ToList();
-
-
             ViewBag.notificationList = notificationList;
             return View();
-
-
         }
 
         public ActionResult NotificationProceed()
@@ -345,7 +324,6 @@ namespace InterviewEvaluationSystem.Controllers
             candidateProceed.CandidateID = CandidateID;
             candidateProceed.Name = Name;
             candidateProceed.Email = Email;
-            
             candidateProceed.ProceedTo = RoundID + 1;
             TempData["CandidateID"] = CandidateID;
             List<SelectListItem> selectedlist = new List<SelectListItem>();

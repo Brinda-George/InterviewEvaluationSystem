@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
     $(function () {
-
         $('#SearchCandidateResultContent').hide();
         $('.edit-modeCandidate').hide();
         $('.edit-userCandidate, .cancel-userCandidate').on('click', function () {
@@ -53,13 +52,23 @@
             $.ajax({
                 type: "post",
                 url: "/HR/SearchCandidateResult",
-                
                 data: { Name: $('#CandidateNameText').val() },
                 datatype: "json",
                 success: function (Name) {
-                    $('#gridContentCandidate').html(Name);
-                    
-                   
+                    $('#gridContentCandidate').html(Name);  
+                }
+            });
+        });
+
+        $('#btnCreate').click(function () {
+            $.ajax({
+                url: '/HR/AddCandidate',
+                type: 'Post',
+                data: $('#frmCreate').serialize(),
+                success: function(response){
+                    window.location.href = response.Url;
+                },
+                error: function(data){
                 }
             });
         });
