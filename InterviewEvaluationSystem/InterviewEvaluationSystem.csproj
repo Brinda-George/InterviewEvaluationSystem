@@ -210,16 +210,10 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\HRViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\InterviewViewModels.cs" />
     <Compile Include="Models\InterviewModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>InterviewModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\InterviewModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\InterviewModel.cs">
       <AutoGen>True</AutoGen>
@@ -231,20 +225,33 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\InterviewViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\sp_candidateWebGridSearch_Result.cs">
+    <Compile Include="Models\spCandidateWebGrid_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sp_candidateWebGrid_Result.cs">
+    <Compile Include="Models\spGetCandidateInterviewers_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sp_GetCandidateInterviewers_Result.cs">
+    <Compile Include="Models\spGetComments_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sp_HRNotificationGrid_Result.cs">
+    <Compile Include="Models\spGetCurrentStatus_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sp_NotificationGrid_Result.cs">
+    <Compile Include="Models\spGetEmailByUserID_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetPreviousRoundScores_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetSkillsBySkillCategory_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetStatus_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spHRNotificationGrid_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblCandidate.cs">
@@ -275,24 +282,6 @@
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblUserType.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\spGetComments_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\spGetCurrentStatus_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\spGetEmailByUserID_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\spGetPreviousRoundScores_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\spGetSkillsBySkillCategory_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\spGetStatus_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

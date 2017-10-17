@@ -11,12 +11,9 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class sp_candidateWebGrid_Result
+    public partial class spGetCandidateInterviewers_Result
     {
-        public int CandidateID { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public System.DateTime DateOfInterview { get; set; }
         public string UserName { get; set; }
+        public int UserID { get; set; }
     }
 }
