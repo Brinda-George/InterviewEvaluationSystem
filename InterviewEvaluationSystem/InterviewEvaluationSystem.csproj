@@ -216,11 +216,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InterviewModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\InterviewModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\InterviewModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -303,36 +298,6 @@
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetStatus_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblCandidate.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblEvaluation.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblPreviousCompany.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblRatingScale.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblRound.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblScore.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblSkill.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblSkillCategory.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblUser.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblUserType.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
