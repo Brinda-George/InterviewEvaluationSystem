@@ -388,4 +388,3 @@ namespace InterviewEvaluationSystem.Controllers
         return Json(new { Url = redirectUrl });
     }
 }
-}

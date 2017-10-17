@@ -216,11 +216,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InterviewModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\InterviewModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\InterviewModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
