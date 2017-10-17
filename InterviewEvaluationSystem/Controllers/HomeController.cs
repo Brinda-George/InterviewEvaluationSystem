@@ -133,7 +133,6 @@ namespace InterviewEvaluationSystem.Controllers
                 var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
                 // int id = Convert.ToInt32(item.UserTypeID);
                 ViewBag.Details = item;
-            
                 return View();
         }
         
