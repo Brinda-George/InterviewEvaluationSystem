@@ -4,14 +4,14 @@
     ViewBag.Title = "RatingScale";
 }
 
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
+<script src="~/Scripts/Rscale.js"></script>
 <h2>RatingScale</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
     <div ID="form1" class="form-horizontal">
-        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -38,48 +38,6 @@
             </div>
         </div>
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ModifiedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ModifiedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ModifiedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ModifiedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ModifiedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ModifiedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsDeleted)
-                    @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>*@
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -90,7 +48,7 @@
 
 <div id="ajaxgrid">
     @{
-        var gridview = new WebGrid(ViewBag.Roles,canSort:true,ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
+        var gridview = new WebGrid(ViewBag.Roles, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
 
     @gridview.GetHtml(
@@ -100,93 +58,32 @@
         selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
-    columns: new[]
-
-{
-   @*gridview.Column("RateScaleID",
-        format:
-        @<text>
-            <span id="ratescaleid" class="read">@item.RateScaleID</span>
-            @Html.TextBox("RateScaleID", (int)item.RateScaleID, new { @class = "edit" })
-        </text>),*@
-
-    gridview.Column("RateScale",
-        format:
-        @<text>
-            <span id="ratescale" class="read">@item.RateScale</span>
-            @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit",@style="display:none"  })
-        </text>),
-
-    gridview.Column("Value",
-        format:
-        @<text>
-            <span id="ratevalue" class="read">@item.RateValue</span>
-            @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit",@style="display:none"  })
-        </text>),
-
-    gridview.Column("Description",
-         format:
-        @<text>
-            <span id="description" class="read">@item.Description</span>
-            @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
-        </text>),
-
-    gridview.Column("Action", style: "button",
-                format:
-                @<text>
-                    <button class="edit-case read" id="@item.RateScaleID">Edit</button>
-                    <button class="delete-case read" id="@item.RateScaleID">Delete</button>
-                    <button class="update-case edit" style="display:none" id="@item.RateScaleID">Update</button>
-                    <button class="cancel-case edit" style="display:none" id="@item.RateScaleID">Cancel</button>
-                </text>)
-    }
-)
+        columns: new[]{
+            gridview.Column("RateScale", format:
+            @<text>
+                <span id="ratescale" class="read">@item.RateScale</span>
+                @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit",@style="display:none" })
+            </text>),
+            gridview.Column("Value", format:
+            @<text>
+                <span id="ratevalue" class="read">@item.RateValue</span>
+                @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit",@style="display:none" })
+            </text>),
+            gridview.Column("Description", format:
+            @<text>
+                <span id="description" class="read">@item.Description</span>
+                @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
+            </text>),
+            gridview.Column("Action", style: "button", format:
+            @<text>
+                <button class="edit-case read" id="@item.RateScaleID">Edit</button>
+                <button class="delete-case read" id="@item.RateScaleID">Delete</button>
+                <button class="update-case edit" style="display:none" id="@item.RateScaleID">Update</button>
+                <button class="cancel-case edit" style="display:none" id="@item.RateScaleID">Cancel</button>
+            </text>)
+        })
 </div>
 
-@*<div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>*@
-
-<style type="text/css">
-
-    #form1{
-           font-family:  "Times New Roman", Arial, Helvetica, sans-serif;
-           font-size: 1.2em;
-            color: dodgerblue !important;
-    }
-    .webgrid-table {
-        font-family:  "Times New Roman", Arial, Helvetica, sans-serif;
-        font-size: 1.2em;
-        width: 100%;
-        display: table;
-        border-collapse: separate;
-        border: solid 1px dodgerblue;
-        background-color: white;
-    }
-
-        .webgrid-table td, th {
-            border: 1px solid dodgerblue;
-            padding: 3px 7px 2px;
-        }
-
-    .webgrid-header {
-        background-color: black;
-        color: black !important;
-        padding-bottom: 4px;
-        padding-top: 5px;
-        text-align: left;
-    }
-
-    .webgrid-footer {
-    }
-
-    .webgrid-row-style {
-        padding: 3px 7px 2px;
-    }
-</style>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script src="~/Scripts/Rscale.js"></script>
-
-
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -3,34 +3,9 @@
     ViewBag.Title = "HRHomePage";
 }
 
+<link href="~/Content/hrhomepage.css" rel="stylesheet" />
 <h2>HRHomePage</h2>
 
-<style>
-    #nav {
-        height: 200px;
-        list-style-type: none;
-        margin: auto;
-        overflow: hidden;
-        font-size: 18px;
-        padding: 100px;
-    }
-
-        #nav ul {
-            list-style-type: none;
-            display: none;
-            overflow: hidden;
-        }
-
-        #nav li:hover > ul {
-            color: blueviolet;
-            display: block;
-        }
-
-    .tab {
-        float: left;
-        margin-left: 25px;
-    }
-</style>
 <ul id="nav">
     <li class="tab"><a href="/HR/RatingScale">Rating Scale</a></li>
     <li class="tab"><a href="/HR/SkillCategory">Skill Category</a></li>

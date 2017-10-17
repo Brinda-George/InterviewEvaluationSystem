@@ -6,10 +6,6 @@ using System.Web;
 
 namespace InterviewEvaluationSystem.Models
 {
-    public class HRViewModels
-    {
-    }
-
     public class AddCandidateViewModels
     { 
         public string Name { get; set; }
@@ -22,7 +18,6 @@ namespace InterviewEvaluationSystem.Models
         public string PAN { get; set; }
         public decimal ExpectedSalary { get; set; }
         public Nullable<int> NoticePeriodInMonths { get; set; }
-
         public int TotalExperience { get; set; }
         public string PreviousCompany { get; set; }
         public string Qualifications { get; set; }
@@ -30,6 +25,7 @@ namespace InterviewEvaluationSystem.Models
         public List<CandidateGridViewModel> CandidateList { get; set; }
         public List<tblUser> users { get; set; }
     }
+
     public class CandidateGridViewModel
     {
         public int CandidateID { get; set; }

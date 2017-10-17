@@ -20,11 +20,11 @@
         selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
-        columns:grid.Columns(
+        columns: grid.Columns(
             grid.Column("CandidateID", format:@<text><span><label id="lblCandidateID">@item.CandidateID</label></span></text>),
             grid.Column("Name", format:@<text><span><label id="lblCandidateName">@item.Name</label></span></text>),
-            grid.Column("Email",format:@<text><span><label id="lblCandidateEmail">@item.Email</label></span></text>),
-            grid.Column("RoundID",format:@<text><span><label id="lblCandidateRound">@item.RoundID</label></span></text>),
+            grid.Column("Email", format:@<text><span><label id="lblCandidateEmail">@item.Email</label></span></text>),
+            grid.Column("RoundID", format:@<text><span><label id="lblCandidateRound">@item.RoundID</label></span></text>),
             grid.Column(columnName: "Recommended", header: "Status", format: (item) =>
             {
                 if (item.Recommended == true)

@@ -6,10 +6,9 @@
 
 <h2>NotificationProceed</h2>
 
-@using (Html.BeginForm("ProceedCandidateData","HR", FormMethod.Post))
+@using (Html.BeginForm("ProceedCandidateData", "HR", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
         <h4>NotificationProceedViewModel</h4>
         <hr />
@@ -42,7 +41,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Interviewer, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList( "interviewers", "Select Interviewers")
+                @Html.DropDownList("interviewers", "Select Interviewers")
                 @Html.ValidationMessageFor(model => model.Interviewer, "", new { @class = "text-danger" })
             </div>
         </div>

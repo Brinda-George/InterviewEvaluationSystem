@@ -1,0 +1,24 @@
+﻿#nav {
+    height: 200px;
+    list-style-type: none;
+    margin: auto;
+    overflow: hidden;
+    font-size: 18px;
+    padding: 100px;
+}
+
+#nav ul {
+    list-style-type: none;
+    display: none;
+    overflow: hidden;
+}
+
+#nav li:hover > ul {
+    color: blueviolet;
+    display: block;
+}
+
+.tab {
+    float: left;
+    margin-left: 25px;
+}

@@ -168,7 +168,6 @@ namespace InterviewEvaluationSystem.Controllers
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.category = selectedlist;
-
             var result = from a in db.tblSkillCategories
                          join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
                          select new
@@ -200,7 +199,6 @@ namespace InterviewEvaluationSystem.Controllers
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.category = selectedlist;
-
             var result = from a in db.tblSkillCategories
                          join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
                          select new
@@ -363,9 +361,9 @@ namespace InterviewEvaluationSystem.Controllers
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.userType = selectedlist;
-            return View(); 
+            return View();
         }
-        
+
         [HttpPost]
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
@@ -394,7 +392,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateInterviewer(string EmployeeId,string Name,string Email,string Designation)
+        public ActionResult UpdateInterviewer(string EmployeeId, string Name, string Email, string Designation)
         {
             tblUser updateInterviewer = dbContext.tblUsers.Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
             updateInterviewer.UserName = Name;
@@ -413,18 +411,17 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         public ActionResult AddCandidate()
-        { 
+        {
             AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
             addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid()
                 .Select(s => new CandidateGridViewModel
                 {
                     CandidateID = s.CandidateID,
                     CandidateName = s.Name,
-                    DateOfInterview=s.DateOfInterview,
-                    InterviewerName=s.UserName
+                    DateOfInterview = s.DateOfInterview,
+                    InterviewerName = s.UserName
                 }).ToList();
             addCandidateViewModel.users = dbContext.tblUsers.ToList();
-
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             foreach (tblUser user in dbContext.tblUsers)
             {
@@ -442,7 +439,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddCandidate(AddCandidateViewModels candidateView, string user, string Name)
         {
-            if(user != null)
+            if (user != null)
             {
                 tblCandidate candidate = new tblCandidate();
                 candidate.Name = candidateView.Name;
@@ -482,7 +479,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
             }
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
-            return Json(new { Url = redirectUrl});
+            return Json(new { Url = redirectUrl });
         }
 
         [HttpPost]
@@ -501,7 +498,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateCandidate(int CandidateID,string CandidateName,DateTime DateOfInterview,string UserName)
+        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string UserName)
         {
             tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
             updateCandidate.Name = CandidateName;
@@ -511,7 +508,7 @@ namespace InterviewEvaluationSystem.Controllers
             var userid = uid.UserID;
             dbContext.spUpdateCandidateInterviewer(userid, CandidateID);
             dbContext.SaveChanges();
-            return Json(new { Name = CandidateName , DateOfInterview = DateOfInterview ,UserName= UserName },JsonRequestBehavior.AllowGet);
+            return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview, UserName = UserName }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -528,13 +525,13 @@ namespace InterviewEvaluationSystem.Controllers
             List<NotificationViewModel> notificationList = new List<NotificationViewModel>();
             notificationList = dbContext.spHRNotificationGrid()
                 .Select(n => new NotificationViewModel
-                {   
-                    CandidateID=n.CandidateID,
+                {
+                    CandidateID = n.CandidateID,
                     Name = n.Name,
                     RoundID = n.RoundID,
                     Recommended = n.Recommended,
-                    Email=n.Email
-                    
+                    Email = n.Email
+
                 }).ToList();
             ViewBag.notificationList = notificationList;
             return View();
@@ -546,7 +543,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProceedCandidate(int CandidateID,string Name,string Email,int RoundID)
+        public ActionResult ProceedCandidate(int CandidateID, string Name, string Email, int RoundID)
         {
             NotificationProceedViewModel candidateProceed = new NotificationProceedViewModel();
             candidateProceed.CandidateID = CandidateID;
@@ -574,7 +571,7 @@ namespace InterviewEvaluationSystem.Controllers
             return PartialView("NotificationProceed", candidateProceed);
         }
 
-        public ActionResult ProceedCandidateData(NotificationProceedViewModel proceedCandidateData,string interviewers)
+        public ActionResult ProceedCandidateData(NotificationProceedViewModel proceedCandidateData, string interviewers)
         {
             InterviewEvaluationDbEntities dbContext1 = new InterviewEvaluationDbEntities();
             dbContext1.tblEvaluations.Add(new tblEvaluation

@@ -1,4 +1,5 @@
 ﻿@model InterviewEvaluationSystem.Models.InterviewEvaluationViewModel
+
 @{
     ViewBag.Title = "HREvaluation";
     WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: false);
@@ -10,6 +11,9 @@
     WebGrid webgridComments = new WebGrid(source: Model.Comments, canSort: false);
 }
 
+<script src="~/Scripts/hrevaluation.js"></script>
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
+
 @if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
 {
     <h2>Interview Evaluation Form</h2>
@@ -18,13 +22,12 @@ else
 {
     <h2>HR Evaluation</h2>
 }
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/hrevaluation.js"></script>
-<link href="~/Content/webgridstyle.css" rel="stylesheet" />
+
 <input type="hidden" id="roundId" value="@TempData["roundID"]" />
 <input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
 <input type="hidden" id="recommended" value="@TempData["recommended"].ToString()" />
 <h3>Name of Candidate: @Model.CandidateName</h3>
+
 @using (Html.BeginForm())
 {
     <h3>Rating Scale</h3>
@@ -104,11 +107,11 @@ else
     }
     if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == false)
     {
-        @Html.TextArea("Comments","", new { @class = "form-control", @placeholder = "comments", rows = "5", cols = "20" })<br />
+        @Html.TextArea("Comments", "", new { @class = "form-control", @placeholder = "comments", rows = "5", cols = "20" })<br />
         <input type="button" id="hire" value="Hire" class="btn btn-default" onclick="getValues(this)" />
         <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
     }
-    if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
+    else
     {
         <h3>Comments</h3>
         if (Model.Comments.Any())

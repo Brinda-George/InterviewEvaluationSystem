@@ -61,7 +61,6 @@ namespace InterviewEvaluationSystem.Controllers
                         EvaluationID = evaluationID,
                         SkillID = i,
                         RateScaleID = values[i],
-                        //Session UserID
                         CreatedBy = "3",
                         CreatedDate = DateTime.Now
                     });

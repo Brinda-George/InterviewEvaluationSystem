@@ -130,6 +130,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> CandidateID { get; set; }
         public Nullable<int> RoundID { get; set; }
     }
+
     public class CurrentStatusViewModel
     {
         public string Name { get; set; }
@@ -141,6 +142,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> CandidateID { get; set; }
         public Nullable<bool> Recommended { get; set; }
     }
+
     public class CommentViewModel
     {
         public string RoundName { get; set; }
@@ -148,6 +150,7 @@ namespace InterviewEvaluationSystem.Models
         public string Comment { get; set; }
         public Nullable<bool> Recommended { get; set; }
     }
+
     public class JoinViewModel
     {
         public int CandidateID { get; set; }
@@ -155,6 +158,7 @@ namespace InterviewEvaluationSystem.Models
         [DataType(DataType.Date)]
         public Nullable<DateTime> DateOfJoining { get; set; }
     }
+
     public class ChangePasswordViewModel
     {
         [Required]
@@ -174,6 +178,7 @@ namespace InterviewEvaluationSystem.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
     public class MailViewModel
     {
         public string From { get; set; }

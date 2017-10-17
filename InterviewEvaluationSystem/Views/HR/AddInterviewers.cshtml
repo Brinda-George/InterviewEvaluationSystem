@@ -8,14 +8,13 @@
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Add Interviewers</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-       
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -76,7 +75,7 @@
             @Html.LabelFor(model => model.UserTypeID, "UserTypeID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("userType", "Select Item")
-               @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -93,11 +92,10 @@
     selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);}
 
-
-    @grid.GetHtml(tableStyle: "webgrid-table",
+@grid.GetHtml(tableStyle: "webgrid-table",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
-        alternatingRowStyle: "webgrid-alternating-row", 
+        alternatingRowStyle: "webgrid-alternating-row",
         selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
@@ -108,14 +106,13 @@
             grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>, style: "col2Width"),
             grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> </text>, style: "col2Width"),
             grid.Column("Action", format: @<text>
-                    <button class="edit-user display-mode">Edit</button>
-                    <button class="save-user edit-mode">Save</button>
-                    <button class="cancel-user edit-mode">Cancel</button>
-                    <button class="delete-user">Delete</button>
+                <button class="edit-user display-mode">Edit</button>
+                <button class="save-user edit-mode">Save</button>
+                <button class="cancel-user edit-mode">Cancel</button>
+                <button class="delete-user">Delete</button>
             </text>, style: "col3Width", canSort: false))
-                 )
+            )
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-

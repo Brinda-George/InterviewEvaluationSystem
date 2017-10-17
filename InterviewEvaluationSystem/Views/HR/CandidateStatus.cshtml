@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<InterviewEvaluationSystem.Models.CurrentStatusViewModel>
+
 @{
     ViewBag.Title = "CandidateStatus";
     WebGrid webgridStatus = new WebGrid(source: Model, canSort: false, canPage: true, rowsPerPage: 30);
 }
+
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Candidate Status</h2>
 

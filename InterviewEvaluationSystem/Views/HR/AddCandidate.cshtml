@@ -14,7 +14,6 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -131,13 +130,12 @@
         selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
-        columns:
-            grid.Columns(
-             grid.Column("UserName", "UserName"),
-             grid.Column("EmployeeId", "EmployeeId"),
-             grid.Column("Email", "Email"),
-             grid.Column("Designation", "Designation"))
-           )
+        columns: grid.Columns(
+            grid.Column("UserName", "UserName"),
+            grid.Column("EmployeeId", "EmployeeId"),
+            grid.Column("Email", "Email"),
+            grid.Column("Designation", "Designation"))
+        )
 
 <div id="SearchCandidate">
     <table>
@@ -147,6 +145,7 @@
         </tr>
     </table>
 </div>
+
 <div id="gridContentCandidate">
     @{
         var gridCandidate = new WebGrid(source: Model.CandidateList, canPage: true, rowsPerPage: 5,
@@ -171,8 +170,9 @@
                     <button class="cancel-userCandidate edit-modeCandidate">Cancel</button>
                     <button class="delete-userCandidate">Delete</button>
                 </text>, style: "col3Width", canSort: false))
-                     )
+                )
 </div>
+
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

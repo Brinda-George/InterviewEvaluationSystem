@@ -1,4 +1,5 @@
 ﻿@model InterviewEvaluationSystem.Models.InterviewEvaluationViewModel
+
 @{
     ViewBag.Title = "Interview Evaluation";
     WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: false);
@@ -8,13 +9,15 @@
         webgrids.Add(new WebGrid(source: Model.SkillsByCategory[i], canPage: true, canSort: false, rowsPerPage: 15));
     }
 }
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
 <script src="~/Scripts/interviewevaluation.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Interview Evaluation</h2>
+
 <input type="hidden" id="roundId" value="@TempData["roundID"]" />
 <input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
 <h3>Name of Candidate: @Model.CandidateName</h3>
+
 @using (Html.BeginForm())
 {
     <h3>Rating Scale</h3>
@@ -22,16 +25,16 @@
     {
         <div id="grid1">
             @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-            headerStyle: "webgrid-header",
-            footerStyle: "webgrid-footer",
-            alternatingRowStyle: "webgrid-alternating-row",
-            selectedRowStyle: "webgrid-selected-row",
-            rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
-            columns: webgridRatingScale.Columns(
-                webgridRatingScale.Column(columnName: "RateScale", header: "RateScale"),
-                webgridRatingScale.Column(columnName: "Value", header: "Value"),
-                webgridRatingScale.Column(columnName: "Description", header: "Description")
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.All,
+                columns: webgridRatingScale.Columns(
+                    webgridRatingScale.Column(columnName: "RateScale", header: "RateScale"),
+                    webgridRatingScale.Column(columnName: "Value", header: "Value"),
+                    webgridRatingScale.Column(columnName: "Description", header: "Description")
                 )
             )
         </div>
@@ -69,13 +72,13 @@
         }
         <div class="grid">
             @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-            headerStyle: "webgrid-header",
-            footerStyle: "webgrid-footer",
-            alternatingRowStyle: "webgrid-alternating-row",
-            selectedRowStyle: "webgrid-selected-row",
-            rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
-            columns: columns
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.All,
+                columns: columns
             )
         </div>
     }
