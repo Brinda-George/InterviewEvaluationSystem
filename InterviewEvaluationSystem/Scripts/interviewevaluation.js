@@ -27,7 +27,17 @@ function getValues(element) {
         }
     }
     var evaluationID = evaluationID;
-    var comments = $('#Comments').val();
+    if ($('#Comments').val().length === 0) {
+        alert("Please enter your comments!!")
+        return false;
+    }
+    else if ($('#Comments').val().length > 250) {
+        alert("The Comments field cannot contain more than 500 characters!!!")
+        return false;
+    }
+    else {
+        var comments = $('#Comments').val();
+    }
     $.ajax({
         url: '/Interviewer/InterviewEvaluation',
         type: 'post',

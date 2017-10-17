@@ -79,7 +79,7 @@
             )
         </div>
     }
-    @Html.TextArea("Comments", new { @class = "form-control", @placeholder = "Comments" })<br />
+    @Html.TextArea("Comments", new { @class = "form-control", @placeholder = "Comments", @rows = "5", style = "width: 100%; max-width: 100%;" })<br />
     <input type="button" id="proceed" value="Proceed" class="btn btn-default" onclick="getValues(this)" />
     <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
 }

@@ -23,7 +23,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult EvaluationStatus()
         {
             //Session UserID
-            List<StatusViewModel> Statuses = services.GetStatus(3);
+            List<StatusViewModel> Statuses = services.GetStatus(4);
             return View(Statuses);
         }
 
@@ -79,7 +79,7 @@ namespace InterviewEvaluationSystem.Controllers
             }
             //Session UserID
             MailViewModel mailViewModel = new MailViewModel();
-            var mailmodel = dbContext.spGetEmailByUserID(3);
+            var mailmodel = dbContext.spGetEmailByUserID(4);
             foreach(var item in mailmodel)
             {
                 mailViewModel.Sender = item.UserName;
