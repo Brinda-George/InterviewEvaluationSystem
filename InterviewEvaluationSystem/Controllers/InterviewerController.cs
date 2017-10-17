@@ -22,7 +22,6 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult EvaluationStatus()
         {
-            //Session UserID
             List<StatusViewModel> Statuses = services.GetStatus(4);
             return View(Statuses);
         }
@@ -72,12 +71,10 @@ namespace InterviewEvaluationSystem.Controllers
                 tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
                 evaluation.Comment = comments;
                 evaluation.Recommended = recommended;
-                //Session UserID
                 evaluation.ModifiedBy = "3";
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
-            //Session UserID
             MailViewModel mailViewModel = new MailViewModel();
             var mailmodel = dbContext.spGetEmailByUserID(4);
             foreach (var item in mailmodel)

@@ -48,7 +48,6 @@ namespace InterviewEvaluationSystem.Controllers
                     db.tblUsers.Add(user);
                     db.SaveChanges();
                     break;
-
             }
             ViewBag.Message = message;
             return View();
@@ -59,9 +58,6 @@ namespace InterviewEvaluationSystem.Controllers
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             List<tblRatingScale> rate = db.tblRatingScales.ToList();
             ViewBag.Roles = rate;
-            //db.Configuration.ProxyCreationEnabled = false;
-            //var data = db.tblRatingScales;
-            //return View(data.ToList());
             return View();
         }
 
@@ -69,11 +65,6 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale(tblRatingScale rate)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            // rate.CreatedBy = "hr";
-            // rate.ModifiedBy="hr";
-            //rate.CreatedDate = DateTime.Now;
-            //  rate.ModifiedDate = DateTime.Now;
-            // rate.IsDeleted = 0;
             db.tblRatingScales.Add(rate);
             db.SaveChanges();
             List<tblRatingScale> rates = db.tblRatingScales.ToList();
@@ -93,7 +84,6 @@ namespace InterviewEvaluationSystem.Controllers
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
             return Json(new { Url = redirectUrl, RateScale = Ratescale, RateValue = Ratevalue, Description = description }, JsonRequestBehavior.AllowGet);
         }
-
 
         [HttpPost]
         public JsonResult RateDelete(int RateScaleID)
@@ -119,9 +109,6 @@ namespace InterviewEvaluationSystem.Controllers
             List<tblSkillCategory> category = db.tblSkillCategories.ToList();
             ViewBag.Roles = category;
             return View();
-            //var data = db.tblSkillCategories;
-            //return View(data.ToList());
-
         }
 
         [HttpPost]
@@ -135,7 +122,6 @@ namespace InterviewEvaluationSystem.Controllers
             List<tblSkillCategory> cat = db.tblSkillCategories.ToList();
             ViewBag.Roles = cat;
             return View();
-
         }
 
         [HttpPost]
@@ -149,7 +135,6 @@ namespace InterviewEvaluationSystem.Controllers
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
             return Json(new { Url = redirectUrl, SkillCategory = SkillCategory, Description = description }, JsonRequestBehavior.AllowGet);
         }
-
 
         [HttpPost]
         public JsonResult CategoryDelete(int SkillCategoryID)
@@ -230,7 +215,6 @@ namespace InterviewEvaluationSystem.Controllers
             List<tblSkill> skills = db.tblSkills.ToList();
             ViewBag.Users = skills;
             return View();
-
         }
 
         [HttpPost]
