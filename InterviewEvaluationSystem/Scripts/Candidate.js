@@ -2,12 +2,16 @@
     $(function () {
         $('#SearchCandidateResultContent').hide();
         $('.edit-modeCandidate').hide();
-        $('.edit-userCandidate, .cancel-userCandidate').on('click', function () {
+
+        $(document).on("click", ".edit-userCandidate, .cancel-userCandidate", function () {
+        
             var tr = $(this).parents('tr:first');
             tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
         });
 
-        $('.save-userCandidate').on('click', function () {
+
+        $(document).on("click", ".save-userCandidate", function () {
+        
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
             var DateOfInterview = tr.find("#DateOfInterview").val();
@@ -31,7 +35,8 @@
 
         });
 
-        $('.delete-userCandidate').on('click', function () {
+        $(document).on("click", ".delete-userCandidate", function () {
+        
             var tr = $(this).parents('tr:first');
             var CandidateID = tr.find("#lblCandidateID").html();
             $.ajax({
@@ -45,7 +50,8 @@
             })
         });
 
-        $('#searchCandidate').on('click', function () {
+        $(document).on("click", "#searchCandidate", function () {
+        
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
             debugger;
@@ -60,7 +66,8 @@
             });
         });
 
-        $('#btnCreate').click(function () {
+        $(document).on("click", "#btnCreate", function () {
+        
             $.ajax({
                 url: '/HR/AddCandidate',
                 type: 'Post',

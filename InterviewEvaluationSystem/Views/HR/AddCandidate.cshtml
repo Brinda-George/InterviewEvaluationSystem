@@ -150,7 +150,7 @@
 <div id="gridContentCandidate">
     @{
         var gridCandidate = new WebGrid(source: Model.CandidateList, canPage: true, rowsPerPage: 5,
-        selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
+        selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
         gridCandidate.Pager(WebGridPagerModes.All);}
 
     @gridCandidate.GetHtml(tableStyle: "webgrid-table",

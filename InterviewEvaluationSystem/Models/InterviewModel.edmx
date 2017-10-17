@@ -64,7 +64,7 @@
           </Key>
           <Property Name="RateScaleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RateScale" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Value" Type="int" Nullable="false" />
+          <Property Name="RateValue" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" />
@@ -418,7 +418,6 @@
           </Key>
           <Property Name="RateScaleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RateScale" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Value" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
@@ -426,6 +425,7 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="tblScores" Relationship="Self.FK__tblScore__RateSc__6E01572D" FromRole="tblRatingScale" ToRole="tblScore" />
+          <Property Name="RateValue" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="tblRound">
           <Key>
@@ -689,21 +689,21 @@
             <Parameter Name="candidateid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetComments" ReturnType="Collection(InterviewEvaluationDbModel.spGetComments_Result)">
-            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetCurrentStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetCurrentStatus_Result)" />
           <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetPreviousRoundScores" ReturnType="Collection(InterviewEvaluationDbModel.spGetPreviousRoundScores_Result)">
             <Parameter Name="CandidateID" Mode="In" Type="Int32" />
             <Parameter Name="RoundID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetSkillsBySkillCategory" ReturnType="Collection(InterviewEvaluationDbModel.spGetSkillsBySkillCategory_Result)">
-            <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
+          <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetStatus_Result)">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spInsertJoinDetails">
             <Parameter Name="UserID" Mode="In" Type="Int32" />
@@ -850,9 +850,9 @@
           <EntitySetMapping Name="tblRatingScales">
             <EntityTypeMapping TypeName="InterviewEvaluationDbModel.tblRatingScale">
               <MappingFragment StoreEntitySet="tblRatingScale">
+                <ScalarProperty Name="RateValue" ColumnName="RateValue" />
                 <ScalarProperty Name="RateScaleID" ColumnName="RateScaleID" />
                 <ScalarProperty Name="RateScale" ColumnName="RateScale" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
