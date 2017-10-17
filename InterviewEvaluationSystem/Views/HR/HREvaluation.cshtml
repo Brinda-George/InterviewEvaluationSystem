@@ -76,6 +76,7 @@ else
                         Header = round.RoundName,
                         Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
                     });
+                    @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
                 }
                 else
                 {
@@ -85,6 +86,7 @@ else
                         Header = round.RoundName,
                         Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
                     });
+                    @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
                 }
             }
         }
@@ -102,7 +104,7 @@ else
     }
     if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == false)
     {
-        @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
+        @Html.TextArea("Comments","", new { @class = "form-control", @placeholder = "comments" })<br />
         <input type="button" id="hire" value="Hire" class="btn btn-default" onclick="getValues(this)" />
         <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
     }

@@ -18,7 +18,13 @@ function getValues(element) {
     var valueArray = [];
     for (var i = 1; i <= count; i++) {
         var itemid = "id" + roundID + i;
-        valueArray[i] = $('#' + itemid).find('option:selected').val();
+        if ($('#' + itemid).find('option:selected').val().length === 0) {
+            alert("Please select a rate!!")
+            return false;
+        }
+        else {
+            valueArray[i] = $('#' + itemid).find('option:selected').val();
+        }
     }
     var evaluationID = evaluationID;
     var comments = $('#Comments').val();

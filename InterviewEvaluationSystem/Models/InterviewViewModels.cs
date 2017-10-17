@@ -9,6 +9,7 @@ namespace InterviewEvaluationSystem.Models
 {
     public class RatingScaleViewModel
     {
+        [Required(ErrorMessage = "Error: Must Choose a Rate")]
         public int RateScaleID { get; set; }
         public string RateScale { get; set; }
         public int Value { get; set; }
@@ -176,7 +177,8 @@ namespace InterviewEvaluationSystem.Models
     public class MailViewModel
     {
         public string From { get; set; }
-        public string To { get; set; }
+        public string Sender { get; set; }
+        public string Candidate { get; set; }
         public string Subject { get; set; }
         public string Status { get; set; }
         public string Comments { get; set; }

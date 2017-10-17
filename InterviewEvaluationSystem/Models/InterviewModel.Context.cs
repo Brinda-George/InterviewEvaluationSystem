@@ -121,13 +121,13 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
         }
     
-        public virtual ObjectResult<string> spGetEmailByUserID(Nullable<int> userID)
+        public virtual ObjectResult<spGetEmailByUserID_Result> spGetEmailByUserID(Nullable<int> userID)
         {
             var userIDParameter = userID.HasValue ?
                 new ObjectParameter("UserID", userID) :
                 new ObjectParameter("UserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("spGetEmailByUserID", userIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmailByUserID_Result>("spGetEmailByUserID", userIDParameter);
         }
     }
 }

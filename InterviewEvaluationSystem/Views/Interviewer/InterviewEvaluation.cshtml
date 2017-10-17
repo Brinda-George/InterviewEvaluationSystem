@@ -14,6 +14,7 @@
 <h2>Interview Evaluation</h2>
 <input type="hidden" id="roundId" value="@TempData["roundID"]" />
 <input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
+<h3>Name of Candidate: @Model.CandidateName</h3>
 @using (Html.BeginForm())
 {
     <h3>Rating Scale</h3>
@@ -78,7 +79,7 @@
             )
         </div>
     }
-    @Html.TextArea("Comments", "Comments", new { @class = "form-control" })<br />
+    @Html.TextArea("Comments", new { @class = "form-control", @placeholder = "Comments" })<br />
     <input type="button" id="proceed" value="Proceed" class="btn btn-default" onclick="getValues(this)" />
     <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
 }

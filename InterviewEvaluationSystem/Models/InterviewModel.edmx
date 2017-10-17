@@ -691,7 +691,7 @@
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(String)">
+          <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
             <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -726,6 +726,11 @@
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Comment" Nullable="true" MaxLength="250" />
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetEmailByUserID_Result">
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -947,7 +952,15 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spInsertJoinDetails" FunctionName="InterviewEvaluationDbModel.Store.spInsertJoinDetails" />
           <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
-          <FunctionImportMapping FunctionImportName="spGetEmailByUserID" FunctionName="InterviewEvaluationDbModel.Store.spGetEmailByUserID" />
+          <FunctionImportMapping FunctionImportName="spGetEmailByUserID" FunctionName="InterviewEvaluationDbModel.Store.spGetEmailByUserID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetEmailByUserID_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

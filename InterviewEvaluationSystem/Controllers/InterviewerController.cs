@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using InterviewEvaluationSystem.Business_Logic;
 using System.Web.Helpers;
+using System.Net.Mail;
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -21,7 +22,8 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult EvaluationStatus()
         {
-            List<StatusViewModel> Statuses = services.GetStatus(4);
+            //Session UserID
+            List<StatusViewModel> Statuses = services.GetStatus(3);
             return View(Statuses);
         }
 
@@ -40,6 +42,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
             }
+            interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
             TempData["CandidateID"] = statusViewModel.CandidateID;
             TempData["roundID"] = statusViewModel.RoundID;
             TempData["evaluationID"] = statusViewModel.EvaluationID;
@@ -49,9 +52,9 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult InterviewEvaluation(bool recommended, int evaluationID, int[] values, string comments)
         {
+            InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
             if (evaluationID != 0)
             {
-                InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
                 for (int i = 1; i < values.Length; i++)
                 {
                     dbContext.tblScores.Add(new tblScore
@@ -59,7 +62,8 @@ namespace InterviewEvaluationSystem.Controllers
                         EvaluationID = evaluationID,
                         SkillID = i,
                         RateScaleID = values[i],
-                        CreatedBy = "4",
+                        //Session UserID
+                        CreatedBy = "3",
                         CreatedDate = DateTime.Now
                     });
                     dbContext.SaveChanges();
@@ -68,12 +72,59 @@ namespace InterviewEvaluationSystem.Controllers
                 tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
                 evaluation.Comment = comments;
                 evaluation.Recommended = recommended;
-                evaluation.ModifiedBy = "2";
+                //Session UserID
+                evaluation.ModifiedBy = "3";
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
-            var redirectUrl = new UrlHelper(Request.RequestContext).Action("HomePage", "Interviewer");
+            //Session UserID
+            MailViewModel mailViewModel = new MailViewModel();
+            var mailmodel = dbContext.spGetEmailByUserID(3);
+            foreach(var item in mailmodel)
+            {
+                mailViewModel.Sender = item.UserName;
+                mailViewModel.Candidate = item.Name;
+                mailViewModel.From = item.Email;
+            }
+            string status;
+            if (recommended == true)
+            {
+                status = "recommended";
+            }
+            else
+            {
+                status = "not recommended";
+            }
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("SentEmailNotification", "Interviewer", new
+            {
+                From = mailViewModel.From,
+                Sender = mailViewModel.Sender,
+                Candidate = mailViewModel.Candidate,
+                Subject = "Notification",
+                Status = status,
+                Comments = comments,
+            });
             return Json(new { Url = redirectUrl });
+        }
+        public ActionResult SentEmailNotification(MailViewModel mailViewModel)
+        {
+            MailMessage mailMessage = new MailMessage("brindageorge94@gmail.com", "brindageorge94@gmail.com");
+            mailMessage.Subject = mailViewModel.Subject;
+            mailMessage.Body = "<b>Interviewer: </b>" + mailViewModel.Sender + "<br/>"
+              + "<b>Interviewer Email : </b>" + mailViewModel.From + "<br/>"
+              + "<b>Candidate : </b>" + mailViewModel.Candidate + "<br/>"
+              + "<b>Status : </b>" + mailViewModel.Status + "<br/>"
+              + "<b>Comments : </b>" + mailViewModel.Comments;
+            mailMessage.IsBodyHtml = true;
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.Credentials = new System.Net.NetworkCredential()
+            {
+                UserName = "brindageorge94@gmail.com",
+                Password = "jehovah_jireh123"
+            };
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(mailMessage);
+            return RedirectToAction("HomePage", "Interviewer");
         }
     }
 }
