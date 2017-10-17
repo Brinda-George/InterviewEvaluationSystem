@@ -37,7 +37,7 @@
           <Property Name="CandidateID" Type="int" />
           <Property Name="RoundID" Type="int" />
           <Property Name="UserID" Type="int" />
-          <Property Name="Comment" Type="varchar" MaxLength="250" />
+          <Property Name="Comment" Type="varchar" MaxLength="500" />
           <Property Name="Recommended" Type="bit" />
           <Property Name="CreatedBy" Type="varchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" />
@@ -377,7 +377,7 @@
           <Property Name="CandidateID" Type="Int32" />
           <Property Name="RoundID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
-          <Property Name="Comment" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Recommended" Type="Boolean" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
@@ -686,13 +686,13 @@
             <Parameter Name="OfferedSalary" Mode="In" Type="Decimal" />
             <Parameter Name="DateOfJoining" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="spUpdatePassword">
             <Parameter Name="UserId" Mode="In" Type="Int32" />
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spGetSkillsBySkillCategory_Result">
@@ -951,7 +951,6 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spInsertJoinDetails" FunctionName="InterviewEvaluationDbModel.Store.spInsertJoinDetails" />
-          <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
           <FunctionImportMapping FunctionImportName="spGetEmailByUserID" FunctionName="InterviewEvaluationDbModel.Store.spGetEmailByUserID">
             <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetEmailByUserID_Result">
@@ -961,6 +960,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
