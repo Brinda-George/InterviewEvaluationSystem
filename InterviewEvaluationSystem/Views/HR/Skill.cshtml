@@ -42,7 +42,7 @@
 
 <div id="ajaxgrid">
     @{
-        var gridview = new WebGrid(ViewBag.Skillcategories, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
+        var gridview = new WebGrid(ViewBag.Skillcategories,canSort:true,ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
 
     @gridview.GetHtml(
@@ -68,7 +68,7 @@
         @<text>
             <span id="skillcategory" >@item.skillcat</span>
         </text>),
-   
+
     gridview.Column("Skill Name",
          format:
         @<text>

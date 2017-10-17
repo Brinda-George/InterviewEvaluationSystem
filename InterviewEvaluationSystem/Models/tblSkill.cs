@@ -24,7 +24,7 @@ namespace InterviewEvaluationSystem.Models
         public int SkillID { get; set; }
         [Required]
         public string SkillName { get; set; }
-        [Required(ErrorMessage ="Please select a skill type")]
+        //[Required(ErrorMessage ="Please select a skill type")]
         public Nullable<int> SkillCategoryID { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

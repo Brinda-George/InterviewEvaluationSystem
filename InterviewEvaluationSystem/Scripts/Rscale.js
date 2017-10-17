@@ -13,6 +13,7 @@
                     tr.find('#Description').val(Description);
                     tr.find('.edit, .read').toggle();
                 });
+
                 $('.update-case').on('click', function (e) {
                     e.preventDefault();
                     var tr = $(this).parents('tr:first');
@@ -23,7 +24,7 @@
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
-                        url: "http://localhost:58074/HR/RateEdit",
+                        url: "/HR/RateEdit",
                         data: JSON.stringify({ "RateScaleID":RateScaleID ,"RateScale": RateScale,"RateValue": RateValue,"Description": Description }),
                         dataType: "json",
                         success: function (data) {
@@ -32,7 +33,7 @@
                             tr.find('#ratescale').text(data.RateScale);
                             tr.find('#ratevalue').text(data.RateValue);
                             tr.find('#description').text(data.Description);
-                            window.location = "http://localhost:58074/HR/RatingScale";
+                            window.location = data.Url;
                         
                         },
                         error: function (err) {
@@ -40,6 +41,8 @@
                         }
                     });
                 });
+
+               
                 $('.cancel-case').on('click', function (e) {
                     e.preventDefault();
                     var tr = $(this).parents('tr:first');
@@ -47,26 +50,32 @@
                     tr.find('.edit, .read').toggle();
                     $('.edit').hide();
                 });
+
+          
+
                 $('.delete-case').on('click', function (e) {
                     e.preventDefault();
                     var tr = $(this).parents('tr:first');
-                    id = $(this).prop('id');
+                    RateScaleID = $(this).prop('id');
                     $.ajax({
                        // type: 'POST',
-                      //  url: '/Service/ServiceDelete',
+                        //  url: '/Service/ServiceDelete',
                         type: 'POST',
-                       // data: { id:id },
-                         contentType: "application/json; charset=utf-8",
-                        url: "http://localhost:58074/HR/RateDelete/" + id,
+                        //contentType: "application/json; charset=utf-8",
+                        url: '/HR/RateDelete/',
+                        data: { "RateScaleID": RateScaleID },
                         dataType: "json",
+                       // data: { id:id },
                         success: function (data) {
                             alert('Delete success');
-                            window.location.href = "http://localhost:58074/HR/RatingScale";
+                            window.location.href = data.Url;
                         },
                         error: function () {
                             alert('Error occured during delete.');
                         }
                     });
                 });
+
+
             });
    

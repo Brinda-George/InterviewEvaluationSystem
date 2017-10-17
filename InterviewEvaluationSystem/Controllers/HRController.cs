@@ -91,26 +91,27 @@ namespace InterviewEvaluationSystem.Controllers
             rate.RateValue = Ratevalue;
             rate.Description = description;
             db.SaveChanges();
-            return Json(new { RateScale= Ratescale, RateValue= Ratevalue, Description= description }, JsonRequestBehavior.AllowGet);
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
+            return Json(new { Url = redirectUrl,RateScale = Ratescale, RateValue= Ratevalue, Description= description }, JsonRequestBehavior.AllowGet);
         }
 
 
         [HttpPost]
-        public JsonResult RateDelete(int id)
+        public JsonResult RateDelete(int RateScaleID)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var rate = (from u in db.tblRatingScales
-                        where id == u.RateScaleID
+                        where RateScaleID == u.RateScaleID
                         select u).FirstOrDefault();
             var list = (from u in db.tblRatingScales
-                        where id != u.RateScaleID
+                        where RateScaleID != u.RateScaleID
                         select u).ToList();
             Session["Rates"] = list;
             db.tblRatingScales.Remove(rate);
             db.SaveChanges();
             bool result = true;
-           // var redirectUrl = new UrlHelper(Request.RequestContext).Action("RateDelete", "HR");
-            return Json(new { result }, JsonRequestBehavior.AllowGet);
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SkillCategory()
@@ -146,25 +147,27 @@ namespace InterviewEvaluationSystem.Controllers
             category.SkillCategory = SkillCategory;
             category.Description = description;
             db.SaveChanges();
-            return Json(new { SkillCategory= SkillCategory , Description = description }, JsonRequestBehavior.AllowGet);
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
+            return Json(new { Url = redirectUrl,SkillCategory = SkillCategory , Description = description }, JsonRequestBehavior.AllowGet);
         }
 
 
         [HttpPost]
-        public JsonResult CategoryDelete(int id)
+        public JsonResult CategoryDelete(int SkillCategoryID)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var category = (from u in db.tblSkillCategories
-                            where id == u.SkillCategoryID
+                            where SkillCategoryID == u.SkillCategoryID
                             select u).FirstOrDefault();
             var list = (from u in db.tblSkillCategories
-                        where id != u.SkillCategoryID
+                        where SkillCategoryID != u.SkillCategoryID
                         select u).ToList();
             Session["Categories"] = list;
             db.tblSkillCategories.Remove(category);
             db.SaveChanges();
             bool result = true;
-            return Json(new { result }, JsonRequestBehavior.AllowGet);
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Skill()
@@ -245,25 +248,27 @@ namespace InterviewEvaluationSystem.Controllers
             tblSkill skill = db.tblSkills.Find(SkillID);
             skill.SkillName = Skillname;
             db.SaveChanges();
-            return Json(new { SkillName=Skillname }, JsonRequestBehavior.AllowGet);
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
+            return Json(new { Url = redirectUrl ,SkillName =Skillname }, JsonRequestBehavior.AllowGet);
         }
 
 
         [HttpPost]
-        public JsonResult SkillDelete(int id)
+        public JsonResult SkillDelete(int SkillID)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var skill = (from u in db.tblSkills
-                         where id == u.SkillID
+                         where SkillID == u.SkillID
                          select u).FirstOrDefault();
             var list = (from u in db.tblSkills
-                        where id != u.SkillID
+                        where SkillID != u.SkillID
                         select u).ToList();
             Session["Skills"] = list;
             db.tblSkills.Remove(skill);
             db.SaveChanges();
             bool result = true;
-            return Json(new { result }, JsonRequestBehavior.AllowGet);
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
+            return Json(new { Url = redirectUrl ,result }, JsonRequestBehavior.AllowGet);
         }
 
     }

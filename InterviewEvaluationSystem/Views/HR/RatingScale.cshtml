@@ -90,7 +90,7 @@
 
 <div id="ajaxgrid">
     @{
-        var gridview = new WebGrid(ViewBag.Roles, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
+        var gridview = new WebGrid(ViewBag.Roles,canSort:true,ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
 
     @gridview.GetHtml(
@@ -114,21 +114,21 @@
         format:
         @<text>
             <span id="ratescale" class="read">@item.RateScale</span>
-            @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit" })
+            @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit",@style="display:none"  })
         </text>),
 
     gridview.Column("Value",
         format:
         @<text>
             <span id="ratevalue" class="read">@item.RateValue</span>
-            @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit" })
+            @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit",@style="display:none"  })
         </text>),
 
     gridview.Column("Description",
          format:
         @<text>
             <span id="description" class="read">@item.Description</span>
-            @Html.TextBox("Description", (string)item.Description, new { @class = "edit" })
+            @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
         </text>),
 
     gridview.Column("Action", style: "button",
@@ -136,8 +136,8 @@
                 @<text>
                     <button class="edit-case read" id="@item.RateScaleID">Edit</button>
                     <button class="delete-case read" id="@item.RateScaleID">Delete</button>
-                    <button class="update-case edit" id="@item.RateScaleID">Update</button>
-                    <button class="cancel-case edit" id="@item.RateScaleID">Cancel</button>
+                    <button class="update-case edit" style="display:none" id="@item.RateScaleID">Update</button>
+                    <button class="cancel-case edit" style="display:none" id="@item.RateScaleID">Cancel</button>
                 </text>)
     }
 )
