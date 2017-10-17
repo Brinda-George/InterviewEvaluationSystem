@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InterviewEvaluationSystem.Business_Logic;
+using InterviewEvaluationSystem.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -43,7 +45,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Login(tblUser user)
         {
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-                var count = db.LoginProcedure(user.UserName, user.Password);
+                var count = db.spLogin(user.UserName, user.Password);
                 var item = count.FirstOrDefault();
                 int usercount = Convert.ToInt32(item);
                 var usertype = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
@@ -68,17 +70,6 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     Response.Write("Invalid credentials");
                 }
-                //InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-                //var item = (from s in db.tblUsers where s.UserName == username && s.Password == password select s).FirstOrDefault();
-                //if (item != null)
-                //{
-                //    Session["Name"] = item.UserName.ToString();
-                //    return RedirectToAction("HRHomePage","HR");
-                //}
-                //else
-                //{
-                //    Response.Write("Sorry,invalid credentials");
-                //}
             
             return View();
         }

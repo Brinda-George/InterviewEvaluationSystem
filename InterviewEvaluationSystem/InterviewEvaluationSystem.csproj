@@ -391,10 +391,8 @@
     <Content Include="Views\Home\ViewProfile.cshtml" />
     <Content Include="Views\Interviewer\InterviewEvaluation.cshtml" />
     <Content Include="Views\Interviewer\EvaluationStatus.cshtml" />
-    <Content Include="Views\Interviewer\HomePage.cshtml" />
     <Content Include="Views\HR\HREvaluation.cshtml" />
     <Content Include="Views\HR\CandidateStatus.cshtml" />
-    <Content Include="Views\HR\HRHomePage.cshtml" />
     <Content Include="Views\HR\JoinDetails.cshtml" />
     <Content Include="Views\Home\ChangePassword.cshtml" />
     <Content Include="Views\HR\AddInterviewers.cshtml" />
@@ -402,6 +400,8 @@
     <Content Include="Views\HR\SearchCandidateResult.cshtml" />
     <Content Include="Views\HR\Notification.cshtml" />
     <Content Include="Views\HR\NotificationProceed.cshtml" />
+    <Content Include="Views\HR\HRHomePage.cshtml" />
+    <Content Include="Views\Interviewer\HomePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
