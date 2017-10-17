@@ -19,7 +19,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult AddInterviewers()
         {
-            List<tblUser> users = dbContext.tblUsers.ToList();
+            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Users = users;
             
             List<SelectListItem> selectedlist = new List<SelectListItem>();
@@ -280,7 +280,7 @@ namespace InterviewEvaluationSystem.Controllers
                 IsDeleted = false
             });
             dbContext1.SaveChanges();
-            return View();
+            return RedirectToAction("Notification");
         }
     }
 }

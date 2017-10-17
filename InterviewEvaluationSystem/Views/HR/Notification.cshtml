@@ -65,20 +65,16 @@
              grid.Column("Email",format:@<text><span><label id="lblCandidateEmail">@item.Email</label></span></text>),
              grid.Column("RoundID",format:@<text><span><label id="lblCandidateRound">@item.RoundID</label></span></text>),
              grid.Column(columnName: "Recommended", header: "Status", format: (item) =>
-                         {
-                             if (item.Recommended == true)
-                             {
-                                 return new HtmlString("<input type='button' value='Proceed To Next Round' class='ProceedNext' />");
-                             }
-                             else if (item.Recommended == false)
-                             {
-                                 return Html.Raw(string.Format("Rejected"));
-                             }
-                             else
-                             {
-                                 return Html.Raw(string.Format("Proceeded to HR Round"));
-                             }
-                         })
+             {
+                 if (item.Recommended == true)
+                 {
+                     return new HtmlString("<input type='button' value='Proceed To Next Round' class='ProceedNext' />");
+                 }
+                 else
+                 {
+                     return Html.Raw(string.Format("Rejected"));
+                 }
+             })
 
 
 
