@@ -12,20 +12,8 @@
             var Email = tr.find("#Email").val();
             var Designation = tr.find("#Designation").val();
             var EmployeeId = tr.find("#lblEmployeeId").html();
-            //tr.find("#lblName").text(Name);
-            //tr.find("#lblEmail").text(Email);
-            //tr.find("#lblDesignation").text(Designation);
-            //tr.find('.edit-mode, .display-mode').toggle();
-            //var tblNewUser =
-            //{
-            //    "EmployeeId": EmployeeId,
-            //    "Name": Name,
-            //    "Email": Email,
-            //    "Designation": Designation
-            //};
             $.ajax({
                 url: '/HR/UpdateInterviewer/',
-                // data: JSON.stringify(tblNewUser),
                 data:JSON.stringify({"EmployeeId": EmployeeId,"Name": Name,"Email": Email,"Designation": Designation}),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',

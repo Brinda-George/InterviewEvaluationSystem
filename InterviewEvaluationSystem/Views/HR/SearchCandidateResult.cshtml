@@ -3,11 +3,9 @@
 @{
     ViewBag.Title = "SearchCandidateResult";
 }
-
 <script src="~/Scripts/Candidate.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Search Candidate</h2>
-
 @{
     var gridCandidate = new WebGrid(Model.CandidateList, canPage: true, rowsPerPage: 5,
     selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");

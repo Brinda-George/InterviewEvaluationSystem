@@ -10,17 +10,19 @@ namespace InterviewEvaluationSystem.Controllers
 {
     public class HRController : Controller
     {
-        // GET: HR
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
         Services services = new Services();
+
         public ActionResult HRHomePage()
         {
             return View();
         }
+
         public ActionResult JoinDetails()
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult JoinDetails(JoinViewModel joinViewModel)
         {
@@ -135,10 +137,8 @@ namespace InterviewEvaluationSystem.Controllers
             ViewBag.userType = selectedlist;
             return View(); 
         }
-
         
         [HttpPost]
-        
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
             user.UserTypeID = Convert.ToInt32(userType);
