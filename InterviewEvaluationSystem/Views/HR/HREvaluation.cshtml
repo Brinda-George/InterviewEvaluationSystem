@@ -1,0 +1,144 @@
+﻿@model InterviewEvaluationSystem.Models.InterviewEvaluationViewModel
+@{
+    ViewBag.Title = "HREvaluation";
+    WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: false);
+    List<WebGrid> webgrids = new List<WebGrid>(10);
+    for (int i = 0; i < Model.SkillCategories.Count; i++)
+    {
+        webgrids.Add(new WebGrid(source: Model.SkillsByCategory[i], canSort: false));
+    }
+    WebGrid webgridComments = new WebGrid(source: Model.Comments, canSort: false);
+}
+
+@if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
+{
+    <h2>Interview Evaluation Form</h2>
+}
+else
+{
+    <h2>HR Evaluation</h2>
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/hrevaluation.js"></script>
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
+<input type="hidden" id="roundId" value="@TempData["roundID"]" />
+<input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
+<input type="hidden" id="recommended" value="@TempData["recommended"].ToString()" />
+<h3>Name of Candidate: @Model.CandidateName</h3>
+@using (Html.BeginForm())
+{
+    <h3>Rating Scale</h3>
+    if (Model.RatingScale.Any())
+    {
+        <div id="grid1">
+            @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+                 headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                 mode: WebGridPagerModes.All,
+                 columns: webgridRatingScale.Columns(
+                     webgridRatingScale.Column(columnName: "RateScale", header: "RateScale"),
+                     webgridRatingScale.Column(columnName: "Value", header: "Value"),
+                     webgridRatingScale.Column(columnName: "Description", header: "Description")
+                     )
+                 )
+        </div>
+    }
+
+    for (int i = 0; i < Model.SkillCategories.Count; i++)
+    {
+        <h3>@Model.SkillCategories[i].SkillCategory</h3>
+        List<WebGridColumn> columns = new List<WebGridColumn>();
+        WebGridColumn column = new WebGridColumn();
+        column.ColumnName = "SkillName";
+        column.Header = "Skill Name";
+        columns.Add(column);
+        foreach (var round in Model.Rounds)
+        {
+            if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
+            {
+                columns.Add(new WebGridColumn()
+                {
+                    ColumnName = round.RoundName,
+                    Header = round.RoundName,
+                    Format = (item) => Html.LabelFor(m => m.RatingScale[i].RateScaleID, new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { style = "font-weight: normal;" })
+                });
+            }
+            else
+            {
+                if (round.RoundID < Convert.ToInt32(@TempData["roundID"]))
+                {
+                    columns.Add(new WebGridColumn()
+                    {
+                        ColumnName = round.RoundName,
+                        Header = round.RoundName,
+                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    });
+                    @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
+                }
+                else
+                {
+                    columns.Add(new WebGridColumn()
+                    {
+                        ColumnName = round.RoundName,
+                        Header = round.RoundName,
+                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    });
+                    @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
+                }
+            }
+        }
+        <div class="grid">
+            @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+             headerStyle: "webgrid-header",
+             footerStyle: "webgrid-footer",
+             alternatingRowStyle: "webgrid-alternating-row",
+             selectedRowStyle: "webgrid-selected-row",
+             rowStyle: "webgrid-row-style",
+             mode: WebGridPagerModes.All,
+             columns: columns
+             )
+        </div>
+    }
+    if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == false)
+    {
+        @Html.TextArea("Comments","", new { @class = "form-control", @placeholder = "comments", rows = "5", cols = "20" })<br />
+        <input type="button" id="hire" value="Hire" class="btn btn-default" onclick="getValues(this)" />
+        <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
+    }
+    if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
+    {
+        <h3>Comments</h3>
+        if (Model.Comments.Any())
+        {
+            <div id="gridcomments">
+                @webgridComments.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+             headerStyle: "webgrid-header",
+             footerStyle: "webgrid-footer",
+             alternatingRowStyle: "webgrid-alternating-row",
+             selectedRowStyle: "webgrid-selected-row",
+             rowStyle: "webgrid-row-style",
+             mode: WebGridPagerModes.All,
+             columns: webgridComments.Columns(
+                 webgridComments.Column(columnName: "RoundName", header: "Round Name"),
+                 webgridComments.Column(columnName: "UserName", header: "Interviewer"),
+                 webgridComments.Column(columnName: "Comment", header: "Comments"),
+                 webgridComments.Column(columnName: "Recommended", header: "Recommended", format: (item) =>
+                 {
+                     if (item.Recommended == true)
+                     {
+                         return Html.Raw(string.Format("Yes"));
+                     }
+                     else
+                     {
+                         return Html.Raw(string.Format("No"));
+                     }
+                 })
+                 )
+             )
+            </div>
+        }
+    }
+}

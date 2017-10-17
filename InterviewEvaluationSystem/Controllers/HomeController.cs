@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InterviewEvaluationSystem.Business_Logic;
+using InterviewEvaluationSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,6 +25,29 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel changePasswordViewModel)
+        {
+            Services services = new Services();
+            int returnValue = services.UpdatePassword(2, changePasswordViewModel);
+            if (returnValue == 1)
+            {
+                ViewBag.result = "Password Updated Successfully!";
+            }
+            else
+            {
+                ViewBag.result = "Wrong Password!!";
+            }
 
             return View();
         }

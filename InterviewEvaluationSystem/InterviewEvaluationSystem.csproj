@@ -197,16 +197,35 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Business Logic\Services.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HRController.cs" />
+    <Compile Include="Controllers\InterviewerController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="CustomAttributes\DateValidationAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\HRViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\InterviewViewModels.cs" />
+    <Compile Include="Models\InterviewModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterviewModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InterviewModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InterviewModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterviewModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\InterviewModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -268,12 +287,63 @@
     <Compile Include="Models\tblUserType.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetComments_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetCurrentStatus_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetEmailByUserID_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetPreviousRoundScores_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetSkillsBySkillCategory_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetStatus_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblCandidate.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblEvaluation.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblPreviousCompany.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblRatingScale.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblRound.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblScore.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblSkill.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblSkillCategory.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblUser.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblUserType.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-original.css" />
+    <Content Include="Content\bootstrap-original.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\webgridstyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -303,6 +373,8 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\hrevaluation.js" />
+    <Content Include="Scripts\interviewevaluation.js" />
     <Content Include="Scripts\Candidate.js" />
     <Content Include="Scripts\Interviewer.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -345,13 +417,20 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Interviewer\InterviewEvaluation.cshtml" />
+    <Content Include="Views\Interviewer\EvaluationStatus.cshtml" />
+    <Content Include="Views\Interviewer\HomePage.cshtml" />
+    <Content Include="Views\HR\HREvaluation.cshtml" />
+    <Content Include="Views\HR\CandidateStatus.cshtml" />
+    <Content Include="Views\HR\HRHomePage.cshtml" />
+    <Content Include="Views\HR\JoinDetails.cshtml" />
+    <Content Include="Views\Home\ChangePassword.cshtml" />
     <Content Include="Views\HR\AddInterviewers.cshtml" />
     <Content Include="Views\HR\AddCandidate.cshtml" />
     <Content Include="Views\HR\SearchCandidateResult.cshtml" />
