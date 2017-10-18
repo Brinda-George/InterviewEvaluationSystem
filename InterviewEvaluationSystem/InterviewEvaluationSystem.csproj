@@ -402,6 +402,7 @@
     <Content Include="Views\HR\NotificationProceed.cshtml" />
     <Content Include="Views\HR\HRHomePage.cshtml" />
     <Content Include="Views\Interviewer\HomePage.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
