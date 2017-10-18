@@ -66,20 +66,22 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult RatingScale(tblRatingScale rate)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
+            //    InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
                 rate.CreatedBy = "admin";
                 rate.CreatedDate = DateTime.Now;
                 rate.IsDeleted = false;
                 db.tblRatingScales.Add(rate);
                 db.SaveChanges();
-                // List<tblRatingScale> rates = db.tblRatingScales.ToList();
-                var item = (from s in db.tblRatingScales where s.IsDeleted == false select s).ToList();
-                ViewBag.Roles = item;
-                ModelState.Clear();
-            }
-            return View(new tblRatingScale());
+            // List<tblRatingScale> rates = db.tblRatingScales.ToList();
+            //    var item = (from s in db.tblRatingScales where s.IsDeleted == false select s).ToList();
+            //    ViewBag.Roles = item;
+            //    ModelState.Clear();
+            //}
+            //return View(new tblRatingScale());
+            return RedirectToAction("RatingScale");
         }
 
         [HttpPost]
@@ -131,20 +133,21 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult SkillCategory(tblSkillCategory category)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-                category.CreatedBy = "hr";
+                category.CreatedBy = "admin";
                 category.CreatedDate = DateTime.Now;
                 category.IsDeleted = false;
                 db.tblSkillCategories.Add(category);
                 db.SaveChanges();
-                //List<tblSkillCategory> cat = db.tblSkillCategories.ToList();
-                var item = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
-                ViewBag.Roles = item;
-                ModelState.Clear();
-            }
-            return View(new tblSkillCategory());
+            //List<tblSkillCategory> cat = db.tblSkillCategories.ToList();
+            //    var item = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
+            //    ViewBag.Roles = item;
+            //    ModelState.Clear();
+            //}
+            //return View(new tblSkillCategory());
+            return RedirectToAction("SkillCategory");
 
         }
 
@@ -185,7 +188,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var itemlist = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
-             List<SelectListItem> selectedlist = new List<SelectListItem>();
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
 
             foreach (var skillitem in itemlist)
             {
@@ -199,7 +202,7 @@ namespace InterviewEvaluationSystem.Controllers
             ViewBag.category =selectedlist;
             //ViewData["category"] = selectedlist;
             var result = from a in db.tblSkillCategories
-                         join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
+                         join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID where b.IsDeleted==false
                          select new
                          {
                              skillno = b.SkillID,
@@ -217,7 +220,9 @@ namespace InterviewEvaluationSystem.Controllers
             //if (ModelState.IsValid)
             //{
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            tblSkill skill = new tblSkill();
+                skill.CreatedBy = "admin";
+                skill.CreatedDate = DateTime.Now;
+                skill.IsDeleted = false;
                 skill.SkillCategoryID = Convert.ToInt32(category);
                 db.tblSkills.Add(skill);
                 db.SaveChanges();
@@ -269,51 +274,81 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult SkillDelete(int SkillID)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var skill = (from u in db.tblSkills
-                         where SkillID == u.SkillID
-                         select u).FirstOrDefault();
-            var list = (from u in db.tblSkills
-                        where SkillID != u.SkillID
-                        select u).ToList();
-            Session["Skills"] = list;
-            db.tblSkills.Remove(skill);
+            tblSkill skills = db.tblSkills.Find(SkillID);
+            //var skill = (from u in db.tblSkills
+            //             where SkillID == u.SkillID
+            //             select u).FirstOrDefault();
+            //var list = (from u in db.tblSkills
+            //            where SkillID != u.SkillID
+            //            select u).ToList();
+            //Session["Skills"] = list;
+            //db.tblSkills.Remove(skill);
+            skills.IsDeleted = true;
             db.SaveChanges();
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
             return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
         }
 
-        //public JsonResult IsScaleExist(string RateScale, int? Id)
-        //{
-        //    InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-        //    var validateScale = db.tblRatingScales.FirstOrDefault
-        //                        (x => x.RateScale == RateScale && x.RateScaleID != Id);
-        //    ViewBag.msg = "RateScale already exist";
-        //    if (validateScale != null)
-        //    {
-        //        return Json(false, JsonRequestBehavior.AllowGet);
-        //    }
-        //    else
-        //    {
-        //        return Json(true, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+        public JsonResult IsScaleExist(string RateScale, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblRatingScales.FirstOrDefault
+                                (x => x.RateScale == RateScale && x.RateScaleID != Id);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
 
-        //public JsonResult IsValueExist(int RateValue, int? Id)
-        //{
-        //    InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-        //    var validateScale = db.tblRatingScales.FirstOrDefault
-        //                        (x => x.RateValue == RateValue && x.RateScaleID != Id);
-        //    ViewBag.msg = "RateScale already exist";
-        //    if (validateScale != null)
-        //    {
-        //        return Json(false, JsonRequestBehavior.AllowGet);
-        //    }
-        //    else
-        //    {
-        //        return Json(true, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+        public JsonResult IsValueExist(int RateValue, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblRatingScales.FirstOrDefault
+                                (x => x.RateValue == RateValue && x.RateScaleID != Id);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult IsCategoryExist(string SkillCategory, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblSkillCategories.FirstOrDefault
+                                (x => x.SkillCategory == SkillCategory && x.SkillCategoryID != Id);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult IsSkillExist(string SkillName, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblSkills.FirstOrDefault
+                                (x => x.SkillName == SkillName && x.SkillID != Id);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         public ActionResult JoinDetails()
         {

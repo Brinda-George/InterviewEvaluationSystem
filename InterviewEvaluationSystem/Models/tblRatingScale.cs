@@ -24,12 +24,12 @@ namespace InterviewEvaluationSystem.Models
     
         public int RateScaleID { get; set; }
         [Required]
-        //[Remote("IsScaleExist", "HR", AdditionalFields = "Id",
-        //        ErrorMessage ="RateScale already exists")]
+        [Remote("IsScaleExist", "HR", AdditionalFields = "Id",
+                ErrorMessage = "RateScale already exists")]
         public string RateScale { get; set; }
         [Required]
-        //[Remote("IsValueExist", "HR", AdditionalFields = "Id",
-        //        ErrorMessage = "RateValue already exists")]
+        [Remote("IsValueExist", "HR", AdditionalFields = "Id",
+                ErrorMessage = "RateValue already exists")]
         public int RateValue { get; set; }
         [Required]
         public string Description { get; set; }

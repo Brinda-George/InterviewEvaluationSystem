@@ -12,6 +12,7 @@ namespace InterviewEvaluationSystem.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class tblSkill
     {
@@ -23,6 +24,8 @@ namespace InterviewEvaluationSystem.Models
     
         public int SkillID { get; set; }
         [Required]
+        [Remote("IsSkillExist", "HR", AdditionalFields = "Id",
+                ErrorMessage = "Skill already exists")]
         public string SkillName { get; set; }
         [Required]
         public Nullable<int> SkillCategoryID { get; set; }
