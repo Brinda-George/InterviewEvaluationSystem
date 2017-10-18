@@ -22,7 +22,7 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int UserID { get; set; }
-        [Remote("IsInterviewerExists","HR",ErrorMessage ="Interviewer Already Exists")]
+        [Remote("IsInterviewerExists","HR",ErrorMessage ="Interviewer Already Exists",AdditionalFields = "EmployeeId")]
         public string UserName { get; set; }
         public string EmployeeId { get; set; }
         public string Designation { get; set; }

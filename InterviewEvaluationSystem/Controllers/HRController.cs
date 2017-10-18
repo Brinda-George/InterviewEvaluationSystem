@@ -137,10 +137,10 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpGet]
-        public JsonResult IsInterviewerExists(string UserName)
+        public JsonResult IsInterviewerExists(string UserName,string EmployeeId)
         {
-           // bool IsExists = dbContext.tblUsers.Where(x => x.UserName.ToLowerInvariant().Equals(UserName.ToLower())).FirstOrDefault() != null;
-            bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
+          //  bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
+            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
 
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
