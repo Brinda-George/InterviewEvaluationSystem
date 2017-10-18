@@ -29,6 +29,12 @@ namespace InterviewEvaluationSystem.Models
         public string Interviewer { get; set; }
         public List<CandidateGridViewModel> CandidateList { get; set; }
         public List<tblUser> users { get; set; }
+        public IEnumerable<PreviousCompanyViewModel> previousCompanyList { get; set; }
+    }
+
+    public class PreviousCompanyViewModel
+    {
+        public string PreviousCompany { get; set; }
     }
     public class CandidateGridViewModel
     {
