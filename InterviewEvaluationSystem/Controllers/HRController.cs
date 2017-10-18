@@ -69,6 +69,8 @@ namespace InterviewEvaluationSystem.Controllers
             if (ModelState.IsValid)
             {
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+                rate.CreatedBy = "admin";
+                rate.CreatedDate = DateTime.Now;
                 rate.IsDeleted = false;
                 db.tblRatingScales.Add(rate);
                 db.SaveChanges();
@@ -117,8 +119,9 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult SkillCategory()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            List<tblSkillCategory> category = db.tblSkillCategories.ToList();
-            ViewBag.Roles = category;
+            var item = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
+            //List<tblSkillCategory> category = db.tblSkillCategories.ToList();
+            ViewBag.Roles = item;
             return View();
             //var data = db.tblSkillCategories;
             //return View(data.ToList());
@@ -133,10 +136,12 @@ namespace InterviewEvaluationSystem.Controllers
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
                 category.CreatedBy = "hr";
                 category.CreatedDate = DateTime.Now;
+                category.IsDeleted = false;
                 db.tblSkillCategories.Add(category);
                 db.SaveChanges();
-                List<tblSkillCategory> cat = db.tblSkillCategories.ToList();
-                ViewBag.Roles = cat;
+                //List<tblSkillCategory> cat = db.tblSkillCategories.ToList();
+                var item = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
+                ViewBag.Roles = item;
                 ModelState.Clear();
             }
             return View(new tblSkillCategory());
@@ -160,14 +165,16 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult CategoryDelete(int SkillCategoryID)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var category = (from u in db.tblSkillCategories
-                            where SkillCategoryID == u.SkillCategoryID
-                            select u).FirstOrDefault();
-            var list = (from u in db.tblSkillCategories
-                        where SkillCategoryID != u.SkillCategoryID
-                        select u).ToList();
-            Session["Categories"] = list;
-            db.tblSkillCategories.Remove(category);
+            tblSkillCategory skill = db.tblSkillCategories.Find(SkillCategoryID);
+            //var category = (from u in db.tblSkillCategories
+            //                where SkillCategoryID == u.SkillCategoryID
+            //                select u).FirstOrDefault();
+            //var list = (from u in db.tblSkillCategories
+            //            where SkillCategoryID != u.SkillCategoryID
+            //            select u).ToList();
+            //Session["Categories"] = list;
+            //db.tblSkillCategories.Remove(category);
+            skill.IsDeleted = true;
             db.SaveChanges();
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
@@ -177,13 +184,15 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Skill()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblSkillCategory categories in db.tblSkillCategories)
+            var itemlist = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
+             List<SelectListItem> selectedlist = new List<SelectListItem>();
+
+            foreach (var skillitem in itemlist)
             {
                 SelectListItem selectlistitem = new SelectListItem
                 {
-                    Text = categories.SkillCategory,
-                    Value = categories.SkillCategoryID.ToString()
+                    Text = skillitem.SkillCategory,
+                    Value = skillitem.SkillCategoryID.ToString()
                 };
                 selectedlist.Add(selectlistitem);
             }
@@ -208,6 +217,7 @@ namespace InterviewEvaluationSystem.Controllers
             //if (ModelState.IsValid)
             //{
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            tblSkill skill = new tblSkill();
                 skill.SkillCategoryID = Convert.ToInt32(category);
                 db.tblSkills.Add(skill);
                 db.SaveChanges();
