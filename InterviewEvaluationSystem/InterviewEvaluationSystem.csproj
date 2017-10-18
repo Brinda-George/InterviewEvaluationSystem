@@ -298,6 +298,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\homepage.css" />
     <Content Include="Content\formstyle.css" />
+    <Content Include="Content\startmin.css" />
     <Content Include="Content\webgridstyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

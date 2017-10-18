@@ -2,34 +2,170 @@
 @{
     ViewBag.Title = "HRHomePage";
 }
-
+<link href="~/Content/startmin.css" rel="stylesheet" />
 <link href="~/Content/hrhomepage.css" rel="stylesheet" />
-<h2>HRHomePage</h2>
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Dashboard</h1>
+            <ul id="nav">
+                <li class="tab"><a href="/HR/RatingScale">Rating Scale</a></li>
+                <li class="tab"><a href="/HR/SkillCategory">Skill Category</a></li>
+                <li class="tab"><a href="/HR/Skill">Skills</a></li>
+                <li class="tab">
+                    <a>Interviews</a>
+                    <ul>
+                        <li><a href="/HR/AddInterviewers">Interviews</a></li>
+                        <li><a href="/HR/AddCandidate">Candidates</a></li>
+                        <li><a href="/Interviewer/EvaluationStatus">Interview Evaluation Status</a></li>
+                    </ul>
+                </li>
+                <li class="tab"><a href="/HR/Notification">Notifications</a></li>
+                <li class="tab">
+                    <a>Profile</a>
+                    <ul>
+                        <li><a href="/Home/ViewProfile">View Profile</a></li>
+                        <li><a href="/Home/ProfileUpdate">Update Profile</a></li>
+                        <li><a href="/Home/ChangePassword">Change Password</a></li>
+                        <li><a href="/Home/Logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-users fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">26</div>
+                            <div class="text">New Candidates</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-bell fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">12</div>
+                            <div class="text">Notifications</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-calendar fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">24</div>
+                            <div class="text">Today's Interviews</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-pink">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-user-secret fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">135</div>
+                            <div class="text">Interviewers Available</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<ul id="nav">
-    <li class="tab"><a href="/HR/RatingScale">Rating Scale</a></li>
-    <li class="tab"><a href="/HR/SkillCategory">Skill Category</a></li>
-    <li class="tab"><a href="/HR/Skill">Skills</a></li>
-    <li class="tab">
-        <a>Interviews</a>
-        <ul>
-            <li><a href="/HR/AddInterviewers">Interviews</a></li>
-            <li><a href="/HR/AddCandidate">Candidates</a></li>
-            <li><a href="/Interviewer/EvaluationStatus">Interview Evaluation Status</a></li>
-        </ul>
-    </li>
-    <li class="tab"><a href="/HR/Notification">Notifications</a></li>
-    <li class="tab">
-        <a>Profile</a>
-        <ul>
-            <li><a href="/Home/ViewProfile">View Profile</a></li>
-            <li><a href="/Home/ProfileUpdate">Update Profile</a></li>
-            <li><a href="/Home/ChangePassword">Change Password</a></li>
-            <li><a href="/Home/Logout">Logout</a></li>
-        </ul>
-    </li>
-</ul>
-
-<h2>Welcome to HR Home Page!!!!</h2>
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-violet">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-star fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">26</div>
+                            <div class="text">Skill Categories</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-shield fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">12</div>
+                            <div class="text">Number of Skills</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-lightblue">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-graduation-cap fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">135</div>
+                            <div class="text">Hired Candidates</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-lightgreen">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-bar-chart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">500</div>
+                            <div class="text">Total Candidates</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @Html.ActionLink("Go to Evaluation", "CandidateStatus", "HR")

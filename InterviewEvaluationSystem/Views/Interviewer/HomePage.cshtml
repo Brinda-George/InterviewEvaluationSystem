@@ -3,22 +3,94 @@
     ViewBag.Title = "HomePage";
 }
 
+<link href="~/Content/startmin.css" rel="stylesheet" />
 <link href="~/Content/homepage.css" rel="stylesheet" />
 <h2>HomePage</h2>
 
-<ul id="nav">
-    <li class="tab"><a href="/Interviewer/EvaluationStatus">Interview Evaluation</a></li>
-    <li class="tab">
-        <a>Profile</a>
-        <ul>
-            <li><a href="/Home/ViewProfile">View Profile</a></li>
-            <li><a href="/Home/ProfileUpdate">Update Profile</a></li>
-            <li><a href="/Home/ChangePassword">Change Password</a></li>
-            <li><a href="/Home/Logout">Logout</a></li>
-        </ul>
-    </li>
-</ul>
-
-<h2>Welcome to Interviewer Home Page!!!!</h2>
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Dashboard</h1>
+            <ul id="nav">
+                <li class="tab"><a href="/Interviewer/EvaluationStatus">Interview Evaluation</a></li>
+                <li class="tab">
+                    <a>Profile</a>
+                    <ul>
+                        <li><a href="/Home/ViewProfile">View Profile</a></li>
+                        <li><a href="/Home/ProfileUpdate">Update Profile</a></li>
+                        <li><a href="/Home/ChangePassword">Change Password</a></li>
+                        <li><a href="/Home/Logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-users fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">26</div>
+                            <div class="text">New Candidates</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-calendar fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">24</div>
+                            <div class="text">Today's Interviews</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-graduation-cap fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">135</div>
+                            <div class="text">Hired Candidates</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <br />
+                            <i class="fa fa-bar-chart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">500</div>
+                            <div class="text">Total Candidates</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @Html.ActionLink("Go to Evaluation", "EvaluationStatus", "Interviewer")
