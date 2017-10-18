@@ -46,16 +46,18 @@ namespace InterviewEvaluationSystem.Controllers
             var count = db.spLogin(user.UserName, user.Password);
             var item = count.FirstOrDefault();
             int usercount = Convert.ToInt32(item);
-            var usertype = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
-            int id = Convert.ToInt32(usertype.UserTypeID);
+            var userDetails = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
+            int userTypeId = Convert.ToInt32(userDetails.UserTypeID);
+            int userId = userDetails.UserID;
             if (usercount == 1)
             {
-                Session["Name"] = user.UserName;
-                if (id == 1)
+                Session["UserName"] = user.UserName;
+                Session["UserID"] = userId;
+                if (userTypeId == 1)
                 {
                     return RedirectToAction("HRHomePage", "HR");
                 }
-                else if (id == 2)
+                else if (userTypeId == 2)
                 {
                     return RedirectToAction("HomePage", "Interviewer");
                 }
@@ -77,7 +79,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ProfileUpdate(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["Name"]);
+            var name = Convert.ToString(Session["UserName"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
@@ -93,32 +95,40 @@ namespace InterviewEvaluationSystem.Controllers
             }
         }
 
-        [HttpGet]
+        //[HttpGet]
+        //public ActionResult Logout()
+        //{
+        //    return View();
+        //}
+
+        //public ActionResult Logout(tblUser user)
+        //{
+        //    Session["Name"] = null;
+        //    InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+        //    var name = Convert.ToString(Session["Name"]);
+        //    var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+        //    int id = Convert.ToInt32(item.UserTypeID);
+        //    if (id == 1)
+        //    {
+        //        return RedirectToAction("HRHomePage", "HR");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("HomePage", "Interviewer");
+        //    }
+        //}
+
         public ActionResult Logout()
         {
-            return View();
+            Session["UserName"] = null;
+            Session.Abandon();
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Home");
         }
-
-        public ActionResult Logout(tblUser user)
-        {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["Name"]);
-            var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
-            int id = Convert.ToInt32(item.UserTypeID);
-            if (id == 1)
-            {
-                return RedirectToAction("HRHomePage", "HR");
-            }
-            else
-            {
-                return RedirectToAction("HomePage", "Interviewer");
-            }
-        }
-
         public ActionResult ViewProfile()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["Name"]);
+            var name = Convert.ToString(Session["UserName"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             ViewBag.Details = item;
             return View();

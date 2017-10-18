@@ -88,8 +88,7 @@
 }
 
 @{
-    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 10, canSort: false,
-    selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 10, canSort: true);
 }
 
 @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
