@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblCandidate">
           <Key>
             <PropertyRef Name="CandidateID" />
@@ -362,7 +362,8 @@
             <End Role="tblUser" EntitySet="tblUser" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InterviewEvaluationDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -432,6 +433,7 @@
           </Key>
           <Property Name="RateScaleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RateScale" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RateValue" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
@@ -439,7 +441,6 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="tblScores" Relationship="Self.FK__tblScore__RateSc__10566F31" FromRole="tblRatingScale" ToRole="tblScore" />
-          <Property Name="RateValue" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="tblRound">
           <Key>
@@ -691,39 +692,32 @@
           </AssociationSet>
           <FunctionImport Name="spCandidateWebGrid" ReturnType="Collection(InterviewEvaluationDbModel.spCandidateWebGrid_Result)" />
           <FunctionImport Name="spGetCandidateInterviewers" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidateInterviewers_Result)">
-          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetComments" ReturnType="Collection(InterviewEvaluationDbModel.spGetComments_Result)">
-          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetCurrentStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetCurrentStatus_Result)" />
           <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
-          <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="spGetNewCandidates" ReturnType="Collection(Int32)" />
           <FunctionImport Name="spGetPreviousRoundScores" ReturnType="Collection(InterviewEvaluationDbModel.spGetPreviousRoundScores_Result)">
             <Parameter Name="CandidateID" Mode="In" Type="Int32" />
             <Parameter Name="RoundID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetSkillsBySkillCategory" ReturnType="Collection(InterviewEvaluationDbModel.spGetSkillsBySkillCategory_Result)">
-          <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
+            <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetStatus_Result)">
-          <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="spHRNotificationGrid" ReturnType="Collection(InterviewEvaluationDbModel.spHRNotificationGrid_Result)" />
           <FunctionImport Name="spInsertJoinDetails">
             <Parameter Name="UserID" Mode="In" Type="Int32" />
             <Parameter Name="CandidateID" Mode="In" Type="Int32" />
             <Parameter Name="OfferedSalary" Mode="In" Type="Decimal" />
             <Parameter Name="DateOfJoining" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="spUpdateCandidateInterviewer">
-            <Parameter Name="userid" Mode="In" Type="Int32" />
-            <Parameter Name="candidateid" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spUpdatePassword">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
-            <Parameter Name="OldPassword" Mode="In" Type="String" />
-            <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spLogin" ReturnType="Collection(Int32)">
             <Parameter Name="Username" Mode="In" Type="String" />
@@ -738,8 +732,15 @@
             <Parameter Name="password" Mode="In" Type="String" />
             <Parameter Name="email" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetNewCandidates" ReturnType="Collection(Int32)" />
-          <FunctionImport Name="spHRNotificationGrid" ReturnType="Collection(InterviewEvaluationDbModel.spHRNotificationGrid_Result1)" />
+          <FunctionImport Name="spUpdateCandidateInterviewer">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="candidateid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spUpdatePassword">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="OldPassword" Mode="In" Type="String" />
+            <Parameter Name="NewPassword" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -790,13 +791,6 @@
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
         </ComplexType>
         <ComplexType Name="spHRNotificationGrid_Result">
-          <Property Type="Int32" Name="CandidateID" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
-          <Property Type="Int32" Name="RoundID" Nullable="true" />
-          <Property Type="Boolean" Name="Recommended" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="spHRNotificationGrid_Result1">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
@@ -869,9 +863,9 @@
           <EntitySetMapping Name="tblRatingScales">
             <EntityTypeMapping TypeName="InterviewEvaluationDbModel.tblRatingScale">
               <MappingFragment StoreEntitySet="tblRatingScale">
-                <ScalarProperty Name="RateValue" ColumnName="RateValue" />
                 <ScalarProperty Name="RateScaleID" ColumnName="RateScaleID" />
                 <ScalarProperty Name="RateScale" ColumnName="RateScale" />
+                <ScalarProperty Name="RateValue" ColumnName="RateValue" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -1020,6 +1014,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetNewCandidates" FunctionName="InterviewEvaluationDbModel.Store.spGetNewCandidates" />
           <FunctionImportMapping FunctionImportName="spGetPreviousRoundScores" FunctionName="InterviewEvaluationDbModel.Store.spGetPreviousRoundScores">
             <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetPreviousRoundScores_Result">
@@ -1050,15 +1045,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spInsertJoinDetails" FunctionName="InterviewEvaluationDbModel.Store.spInsertJoinDetails" />
-          <FunctionImportMapping FunctionImportName="spUpdateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.spUpdateCandidateInterviewer" />
-          <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
-          <FunctionImportMapping FunctionImportName="spLogin" FunctionName="InterviewEvaluationDbModel.Store.spLogin" />
-          <FunctionImportMapping FunctionImportName="spRegister" FunctionName="InterviewEvaluationDbModel.Store.spRegister" />
-          <FunctionImportMapping FunctionImportName="spGetNewCandidates" FunctionName="InterviewEvaluationDbModel.Store.spGetNewCandidates" />
           <FunctionImportMapping FunctionImportName="spHRNotificationGrid" FunctionName="InterviewEvaluationDbModel.Store.spHRNotificationGrid">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spHRNotificationGrid_Result1">
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spHRNotificationGrid_Result">
                 <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -1068,6 +1057,11 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spInsertJoinDetails" FunctionName="InterviewEvaluationDbModel.Store.spInsertJoinDetails" />
+          <FunctionImportMapping FunctionImportName="spLogin" FunctionName="InterviewEvaluationDbModel.Store.spLogin" />
+          <FunctionImportMapping FunctionImportName="spRegister" FunctionName="InterviewEvaluationDbModel.Store.spRegister" />
+          <FunctionImportMapping FunctionImportName="spUpdateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.spUpdateCandidateInterviewer" />
+          <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
