@@ -4,6 +4,7 @@
     ViewBag.Title = "Skill";
 }
 
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <link href="~/Content/formstyle.css" rel="stylesheet" />
 <h2>Skill</h2>
 
@@ -42,9 +43,10 @@
         var gridview = new WebGrid(ViewBag.Skillcategories, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
 
-    @gridview.GetHtml(tableStyle: "webgrid-table",
+    @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
         selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,

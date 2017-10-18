@@ -11,8 +11,8 @@
 @using (Html.BeginForm(new { id = "form" }))
 {
     <p>
-        Search by Name or Email: @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
+        Search by Name or Email: @Html.TextBox("SearchString", "", new { placeholder = "Search" })
+        <input type="submit" value="Search" /><span class="glyphicon glyphicon-search"></span>
     </p>
 }
 
