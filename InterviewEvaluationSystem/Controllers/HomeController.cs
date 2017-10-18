@@ -112,8 +112,6 @@ namespace InterviewEvaluationSystem.Controllers
             var name = Convert.ToString(Session["Name"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             int id = Convert.ToInt32(item.UserTypeID);
-            //FormsAuthentication.SignOut();
-            //Session.Abandon();
             if (id == 1)
             {
                 return RedirectToAction("HRHomePage", "HR");

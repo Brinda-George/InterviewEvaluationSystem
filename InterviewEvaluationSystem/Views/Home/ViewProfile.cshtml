@@ -5,33 +5,79 @@
     var det = ViewBag.Details;
 }
 
-<h2>ViewProfile</h2>
+<!DOCTYPE html>
 
-<style>
-    table, th, td {
-    border: 1px solid black;
-}
-</style>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewProfile</title>
+    <style>
+        #formProfile{
+            width:400px;
+            height:400px;
+            color:dodgerblue;
+            font-family:'Times New Roman';
+            font-size:20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="formProfile">
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+    
+            <dd>
+               @det.UserName
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EmployeeId)
+            </dt>
+    
+            <dd>
+                @det.EmployeeId
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Designation)
+            </dt>
+    
+            <dd>
+               @det.Designation
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+    
+            <dd>
+                @det.Address
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Pincode)
+            </dt>
+    
+            <dd>
+              @det.Pincode
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+    
+            <dd>
+              @det.Email
+            </dd>
 
-<div >
-    <hr />
-    <table>
-        <tr>
-            <th>UserName</th>
-            <th>EmployeeId</th>
-            <th>Designation</th>
-            <th>Address</th>
-            <th>Pincode</th>
-            <th>Email</th>
-        </tr>
-        <tr>
-            <td>@det.UserName</td>
-            <td>@det.EmployeeId</td>
-            <td>@det.Designation</td>
-            <td>@det.Address</td>
-            <td>@det.Pincode</td>
-            <td>@det.Email</td>
-        </tr>
-    </table>
-</div>
-
+        </dl>
+    </div>
+    @*<p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.UserID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+</body>
+</html>

@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Skill";
+    //List<SelectListItem> selectedlist = ViewData["category"] as List<SelectListItem>;
 }
 
 <h2>Skill</h2>
@@ -16,9 +17,12 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SkillCategoryID, "SkillCategoryID", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SkillCategoryID, "SkillCategory", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("category", "Select Item")
+                @Html.DropDownList("category")
+                @*@Html.DropDownList("category",
+                   (IEnumerable<SelectListItem>)ViewBag.category,
+                   "Select category")*@
                 @Html.ValidationMessageFor(model => model.SkillCategoryID, "", new { @class = "text-danger" })
             </div>
         </div>

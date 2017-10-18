@@ -57,8 +57,9 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            List<tblRatingScale> rate = db.tblRatingScales.ToList();
-            ViewBag.Roles = rate;
+            var item = (from s in db.tblRatingScales where s.IsDeleted == false select s).ToList();
+            //List<tblRatingScale> rate = db.tblRatingScales.ToList();
+            ViewBag.Roles = item;
             return View();
         }
 
@@ -68,12 +69,14 @@ namespace InterviewEvaluationSystem.Controllers
             if (ModelState.IsValid)
             {
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+                rate.IsDeleted = false;
                 db.tblRatingScales.Add(rate);
                 db.SaveChanges();
-                List<tblRatingScale> rates = db.tblRatingScales.ToList();
-                ViewBag.Roles = rates;
+                // List<tblRatingScale> rates = db.tblRatingScales.ToList();
+                var item = (from s in db.tblRatingScales where s.IsDeleted == false select s).ToList();
+                ViewBag.Roles = item;
+                ModelState.Clear();
             }
-            ModelState.Clear();
             return View(new tblRatingScale());
         }
 
@@ -95,16 +98,16 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult RateDelete(int RateScaleID)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            tblRatingScale tbl = new tblRatingScale();
-            var rate = (from u in db.tblRatingScales
-                        where RateScaleID == u.RateScaleID
-                        select u).FirstOrDefault();
-            var list = (from u in db.tblRatingScales
-                        where RateScaleID != u.RateScaleID
-                        select u).ToList();
-            Session["Rates"] = list;
-            //  db.tblRatingScales.Remove(rate);
-            tbl.IsDeleted = true;
+            tblRatingScale rate = db.tblRatingScales.Find(RateScaleID);
+            //var rate = (from u in db.tblRatingScales
+            //            where RateScaleID == u.RateScaleID
+            //            select u).FirstOrDefault();
+            //var list = (from u in db.tblRatingScales
+            //            where RateScaleID != u.RateScaleID
+            //            select u).ToList();
+            //Session["Rates"] = list;
+            // db.tblRatingScales.Remove(rate);
+            rate.IsDeleted = true;
             db.SaveChanges();
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
@@ -175,17 +178,17 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblSkillCategory category in db.tblSkillCategories)
+            foreach (tblSkillCategory categories in db.tblSkillCategories)
             {
                 SelectListItem selectlistitem = new SelectListItem
                 {
-                    Text = category.SkillCategory,
-                    Value = category.SkillCategoryID.ToString()
+                    Text = categories.SkillCategory,
+                    Value = categories.SkillCategoryID.ToString()
                 };
                 selectedlist.Add(selectlistitem);
             }
-            ViewBag.category = selectedlist;
-
+            ViewBag.category =selectedlist;
+            //ViewData["category"] = selectedlist;
             var result = from a in db.tblSkillCategories
                          join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
                          select new
@@ -202,40 +205,42 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Skill(tblSkill skill, string category)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
                 skill.SkillCategoryID = Convert.ToInt32(category);
                 db.tblSkills.Add(skill);
                 db.SaveChanges();
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblSkillCategory category1 in db.tblSkillCategories)
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = category1.SkillCategory,
-                        Value = category1.SkillCategoryID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.category = selectedlist;
+            //List<SelectListItem> selectedlist = new List<SelectListItem>();
+            //foreach (tblSkillCategory categories in db.tblSkillCategories)
+            //{
+            //    SelectListItem selectlistitem = new SelectListItem
+            //    {
+            //        Text = categories.SkillCategory,
+            //        Value = categories.SkillCategoryID.ToString()
+            //    };
+            //    selectedlist.Add(selectlistitem);
+            //}
+            //ViewBag.category = selectedlist;
+            //ViewData["category"] = selectedlist;
 
-                var result = from a in db.tblSkillCategories
-                             join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
-                             select new
-                             {
-                                 skillcatid = b.SkillCategoryID,
-                                 skillno = b.SkillID,
-                                 skillcat = a.SkillCategory,
-                                 skillname = b.SkillName
+            //var result = from a in db.tblSkillCategories
+            //             join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
+            //             select new
+            //             {
+            //                 skillcatid = b.SkillCategoryID,
+            //                 skillno = b.SkillID,
+            //                 skillcat = a.SkillCategory,
+            //                 skillname = b.SkillName
 
-                             };
-                ViewBag.Skillcategories = result;
-                List<tblSkill> skills = db.tblSkills.ToList();
-                ViewBag.Users = skills;
-                ModelState.Clear();
-            }
-            return View(new tblSkill());
+            //             };
+            //ViewBag.Skillcategories = result;
+            //List<tblSkill> skills = db.tblSkills.ToList();
+            //ViewBag.Users = skills;
+            //ModelState.Clear();
+
+            //return View(new tblSkill());
+            return RedirectToAction("Skill");
 
         }
 
@@ -267,6 +272,38 @@ namespace InterviewEvaluationSystem.Controllers
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
             return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
         }
+
+        //public JsonResult IsScaleExist(string RateScale, int? Id)
+        //{
+        //    InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+        //    var validateScale = db.tblRatingScales.FirstOrDefault
+        //                        (x => x.RateScale == RateScale && x.RateScaleID != Id);
+        //    ViewBag.msg = "RateScale already exist";
+        //    if (validateScale != null)
+        //    {
+        //        return Json(false, JsonRequestBehavior.AllowGet);
+        //    }
+        //    else
+        //    {
+        //        return Json(true, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+        //public JsonResult IsValueExist(int RateValue, int? Id)
+        //{
+        //    InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+        //    var validateScale = db.tblRatingScales.FirstOrDefault
+        //                        (x => x.RateValue == RateValue && x.RateScaleID != Id);
+        //    ViewBag.msg = "RateScale already exist";
+        //    if (validateScale != null)
+        //    {
+        //        return Json(false, JsonRequestBehavior.AllowGet);
+        //    }
+        //    else
+        //    {
+        //        return Json(true, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
 
         public ActionResult JoinDetails()
         {
