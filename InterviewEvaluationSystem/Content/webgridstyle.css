@@ -29,3 +29,11 @@
 .col2Width {
     width: 220px;
 }
+
+save-userCandidate{
+    display:none;
+}
+
+delete-userCandidate{
+    display:none;
+}

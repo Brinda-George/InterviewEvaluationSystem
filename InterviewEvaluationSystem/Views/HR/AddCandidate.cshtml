@@ -90,10 +90,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PreviousCompany, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PreviousCompany, new { htmlAttributes = new { @class = "form-control" } })
+                <input id="btnAddTextBox" type="button" value="Add Previous Company" onclick="AppendTextBox()" class="btn btn-primary" /><br />
+                <div id="divTextBoxes">
+                    <!--Dynamic textboxes-->
+                </div> 
+                @*@Html.EditorFor(model => model.PreviousCompany, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.PreviousCompany, "", new { @class = "text-danger" })
             </div>
         </div>
+       @*<div id="previousCompanyDiv">
+           @Html.EditorFor(m => m.previousCompanyList)
+       </div>
+        <input id="btnAdd" type="button" value="Add Previous Company" onclick="AddPreviousCompany();" />*@
+
+        
 
         <div class="form-group">
             @Html.LabelFor(model => model.Qualifications, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -168,3 +178,57 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+@*<script> 
+    function AddPreviousCompany() {
+        var m = $('#previousCompanyDiv input:last-child').attr('name');
+        var index = 0;
+        if (m != null && m.length > 0) {
+            index = m.split('previousCompanyList[')[1].replace('].PreviousCompany', '');
+            index++;
+        }
+
+        var html = '<label for=\"previousCompanyList_' + index + '__PreviousCompany\">PreviousCompany</label>' +
+            '<input id=\"previousCompanyList_' + index + '__PreviousCompany\" class=\"text-box single-line\"' +
+            ' type=\"text\" value=\"\" name=\"previousCompanyList[' + index + '].PreviousCompany\">';
+        $('#previousCompanyDiv').append(html);
+    };
+</script>*@
+
+<script type="text/javascript">
+      function GetExistingDynamicTextBoxes(value) {
+        var div = $(" <div />");
+
+        var textBox = $(" <input />").attr("type", "textbox").attr("name", "txtBoxes");
+        textBox.addClass('form-control');
+        textBox.val(value);
+        div.append(textBox);
+
+        var button = $(" <input />").attr("type", "button").attr("value", "Remove");
+        button.attr("onclick", "DeleteTextBox(this)");
+        button.addClass('btn btn-default');
+        div.append(button);
+
+        return div;
+    }
+    function AppendTextBox() {
+        var div = GetExistingDynamicTextBoxes("");
+        $("#divTextBoxes").append(div);
+    }
+
+    function DeleteTextBox(button) {
+        $(button).parent().remove();
+    }
+
+    $(function () {
+        var values = eval('@Html.Raw(ViewBag.DemoMessage)');
+        if (values != null) {
+            $("#divTextBoxes").html("");
+            $(values).each(function () {
+                $("#divTextBoxes").append(GetExistingDynamicTextBoxes(this));
+            });
+        }
+    });
+</script>
+
+
+
