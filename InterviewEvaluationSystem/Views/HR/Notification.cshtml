@@ -26,9 +26,13 @@
             grid.Column("RoundID", format:@<text><span><label id="lblCandidateRound">@item.RoundID</label></span></text>),
             grid.Column(columnName: "Recommended", header: "Status", format: (item) =>
             {
-                if (item.Recommended == true)
+                if (item.Recommended == true && item.RoundID < item.totalRound)
                 {
                     return new HtmlString("<input type='button' value='Proceed To Next Round' class='ProceedNext' />");
+                }
+                else if(item.Recommended == true && item.RoundID == item.totalRound)
+                {
+                    return Html.Raw(string.Format("Hired"));
                 }
                 else
                 {

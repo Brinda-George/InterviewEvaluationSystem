@@ -37,11 +37,12 @@ namespace InterviewEvaluationSystem.Models
 
     public class NotificationViewModel
     {
+        public int CandidateID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public Nullable<int> RoundID { get; set; }
         public Nullable<bool> Recommended { get; set; }
-        public int CandidateID { get; set; }
+        public Nullable<int> totalRound { get; set; }
     }
 
     public class NotificationProceedViewModel

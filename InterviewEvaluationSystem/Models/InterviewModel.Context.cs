@@ -106,11 +106,6 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetStatus_Result>("spGetStatus", userIDParameter);
         }
     
-        public virtual ObjectResult<spHRNotificationGrid_Result> spHRNotificationGrid()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHRNotificationGrid_Result>("spHRNotificationGrid");
-        }
-    
         public virtual int spInsertJoinDetails(Nullable<int> userID, Nullable<int> candidateID, Nullable<decimal> offeredSalary, Nullable<System.DateTime> dateOfJoining)
         {
             var userIDParameter = userID.HasValue ?
@@ -206,6 +201,16 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("email", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRegister", usernameParameter, employeeidParameter, designationParameter, addressParameter, pincodeParameter, passwordParameter, emailParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spGetNewCandidates()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetNewCandidates");
+        }
+    
+        public virtual ObjectResult<spHRNotificationGrid_Result1> spHRNotificationGrid()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHRNotificationGrid_Result1>("spHRNotificationGrid");
         }
     }
 }

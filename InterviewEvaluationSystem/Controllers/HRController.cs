@@ -530,8 +530,8 @@ namespace InterviewEvaluationSystem.Controllers
                     Name = n.Name,
                     RoundID = n.RoundID,
                     Recommended = n.Recommended,
-                    Email = n.Email
-
+                    Email = n.Email,
+                    totalRound = n.totalRound
                 }).ToList();
             ViewBag.notificationList = notificationList;
             return View();
