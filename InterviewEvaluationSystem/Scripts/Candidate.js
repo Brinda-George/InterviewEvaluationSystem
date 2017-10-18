@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
     $(function () {
-        $('#SearchCandidateResultContent').hide();
         $('.edit-modeCandidate').hide();
         $('.edit-userCandidate, .cancel-userCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
