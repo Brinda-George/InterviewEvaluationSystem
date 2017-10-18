@@ -88,7 +88,7 @@
 }
 
 @{
-    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 5,
+    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 5, canSort: false,
     selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);}
 
@@ -101,16 +101,16 @@
         mode: WebGridPagerModes.All,
         columns:
         grid.Columns(
-            grid.Column("UserName", "UserName", format: @<text>  <span class="display-mode"> <label id="lblName">@item.UserName</label> </span> <input type="text" id="Name" value="@item.UserName" class="edit-mode" /></text>, style: "col2Width"),
-            grid.Column("EmployeeId", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>, style: "col1Width"),
-            grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>, style: "col2Width"),
-            grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> </text>, style: "col2Width"),
+            grid.Column("UserName", "UserName", format: @<text>  <span class="display-mode"> <label id="lblName">@item.UserName</label> </span> <input type="text" id="Name" value="@item.UserName" class="edit-mode" /></text>),
+            grid.Column("EmployeeId", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>),
+            grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>),
+            grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> </text>),
             grid.Column("Action", format: @<text>
                 <button class="edit-user display-mode">Edit</button>
                 <button class="save-user edit-mode">Save</button>
                 <button class="cancel-user edit-mode">Cancel</button>
                 <button class="delete-user">Delete</button>
-            </text>, style: "col3Width", canSort: false))
+            </text>))
             )
 
 <div>

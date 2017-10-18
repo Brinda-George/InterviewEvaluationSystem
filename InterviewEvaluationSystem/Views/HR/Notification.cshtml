@@ -9,7 +9,7 @@
 <h2>Notification</h2>
 
 @{
-    var grid = new WebGrid(ViewBag.notificationList, canPage: true, rowsPerPage: 5,
+    var grid = new WebGrid(ViewBag.notificationList, canPage: true, rowsPerPage: 5, canSort: false,
     selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);}
 
