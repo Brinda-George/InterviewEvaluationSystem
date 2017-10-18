@@ -136,7 +136,15 @@ namespace InterviewEvaluationSystem.Controllers
             return View(); 
         }
 
-        
+        [HttpGet]
+        public JsonResult IsInterviewerExists(string UserName)
+        {
+           // bool IsExists = dbContext.tblUsers.Where(x => x.UserName.ToLowerInvariant().Equals(UserName.ToLower())).FirstOrDefault() != null;
+            bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
+
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         
         public ActionResult AddInterviewers(tblUser user, string userType)
@@ -212,7 +220,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCandidate(AddCandidateViewModels candidateView, string user, string Name)
+        public ActionResult AddCandidate(AddCandidateViewModels candidateView, string user, string Name, string[] txtBoxes)
         {
             if(user != null)
             {
@@ -236,6 +244,21 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.tblCandidates.Add(candidate);
                 dbContext.SaveChanges();
 
+                tblPreviousCompany previousCmpny = new tblPreviousCompany();
+                // previousCmpny.PreviousCompany = candidateView.PreviousCompany;
+                previousCmpny.CandidateID = candidate.CandidateID;
+                //string txtPreviousCompanyValues = "";
+                foreach (string textboxValue in txtBoxes)
+                {
+                    //txtPreviousCompanyValues += textboxValue + "\\n";
+                    previousCmpny.PreviousCompany = textboxValue;
+                    dbContext.tblPreviousCompanies.Add(previousCmpny);
+                    dbContext.SaveChanges();
+                }
+
+               // dbContext.tblPreviousCompanies.Add(previousCmpny);
+
+
                 tblEvaluation eval = new tblEvaluation();
                 eval.CandidateID = candidate.CandidateID;
                 eval.UserID = Convert.ToInt32(user);
@@ -247,10 +270,7 @@ namespace InterviewEvaluationSystem.Controllers
                 eval.IsDeleted = false;
                 dbContext.tblEvaluations.Add(eval);
 
-                tblPreviousCompany previousCmpny = new tblPreviousCompany();
-                previousCmpny.PreviousCompany = candidateView.PreviousCompany;
-                previousCmpny.CandidateID = candidate.CandidateID;
-                dbContext.tblPreviousCompanies.Add(previousCmpny);
+               
                 dbContext.SaveChanges();
             }
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");

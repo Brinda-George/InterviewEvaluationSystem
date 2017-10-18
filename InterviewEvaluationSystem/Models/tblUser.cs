@@ -11,7 +11,8 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Web.Mvc;
+
     public partial class tblUser
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,6 +22,7 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int UserID { get; set; }
+        [Remote("IsInterviewerExists","HR",ErrorMessage ="Interviewer Already Exists")]
         public string UserName { get; set; }
         public string EmployeeId { get; set; }
         public string Designation { get; set; }

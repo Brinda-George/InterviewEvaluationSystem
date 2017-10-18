@@ -90,14 +90,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PreviousCompany, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PreviousCompany, new { htmlAttributes = new { @class = "form-control" } })
+                <input id="btnAddTextBox" type="button" value="Add Previous Company" onclick="AppendTextBox()" class="btn btn-primary" /><br />
+                <div id="divTextBoxes">
+                    <!--Dynamic textboxes-->
+                </div> 
+                @*@Html.EditorFor(model => model.PreviousCompany, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.PreviousCompany, "", new { @class = "text-danger" })
             </div>
         </div>
-       <div id="previousCompanyDiv">
+       @*<div id="previousCompanyDiv">
            @Html.EditorFor(m => m.previousCompanyList)
        </div>
-        <input id="btnAdd" type="button" value="Add Previous Company" onclick="AddPreviousCompany();" />
+        <input id="btnAdd" type="button" value="Add Previous Company" onclick="AddPreviousCompany();" />*@
+
+        
 
         <div class="form-group">
             @Html.LabelFor(model => model.Qualifications, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -163,7 +169,7 @@
             alternatingRowStyle: "webgrid-alternating-row",
             selectedRowStyle: "webgrid-selected-row",
             rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
+            mode: WebGridPagerModes.All, 
             columns:gridCandidate.Columns(
                 gridCandidate.Column("CandidateID", format: @<text>  <span class="display-modeCandidate">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label> </text>, style: "col1Width"),
                 gridCandidate.Column("CandidateName", "CandidateName", format: @<text>  <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" /></text>, style: "col2Width"),
@@ -180,7 +186,7 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-<script> 
+@*<script> 
     function AddPreviousCompany() {
         var m = $('#previousCompanyDiv input:last-child').attr('name');
         var index = 0;
@@ -193,8 +199,44 @@
             '<input id=\"previousCompanyList_' + index + '__PreviousCompany\" class=\"text-box single-line\"' +
             ' type=\"text\" value=\"\" name=\"previousCompanyList[' + index + '].PreviousCompany\">';
         $('#previousCompanyDiv').append(html);
-
-
     };
+</script>*@
+
+<script type="text/javascript">
+      function GetExistingDynamicTextBoxes(value) {
+        var div = $(" <div />");
+
+        var textBox = $(" <input />").attr("type", "textbox").attr("name", "txtBoxes");
+        textBox.addClass('form-control');
+        textBox.val(value);
+        div.append(textBox);
+
+        var button = $(" <input />").attr("type", "button").attr("value", "Remove");
+        button.attr("onclick", "DeleteTextBox(this)");
+        button.addClass('btn btn-default');
+        div.append(button);
+
+        return div;
+    }
+    function AppendTextBox() {
+        var div = GetExistingDynamicTextBoxes("");
+        $("#divTextBoxes").append(div);
+    }
+
+    function DeleteTextBox(button) {
+        $(button).parent().remove();
+    }
+
+    $(function () {
+        var values = eval('@Html.Raw(ViewBag.DemoMessage)');
+        if (values != null) {
+            $("#divTextBoxes").html("");
+            $(values).each(function () {
+                $("#divTextBoxes").append(GetExistingDynamicTextBoxes(this));
+            });
+        }
+    });
 </script>
+
+
 

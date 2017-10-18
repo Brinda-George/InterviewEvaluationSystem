@@ -57,8 +57,11 @@ namespace InterviewEvaluationSystem.Models
     public class NotificationProceedViewModel
     {
         public int CandidateID { get; set; }
+        
         public string Name { get; set; }
+        
         public string Email { get; set; }
+        
         public int ProceedTo { get; set; }
         public string Interviewer { get; set; }
     }
