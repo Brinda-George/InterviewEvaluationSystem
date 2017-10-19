@@ -350,17 +350,17 @@ namespace InterviewEvaluationSystem.Controllers
         {
             List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Users = users;
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblUserType userType in dbContext.tblUserTypes)
+            List<SelectListItem> selectedlistInner = new List<SelectListItem>();
+            foreach (tblUserType userType1 in dbContext.tblUserTypes)
             {
                 SelectListItem selectlistitem = new SelectListItem
                 {
-                    Text = userType.UserType,
-                    Value = userType.UserTypeID.ToString()
+                    Text = userType1.UserType,
+                    Value = userType1.UserTypeID.ToString()
                 };
-                selectedlist.Add(selectlistitem);
+                selectedlistInner.Add(selectlistitem);
             }
-            ViewBag.userType = selectedlist;
+            ViewBag.userType = selectedlistInner;
             return View();
         }
 
@@ -376,15 +376,63 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
-            
-            user.UserTypeID = Convert.ToInt32(userType);
-            user.CreatedBy = "hr";
-            user.CreatedDate = System.DateTime.Now;
-            user.ModifiedBy = "hr";
-            user.ModifiedDate = System.DateTime.Now;
-            user.IsDeleted = false;
-            dbContext.tblUsers.Add(user);
-            dbContext.SaveChanges();
+            if(string.IsNullOrEmpty(user.UserName))
+            {
+                ModelState.AddModelError("UserName", "Enter Name");
+            }
+
+            if(string.IsNullOrEmpty(user.EmployeeId))
+            {
+                ModelState.AddModelError("EmployeeId", "Enter Employee Id");
+            }
+
+            if(string.IsNullOrEmpty(user.Designation))
+            {
+                ModelState.AddModelError("Designation", "Enter Designation");
+            }
+
+            if(string.IsNullOrEmpty(user.Address))
+            {
+                ModelState.AddModelError("Address", "Enter Address");
+            }
+            if(string.IsNullOrEmpty(user.Pincode))
+            {
+                ModelState.AddModelError("Pincode", "Enter Pincode");
+            }
+            if(string.IsNullOrEmpty(user.Password))
+            {
+                ModelState.AddModelError("Password", "Enter Password");
+            }
+            if(string.IsNullOrEmpty(user.Email))
+            {
+                ModelState.AddModelError("Email", "Enter Email");
+            }
+
+            if(ModelState.IsValid)
+            {
+                user.UserTypeID = Convert.ToInt32(userType);
+                user.CreatedBy = "hr";
+                user.CreatedDate = System.DateTime.Now;
+                user.ModifiedBy = "hr";
+                user.ModifiedDate = System.DateTime.Now;
+                user.IsDeleted = false;
+                dbContext.tblUsers.Add(user);
+                dbContext.SaveChanges();
+                List<SelectListItem> selectedlistInner = new List<SelectListItem>();
+                foreach (tblUserType userType1 in dbContext.tblUserTypes)
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = userType1.UserType,
+                        Value = userType1.UserTypeID.ToString()
+                    };
+                    selectedlistInner.Add(selectlistitem);
+                }
+                ViewBag.userType = selectedlistInner;
+                List<tblUser> usersInner = dbContext.tblUsers.ToList();
+                ViewBag.Users = usersInner;
+                return View();
+            }
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             foreach (tblUserType userType1 in dbContext.tblUserTypes)
             {
@@ -396,11 +444,12 @@ namespace InterviewEvaluationSystem.Controllers
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.userType = selectedlist;
-            List<tblUser> users = dbContext.tblUsers.ToList();
+            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Users = users;
-            return View();
+            return View(user);
+            
         }
-
+         
         [HttpPost]
         public ActionResult UpdateInterviewer(string EmployeeId, string Name, string Email, string Designation)
         {
@@ -449,57 +498,103 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddCandidate(AddCandidateViewModels candidateView, string user, string Name, string[] txtBoxes)
         {
-            if (user != null)
-            {
-                tblCandidate candidate = new tblCandidate();
-                candidate.Name = candidateView.Name;
-                candidate.DateOfBirth = candidateView.DateOfBirth;
-                candidate.DateOfInterview = candidateView.DateOfInterview;
-                candidate.Designation = candidateView.Designation;
-                candidate.Email = candidateView.Email;
-                candidate.PAN = candidateView.PAN;
-                candidate.ExpectedSalary = candidateView.ExpectedSalary;
-                candidate.NoticePeriodInMonths = candidateView.NoticePeriodInMonths;
-                candidate.TotalExperience = candidateView.TotalExperience;
-                candidate.Qualifications = candidateView.Qualifications;
-                candidate.IsLocked = true;
-                candidate.CreatedBy = "hr";
-                candidate.CreatedDate = System.DateTime.Now;
-                candidate.ModifiedBy = "hr";
-                candidate.ModifiedDate = System.DateTime.Now;
-                candidate.IsDeleted = false;
-                dbContext.tblCandidates.Add(candidate);
-                dbContext.SaveChanges();
 
-                tblPreviousCompany previousCmpny = new tblPreviousCompany();
-                // previousCmpny.PreviousCompany = candidateView.PreviousCompany;
-                previousCmpny.CandidateID = candidate.CandidateID;
-                //string txtPreviousCompanyValues = "";
-                foreach (string textboxValue in txtBoxes)
+            if(string.IsNullOrEmpty(candidateView.Name))
+            {
+                ModelState.AddModelError("Name", "Enter Name");
+            }
+            if(string.IsNullOrEmpty(candidateView.Designation))
+            {
+                ModelState.AddModelError("Designation", "Enter Designation");
+            }
+            if(string.IsNullOrEmpty((candidateView.DateOfBirth).ToString()))
+            {
+                ModelState.AddModelError("DateOfBirth", "Enter Date of Birth");
+            }
+            if(string.IsNullOrEmpty((candidateView.DateOfInterview).ToString()))
+            {
+                ModelState.AddModelError("DateOfInterview", "Enter Date of Interview");
+            }
+            if(string.IsNullOrEmpty(candidateView.Email))
+            {
+                ModelState.AddModelError("Email", "Enter Email");
+            }
+            if(string.IsNullOrEmpty(candidateView.PAN))
+            {
+                ModelState.AddModelError("PAN", "Enter PAN");
+            }
+            if(string.IsNullOrEmpty((candidateView.ExpectedSalary).ToString()))
+            {
+                ModelState.AddModelError("ExpectedSalary", "Enter ExpectedSalary");
+            }
+            if(string.IsNullOrEmpty((candidateView.NoticePeriodInMonths).ToString()))
+            {
+                ModelState.AddModelError("NoticePeriodInMonths", "Enter NoticePeriodInMonths");
+            }
+            if(string.IsNullOrEmpty((candidateView.TotalExperience).ToString()))
+            {
+                ModelState.AddModelError("TotalExperience", "Enter TotalExperience");
+            }
+            if(string.IsNullOrEmpty(candidateView.Qualifications))
+            {
+                ModelState.AddModelError("Qualifications", "Enter Qualifications");
+            }
+            if(ModelState.IsValid)
+            {
+                if (user != null)
                 {
-                    //txtPreviousCompanyValues += textboxValue + "\\n";
-                    previousCmpny.PreviousCompany = textboxValue;
-                    dbContext.tblPreviousCompanies.Add(previousCmpny);
+                    tblCandidate candidate = new tblCandidate();
+                    candidate.Name = candidateView.Name;
+                    candidate.DateOfBirth = candidateView.DateOfBirth;
+                    candidate.DateOfInterview = candidateView.DateOfInterview;
+                    candidate.Designation = candidateView.Designation;
+                    candidate.Email = candidateView.Email;
+                    candidate.PAN = candidateView.PAN;
+                    candidate.ExpectedSalary = candidateView.ExpectedSalary;
+                    candidate.NoticePeriodInMonths = candidateView.NoticePeriodInMonths;
+                    candidate.TotalExperience = candidateView.TotalExperience;
+                    candidate.Qualifications = candidateView.Qualifications;
+                    candidate.IsLocked = true;
+                    candidate.CreatedBy = "hr";
+                    candidate.CreatedDate = System.DateTime.Now;
+                    candidate.ModifiedBy = "hr";
+                    candidate.ModifiedDate = System.DateTime.Now;
+                    candidate.IsDeleted = false;
+                    dbContext.tblCandidates.Add(candidate);
+                    dbContext.SaveChanges();
+
+                    tblPreviousCompany previousCmpny = new tblPreviousCompany();
+                    // previousCmpny.PreviousCompany = candidateView.PreviousCompany;
+                    previousCmpny.CandidateID = candidate.CandidateID;
+                    //string txtPreviousCompanyValues = "";
+                    foreach (string textboxValue in txtBoxes)
+                    {
+                        //txtPreviousCompanyValues += textboxValue + "\\n";
+                        previousCmpny.PreviousCompany = textboxValue;
+                        dbContext.tblPreviousCompanies.Add(previousCmpny);
+                        dbContext.SaveChanges();
+                    }
+
+                    // dbContext.tblPreviousCompanies.Add(previousCmpny);
+
+
+                    tblEvaluation eval = new tblEvaluation();
+                    eval.CandidateID = candidate.CandidateID;
+                    eval.UserID = Convert.ToInt32(user);
+                    eval.RoundID = 1;
+                    eval.CreatedBy = "hr";
+                    eval.CreatedDate = DateTime.Now;
+                    eval.ModifiedBy = "hr";
+                    eval.ModifiedDate = DateTime.Now;
+                    eval.IsDeleted = false;
+                    dbContext.tblEvaluations.Add(eval);
+
+
                     dbContext.SaveChanges();
                 }
-
-               // dbContext.tblPreviousCompanies.Add(previousCmpny);
-
-
-                tblEvaluation eval = new tblEvaluation();
-                eval.CandidateID = candidate.CandidateID;
-                eval.UserID = Convert.ToInt32(user);
-                eval.RoundID = 1;
-                eval.CreatedBy = "hr";
-                eval.CreatedDate = DateTime.Now;
-                eval.ModifiedBy = "hr";
-                eval.ModifiedDate = DateTime.Now;
-                eval.IsDeleted = false;
-                dbContext.tblEvaluations.Add(eval);
-
-               
-                dbContext.SaveChanges();
+                return View();
             }
+            
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
             return Json(new { Url = redirectUrl });
         }
