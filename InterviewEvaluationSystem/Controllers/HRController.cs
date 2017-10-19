@@ -80,7 +80,7 @@ namespace InterviewEvaluationSystem.Controllers
             return View(interviewEvaluationViewModel);
         }
 
-        [HttpPost]
+        [HttpPost] 
         public ActionResult HREvaluation(bool recommended, int evaluationID, int[] values, string comments)
         {
             if (evaluationID != 0)

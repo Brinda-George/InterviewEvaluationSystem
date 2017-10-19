@@ -37,3 +37,11 @@ save-userCandidate{
 delete-userCandidate{
     display:none;
 }
+
+td{
+    padding-left:20px;
+}
+
+#UserGrid{
+    margin-left:150px;
+}
