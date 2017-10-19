@@ -34,7 +34,7 @@ namespace InterviewEvaluationSystem.Controllers
             List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
             return View(CurrentStatuses);
         }
-
+         
         [HttpPost]
         public ActionResult CandidateStatus(string searchString)
         {
