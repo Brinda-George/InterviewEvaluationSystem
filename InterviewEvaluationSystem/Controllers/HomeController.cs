@@ -42,30 +42,30 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Login(tblUser user)
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var count = db.spLogin(user.UserName, user.Password);
-            var item = count.FirstOrDefault();
-            int usercount = Convert.ToInt32(item);
-            var userDetails = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
-            int userTypeId = Convert.ToInt32(userDetails.UserTypeID);
-            int userId = userDetails.UserID;
-            if (usercount == 1)
-            {
-                Session["UserName"] = user.UserName;
-                Session["UserID"] = userId;
-                if (userTypeId == 1)
-                {
-                    return RedirectToAction("HRHomePage", "HR");
-                }
-                else if (userTypeId == 2)
-                {
-                    return RedirectToAction("HomePage", "Interviewer");
-                }
-            }
-            else
-            {
-                Response.Write("Invalid credentials");
-            }
+            //InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            //var count = db.spLogin(user.UserName, user.Password);
+            //var item = count.FirstOrDefault();
+            //int usercount = Convert.ToInt32(item);
+            //var userDetails = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
+            //int userTypeId = Convert.ToInt32(userDetails.UserTypeID);
+            //int userId = userDetails.UserID;
+            //if (usercount == 1)
+            //{
+            //    Session["UserName"] = user.UserName;
+            //    Session["UserID"] = userId;
+            //    if (userTypeId == 1)
+            //    {
+            //        return RedirectToAction("HRHomePage", "HR");
+            //    }
+            //    else if (userTypeId == 2)
+            //    {
+            //        return RedirectToAction("HomePage", "Interviewer");
+            //    }
+            //}
+            //else
+            //{
+            //    Response.Write("Invalid credentials");
+            //}
             return View();
         }
 

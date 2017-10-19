@@ -12,18 +12,16 @@ namespace InterviewEvaluationSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tblRatingScale
+    public partial class tblRound
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tblRatingScale()
+        public tblRound()
         {
-            this.tblScores = new HashSet<tblScore>();
+            this.tblEvaluations = new HashSet<tblEvaluation>();
         }
     
-        public int RateScaleID { get; set; }
-        public string RateScale { get; set; }
-        public int RateValue { get; set; }
-        public string Description { get; set; }
+        public int RoundID { get; set; }
+        public string RoundName { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
@@ -31,6 +29,6 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<bool> IsDeleted { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblScore> tblScores { get; set; }
+        public virtual ICollection<tblEvaluation> tblEvaluations { get; set; }
     }
 }

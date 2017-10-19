@@ -27,29 +27,29 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Register(tblUser user)
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var count = db.spRegister(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
-            var item = count.FirstOrDefault();
-            int usercount = Convert.ToInt32(item);
-            string message = string.Empty;
-            switch (usercount)
-            {
-                case -1:
-                    message = "Username already exists.\\nPlease choose a different username.";
-                    break;
-                case -2:
-                    message = "EmployeeID has already been used.";
-                    break;
-                case -3:
-                    message = "Email address has already been used.";
-                    break;
-                default:
-                    message = "Registration successful.\\nUser Id: " + user.UserID.ToString();
-                    db.tblUsers.Add(user);
-                    db.SaveChanges();
-                    break;
-            }
-            ViewBag.Message = message;
+            //InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            //var count = db.spRegister(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
+            //var item = count.FirstOrDefault();
+            //int usercount = Convert.ToInt32(item);
+            //string message = string.Empty;
+            //switch (usercount)
+            //{
+            //    case -1:
+            //        message = "Username already exists.\\nPlease choose a different username.";
+            //        break;
+            //    case -2:
+            //        message = "EmployeeID has already been used.";
+            //        break;
+            //    case -3:
+            //        message = "Email address has already been used.";
+            //        break;
+            //    default:
+            //        message = "Registration successful.\\nUser Id: " + user.UserID.ToString();
+            //        db.tblUsers.Add(user);
+            //        db.SaveChanges();
+            //        break;
+            //}
+            //ViewBag.Message = message;
             return View();
         }
 
@@ -376,6 +376,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
+            
             user.UserTypeID = Convert.ToInt32(userType);
             user.CreatedBy = "hr";
             user.CreatedDate = System.DateTime.Now;

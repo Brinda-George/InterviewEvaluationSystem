@@ -12,18 +12,17 @@ namespace InterviewEvaluationSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tblRatingScale
+    public partial class tblSkill
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tblRatingScale()
+        public tblSkill()
         {
             this.tblScores = new HashSet<tblScore>();
         }
     
-        public int RateScaleID { get; set; }
-        public string RateScale { get; set; }
-        public int RateValue { get; set; }
-        public string Description { get; set; }
+        public int SkillID { get; set; }
+        public string SkillName { get; set; }
+        public Nullable<int> SkillCategoryID { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
@@ -32,5 +31,6 @@ namespace InterviewEvaluationSystem.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblScore> tblScores { get; set; }
+        public virtual tblSkillCategory tblSkillCategory { get; set; }
     }
 }
