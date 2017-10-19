@@ -219,6 +219,7 @@ namespace InterviewEvaluationSystem.Controllers
             return View(addCandidateViewModel);
         }
 
+
         [HttpPost]
         public ActionResult AddCandidate(AddCandidateViewModels candidateView, string user, string Name, string[] txtBoxes)
         {
