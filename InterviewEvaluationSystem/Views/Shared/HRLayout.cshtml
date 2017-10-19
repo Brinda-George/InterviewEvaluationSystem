@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Evaluation System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <style>
+        /*#nav {
+            height: 200px;
+            list-style-type: none;
+            margin: auto;
+            overflow: hidden;
+            font-size: 18px;
+            padding: 100px;
+        }*/
+
+            #nav ul {
+                list-style-type: none;
+                display: none;
+                overflow: hidden;
+            }
+
+            #nav li:hover > ul {
+                color: white;
+                display: block;
+            }
+
+        #tab {
+            float: left;
+            margin-left: 25px;
+        }
+    </style>
+    </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @Html.ActionLink("Interview Evaluation System", "HRHomePage", "HR", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul id="nav" class="nav navbar-nav">
+                    <li id="tab"><a href="/HR/RatingScale">Rating Scale</a></li>
+                    <li id="tab"><a href="/HR/SkillCategory">Skill Category</a></li>
+                    <li id="tab"><a href="/HR/Skill">Skills</a></li>
+                    <li id="tab"><a href="/HR/Notification">Notifications</a></li>
+                    <li id="tab">
+                        <a>Interviews</a>
+                        <ul>
+                            <li><a href="/HR/AddInterviewers">Interviews</a></li>
+                            <li><a href="/HR/AddCandidate">Candidates</a></li>
+                            <li><a href="/Interviewer/EvaluationStatus">Interview Evaluation Status</a></li>
+                        </ul>
+                    </li>
+                    </ul>
+                <ul id="nav" class="nav navbar-nav navbar-right">
+                    <li id="tab">
+                        <a>Profile</a>
+                        <ul>
+                            <li><a href="/Home/ViewProfile">View Profile</a></li>
+                            <li><a href="/Home/ProfileUpdate">Update Profile</a></li>
+                            <li><a href="/Home/ChangePassword">Change Password</a></li>
+                            <li><a href="/Home/Logout">Logout</a></li>
+                        </ul>
+                    </li>
+                    @if (@Session["Name"] != null)
+                    {
+                            <li style="color:white; font-size:20px">Welcome @Session["Name"]</li>
+                    }
+                    else
+                    {
+                        Response.Redirect("~/Home/Login");
+                    }
+                </ul>
+               </div>
+            </div>
+        </div>
+      <div class="container body-content">
+          @RenderBody()
+          <hr />
+          <footer>
+              <p>&copy; @DateTime.Now.Year - Interview Evaluation System</p>
+          </footer>
+      </div>
+
+      @Scripts.Render("~/bundles/jquery")
+      @Scripts.Render("~/bundles/bootstrap")
+      @RenderSection("scripts", required: false)
+
+   </body>
+</html>

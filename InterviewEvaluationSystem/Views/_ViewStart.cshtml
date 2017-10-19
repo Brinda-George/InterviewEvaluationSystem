@@ -1,3 +1,11 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+    var count = Convert.ToInt32(Session["Count"]);
+    switch(count)
+    {
+        case 1: Layout = "~/Views/Shared/HRLayout.cshtml";
+            break;
+        default: Layout = "~/Views/Shared/InterviewerLayout.cshtml";
+            break;
+    }
 }

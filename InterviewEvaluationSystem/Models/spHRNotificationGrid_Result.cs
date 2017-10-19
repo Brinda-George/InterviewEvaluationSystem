@@ -18,5 +18,6 @@ namespace InterviewEvaluationSystem.Models
         public string Email { get; set; }
         public Nullable<int> RoundID { get; set; }
         public Nullable<bool> Recommended { get; set; }
+        public Nullable<int> totalRound { get; set; }
     }
 }

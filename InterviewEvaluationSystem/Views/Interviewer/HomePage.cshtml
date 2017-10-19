@@ -1,11 +1,13 @@
 ﻿
 @{
     ViewBag.Title = "HomePage";
+   // Layout = "~/Views/Shared/_Layout.cshtml";
+  // Layout = "~/Views/Shared/InterviewerLayout.cshtml";
 }
 
-<h2>HomePage</h2>
+@*<h2>HomePage</h2>*@
 
-<style>
+@*<style>
     #nav {
         list-style-type: none;
         margin: auto;
@@ -42,7 +44,9 @@
             <li><a href="/Home/Logout">Logout</a></li>
         </ul>
     </li>
-</ul>
+</ul>*@
+
+@Scripts.Render("~/bundles/bootstrap")
 
 <h2>Welcome to Interviewer Home Page!!!!</h2>
 

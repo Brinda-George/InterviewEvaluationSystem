@@ -1,6 +1,8 @@
 ﻿
 @{
     ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // Layout = "~/Views/Shared/HRLayout.cshtml";
 }
 
 <h2>Login</h2>
@@ -11,7 +13,5 @@
     <input type="password" class="form-control" name="Password" placeholder="Password" required="" />
     <button class="btn" type="submit">Login</button>
 </form>
-
-
     @Html.ActionLink("New user ? Register here..", "Register", "HR", new { @class = "elements" }, null)
 

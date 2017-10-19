@@ -794,6 +794,7 @@
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="RoundID" Nullable="true" />
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
+          <Property Type="Int32" Name="totalRound" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1049,6 +1050,7 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
                 <ScalarProperty Name="Recommended" ColumnName="Recommended" />
+                <ScalarProperty Name="totalRound" ColumnName="totalRound" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

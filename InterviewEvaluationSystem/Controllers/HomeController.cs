@@ -50,6 +50,7 @@ namespace InterviewEvaluationSystem.Controllers
                 int usercount = Convert.ToInt32(item);
                 var usertype = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
                 int id = Convert.ToInt32(usertype.UserTypeID);
+                Session["Count"] = id;
                 if (usercount == 1)
                 {
                     //FormsAuthentication.SetAuthCookie(user.UserName, false);
@@ -100,26 +101,23 @@ namespace InterviewEvaluationSystem.Controllers
             }
         }
 
-
-        [HttpGet]
-        public ActionResult Logout()
-        {
-            return View();
-        }
         public ActionResult Logout(tblUser user)
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["Name"]);
-            var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
-            int id = Convert.ToInt32(item.UserTypeID);
-            if (id == 1)
-            {
-                return RedirectToAction("HRHomePage", "HR");
-            }
-            else
-            {
-                return RedirectToAction("HomePage", "Interviewer");
-            }
+            Session["Name"] = null;
+            Session.Abandon();
+            //InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            //var name = Convert.ToString(Session["Name"]);
+            //var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+            //int id = Convert.ToInt32(item.UserTypeID);
+            //if (id == 1)
+            //{
+            //    return RedirectToAction("HRHomePage", "HR");
+            //}
+            //else
+            //{
+            //    return RedirectToAction("HomePage", "Interviewer");
+            //}
+            return RedirectToAction("Login", "Home");
         }
 
 

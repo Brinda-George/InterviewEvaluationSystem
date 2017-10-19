@@ -25,6 +25,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
+
         public ActionResult Register(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();

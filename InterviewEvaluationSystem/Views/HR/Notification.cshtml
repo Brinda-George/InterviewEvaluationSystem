@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Notification";
+ //   Layout = "~/Views/Shared/HRLayout.cshtml";
 }
 
 <script src="~/Scripts/Notification.js"></script>
@@ -10,7 +11,7 @@
 
 @{
     var grid = new WebGrid(ViewBag.notificationList, canPage: true, rowsPerPage: 5,
-    selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);}
 
 @grid.GetHtml(tableStyle: "webgrid-table",

@@ -1,6 +1,7 @@
 ﻿@model InterviewEvaluationSystem.Models.InterviewEvaluationViewModel
 @{
     ViewBag.Title = "Interview Evaluation";
+    //Layout = "~/Views/Shared/InterviewerLayout.cshtml";
     WebGrid webgridRatingScale = new WebGrid(source: Model.RatingScale, canSort: false);
     List<WebGrid> webgrids = new List<WebGrid>(10);
     for (int i = 0; i < Model.SkillCategories.Count; i++)
