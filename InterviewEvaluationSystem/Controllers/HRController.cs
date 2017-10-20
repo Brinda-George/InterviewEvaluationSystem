@@ -457,14 +457,20 @@ namespace InterviewEvaluationSystem.Controllers
             updateInterviewer.UserName = Name;
             updateInterviewer.Email = Email;
             updateInterviewer.Designation = Designation;
+            updateInterviewer.ModifiedBy = "hr";
+            updateInterviewer.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
-            return RedirectToAction("AddInterviewers");
+            return Json(new { UserName = Name, Email = Email, Designation=Designation }, JsonRequestBehavior.AllowGet);
+
+           // return RedirectToAction("AddInterviewers");
         }
 
         public ActionResult DeleteInterviewer(string EmployeeId)
         {
             tblUser user = dbContext.tblUsers.Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
             user.IsDeleted = true;
+            user.ModifiedBy = "hr";
+            user.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
             return RedirectToAction("AddInterviewers");
         }
@@ -482,7 +488,7 @@ namespace InterviewEvaluationSystem.Controllers
                 }).ToList();
             addCandidateViewModel.users = dbContext.tblUsers.ToList();
             List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblUser user in dbContext.tblUsers)
+            foreach (tblUser user in dbContext.tblUsers.Where(x=>x.IsDeleted==false))
             {
                 SelectListItem selectlistitem = new SelectListItem
                 {
@@ -623,6 +629,9 @@ namespace InterviewEvaluationSystem.Controllers
             tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
             updateCandidate.Name = CandidateName;
             updateCandidate.DateOfInterview = DateOfInterview;
+            updateCandidate.ModifiedBy = "hr";
+            updateCandidate.ModifiedDate = System.DateTime.Now;
+
             dbContext.SaveChanges();
             tblUser uid = dbContext.tblUsers.Where(x => x.UserName == UserName).FirstOrDefault();
             var userid = uid.UserID;
@@ -636,6 +645,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             tblCandidate deleteCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
             deleteCandidate.IsDeleted = true;
+            deleteCandidate.ModifiedBy = "hr";
+            deleteCandidate.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
             return RedirectToAction("AddCandidate");
         }

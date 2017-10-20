@@ -5,8 +5,17 @@
         $('.edit-modeCandidate').hide();
 
         $(document).on("click", ".edit-userCandidate, .cancel-userCandidate", function () {
-        
+            
             var tr = $(this).parents('tr:first');
+            var UserName = tr.find("#lblInterviewerName").text();
+         //   $('#ddlInterviewerName').text("six");
+          //  $('#ddlInterviewerName').val(UserName).attr("selected", "selected");
+          //  $("#ddlInterviewerName").find("option[val='UserName']").attr("selected", "selected");
+           // $('#ddlInterviewerName option[value="UserName"]').attr("selected", true);
+           // $('#ddlInterviewerName').val($("#ddlInterviewerName option:contains('UserName')").val());
+           // $("#ddlInterviewerName option[text='UserName']").attr("selected", "selected");
+           // $('#ddlInterviewerName').val(UserName);
+          //  $('#ddlInterviewerName option:contains("UserName")').prop('selected', true);
             tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
         });
 
@@ -25,7 +34,7 @@
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    alert('Successfully Updated Interviewer');
+                   // alert('Successfully Updated Interviewer');
                     tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
                     debugger;
                     tr.find("#lblCandidateName").text(data.Name);
