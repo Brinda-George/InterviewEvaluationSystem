@@ -15,7 +15,17 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult HRHomePage()
         {
-            return View();
+            HRDashboardViewModel hrDashBoardViewModel = new HRDashboardViewModel();
+            var hrDashBoard = dbContext.spGetHRDashBoard().Single();
+            hrDashBoardViewModel.NewCandidateCount = hrDashBoard.NewCandidateCount;
+            hrDashBoardViewModel.NotificationCount = hrDashBoard.NotificationCount;
+            hrDashBoardViewModel.TodaysInterviewCount = hrDashBoard.TodaysInterviewCount;
+            hrDashBoardViewModel.SkillCategoryCount = hrDashBoard.SkillCategoryCount;
+            hrDashBoardViewModel.SkillCount = hrDashBoard.SkillCount;
+            hrDashBoardViewModel.HiredCandidateCount = hrDashBoard.HiredCandidateCount;
+            hrDashBoardViewModel.TotalCandidateCount = hrDashBoard.TotalCandidateCount;
+            hrDashBoardViewModel.AvailableInterviewerCount = hrDashBoard.AvailableInterviewerCount;
+            return View(hrDashBoardViewModel);
         }
 
         [HttpGet]
@@ -27,8 +37,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Register(tblUser user)
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var count = db.spRegister(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
+            var count = dbContext.spRegister(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
             var item = count.FirstOrDefault();
             int usercount = Convert.ToInt32(item);
             string message = string.Empty;
@@ -45,8 +54,8 @@ namespace InterviewEvaluationSystem.Controllers
                     break;
                 default:
                     message = "Registration successful.\\nUser Id: " + user.UserID.ToString();
-                    db.tblUsers.Add(user);
-                    db.SaveChanges();
+                    dbContext.tblUsers.Add(user);
+                    dbContext.SaveChanges();
                     break;
 
             }

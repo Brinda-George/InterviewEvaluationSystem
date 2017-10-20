@@ -7,6 +7,26 @@ using System.Web;
 
 namespace InterviewEvaluationSystem.Models
 {
+    public class HRDashboardViewModel
+    {
+        public Nullable<int> NewCandidateCount { get; set; }
+        public Nullable<int> NotificationCount { get; set; }
+        public Nullable<int> TodaysInterviewCount { get; set; }
+        public Nullable<int> AvailableInterviewerCount { get; set; }
+        public Nullable<int> SkillCategoryCount { get; set; }
+        public Nullable<int> SkillCount { get; set; }
+        public Nullable<int> HiredCandidateCount { get; set; }
+        public Nullable<int> TotalCandidateCount { get; set; }
+    }
+
+    public class HInterviewerDashboardViewModel
+    {
+        public int NewCandidateCount { get; set; }
+        public int TodaysInterviewCount { get; set; }
+        public int HiredCandidateCount { get; set; }
+        public int TotalCandidateCount { get; set; }
+    }
+
     public class RatingScaleViewModel
     {
         [Required(ErrorMessage = "Error: Must Choose a Rate")]

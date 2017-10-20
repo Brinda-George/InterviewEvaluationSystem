@@ -28,6 +28,7 @@
           <Property Name="ModifiedBy" Type="varchar" MaxLength="100" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CandidateStatus" Type="bit" />
         </EntityType>
         <EntityType Name="tblEvaluation">
           <Key>
@@ -274,7 +275,10 @@
         <Function Name="spGetEmailByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
         </Function>
-        <Function Name="spGetNewCandidates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetHRDashBoard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetInterviewerDashBoard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetPreviousRoundScores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
           <Parameter Name="RoundID" Type="int" Mode="In" />
@@ -389,6 +393,7 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CandidateStatus" Type="Boolean" />
           <NavigationProperty Name="tblEvaluations" Relationship="Self.FK__tblEvalua__Candi__09A971A2" FromRole="tblCandidate" ToRole="tblEvaluation" />
           <NavigationProperty Name="tblPreviousCompanies" Relationship="Self.FK__tblPrevio__Candi__4E88ABD4" FromRole="tblCandidate" ToRole="tblPreviousCompany" />
         </EntityType>
@@ -700,7 +705,9 @@
           <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
           <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="spGetNewCandidates" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="spGetInterviewerDashBoard" ReturnType="Collection(Int32)">
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="spGetPreviousRoundScores" ReturnType="Collection(InterviewEvaluationDbModel.spGetPreviousRoundScores_Result)">
             <Parameter Name="CandidateID" Mode="In" Type="Int32" />
             <Parameter Name="RoundID" Mode="In" Type="Int32" />
@@ -717,6 +724,10 @@
             <Parameter Name="CandidateID" Mode="In" Type="Int32" />
             <Parameter Name="OfferedSalary" Mode="In" Type="Decimal" />
             <Parameter Name="DateOfJoining" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spLogin" ReturnType="Collection(Int32)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="PassWord" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spRegister" ReturnType="Collection(Int32)">
             <Parameter Name="Username" Mode="In" Type="String" />
@@ -736,10 +747,7 @@
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spLogin" ReturnType="Collection(Int32)">
-            <Parameter Name="Username" Mode="In" Type="String" />
-            <Parameter Name="PassWord" Mode="In" Type="String" />
-          </FunctionImport>
+          <FunctionImport Name="spGetHRDashBoard" ReturnType="Collection(InterviewEvaluationDbModel.spGetHRDashBoard_Result)" />
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -797,9 +805,15 @@
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
           <Property Type="Int32" Name="totalRound" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="spLogin_Result">
-          <Property Type="Int32" Name="UserID" Nullable="false" />
-          <Property Type="Int32" Name="UserTypeID" Nullable="true" />
+        <ComplexType Name="spGetHRDashBoard_Result">
+          <Property Type="Int32" Name="NewCandidateCount" Nullable="true" />
+          <Property Type="Int32" Name="NotificationCount" Nullable="true" />
+          <Property Type="Int32" Name="TodaysInterviewCount" Nullable="true" />
+          <Property Type="Int32" Name="AvailableInterviewerCount" Nullable="true" />
+          <Property Type="Int32" Name="SkillCategoryCount" Nullable="true" />
+          <Property Type="Int32" Name="SkillCount" Nullable="true" />
+          <Property Type="Int32" Name="HiredCandidateCount" Nullable="true" />
+          <Property Type="Int32" Name="TotalCandidateCount" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -829,6 +843,7 @@
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CandidateStatus" ColumnName="CandidateStatus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1017,7 +1032,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetNewCandidates" FunctionName="InterviewEvaluationDbModel.Store.spGetNewCandidates" />
+          <FunctionImportMapping FunctionImportName="spGetInterviewerDashBoard" FunctionName="InterviewEvaluationDbModel.Store.spGetInterviewerDashBoard" />
           <FunctionImportMapping FunctionImportName="spGetPreviousRoundScores" FunctionName="InterviewEvaluationDbModel.Store.spGetPreviousRoundScores">
             <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetPreviousRoundScores_Result">
@@ -1061,10 +1076,24 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spInsertJoinDetails" FunctionName="InterviewEvaluationDbModel.Store.spInsertJoinDetails" />
+          <FunctionImportMapping FunctionImportName="spLogin" FunctionName="InterviewEvaluationDbModel.Store.spLogin" />
           <FunctionImportMapping FunctionImportName="spRegister" FunctionName="InterviewEvaluationDbModel.Store.spRegister" />
           <FunctionImportMapping FunctionImportName="spUpdateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.spUpdateCandidateInterviewer" />
           <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
-          <FunctionImportMapping FunctionImportName="spLogin" FunctionName="InterviewEvaluationDbModel.Store.spLogin" />
+          <FunctionImportMapping FunctionImportName="spGetHRDashBoard" FunctionName="InterviewEvaluationDbModel.Store.spGetHRDashBoard">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetHRDashBoard_Result">
+                <ScalarProperty Name="NewCandidateCount" ColumnName="NewCandidateCount" />
+                <ScalarProperty Name="NotificationCount" ColumnName="NotificationCount" />
+                <ScalarProperty Name="TodaysInterviewCount" ColumnName="TodaysInterviewCount" />
+                <ScalarProperty Name="AvailableInterviewerCount" ColumnName="AvailableInterviewerCount" />
+                <ScalarProperty Name="SkillCategoryCount" ColumnName="SkillCategoryCount" />
+                <ScalarProperty Name="SkillCount" ColumnName="SkillCount" />
+                <ScalarProperty Name="HiredCandidateCount" ColumnName="HiredCandidateCount" />
+                <ScalarProperty Name="TotalCandidateCount" ColumnName="TotalCandidateCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

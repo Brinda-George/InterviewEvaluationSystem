@@ -21,19 +21,20 @@
                 <ul id="nav" class="nav navbar-nav navbar-right">
                     @if (@Session["UserName"] != null)
                     {
-                        <li class="nav navbar-nav navbar-right tab"><a href="/Interviewer/HomePage">Welcome @Session["UserName"]</a></li>
+                        <li class="tab"><a href="/Interviewer/HomePage">Welcome @Session["UserName"]</a></li>
                     }
                     else
                     {
                         Response.Redirect("~/Home/Login");
                     }
-                    <li class="tab">
-                        <a>Profile</a>
-                        <ul>
-                            <li><a href="/Home/ViewProfile">View Profile</a></li>
-                            <li><a href="/Home/ProfileUpdate">Update Profile</a></li>
+                    <li class="dropdown tab">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Home/ViewProfile"><i class="fa fa-id-badge" aria-hidden="true"></i> View Profile</a></li>
+                            <li><a href="/Home/ProfileUpdate"><i class="fa fa-pencil-square" aria-hidden="true"></i> Update Profile</a></li>
                             <li><a href="/Home/ChangePassword">Change Password</a></li>
-                            <li><a href="/Home/Logout">Logout</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/Home/Logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>

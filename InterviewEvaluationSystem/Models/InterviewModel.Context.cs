@@ -75,9 +75,13 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmailByUserID_Result>("spGetEmailByUserID", userIDParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> spGetNewCandidates()
+        public virtual ObjectResult<Nullable<int>> spGetInterviewerDashBoard(Nullable<int> userID)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetNewCandidates");
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetInterviewerDashBoard", userIDParameter);
         }
     
         public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)
@@ -135,6 +139,19 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("DateOfJoining", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertJoinDetails", userIDParameter, candidateIDParameter, offeredSalaryParameter, dateOfJoiningParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spLogin(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", usernameParameter, passWordParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> spRegister(string username, string employeeid, string designation, string address, string pincode, string password, string email)
@@ -200,17 +217,9 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> spLogin(string username, string passWord)
+        public virtual ObjectResult<spGetHRDashBoard_Result> spGetHRDashBoard()
         {
-            var usernameParameter = username != null ?
-                new ObjectParameter("Username", username) :
-                new ObjectParameter("Username", typeof(string));
-    
-            var passWordParameter = passWord != null ?
-                new ObjectParameter("PassWord", passWord) :
-                new ObjectParameter("PassWord", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", usernameParameter, passWordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHRDashBoard_Result>("spGetHRDashBoard");
         }
     }
 }

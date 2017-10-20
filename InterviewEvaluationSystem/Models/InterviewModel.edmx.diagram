@@ -4,12 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="95b4b672eab24e989122b1a65040da24" Name="Diagram1">
+      <Diagram DiagramId="a11b4fafac8e41cd80713be673e5fa90" Name="Diagram1">
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblCandidate" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblEvaluation" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblPreviousCompany" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblRatingScale" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblRound" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblRound" Width="1.5" PointX="0.75" PointY="11.375" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblScore" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblSkill" Width="1.5" PointX="3" PointY="24.5" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblSkillCategory" Width="1.5" PointX="0.75" PointY="24.5" IsExpanded="true" />
