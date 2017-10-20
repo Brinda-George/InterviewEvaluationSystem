@@ -344,7 +344,7 @@ namespace InterviewEvaluationSystem.Controllers
                 redirectUrl = new UrlHelper(Request.RequestContext).Action("HRHomePage", "HR");
             }
             return Json(new { Url = redirectUrl });
-        }
+        } 
 
         public ActionResult AddInterviewers()
         {
@@ -413,8 +413,8 @@ namespace InterviewEvaluationSystem.Controllers
                 user.UserTypeID = Convert.ToInt32(userType);
                 user.CreatedBy = "hr";
                 user.CreatedDate = System.DateTime.Now;
-                user.ModifiedBy = "hr";
-                user.ModifiedDate = System.DateTime.Now;
+                //user.ModifiedBy = "hr";
+                //user.ModifiedDate = System.DateTime.Now;
                 user.IsDeleted = false;
                 dbContext.tblUsers.Add(user);
                 dbContext.SaveChanges();
@@ -557,8 +557,8 @@ namespace InterviewEvaluationSystem.Controllers
                     candidate.IsLocked = true;
                     candidate.CreatedBy = "hr";
                     candidate.CreatedDate = System.DateTime.Now;
-                    candidate.ModifiedBy = "hr";
-                    candidate.ModifiedDate = System.DateTime.Now;
+                    //candidate.ModifiedBy = "hr";
+                    //candidate.ModifiedDate = System.DateTime.Now;
                     candidate.IsDeleted = false;
                     dbContext.tblCandidates.Add(candidate);
                     dbContext.SaveChanges();
@@ -571,6 +571,9 @@ namespace InterviewEvaluationSystem.Controllers
                     {
                         //txtPreviousCompanyValues += textboxValue + "\\n";
                         previousCmpny.PreviousCompany = textboxValue;
+                        previousCmpny.CreatedBy = "hr";
+                        previousCmpny.CreatedDate = System.DateTime.Now;
+                        previousCmpny.IsDeleted = false;
                         dbContext.tblPreviousCompanies.Add(previousCmpny);
                         dbContext.SaveChanges();
                     }
@@ -584,8 +587,8 @@ namespace InterviewEvaluationSystem.Controllers
                     eval.RoundID = 1;
                     eval.CreatedBy = "hr";
                     eval.CreatedDate = DateTime.Now;
-                    eval.ModifiedBy = "hr";
-                    eval.ModifiedDate = DateTime.Now;
+                    //eval.ModifiedBy = "hr";
+                    //eval.ModifiedDate = DateTime.Now;
                     eval.IsDeleted = false;
                     dbContext.tblEvaluations.Add(eval);
 
@@ -680,13 +683,13 @@ namespace InterviewEvaluationSystem.Controllers
                 SelectListItem selectlistitem = new SelectListItem
                 {
                     Text = interviewer.UserName,
-                    Value = interviewer.UserID.ToString()
+                    Value = interviewer.UserID.ToString() 
                 };
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.interviewers = selectedlist;
             return PartialView("NotificationProceed", candidateProceed);
-        }
+        } 
 
         public ActionResult ProceedCandidateData(NotificationProceedViewModel proceedCandidateData, string interviewers)
         {
@@ -704,4 +707,4 @@ namespace InterviewEvaluationSystem.Controllers
             return RedirectToAction("Notification");
         }
     }
-}
+} 
