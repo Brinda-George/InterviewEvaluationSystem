@@ -46,26 +46,29 @@ namespace InterviewEvaluationSystem.Controllers
             var count = db.spLogin(user.UserName, user.Password);
             var item = count.FirstOrDefault();
             int usercount = Convert.ToInt32(item);
-            var userDetails = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
-            int userTypeId = Convert.ToInt32(userDetails.UserTypeID);
-            int userId = userDetails.UserID;
+            var loginUser = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
+            int usertypeid = Convert.ToInt32(loginUser.UserTypeID);
+            Session["UserTypeID"] = usertypeid;
             if (usercount == 1)
             {
                 Session["UserName"] = user.UserName;
-                Session["UserID"] = userId;
-                if (userTypeId == 1)
+                Session["UserID"] = user.UserID;
+                if (usertypeid == 1)
                 {
                     return RedirectToAction("HRHomePage", "HR");
+
                 }
-                else if (userTypeId == 2)
+                else if (usertypeid == 2)
                 {
                     return RedirectToAction("HomePage", "Interviewer");
+
                 }
             }
             else
             {
                 Response.Write("Invalid credentials");
             }
+
             return View();
         }
 
@@ -79,7 +82,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ProfileUpdate(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["UserName"]);
+            var name = Convert.ToString(Session["Name"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
@@ -95,36 +98,13 @@ namespace InterviewEvaluationSystem.Controllers
             }
         }
 
-        //[HttpGet]
-        //public ActionResult Logout()
-        //{
-        //    return View();
-        //}
-
-        //public ActionResult Logout(tblUser user)
-        //{
-        //    Session["Name"] = null;
-        //    InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-        //    var name = Convert.ToString(Session["Name"]);
-        //    var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
-        //    int id = Convert.ToInt32(item.UserTypeID);
-        //    if (id == 1)
-        //    {
-        //        return RedirectToAction("HRHomePage", "HR");
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("HomePage", "Interviewer");
-        //    }
-        //}
-
-        public ActionResult Logout()
+        public ActionResult Logout(tblUser user)
         {
             Session["UserName"] = null;
             Session.Abandon();
-            FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Home");
         }
+
         public ActionResult ViewProfile()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
@@ -153,6 +133,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 ViewBag.result = "Wrong Password!!";
             }
+
             return View();
         }
     }

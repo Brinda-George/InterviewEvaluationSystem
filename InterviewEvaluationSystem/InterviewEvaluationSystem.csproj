@@ -258,6 +258,9 @@
     <Compile Include="Models\spHRNotificationGrid_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spLogin_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblCandidate.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -296,8 +299,8 @@
     <Content Include="Content\bootstrap-original.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\homepage.css" />
     <Content Include="Content\formstyle.css" />
+    <Content Include="Content\layout.css" />
     <Content Include="Content\startmin.css" />
     <Content Include="Content\webgridstyle.css" />
     <Content Include="favicon.ico" />
@@ -331,7 +334,6 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\hrevaluation.js" />
-    <Content Include="Content\hrhomepage.css" />
     <Content Include="Scripts\interviewevaluation.js" />
     <Content Include="Scripts\Candidate.js" />
     <Content Include="Scripts\Interviewer.js" />
@@ -406,6 +408,8 @@
     <Content Include="Views\HR\NotificationProceed.cshtml" />
     <Content Include="Views\HR\HRHomePage.cshtml" />
     <Content Include="Views\Interviewer\HomePage.cshtml" />
+    <Content Include="Views\Shared\_HRLayout.cshtml" />
+    <Content Include="Views\Shared\_InterviewerLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

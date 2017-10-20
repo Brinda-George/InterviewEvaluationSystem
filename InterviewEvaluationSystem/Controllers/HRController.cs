@@ -48,6 +48,7 @@ namespace InterviewEvaluationSystem.Controllers
                     db.tblUsers.Add(user);
                     db.SaveChanges();
                     break;
+
             }
             ViewBag.Message = message;
             return View();
@@ -56,8 +57,8 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            List<tblRatingScale> rate = db.tblRatingScales.ToList();
-            ViewBag.Roles = rate;
+            var item = (from s in db.tblRatingScales where s.IsDeleted == false select s).ToList();
+            ViewBag.Roles = item;
             return View();
         }
 
@@ -65,11 +66,12 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale(tblRatingScale rate)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            rate.CreatedBy = "admin";
+            rate.CreatedDate = DateTime.Now;
+            rate.IsDeleted = false;
             db.tblRatingScales.Add(rate);
             db.SaveChanges();
-            List<tblRatingScale> rates = db.tblRatingScales.ToList();
-            ViewBag.Roles = rates;
-            return View();
+            return RedirectToAction("RatingScale");
         }
 
         [HttpPost]
@@ -244,6 +246,66 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult IsScaleExist(string RateScale, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblRatingScales.FirstOrDefault
+                                (x => x.RateScale == RateScale && x.RateScaleID != Id);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult IsValueExist(int RateValue, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblRatingScales.FirstOrDefault
+                                (x => x.RateValue == RateValue && x.RateScaleID != Id);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult IsCategoryExist(string SkillCategory, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblSkillCategories.FirstOrDefault
+                                (x => x.SkillCategory == SkillCategory && x.SkillCategoryID != Id);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult IsSkillExist(string SkillName, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblSkills.FirstOrDefault
+                                (x => x.SkillName == SkillName && x.SkillID != Id);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult JoinDetails()
         {
             return View();
@@ -367,7 +429,6 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public JsonResult IsInterviewerExists(string UserName,string EmployeeId)
         {
-          //  bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
             bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
 
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
@@ -471,19 +532,13 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
 
                 tblPreviousCompany previousCmpny = new tblPreviousCompany();
-                // previousCmpny.PreviousCompany = candidateView.PreviousCompany;
                 previousCmpny.CandidateID = candidate.CandidateID;
-                //string txtPreviousCompanyValues = "";
                 foreach (string textboxValue in txtBoxes)
                 {
-                    //txtPreviousCompanyValues += textboxValue + "\\n";
                     previousCmpny.PreviousCompany = textboxValue;
                     dbContext.tblPreviousCompanies.Add(previousCmpny);
                     dbContext.SaveChanges();
                 }
-
-               // dbContext.tblPreviousCompanies.Add(previousCmpny);
-
 
                 tblEvaluation eval = new tblEvaluation();
                 eval.CandidateID = candidate.CandidateID;

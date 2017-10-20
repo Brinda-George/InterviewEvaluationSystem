@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Evaluation System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet" type='text/css'>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @Html.ActionLink("Interview Evaluation System", "HomePage", "Interviewer", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul id="nav" class="nav navbar-nav">
+                    <li class="tab"><a href="/Interviewer/InterviewEvaluation">Interview Evaluation</a></li>
+                </ul>
+                <ul id="nav" class="nav navbar-nav navbar-right">
+                    @if (@Session["UserName"] != null)
+                    {
+                        <li class="nav navbar-nav navbar-right tab"><a href="/Interviewer/HomePage">Welcome @Session["UserName"]</a></li>
+                    }
+                    else
+                    {
+                        Response.Redirect("~/Home/Login");
+                    }
+                    <li class="tab">
+                        <a>Profile</a>
+                        <ul>
+                            <li><a href="/Home/ViewProfile">View Profile</a></li>
+                            <li><a href="/Home/ProfileUpdate">Update Profile</a></li>
+                            <li><a href="/Home/ChangePassword">Change Password</a></li>
+                            <li><a href="/Home/Logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Interview Evaluation System</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

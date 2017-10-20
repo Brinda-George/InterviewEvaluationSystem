@@ -1,0 +1,22 @@
+﻿#nav ul {
+    background: #033c73;
+    list-style-type: none;
+    display: none;
+    color: white;
+    overflow: hidden;
+}
+
+#nav li:hover > ul {
+    color: white;
+    display: block;
+}
+
+.dropdown-menu li a {
+    color: #ffffff;
+}
+
+.tab {
+    float: left;
+    margin-left: 25px;
+    font-size: 15px;
+}

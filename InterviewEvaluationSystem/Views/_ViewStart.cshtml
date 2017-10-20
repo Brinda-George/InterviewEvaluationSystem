@@ -1,3 +1,13 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    var userType = Convert.ToInt32(Session["UserTypeID"]);
+    switch (userType)
+    {
+        case 1:
+            Layout = "~/Views/Shared/_HRLayout.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_InterviewerLayout.cshtml";
+            break;
+    }
 }
