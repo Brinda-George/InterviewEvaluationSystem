@@ -19,12 +19,12 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> TotalCandidateCount { get; set; }
     }
 
-    public class HInterviewerDashboardViewModel
+    public class InterviewerDashboardViewModel
     {
-        public int NewCandidateCount { get; set; }
-        public int TodaysInterviewCount { get; set; }
-        public int HiredCandidateCount { get; set; }
-        public int TotalCandidateCount { get; set; }
+        public Nullable<int> NewCandidateCount { get; set; }
+        public Nullable<int> TodaysInterviewCount { get; set; }
+        public Nullable<int> HiredCandidateCount { get; set; }
+        public Nullable<int> TotalCandidateCount { get; set; }
     }
 
     public class RatingScaleViewModel

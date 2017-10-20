@@ -13,16 +13,23 @@ namespace InterviewEvaluationSystem.Controllers
 {
     public class InterviewerController : Controller
     {
+        InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
         Services services = new Services();
 
         public ActionResult HomePage()
         {
-            return View();
+            InterviewerDashboardViewModel interviewerDashBoardViewModel = new InterviewerDashboardViewModel();
+            var interviewerDashBoard = dbContext.spGetInterviewerDashBoard(Convert.ToInt32(Session["UserID"])).Single();
+            interviewerDashBoardViewModel.NewCandidateCount = interviewerDashBoard.NewCandidateCount;
+            interviewerDashBoardViewModel.TodaysInterviewCount = interviewerDashBoard.TodaysInterviewCount;
+            interviewerDashBoardViewModel.HiredCandidateCount = interviewerDashBoard.HiredCandidateCount;
+            interviewerDashBoardViewModel.TotalCandidateCount = interviewerDashBoard.TotalCandidateCount;
+            return View(interviewerDashBoardViewModel);
         }
 
         public ActionResult EvaluationStatus()
         {
-            List<StatusViewModel> Statuses = services.GetStatus(4);
+            List<StatusViewModel> Statuses = services.GetStatus(Convert.ToInt32(Session["UserID"]));
             return View(Statuses);
         }
 
@@ -51,7 +58,6 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult InterviewEvaluation(bool recommended, int evaluationID, int[] values, string comments)
         {
-            InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
             if (evaluationID != 0)
             {
                 for (int i = 1; i < values.Length; i++)
@@ -61,7 +67,7 @@ namespace InterviewEvaluationSystem.Controllers
                         EvaluationID = evaluationID,
                         SkillID = i,
                         RateScaleID = values[i],
-                        CreatedBy = "3",
+                        CreatedBy = Convert.ToString(Session["UserID"]),
                         CreatedDate = DateTime.Now
                     });
                     dbContext.SaveChanges();
@@ -70,7 +76,7 @@ namespace InterviewEvaluationSystem.Controllers
                 tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
                 evaluation.Comment = comments;
                 evaluation.Recommended = recommended;
-                evaluation.ModifiedBy = "3";
+                evaluation.ModifiedBy = Convert.ToString(Session["UserID"]);
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
@@ -116,7 +122,7 @@ namespace InterviewEvaluationSystem.Controllers
             smtpClient.Credentials = new System.Net.NetworkCredential()
             {
                 UserName = "brindageorge94@gmail.com",
-                Password = "jehovah_jireh123"
+                Password = "********"
             };
             smtpClient.EnableSsl = true;
             smtpClient.Send(mailMessage);

@@ -1,4 +1,4 @@
-﻿
+﻿@model InterviewEvaluationSystem.Models.InterviewerDashboardViewModel
 @{
     ViewBag.Title = "HomePage";
 }
@@ -18,7 +18,7 @@
                             <i class="fa fa-users fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">26</div>
+                            <div class="huge">@Model.NewCandidateCount</div>
                             <div class="text">New Candidates</div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                             <i class="fa fa-calendar fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">24</div>
+                            <div class="huge">@Model.TodaysInterviewCount</div>
                             <div class="text">Today's Interviews</div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                             <i class="fa fa-graduation-cap fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">135</div>
+                            <div class="huge">@Model.HiredCandidateCount</div>
                             <div class="text">Hired Candidates</div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                             <i class="fa fa-bar-chart fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">500</div>
+                            <div class="huge">@Model.TotalCandidateCount</div>
                             <div class="text">Total Candidates</div>
                         </div>
                     </div>

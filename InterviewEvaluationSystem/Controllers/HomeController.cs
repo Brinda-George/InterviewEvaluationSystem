@@ -52,7 +52,7 @@ namespace InterviewEvaluationSystem.Controllers
             if (usercount == 1)
             {
                 Session["UserName"] = user.UserName;
-                Session["UserID"] = user.UserID;
+                Session["UserID"] = loginUser.UserID;
                 if (usertypeid == 1)
                 {
                     return RedirectToAction("HRHomePage", "HR");
@@ -82,7 +82,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ProfileUpdate(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["Name"]);
+            var name = Convert.ToString(Session["UserName"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;

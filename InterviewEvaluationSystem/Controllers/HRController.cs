@@ -75,7 +75,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale(tblRatingScale rate)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            rate.CreatedBy = "admin";
+            rate.CreatedBy = Convert.ToString(Session["UserID"]);
             rate.CreatedDate = DateTime.Now;
             rate.IsDeleted = false;
             db.tblRatingScales.Add(rate);
@@ -126,7 +126,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult SkillCategory(tblSkillCategory category)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            category.CreatedBy = "hr";
+            category.CreatedBy = Convert.ToString(Session["UserID"]);
             category.CreatedDate = DateTime.Now;
             db.tblSkillCategories.Add(category);
             db.SaveChanges();
@@ -324,7 +324,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult JoinDetails(JoinViewModel joinViewModel)
         {
             InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-            int res = dbContext.spInsertJoinDetails('5', Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
+            int res = dbContext.spInsertJoinDetails(Convert.ToInt32(Session["UserID"]), Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
             return RedirectToAction("HRHomePage");
         }
 
@@ -392,7 +392,7 @@ namespace InterviewEvaluationSystem.Controllers
                         EvaluationID = evaluationID,
                         SkillID = i,
                         RateScaleID = values[i],
-                        CreatedBy = "4",
+                        CreatedBy = Convert.ToString(Session["UserID"]),
                         CreatedDate = DateTime.Now
                     });
                     dbContext.SaveChanges();
@@ -401,7 +401,7 @@ namespace InterviewEvaluationSystem.Controllers
                 tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
                 evaluation.Comment = comments;
                 evaluation.Recommended = recommended;
-                evaluation.ModifiedBy = "2";
+                evaluation.ModifiedBy = Convert.ToString(Session["UserID"]);
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
@@ -447,10 +447,8 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
             user.UserTypeID = Convert.ToInt32(userType);
-            user.CreatedBy = "hr";
+            user.CreatedBy = Convert.ToString(Session["UserID"]);
             user.CreatedDate = System.DateTime.Now;
-            user.ModifiedBy = "hr";
-            user.ModifiedDate = System.DateTime.Now;
             user.IsDeleted = false;
             dbContext.tblUsers.Add(user);
             dbContext.SaveChanges();
@@ -532,10 +530,8 @@ namespace InterviewEvaluationSystem.Controllers
                 candidate.TotalExperience = candidateView.TotalExperience;
                 candidate.Qualifications = candidateView.Qualifications;
                 candidate.IsLocked = true;
-                candidate.CreatedBy = "hr";
+                candidate.CreatedBy = Convert.ToString(Session["UserID"]);
                 candidate.CreatedDate = System.DateTime.Now;
-                candidate.ModifiedBy = "hr";
-                candidate.ModifiedDate = System.DateTime.Now;
                 candidate.IsDeleted = false;
                 dbContext.tblCandidates.Add(candidate);
                 dbContext.SaveChanges();
@@ -553,10 +549,8 @@ namespace InterviewEvaluationSystem.Controllers
                 eval.CandidateID = candidate.CandidateID;
                 eval.UserID = Convert.ToInt32(user);
                 eval.RoundID = 1;
-                eval.CreatedBy = "hr";
+                eval.CreatedBy = Convert.ToString(Session["UserID"]);
                 eval.CreatedDate = DateTime.Now;
-                eval.ModifiedBy = "hr";
-                eval.ModifiedDate = DateTime.Now;
                 eval.IsDeleted = false;
                 dbContext.tblEvaluations.Add(eval);
 

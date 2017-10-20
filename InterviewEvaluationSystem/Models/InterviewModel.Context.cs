@@ -75,15 +75,6 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmailByUserID_Result>("spGetEmailByUserID", userIDParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> spGetInterviewerDashBoard(Nullable<int> userID)
-        {
-            var userIDParameter = userID.HasValue ?
-                new ObjectParameter("UserID", userID) :
-                new ObjectParameter("UserID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetInterviewerDashBoard", userIDParameter);
-        }
-    
         public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)
         {
             var candidateIDParameter = candidateID.HasValue ?
@@ -220,6 +211,15 @@ namespace InterviewEvaluationSystem.Models
         public virtual ObjectResult<spGetHRDashBoard_Result> spGetHRDashBoard()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHRDashBoard_Result>("spGetHRDashBoard");
+        }
+    
+        public virtual ObjectResult<spGetInterviewerDashBoard_Result> spGetInterviewerDashBoard(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerDashBoard_Result>("spGetInterviewerDashBoard", userIDParameter);
         }
     }
 }

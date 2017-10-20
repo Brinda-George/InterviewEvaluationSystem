@@ -249,6 +249,9 @@
     <Compile Include="Models\spGetHRDashBoard_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetInterviewerDashBoard_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetPreviousRoundScores_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
