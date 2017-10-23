@@ -29,19 +29,21 @@ namespace InterviewEvaluationSystem.Models
         public string Email { get; set; }
         public string PAN { get; set; }
         public decimal ExpectedSalary { get; set; }
-        public Nullable<int> NoticePeriodInMonths { get; set; }
+        public int NoticePeriodInMonths { get; set; }
         public int TotalExperience { get; set; }
         public string Qualifications { get; set; }
+        public Nullable<bool> CandidateStatus { get; set; }
         public Nullable<decimal> OfferedSalary { get; set; }
         public Nullable<System.DateTime> DateOfJoining { get; set; }
-        public Nullable<bool> IsLocked { get; set; }
-        public string CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public string ModifiedBy { get; set; }
+        public bool IsLocked { get; set; }
+        public int CreatedBy { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<bool> CandidateStatus { get; set; }
+        public bool IsDeleted { get; set; }
     
+        public virtual tblUser tblUser { get; set; }
+        public virtual tblUser tblUser1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblEvaluation> tblEvaluations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

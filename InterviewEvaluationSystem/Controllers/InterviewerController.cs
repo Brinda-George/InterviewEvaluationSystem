@@ -67,7 +67,7 @@ namespace InterviewEvaluationSystem.Controllers
                         EvaluationID = evaluationID,
                         SkillID = i,
                         RateScaleID = values[i],
-                        CreatedBy = Convert.ToString(Session["UserID"]),
+                        CreatedBy = Convert.ToInt32(Session["UserID"]),
                         CreatedDate = DateTime.Now
                     });
                     dbContext.SaveChanges();
@@ -76,7 +76,7 @@ namespace InterviewEvaluationSystem.Controllers
                 tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
                 evaluation.Comment = comments;
                 evaluation.Recommended = recommended;
-                evaluation.ModifiedBy = Convert.ToString(Session["UserID"]);
+                evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }

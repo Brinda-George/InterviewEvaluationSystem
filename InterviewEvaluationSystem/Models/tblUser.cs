@@ -17,7 +17,25 @@ namespace InterviewEvaluationSystem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tblUser()
         {
+            this.tblCandidates = new HashSet<tblCandidate>();
+            this.tblCandidates1 = new HashSet<tblCandidate>();
             this.tblEvaluations = new HashSet<tblEvaluation>();
+            this.tblEvaluations1 = new HashSet<tblEvaluation>();
+            this.tblEvaluations2 = new HashSet<tblEvaluation>();
+            this.tblPreviousCompanies = new HashSet<tblPreviousCompany>();
+            this.tblPreviousCompanies1 = new HashSet<tblPreviousCompany>();
+            this.tblRatingScales = new HashSet<tblRatingScale>();
+            this.tblRatingScales1 = new HashSet<tblRatingScale>();
+            this.tblRounds = new HashSet<tblRound>();
+            this.tblRounds1 = new HashSet<tblRound>();
+            this.tblScores = new HashSet<tblScore>();
+            this.tblScores1 = new HashSet<tblScore>();
+            this.tblSkills = new HashSet<tblSkill>();
+            this.tblSkills1 = new HashSet<tblSkill>();
+            this.tblSkillCategories = new HashSet<tblSkillCategory>();
+            this.tblSkillCategories1 = new HashSet<tblSkillCategory>();
+            this.tblUser1 = new HashSet<tblUser>();
+            this.tblUser11 = new HashSet<tblUser>();
         }
     
         public int UserID { get; set; }
@@ -28,15 +46,53 @@ namespace InterviewEvaluationSystem.Models
         public string Pincode { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public Nullable<int> UserTypeID { get; set; }
-        public string CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public string ModifiedBy { get; set; }
+        public int UserTypeID { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblCandidate> tblCandidates { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblCandidate> tblCandidates1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblEvaluation> tblEvaluations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblEvaluation> tblEvaluations1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblEvaluation> tblEvaluations2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblPreviousCompany> tblPreviousCompanies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblPreviousCompany> tblPreviousCompanies1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblRatingScale> tblRatingScales { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblRatingScale> tblRatingScales1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblRound> tblRounds { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblRound> tblRounds1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblScore> tblScores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblScore> tblScores1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSkill> tblSkills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSkill> tblSkills1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSkillCategory> tblSkillCategories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblSkillCategory> tblSkillCategories1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblUser> tblUser1 { get; set; }
+        public virtual tblUser tblUser2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblUser> tblUser11 { get; set; }
+        public virtual tblUser tblUser3 { get; set; }
         public virtual tblUserType tblUserType { get; set; }
     }
 }

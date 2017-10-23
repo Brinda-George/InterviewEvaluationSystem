@@ -4,26 +4,44 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a11b4fafac8e41cd80713be673e5fa90" Name="Diagram1">
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblCandidate" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblEvaluation" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblPreviousCompany" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblRatingScale" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblRound" Width="1.5" PointX="0.75" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblScore" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblSkill" Width="1.5" PointX="3" PointY="24.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblSkillCategory" Width="1.5" PointX="0.75" PointY="24.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblUser" Width="1.5" PointX="0.75" PointY="14.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblUserType" Width="1.5" PointX="1.5" PointY="20.5" IsExpanded="true" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Candi__09A971A2" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Candi__4E88ABD4" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Round__0A9D95DB" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__UserI__0B91BA14" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Evalua__0E6E26BF" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__RateSc__10566F31" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__SkillI__0F624AF8" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__SkillC__46E78A0C" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__UserTyp__70DDC3D8" ManuallyRouted="false" />
+      <Diagram DiagramId="ef92bb43e2984055b67b6f3488e27050" Name="Diagram1">
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblCandidate" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblEvaluation" Width="1.5" PointX="7.5" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblPreviousCompany" Width="1.5" PointX="10.5" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblRatingScale" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblRound" Width="1.5" PointX="5.25" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblScore" Width="1.5" PointX="9.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblSkill" Width="1.5" PointX="7.5" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblSkillCategory" Width="1.5" PointX="5.25" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblUser" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblUserType" Width="1.5" PointX="0.75" PointY="13" IsExpanded="true" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblCandid__Creat__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblCandid__Modif__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Candi__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Candi__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Creat__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Modif__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Round__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__UserI__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Evalua__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Creat__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Modif__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRating__Creat__37A5467C" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRating__Modif__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__RateSc__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRound__Create__32E0915F" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRound__Modifi__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Create__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Modifi__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__SkillI__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__Create__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__Modifi__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__SkillC__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkillC__Creat__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkillC__Modif__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__Created__2F10007B" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__Modifie__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__UserTyp__2E1BDC42" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

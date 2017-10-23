@@ -15,17 +15,19 @@ namespace InterviewEvaluationSystem.Models
     public partial class tblScore
     {
         public int ScoreID { get; set; }
-        public Nullable<int> EvaluationID { get; set; }
-        public Nullable<int> SkillID { get; set; }
-        public Nullable<int> RateScaleID { get; set; }
-        public string CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public string ModifiedBy { get; set; }
+        public int EvaluationID { get; set; }
+        public int SkillID { get; set; }
+        public int RateScaleID { get; set; }
+        public int CreatedBy { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
     
         public virtual tblEvaluation tblEvaluation { get; set; }
         public virtual tblRatingScale tblRatingScale { get; set; }
+        public virtual tblUser tblUser { get; set; }
+        public virtual tblUser tblUser1 { get; set; }
         public virtual tblSkill tblSkill { get; set; }
     }
 }

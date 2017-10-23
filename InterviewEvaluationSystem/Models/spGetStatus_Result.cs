@@ -15,8 +15,8 @@ namespace InterviewEvaluationSystem.Models
     {
         public string Name { get; set; }
         public string RoundName { get; set; }
-        public Nullable<int> CandidateID { get; set; }
-        public Nullable<int> RoundID { get; set; }
+        public int CandidateID { get; set; }
+        public int RoundID { get; set; }
         public int EvaluationID { get; set; }
         public Nullable<bool> Recommended { get; set; }
     }
