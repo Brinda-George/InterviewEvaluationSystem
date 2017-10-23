@@ -9,7 +9,7 @@ namespace InterviewEvaluationSystem
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery - 1.10.2.js")); 
+                        "~/Scripts/jquery-1.10.2.js")); 
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -23,6 +23,12 @@ namespace InterviewEvaluationSystem
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.UseCdn = true;   //enable CDN support
+
+            var fontAwesomeCdnPath = "http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css";
+
+            bundles.Add(new ScriptBundle("~/Content/css", fontAwesomeCdnPath).Include(
+                        "~/Content/font-awesome.css"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/layout.css",

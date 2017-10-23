@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interview Evaluation System</title>
     @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/modernizr")
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet" type='text/css'>
 </head>
@@ -16,12 +18,12 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul id="nav" class="nav navbar-nav">
-                    <li class="tab"><a href="/Interviewer/InterviewEvaluation">Interview Evaluation</a></li>
+                    <li class="tab"><a href="~/Interviewer/EvaluationStatus">Interview Evaluation</a></li>
                 </ul>
                 <ul id="nav" class="nav navbar-nav navbar-right">
                     @if (@Session["UserName"] != null)
                     {
-                        <li class="tab"><a href="/Interviewer/HomePage">Welcome @Session["UserName"]</a></li>
+                        <li class="tab"><a href="~/Interviewer/HomePage">Welcome @Session["UserName"]</a></li>
                     }
                     else
                     {
@@ -30,11 +32,11 @@
                     <li class="dropdown tab">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/Home/ViewProfile"><i class="fa fa-id-badge" aria-hidden="true"></i> View Profile</a></li>
-                            <li><a href="/Home/ProfileUpdate"><i class="fa fa-pencil-square" aria-hidden="true"></i> Update Profile</a></li>
-                            <li><a href="/Home/ChangePassword">Change Password</a></li>
+                            <li><a href="~/Home/ViewProfile"><i class="fa fa-id-badge" aria-hidden="true"></i> View Profile</a></li>
+                            <li><a href="~/Home/ProfileUpdate"><i class="fa fa-pencil-square" aria-hidden="true"></i> Update Profile</a></li>
+                            <li><a href="~/Home/ChangePassword">Change Password</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Home/Logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+                            <li><a href="~/Home/Logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -49,10 +51,6 @@
             <p>&copy; @DateTime.Now.Year - Interview Evaluation System</p>
         </footer>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-
 </body>
 </html>

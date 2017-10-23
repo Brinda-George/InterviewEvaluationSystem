@@ -122,7 +122,7 @@ namespace InterviewEvaluationSystem.Controllers
             smtpClient.Credentials = new System.Net.NetworkCredential()
             {
                 UserName = "brindageorge94@gmail.com",
-                Password = "********"
+                Password = "jehovah_jireh123"
             };
             smtpClient.EnableSsl = true;
             smtpClient.Send(mailMessage);
