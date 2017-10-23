@@ -305,6 +305,7 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\formstyle.css" />
     <Content Include="Content\layout.css" />
+    <Content Include="Content\menustyle.css" />
     <Content Include="Content\startmin.css" />
     <Content Include="Content\webgridstyle.css" />
     <Content Include="favicon.ico" />
