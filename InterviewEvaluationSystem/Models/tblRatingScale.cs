@@ -29,7 +29,7 @@ namespace InterviewEvaluationSystem.Models
         public string RateScale { get; set; }
         [Required]
         [Remote("IsValueExist", "HR", AdditionalFields = "Id",
-                ErrorMessage = "RateValue already exists")]
+              ErrorMessage = "RateValue already exists")]
         public int RateValue { get; set; }
         [Required]
         public string Description { get; set; }

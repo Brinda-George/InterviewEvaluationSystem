@@ -25,7 +25,7 @@ namespace InterviewEvaluationSystem.Models
         public int SkillCategoryID { get; set; }
         [Required]
         [Remote("IsCategoryExist", "HR", AdditionalFields = "Id",
-                ErrorMessage = "SkillCategory already exists")]
+              ErrorMessage = "SkillCategory already exists")]
         public string SkillCategory { get; set; }
         [Required]
         public string Description { get; set; }

@@ -70,12 +70,12 @@ namespace InterviewEvaluationSystem.Controllers
             //if (ModelState.IsValid)
             //{
             //    InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-                InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-                rate.CreatedBy = "admin";
-                rate.CreatedDate = DateTime.Now;
-                rate.IsDeleted = false;
-                db.tblRatingScales.Add(rate);
-                db.SaveChanges();
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            rate.CreatedBy = "admin";
+            rate.CreatedDate = DateTime.Now;
+            rate.IsDeleted = false;
+            db.tblRatingScales.Add(rate);
+            db.SaveChanges();
             // List<tblRatingScale> rates = db.tblRatingScales.ToList();
             //    var item = (from s in db.tblRatingScales where s.IsDeleted == false select s).ToList();
             //    ViewBag.Roles = item;
@@ -350,7 +350,6 @@ namespace InterviewEvaluationSystem.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
-
         public ActionResult JoinDetails()
         {
             return View();

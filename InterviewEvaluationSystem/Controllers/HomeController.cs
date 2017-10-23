@@ -44,33 +44,25 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Login(tblUser user)
         {
-                InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-                var count = db.spLogin(user.UserName, user.Password);
-                var item = count.FirstOrDefault();
-                int usercount = Convert.ToInt32(item);
-                var usertype = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
-                int id = Convert.ToInt32(usertype.UserTypeID);
-                Session["Count"] = id;
-                if (usercount == 1)
-                {
-                    //FormsAuthentication.SetAuthCookie(user.UserName, false);
-                    Session["Name"] = user.UserName;
-                    if (id == 1)
-                    {
-                        return RedirectToAction("HRHomePage", "HR");
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var id = db.spLogin(user.UserName, user.Password);
+            var itemid = id.FirstOrDefault();
+            int usertypeid = Convert.ToInt32(itemid);
+            Session["Count"] = usertypeid;
+            Session["Name"] = user.UserName;
+            if (usertypeid == 1)
+            {
+                return RedirectToAction("HRHomePage", "HR");
+            }
+            else if (usertypeid == 2)
+            {
+                return RedirectToAction("HomePage", "Interviewer");
 
-                    }
-                    else if (id == 2)
-                    {
-                        return RedirectToAction("HomePage", "Interviewer");
-
-                    }
-
-                }
-                else
-                {
-                    Response.Write("Invalid credentials");
-                }
+            }
+            else
+            {
+                Response.Write("Invalid credentials");
+            }
             
             return View();
         }
