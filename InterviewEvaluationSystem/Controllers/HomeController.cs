@@ -123,18 +123,25 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel changePasswordViewModel)
         {
-            Services services = new Services();
-            int returnValue = services.UpdatePassword(2, changePasswordViewModel);
-            if (returnValue == 1)
+            try
             {
-                ViewBag.result = "Password Updated Successfully!";
+                Services services = new Services();
+                int returnValue = services.UpdatePassword(Convert.ToInt32(Session["UserID"]), changePasswordViewModel);
+                if (returnValue == 1)
+                {
+                    ViewBag.result = "Password Updated Successfully!";
+                }
+                else
+                {
+                    ViewBag.result = "Wrong Password!!";
+                }
+                return View();
             }
-            else
+            catch (Exception ex)
             {
-                ViewBag.result = "Wrong Password!!";
+                return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
             }
 
-            return View();
         }
     }
 }
