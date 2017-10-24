@@ -16,6 +16,8 @@ namespace InterviewEvaluationSystem.Controllers
 {
     public class HomeController : Controller
     {
+        InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
+
         public ActionResult Index()
         {
             return View();
@@ -42,8 +44,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Login(tblUser user)
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var id = db.spLogin(user.UserName, user.Password);
+            var id = dbContext.spLogin(user.UserName, user.Password);
             var itemid = id.FirstOrDefault();
             int usertypeid = Convert.ToInt32(itemid);
             Session["Count"] = usertypeid;
@@ -74,12 +75,11 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ProfileUpdate(tblUser user)
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var name = Convert.ToString(Session["Name"]);
-            var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+            var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
-            db.SaveChanges();
+            dbContext.SaveChanges();
             int id = Convert.ToInt32(item.UserTypeID);
             if (id == 1)
             {
@@ -95,26 +95,13 @@ namespace InterviewEvaluationSystem.Controllers
         {
             Session["Name"] = null;
             Session.Abandon();
-            //InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            //var name = Convert.ToString(Session["Name"]);
-            //var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
-            //int id = Convert.ToInt32(item.UserTypeID);
-            //if (id == 1)
-            //{
-            //    return RedirectToAction("HRHomePage", "HR");
-            //}
-            //else
-            //{
-            //    return RedirectToAction("HomePage", "Interviewer");
-            //}
             return RedirectToAction("Login", "Home");
         }
 
         public ActionResult ViewProfile()
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var name = Convert.ToString(Session["Name"]);
-            var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+            var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
             ViewBag.Details = item;
             return View();
         }
@@ -146,7 +133,6 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
             }
-
         }
     }
 }
