@@ -29,21 +29,26 @@
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
             var DateOfInterview = tr.find("#DateOfInterview").val();
-            var UserName = tr.find("#ddlInterviewerName").val();
+            var UserID = tr.find("#ddlInterviewerName").val();
             var CandidateID = tr.find("#lblCandidateID").html();
             $.ajax({
                 url: '/HR/UpdateCandidate/', 
                 // data: JSON.stringify(tblNewUser),
-                data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserName": UserName }),
+                data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserID": UserID }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                    // alert('Successfully Updated Interviewer');
+                   
                     tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
-                    debugger;
+
+                    var newDate = (data.DateOfInterview);
+
+
                     tr.find("#lblCandidateName").text(data.Name);
                     tr.find("#lblDateOfInterview").text(data.DateOfInterview);
                     tr.find("#lblInterviewerName").text(data.UserName);
+                    
                 }
             });
 
@@ -59,7 +64,7 @@
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    alert('Successfully Deleted Candidate');
+                   
                 }
             })
         });

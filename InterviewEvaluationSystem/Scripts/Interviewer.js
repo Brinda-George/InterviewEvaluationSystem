@@ -1,5 +1,14 @@
 ﻿$(document).ready(function () {
     $(function () {
+
+        //To hide the first column in webgrid that contains user id
+        hideColumn = function (column) {
+            $('tr').each(function () {
+                $(this).find('td,th').eq(column).hide();
+            });
+        };
+        hideColumn(0);
+
         $('.edit-mode').hide();
         $('.edit-user, .cancel-user').on('click', function () {
             var tr = $(this).parents('tr:first');
@@ -12,9 +21,10 @@
             var Email = tr.find("#Email").val();
             var Designation = tr.find("#Designation").val();
             var EmployeeId = tr.find("#lblEmployeeId").html();
+            var UserID = tr.find('#lblUserID').html();
             $.ajax({
                 url: '/HR/UpdateInterviewer/',
-                data:JSON.stringify({"EmployeeId": EmployeeId,"Name": Name,"Email": Email,"Designation": Designation}),
+                data: JSON.stringify({ "UserID": UserID, "Name": Name, "Email": Email, "Designation": Designation }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
@@ -30,14 +40,14 @@
 
         $('.delete-user').on('click', function () {
             var tr = $(this).parents('tr:first');
-            var EmployeeId = tr.find("#lblEmployeeId").html();
+            var UserID = tr.find('#lblUserID').html();
             $.ajax({
                 url: '/HR/DeleteInterviewer/',
-                data: JSON.stringify({ "EmployeeId": EmployeeId }),
+                data: JSON.stringify({ "UserID": UserID }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    alert('Successfully Deleted Interviewer');
+                    location.reload();
                 }
             })
         });

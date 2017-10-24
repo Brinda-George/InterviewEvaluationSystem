@@ -1,5 +1,9 @@
 ﻿@model InterviewEvaluationSystem.Models.tblUser
+@{
+    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 15, canSort: true, ajaxUpdateContainerId: "gridContent", fieldNamePrefix: "f1", pageFieldName: "p1");
 
+    int rowVal = 0;
+}
 @{
     ViewBag.Title = "AddInterviewers";
 }
@@ -58,7 +62,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+               
+                @Html.PasswordFor(model => model.Password, new {  @class = "form-control", placeholder = "Password"  })
+
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -87,19 +93,33 @@
     </div>
 }
 
-@{
-    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 10, canSort: true);
-}
 
-@grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+<div id="gridContent">
+
+    @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
         selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
+        
         mode: WebGridPagerModes.All,
-        columns: 
+
+        //@grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        //        headerStyle: "webgrid-header",
+        //        footerStyle: "webgrid-footer",
+        //        alternatingRowStyle: "webgrid-alternating-row",
+        //        selectedRowStyle: "webgrid-selected-row",
+        //        rowStyle: "webgrid-row-style",
+        //        mode: WebGridPagerModes.All,
+        columns:
         grid.Columns(
+            // grid.Column("UserID", "UserID"),
+            grid.Column("UserID", format: @<text>  <span class="display-mode">@item.UserID </span> <label id="lblUserID" class="edit-mode">@item.UserID</label> </text>),
+
+            grid.Column("Sr.No.", format: item => rowVal = rowVal + 1),
+            // grid.Column(null,null,format: @<input type="hidden" name="UserID" value="@item.UserID" style:"hidecol",header:""/>),
+
             grid.Column("UserName", "UserName", format: @<text>  <span class="display-mode"> <label id="lblName">@item.UserName</label> </span> <input type="text" id="Name" value="@item.UserName" class="edit-mode" /></text>),
             grid.Column("EmployeeId", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>),
             grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>),
@@ -111,9 +131,9 @@
                 <button class="delete-user">Delete</button>
             </text>))
             )
-
+</div>
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "AddInterviewers")
 </div>
 
 @Scripts.Render("~/bundles/jqueryval")
