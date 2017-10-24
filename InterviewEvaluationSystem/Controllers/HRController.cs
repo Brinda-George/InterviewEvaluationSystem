@@ -568,7 +568,7 @@ namespace InterviewEvaluationSystem.Controllers
                     candidate.IsDeleted = false;
                     dbContext.tblCandidates.Add(candidate);
                     dbContext.SaveChanges();
-
+                     
                     tblPreviousCompany previousCmpny = new tblPreviousCompany();
                     // previousCmpny.PreviousCompany = candidateView.PreviousCompany;
                     previousCmpny.CandidateID = candidate.CandidateID;
@@ -717,5 +717,23 @@ namespace InterviewEvaluationSystem.Controllers
             dbContext1.SaveChanges();
             return RedirectToAction("Notification");
         }
+
+        public ActionResult RejectCandidate(int CandidateID)
+        {
+            tblCandidate rejectCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+            rejectCandidate.CandidateStatus = false;
+            dbContext.SaveChanges();
+            return RedirectToAction("Notification");
+        }
+
+        public ActionResult HireCandidate(int CandidateID)
+        {
+            tblCandidate hireCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+            hireCandidate.CandidateStatus = true;
+            dbContext.SaveChanges();
+            return RedirectToAction("Notification");
+        }
+
+        
     }
 } 

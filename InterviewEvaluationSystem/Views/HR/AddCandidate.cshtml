@@ -10,9 +10,12 @@
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Add Candidate</h2>
 
-<form id="frmCreate">
-    @Html.AntiForgeryToken()
-    <div class="form-horizontal">
+@using (Html.BeginForm(new { id = "frmCreate" }))
+{
+
+                @*<form id="frmCreate">*@
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -127,7 +130,8 @@
             </div>
         </div>
     </div>
-</form>
+@*</form>*@
+}
 
 @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",

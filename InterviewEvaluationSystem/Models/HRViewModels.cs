@@ -8,12 +8,16 @@ namespace InterviewEvaluationSystem.Models
 {
     public class AddCandidateViewModels
     { 
+        [Required(ErrorMessage ="Name is required")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Designation is required")]
         public string Designation { get; set; }
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
         [DataType(DataType.Date)]
         public DateTime DateOfInterview { get; set; }
+        [Required(ErrorMessage = "Field can't be empty")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid")]
         public string Email { get; set; }
         public string PAN { get; set; }
         public decimal ExpectedSalary { get; set; }
