@@ -1,14 +1,87 @@
 ﻿
 @{
     ViewBag.Title = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+     Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
     // Layout = "~/Views/Shared/HRLayout.cshtml";
 }
 
-            <form class="form-signin" method="post" action="">
-                <h2 class="form-signin-heading">Please login</h2>
-                <input type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" /><br />
-                <input type="password" class="form-control" name="Password" placeholder="Password" required="" />
-                <button class="btn" type="submit">Login</button>
-            </form>
-            @Html.ActionLink("New user ? Register here..", "Register", "HR", new { @class = "elements" }, null)
+            
+  
+        <div id="loginForm">
+    <table >
+        <tr>
+            <td>
+                <form class="form-signin" method="post" action="">
+                    <br />
+                    <br />
+                    @*<h2 class="form-signin-heading">Please login</h2>*@
+                    <input type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" /><br />
+                    <input type="password" class="form-control" name="Password" placeholder="Password" required="" />
+                    <br />
+                    <button class="btn" type="submit">Login</button>
+                </form>
+                @Html.ActionLink("New user ? Register here..", "Register", "HR", new { @class = "elements" }, null)
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+        @*<div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                </ol>
+            
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        <img src="~/Images/keyboard.jpg" alt="picture1">
+                        <div class="carousel-caption">
+                            <h3>SCANIA Sleeper</h3>
+                            <p>The atmosphere in Scania is lorem ipsum.</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <img src="~/Images/IT.jpg" alt="picture2">
+                        <div class="carousel-caption">
+                            <h3>SCANIA Volvo</h3>
+                            <p>Thank you Scania - A night we won't forget.</p>
+                        </div>
+                    </div>
+
+                </div>*@
+
+                <!-- Left and right controls -->
+                @*<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            <link href="~/Content/LoginPage.css" rel="stylesheet" />*@
+
+
+        <style type="text/css">
+                #loginForm{
+    width: 32%;
+    margin: 200px auto;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.43);
+    /*-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);*/
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+
+                    padding-left:6%;
+                     padding-top:2%;
+}
+        </style>
+<link href="~/Content/LoginTemplate.css" rel="stylesheet" />

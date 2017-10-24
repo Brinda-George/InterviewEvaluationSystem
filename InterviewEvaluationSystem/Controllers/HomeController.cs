@@ -42,20 +42,22 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(tblUser user)
+        public ActionResult Login(tblUser loginUser)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var id = db.spLogin(user.UserName, user.Password);
-            var itemid = id.FirstOrDefault();
-            int usertypeid = Convert.ToInt32(itemid);
-            Session["Count"] = usertypeid;
-            Session["Name"] = user.UserName;
-            Session["userid"] = user.UserID;
-            if (usertypeid == 1)
+            //tblUser loginUser = new tblUser();
+            var result = db.spLogin(loginUser.UserName, loginUser.Password).Single();
+            loginUser.UserID = result.UserID;
+            loginUser.UserName = result.UserName;
+            loginUser.UserTypeID = result.UserTypeID;
+            Session["UserTypeID"] = loginUser.UserTypeID;
+            Session["UserName"] = loginUser.UserName;
+            Session["UserID"] = loginUser.UserID;
+            if (loginUser.UserTypeID == 1)
             {
                 return RedirectToAction("HRHomePage", "HR");
             }
-            else if (usertypeid == 2)
+            else if (loginUser.UserTypeID == 2)
             {
                 return RedirectToAction("HomePage", "Interviewer");
 
@@ -78,7 +80,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ProfileUpdate(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["Name"]);
+            var name = Convert.ToString(Session["UserName"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
@@ -96,7 +98,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult Logout(tblUser user)
         {
-            Session["Name"] = null;
+            Session["UserName"] = null;
             Session.Abandon();
             //InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             //var name = Convert.ToString(Session["Name"]);
@@ -117,7 +119,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewProfile()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["Name"]);
+            var name = Convert.ToString(Session["UserName"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             ViewBag.Details = item;
             return View();

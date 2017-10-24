@@ -10,25 +10,22 @@
 namespace InterviewEvaluationSystem.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class tblRound
+    public partial class spLogin_Result
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tblRound()
-        {
-            this.tblEvaluations = new HashSet<tblEvaluation>();
-        }
-    
-        public int RoundID { get; set; }
-        public string RoundName { get; set; }
+        public int UserID { get; set; }
+        public string UserName { get; set; }
+        public string EmployeeId { get; set; }
+        public string Designation { get; set; }
+        public string Address { get; set; }
+        public string Pincode { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+        public Nullable<int> UserTypeID { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblEvaluation> tblEvaluations { get; set; }
     }
 }

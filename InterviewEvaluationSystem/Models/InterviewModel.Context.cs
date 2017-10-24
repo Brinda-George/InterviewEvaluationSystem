@@ -132,7 +132,7 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertJoinDetails", userIDParameter, candidateIDParameter, offeredSalaryParameter, dateOfJoiningParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> spLogin(string username, string passWord)
+        public virtual ObjectResult<spLogin_Result> spLogin(string username, string passWord)
         {
             var usernameParameter = username != null ?
                 new ObjectParameter("Username", username) :
@@ -142,7 +142,7 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("PassWord", passWord) :
                 new ObjectParameter("PassWord", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", usernameParameter, passWordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> spRegister(string username, string employeeid, string designation, string address, string pincode, string password, string email)

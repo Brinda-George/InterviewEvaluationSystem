@@ -258,6 +258,9 @@
     <Compile Include="Models\spHRNotificationGrid_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spLogin_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblCandidate.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -296,11 +299,16 @@
     <Content Include="Content\bootstrap-original.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\LoginPage.css" />
+    <Content Include="Content\LoginTemplate.css" />
     <Content Include="Content\webgridstyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\career.jpg" />
+    <Content Include="Images\IT.jpg" />
+    <Content Include="Images\keyboard.jpg" />
     <Content Include="Models\InterviewModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>InterviewModel.edmx</DependentUpon>
