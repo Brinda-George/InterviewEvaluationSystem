@@ -2,7 +2,7 @@
     position: fixed;
     float: left;
     width: 230px;
-    top: 50px;
+    top: 0px;
     left: 0;
     bottom: 0;
     background-color:#333333;
@@ -39,7 +39,7 @@
     white-space: nowrap;
     z-index: 2;
     background-color: #333333;
-    font-size:1.1em;
+    font-size:1.2em;
     font-family: 'Roboto', sans-serif;
 	border:none;
 	border-left: 4px solid #333333;

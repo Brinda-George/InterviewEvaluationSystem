@@ -63,6 +63,61 @@ namespace InterviewEvaluationSystem.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult AddRound()
+        {
+            var item = (from s in dbContext.tblRounds where s.IsDeleted == false select s).ToList();
+            ViewBag.Rounds = item;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddRound(tblRound round)
+        {
+            round.CreatedBy = Convert.ToInt32(Session["UserID"]);
+            round.CreatedDate = DateTime.Now;
+            round.IsDeleted = false;
+            dbContext.tblRounds.Add(round);
+            dbContext.SaveChanges();
+            return RedirectToAction("AddRound");
+        }
+
+
+        [HttpPost]
+        public JsonResult RoundEdit(int RoundID, string RoundName)
+        {
+            tblRound round = dbContext.tblRounds.Find(RoundID);
+            round.RoundName = RoundName;
+            dbContext.SaveChanges();
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
+            return Json(new { Url = redirectUrl, RoundName = RoundName }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult RoundDelete(int RoundID)
+        {
+            tblRound round = dbContext.tblRounds.Find(RoundID);
+            round.IsDeleted = true;
+            dbContext.SaveChanges();
+            bool result = true;
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult IsRoundExist(string RoundName, int? Id)
+        {
+            var validateScale = dbContext.tblRounds.FirstOrDefault
+                                (x => x.RoundName == RoundName && x.RoundID != Id && x.IsDeleted != true);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult RatingScale()
         {
             var item = (from s in dbContext.tblRatingScales where s.IsDeleted == false select s).ToList();

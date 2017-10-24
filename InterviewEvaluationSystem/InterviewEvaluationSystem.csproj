@@ -264,6 +264,9 @@
     <Compile Include="Models\spHRNotificationGrid_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spLogin_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblCandidate.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -298,20 +301,28 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-original.css" />
-    <Content Include="Content\bootstrap-original.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\formstyle.css" />
     <Content Include="Content\layout.css" />
     <Content Include="Content\menustyle.css" />
+    <Content Include="Content\navbarstyle.css" />
+    <Content Include="Content\sb-admin.css" />
+    <Content Include="Content\sb-admin.min.css" />
     <Content Include="Content\startmin.css" />
     <Content Include="Content\webgridstyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\1.png" />
+    <Content Include="Images\2.png" />
+    <Content Include="Images\3.png" />
+    <Content Include="Images\suyati.jpg" />
     <Content Include="Models\InterviewModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>InterviewModel.edmx</DependentUpon>
@@ -326,6 +337,7 @@
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\Around.js" />
     <Content Include="Scripts\Askill.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -338,6 +350,11 @@
     <Content Include="Models\InterviewModel.edmx.diagram">
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\hrevaluation.js" />
     <Content Include="Scripts\interviewevaluation.js" />
@@ -346,6 +363,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.easing.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -354,6 +373,7 @@
     <Content Include="Scripts\Notification.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\sb-admin.min.js" />
     <Content Include="Scripts\SearchCandidate.js" />
     <Content Include="Scripts\Scategory.js" />
     <Content Include="Scripts\_references.js" />
@@ -414,9 +434,9 @@
     <Content Include="Views\HR\NotificationProceed.cshtml" />
     <Content Include="Views\HR\HRHomePage.cshtml" />
     <Content Include="Views\Interviewer\HomePage.cshtml" />
-    <Content Include="Views\Shared\_HRLayout.cshtml" />
     <Content Include="Views\Shared\_InterviewerLayout.cshtml" />
     <Content Include="Views\HR\AddRound.cshtml" />
+    <Content Include="Views\Shared\_HRLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

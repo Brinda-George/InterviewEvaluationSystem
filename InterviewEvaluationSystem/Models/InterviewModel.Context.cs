@@ -146,19 +146,6 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertJoinDetails", userIDParameter, candidateIDParameter, offeredSalaryParameter, dateOfJoiningParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> spLogin(string username, string passWord)
-        {
-            var usernameParameter = username != null ?
-                new ObjectParameter("Username", username) :
-                new ObjectParameter("Username", typeof(string));
-    
-            var passWordParameter = passWord != null ?
-                new ObjectParameter("PassWord", passWord) :
-                new ObjectParameter("PassWord", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", usernameParameter, passWordParameter);
-        }
-    
         public virtual ObjectResult<Nullable<int>> spRegister(string username, string employeeid, string designation, string address, string pincode, string password, string email)
         {
             var usernameParameter = username != null ?
@@ -220,6 +207,19 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("NewPassword", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
+        }
+    
+        public virtual ObjectResult<spLogin_Result> spLogin(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
         }
     }
 }

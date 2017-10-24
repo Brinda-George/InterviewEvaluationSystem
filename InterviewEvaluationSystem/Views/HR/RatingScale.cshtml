@@ -13,8 +13,6 @@
     @Html.AntiForgeryToken()
 
     <div ID="form1" class="form-horizontal">
-
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.RateScale, htmlAttributes: new { @class = "control-label col-md-2" })

@@ -44,16 +44,20 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Login(tblUser user)
         {
-            var id = dbContext.spLogin(user.UserName, user.Password);
-            var itemid = id.FirstOrDefault();
-            int usertypeid = Convert.ToInt32(itemid);
-            Session["Count"] = usertypeid;
-            Session["Name"] = user.UserName;
-            if (usertypeid == 1)
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            tblUser loginUser = new tblUser();
+            var result = db.spLogin(user.UserName, user.Password).Single();
+            loginUser.UserID = result.UserID;
+            loginUser.UserName = result.UserName;
+            loginUser.UserTypeID = result.UserTypeID;
+            Session["UserTypeID"] = loginUser.UserTypeID;
+            Session["UserName"] = loginUser.UserName;
+            Session["UserID"] = loginUser.UserID;
+            if (loginUser.UserTypeID == 1)
             {
                 return RedirectToAction("HRHomePage", "HR");
             }
-            else if (usertypeid == 2)
+            else if (loginUser.UserTypeID == 2)
             {
                 return RedirectToAction("HomePage", "Interviewer");
 
@@ -75,7 +79,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ProfileUpdate(tblUser user)
         {
-            var name = Convert.ToString(Session["Name"]);
+            var name = Convert.ToString(Session["UserName"]);
             var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
@@ -93,14 +97,14 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult Logout(tblUser user)
         {
-            Session["Name"] = null;
+            Session["UserName"] = null;
             Session.Abandon();
             return RedirectToAction("Login", "Home");
         }
 
         public ActionResult ViewProfile()
         {
-            var name = Convert.ToString(Session["Name"]);
+            var name = Convert.ToString(Session["UserName"]);
             var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
             ViewBag.Details = item;
             return View();
