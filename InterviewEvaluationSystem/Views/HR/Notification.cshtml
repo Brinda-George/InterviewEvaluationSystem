@@ -30,13 +30,13 @@
                 {
                     return new HtmlString("<input type='button' value='Proceed To Next Round' class='ProceedNext' />");
                 }
-                else if(item.Recommended == true && item.RoundID == item.totalRound)
+                else if (item.Recommended == true && item.RoundID == item.totalRound)
                 {
-                    return Html.Raw(string.Format("Hired"));
+                    return new HtmlString("<input type='button' value='Hire The Candidate' class='HireCandidate' />");
                 }
                 else
                 {
-                    return Html.Raw(string.Format("Rejected"));
+                    return new HtmlString("<input type='button' value='Reject The Candidate' class='RejectCandidate' />");
                 }
             }))
             )

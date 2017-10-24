@@ -43,26 +43,19 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Login(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var count = db.spLogin(user.UserName, user.Password);
-            var item = count.FirstOrDefault();
-            int usercount = Convert.ToInt32(item);
-            var loginUser = (from s in db.tblUsers where s.UserName == user.UserName select s).FirstOrDefault();
-            int usertypeid = Convert.ToInt32(loginUser.UserTypeID);
-            Session["UserTypeID"] = usertypeid;
-            if (usercount == 1)
+            var id = db.spLogin(user.UserName, user.Password);
+            var itemid = id.FirstOrDefault();
+            int usertypeid = Convert.ToInt32(itemid);
+            Session["Count"] = usertypeid;
+            Session["Name"] = user.UserName;
+            if (usertypeid == 1)
             {
-                Session["UserName"] = user.UserName;
-                Session["UserID"] = loginUser.UserID;
-                if (usertypeid == 1)
-                {
-                    return RedirectToAction("HRHomePage", "HR");
+                return RedirectToAction("HRHomePage", "HR");
+            }
+            else if (usertypeid == 2)
+            {
+                return RedirectToAction("HomePage", "Interviewer");
 
-                }
-                else if (usertypeid == 2)
-                {
-                    return RedirectToAction("HomePage", "Interviewer");
-
-                }
             }
             else
             {
@@ -82,7 +75,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ProfileUpdate(tblUser user)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["UserName"]);
+            var name = Convert.ToString(Session["Name"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
@@ -100,15 +93,27 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult Logout(tblUser user)
         {
-            Session["UserName"] = null;
+            Session["Name"] = null;
             Session.Abandon();
+            //InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            //var name = Convert.ToString(Session["Name"]);
+            //var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+            //int id = Convert.ToInt32(item.UserTypeID);
+            //if (id == 1)
+            //{
+            //    return RedirectToAction("HRHomePage", "HR");
+            //}
+            //else
+            //{
+            //    return RedirectToAction("HomePage", "Interviewer");
+            //}
             return RedirectToAction("Login", "Home");
         }
 
         public ActionResult ViewProfile()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var name = Convert.ToString(Session["UserName"]);
+            var name = Convert.ToString(Session["Name"]);
             var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             ViewBag.Details = item;
             return View();

@@ -468,23 +468,24 @@ namespace InterviewEvaluationSystem.Controllers
         {
             List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Users = users;
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblUserType userType in dbContext.tblUserTypes)
+            List<SelectListItem> selectedlistInner = new List<SelectListItem>();
+            foreach (tblUserType userType1 in dbContext.tblUserTypes)
             {
                 SelectListItem selectlistitem = new SelectListItem
                 {
-                    Text = userType.UserType,
-                    Value = userType.UserTypeID.ToString()
+                    Text = userType1.UserType,
+                    Value = userType1.UserTypeID.ToString()
                 };
-                selectedlist.Add(selectlistitem);
+                selectedlistInner.Add(selectlistitem);
             }
-            ViewBag.userType = selectedlist;
+            ViewBag.userType = selectedlistInner;
             return View();
         }
 
         [HttpGet]
-        public JsonResult IsInterviewerExists(string UserName,string EmployeeId)
+        public JsonResult IsInterviewerExists(string UserName, string EmployeeId)
         {
+            //  bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
             bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
 
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
@@ -493,12 +494,63 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
-            user.UserTypeID = Convert.ToInt32(userType);
-            user.CreatedBy = Convert.ToInt32(Session["UserID"]);
-            user.CreatedDate = System.DateTime.Now;
-            user.IsDeleted = false;
-            dbContext.tblUsers.Add(user);
-            dbContext.SaveChanges();
+            if (string.IsNullOrEmpty(user.UserName))
+            {
+                ModelState.AddModelError("UserName", "Enter Name");
+            }
+
+            if (string.IsNullOrEmpty(user.EmployeeId))
+            {
+                ModelState.AddModelError("EmployeeId", "Enter Employee Id");
+            }
+
+            if (string.IsNullOrEmpty(user.Designation))
+            {
+                ModelState.AddModelError("Designation", "Enter Designation");
+            }
+
+            if (string.IsNullOrEmpty(user.Address))
+            {
+                ModelState.AddModelError("Address", "Enter Address");
+            }
+            if (string.IsNullOrEmpty(user.Pincode))
+            {
+                ModelState.AddModelError("Pincode", "Enter Pincode");
+            }
+            if (string.IsNullOrEmpty(user.Password))
+            {
+                ModelState.AddModelError("Password", "Enter Password");
+            }
+            if (string.IsNullOrEmpty(user.Email))
+            {
+                ModelState.AddModelError("Email", "Enter Email");
+            }
+
+            if (ModelState.IsValid)
+            {
+                user.UserTypeID = Convert.ToInt32(userType);
+                user.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                user.CreatedDate = System.DateTime.Now;
+                //user.ModifiedBy = "hr";
+                //user.ModifiedDate = System.DateTime.Now;
+                user.IsDeleted = false;
+                dbContext.tblUsers.Add(user);
+                dbContext.SaveChanges();
+                List<SelectListItem> selectedlistInner = new List<SelectListItem>();
+                foreach (tblUserType userType1 in dbContext.tblUserTypes)
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = userType1.UserType,
+                        Value = userType1.UserTypeID.ToString()
+                    };
+                    selectedlistInner.Add(selectlistitem);
+                }
+                ViewBag.userType = selectedlistInner;
+                List<tblUser> usersInner = dbContext.tblUsers.ToList();
+                ViewBag.Users = usersInner;
+                return View();
+            }
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             foreach (tblUserType userType1 in dbContext.tblUserTypes)
             {
@@ -510,9 +562,10 @@ namespace InterviewEvaluationSystem.Controllers
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.userType = selectedlist;
-            List<tblUser> users = dbContext.tblUsers.ToList();
+            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Users = users;
-            return View();
+            return View(user);
+
         }
 
         [HttpPost]
@@ -522,14 +575,20 @@ namespace InterviewEvaluationSystem.Controllers
             updateInterviewer.UserName = Name;
             updateInterviewer.Email = Email;
             updateInterviewer.Designation = Designation;
+            updateInterviewer.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            updateInterviewer.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
-            return RedirectToAction("AddInterviewers");
+            return Json(new { UserName = Name, Email = Email, Designation = Designation }, JsonRequestBehavior.AllowGet);
+
+            // return RedirectToAction("AddInterviewers");
         }
 
         public ActionResult DeleteInterviewer(string EmployeeId)
         {
             tblUser user = dbContext.tblUsers.Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
             user.IsDeleted = true;
+            user.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            user.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
             return RedirectToAction("AddInterviewers");
         }
@@ -583,15 +642,18 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.tblCandidates.Add(candidate);
                 dbContext.SaveChanges();
 
-                tblPreviousCompany previousCmpny = new tblPreviousCompany();
-                previousCmpny.CandidateID = candidate.CandidateID;
-                previousCmpny.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                previousCmpny.CreatedDate = System.DateTime.Now;
-                foreach (string textboxValue in txtBoxes)
+                if(candidateView.TotalExperience > 0)
                 {
-                    previousCmpny.PreviousCompany = textboxValue;
-                    dbContext.tblPreviousCompanies.Add(previousCmpny);
-                    dbContext.SaveChanges();
+                    tblPreviousCompany previousCmpny = new tblPreviousCompany();
+                    previousCmpny.CandidateID = candidate.CandidateID;
+                    previousCmpny.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                    previousCmpny.CreatedDate = System.DateTime.Now;
+                    foreach (string textboxValue in txtBoxes)
+                    {
+                        previousCmpny.PreviousCompany = textboxValue;
+                        dbContext.tblPreviousCompanies.Add(previousCmpny);
+                        dbContext.SaveChanges();
+                    }
                 }
 
                 tblEvaluation eval = new tblEvaluation();
@@ -602,8 +664,6 @@ namespace InterviewEvaluationSystem.Controllers
                 eval.CreatedDate = DateTime.Now;
                 eval.IsDeleted = false;
                 dbContext.tblEvaluations.Add(eval);
-
-               
                 dbContext.SaveChanges();
             }
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
@@ -712,6 +772,22 @@ namespace InterviewEvaluationSystem.Controllers
                 IsDeleted = false
             });
             dbContext1.SaveChanges();
+            return RedirectToAction("Notification");
+        }
+
+        public ActionResult RejectCandidate(int CandidateID)
+        {
+            tblCandidate rejectCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+            rejectCandidate.CandidateStatus = false;
+            dbContext.SaveChanges();
+            return RedirectToAction("Notification");
+        }
+
+        public ActionResult HireCandidate(int CandidateID)
+        {
+            tblCandidate hireCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+            hireCandidate.CandidateStatus = true;
+            dbContext.SaveChanges();
             return RedirectToAction("Notification");
         }
     }

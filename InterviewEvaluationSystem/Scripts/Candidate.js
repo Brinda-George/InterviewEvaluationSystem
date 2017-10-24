@@ -23,12 +23,11 @@
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    alert('Successfully Updated Interviewer');
                     tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
-                    debugger;
                     tr.find("#lblCandidateName").text(data.Name);
                     tr.find("#lblDateOfInterview").text(data.DateOfInterview);
                     tr.find("#lblInterviewerName").text(data.UserName);
+                    alert('Successfully Updated Interviewer');
                 }
             });
 
