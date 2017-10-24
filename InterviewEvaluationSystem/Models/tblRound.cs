@@ -11,7 +11,9 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class tblRound
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,6 +23,9 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int RoundID { get; set; }
+        [Required]
+        [Remote("IsRoundExist", "HR", AdditionalFields = "Id",
+             ErrorMessage = "RoundName already exists")]
         public string RoundName { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

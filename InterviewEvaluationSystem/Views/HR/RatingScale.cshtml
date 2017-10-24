@@ -63,12 +63,6 @@
                                 columns: new[]
 
                         {
-   @*gridview.Column("RateScaleID",
-        format:
-        @<text>
-            <span id="ratescaleid" class="read">@item.RateScaleID</span>
-            @Html.TextBox("RateScaleID", (int)item.RateScaleID, new { @class = "edit" })
-        </text>),*@
 
     gridview.Column("RateScale",
         format:
@@ -102,6 +96,10 @@
                             }
                         )
 </div>
+
+<br/>
+<br/>
+@Html.ActionLink("Go back to home ?", "HRHomePage", "HR", new { @class = "elements" }, null)
 
 <style type="text/css">
 

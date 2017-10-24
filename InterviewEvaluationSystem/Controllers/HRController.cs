@@ -227,37 +227,37 @@ namespace InterviewEvaluationSystem.Controllers
                 skill.SkillCategoryID = Convert.ToInt32(category);
                 db.tblSkills.Add(skill);
                 db.SaveChanges();
-            //List<SelectListItem> selectedlist = new List<SelectListItem>();
-            //foreach (tblSkillCategory categories in db.tblSkillCategories)
-            //{
-            //    SelectListItem selectlistitem = new SelectListItem
-            //    {
-            //        Text = categories.SkillCategory,
-            //        Value = categories.SkillCategoryID.ToString()
-            //    };
-            //    selectedlist.Add(selectlistitem);
-            //}
-            //ViewBag.category = selectedlist;
-            //ViewData["category"] = selectedlist;
+                //List<SelectListItem> selectedlist = new List<SelectListItem>();
+                //foreach (tblSkillCategory categories in db.tblSkillCategories)
+                //{
+                //    SelectListItem selectlistitem = new SelectListItem
+                //    {
+                //        Text = categories.SkillCategory,
+                //        Value = categories.SkillCategoryID.ToString()
+                //    };
+                //    selectedlist.Add(selectlistitem);
+                //}
+                //ViewBag.category = selectedlist;
+                //ViewData["category"] = selectedlist;
 
-            //var result = from a in db.tblSkillCategories
-            //             join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
-            //             select new
-            //             {
-            //                 skillcatid = b.SkillCategoryID,
-            //                 skillno = b.SkillID,
-            //                 skillcat = a.SkillCategory,
-            //                 skillname = b.SkillName
+                //var result = from a in db.tblSkillCategories
+                //             join b in db.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
+                //             select new
+                //             {
+                //                 skillcatid = b.SkillCategoryID,
+                //                 skillno = b.SkillID,
+                //                 skillcat = a.SkillCategory,
+                //                 skillname = b.SkillName
 
-            //             };
-            //ViewBag.Skillcategories = result;
-            //List<tblSkill> skills = db.tblSkills.ToList();
-            //ViewBag.Users = skills;
-            //ModelState.Clear();
+                //             };
+                //ViewBag.Skillcategories = result;
+                //List<tblSkill> skills = db.tblSkills.ToList();
+                //ViewBag.Users = skills;
+                //ModelState.Clear();
 
-            //return View(new tblSkill());
-            return RedirectToAction("Skill");
-
+                //return View(new tblSkill());
+                return RedirectToAction("Skill");
+          
         }
 
         [HttpPost]
@@ -295,7 +295,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var validateScale = db.tblRatingScales.FirstOrDefault
-                                (x => x.RateScale == RateScale && x.RateScaleID != Id);
+                                (x => x.RateScale == RateScale && x.RateScaleID != Id && x.IsDeleted!=true);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -310,7 +310,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var validateScale = db.tblRatingScales.FirstOrDefault
-                                (x => x.RateValue == RateValue && x.RateScaleID != Id);
+                                (x => x.RateValue == RateValue && x.RateScaleID != Id && x.IsDeleted != true);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -325,7 +325,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var validateScale = db.tblSkillCategories.FirstOrDefault
-                                (x => x.SkillCategory == SkillCategory && x.SkillCategoryID != Id);
+                                (x => x.SkillCategory == SkillCategory && x.SkillCategoryID != Id && x.IsDeleted != true);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -340,7 +340,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var validateScale = db.tblSkills.FirstOrDefault
-                                (x => x.SkillName == SkillName && x.SkillID != Id);
+                                (x => x.SkillName == SkillName && x.SkillID != Id && x.IsDeleted != true);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -350,6 +350,70 @@ namespace InterviewEvaluationSystem.Controllers
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+        public ActionResult AddRound()
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var item = (from s in db.tblRounds where s.IsDeleted == false select s).ToList();
+            //List<tblRatingScale> rate = db.tblRatingScales.ToList();
+            ViewBag.Rounds = item;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddRound(tblRound round)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            round.CreatedBy = "admin";
+            round.CreatedDate = DateTime.Now;
+            round.IsDeleted = false;
+            db.tblRounds.Add(round);
+            db.SaveChanges();
+            return RedirectToAction("AddRound");
+        }
+
+
+        [HttpPost]
+        public JsonResult RoundEdit(int RoundID, string RoundName)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            tblRound round = db.tblRounds.Find(RoundID);
+            round.RoundName = RoundName;
+            db.SaveChanges();
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
+            return Json(new { Url = redirectUrl, RoundName = RoundName }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult RoundDelete(int RoundID)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            tblRound round = db.tblRounds.Find(RoundID);
+            round.IsDeleted = true;
+            db.SaveChanges();
+            bool result = true;
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult IsRoundExist(string RoundName, int? Id)
+        {
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            var validateScale = db.tblRounds.FirstOrDefault
+                                (x => x.RoundName == RoundName && x.RoundID != Id && x.IsDeleted != true);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
         public ActionResult JoinDetails()
         {
             return View();

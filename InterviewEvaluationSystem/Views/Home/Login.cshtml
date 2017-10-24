@@ -5,11 +5,6 @@
     // Layout = "~/Views/Shared/HRLayout.cshtml";
 }
 
-<h2>Login</h2>
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
             <form class="form-signin" method="post" action="">
                 <h2 class="form-signin-heading">Please login</h2>
                 <input type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" /><br />
@@ -17,7 +12,3 @@
                 <button class="btn" type="submit">Login</button>
             </form>
             @Html.ActionLink("New user ? Register here..", "Register", "HR", new { @class = "elements" }, null)
-        </div>
-    </div>
-</div>
-

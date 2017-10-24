@@ -21,7 +21,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SkillCategoryID, "SkillCategory", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("category","Select category")
+                @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.category, "Select category", new { id = "categories" })
                 @*@Html.DropDownList("category",
                    (IEnumerable<SelectListItem>)ViewBag.category,
                    "Select category")*@
@@ -39,7 +39,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" id="btnSubmit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -94,6 +94,9 @@
 )
 </div>
 
+<br />
+<br />
+@Html.ActionLink("Go back to home ?", "HRHomePage", "HR", new { @class = "elements" }, null)
 
 <style type="text/css">
 
@@ -133,6 +136,23 @@
         padding: 3px 7px 2px;
     }
 </style>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("[id*=btnSubmit]").click(function () {
+            // var skillcategory = $("[id*=categories]");
+            var skillcategory = document.getElementById('categories').value;
+            if (skillcategory == null) {
+                alert("Please select a category!");
+                return false;
+            }
+            return true;
+        });
+    });
+</script>
+
+
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>

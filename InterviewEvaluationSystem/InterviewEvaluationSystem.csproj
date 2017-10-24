@@ -313,6 +313,7 @@
     </Content>
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\Around.js" />
     <Content Include="Scripts\Askill.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -404,6 +405,7 @@
     <Content Include="Views\Home\ViewProfile.cshtml" />
     <Content Include="Views\Shared\HRLayout.cshtml" />
     <Content Include="Views\Shared\InterviewerLayout.cshtml" />
+    <Content Include="Views\HR\AddRound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
