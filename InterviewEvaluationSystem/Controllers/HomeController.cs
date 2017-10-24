@@ -50,6 +50,7 @@ namespace InterviewEvaluationSystem.Controllers
             int usertypeid = Convert.ToInt32(itemid);
             Session["Count"] = usertypeid;
             Session["Name"] = user.UserName;
+            Session["userid"] = user.UserID;
             if (usertypeid == 1)
             {
                 return RedirectToAction("HRHomePage", "HR");
