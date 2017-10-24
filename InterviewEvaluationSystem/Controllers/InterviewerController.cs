@@ -52,24 +52,31 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
-                interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
-                interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
-                interviewEvaluationViewModel.Rounds = services.GetRounds();
-                interviewEvaluationViewModel.Skills = services.GetSkills();
-                for (int i = 0; i < interviewEvaluationViewModel.SkillCategories.Count; i++)
+                if (ModelState.IsValid)
                 {
-                    interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkillsByCategory(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
+                    InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
+                    interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
+                    interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
+                    interviewEvaluationViewModel.Rounds = services.GetRounds();
+                    interviewEvaluationViewModel.Skills = services.GetSkills();
+                    for (int i = 0; i < interviewEvaluationViewModel.SkillCategories.Count; i++)
+                    {
+                        interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkillsByCategory(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
+                    }
+                    for (int i = 0; i < interviewEvaluationViewModel.Rounds.Count; i++)
+                    {
+                        interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
+                    }
+                    interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
+                    TempData["CandidateID"] = statusViewModel.CandidateID;
+                    TempData["roundID"] = statusViewModel.RoundID;
+                    TempData["evaluationID"] = statusViewModel.EvaluationID;
+                    return View(interviewEvaluationViewModel);
                 }
-                for (int i = 0; i < interviewEvaluationViewModel.Rounds.Count; i++)
+                else
                 {
-                    interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
+                    return View();
                 }
-                interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
-                TempData["CandidateID"] = statusViewModel.CandidateID;
-                TempData["roundID"] = statusViewModel.RoundID;
-                TempData["evaluationID"] = statusViewModel.EvaluationID;
-                return View(interviewEvaluationViewModel);
             }
             catch (Exception ex)
             {
@@ -142,23 +149,31 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                MailMessage mailMessage = new MailMessage("brindageorge94@gmail.com", "brindageorge94@gmail.com");
-                mailMessage.Subject = mailViewModel.Subject;
-                mailMessage.Body = "<b>Interviewer: </b>" + mailViewModel.Sender + "<br/>"
-                  + "<b>Interviewer Email : </b>" + mailViewModel.From + "<br/>"
-                  + "<b>Candidate : </b>" + mailViewModel.Candidate + "<br/>"
-                  + "<b>Status : </b>" + mailViewModel.Status + "<br/>"
-                  + "<b>Comments : </b>" + mailViewModel.Comments;
-                mailMessage.IsBodyHtml = true;
-                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-                smtpClient.Credentials = new System.Net.NetworkCredential()
+                if (ModelState.IsValid)
                 {
-                    UserName = "brindageorge94@gmail.com",
-                    Password = "jehovah_jireh123"
-                };
-                smtpClient.EnableSsl = true;
-                smtpClient.Send(mailMessage);
-                return RedirectToAction("HomePage", "Interviewer");
+                    MailMessage mailMessage = new MailMessage("brindageorge94@gmail.com", "brindageorge94@gmail.com");
+                    mailMessage.Subject = mailViewModel.Subject;
+                    mailMessage.Body = "<b>Interviewer: </b>" + mailViewModel.Sender + "<br/>"
+                      + "<b>Interviewer Email : </b>" + mailViewModel.From + "<br/>"
+                      + "<b>Candidate : </b>" + mailViewModel.Candidate + "<br/>"
+                      + "<b>Status : </b>" + mailViewModel.Status + "<br/>"
+                      + "<b>Comments : </b>" + mailViewModel.Comments;
+                    mailMessage.IsBodyHtml = true;
+                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                    smtpClient.Credentials = new System.Net.NetworkCredential()
+                    {
+                        UserName = "brindageorge94@gmail.com",
+                        Password = "jehovah_jireh123"
+                    };
+                    smtpClient.EnableSsl = true;
+                    smtpClient.Send(mailMessage);
+                    TempData["Success"] = "Review submitted Successfully!";
+                    return RedirectToAction("HomePage", "Interviewer");
+                }
+                else
+                {
+                    return RedirectToAction("HomePage", "Interviewer");
+                }
             }
             catch (Exception ex)
             {

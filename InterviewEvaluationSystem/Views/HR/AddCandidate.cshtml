@@ -98,12 +98,6 @@
                 @Html.ValidationMessageFor(model => model.PreviousCompany, "", new { @class = "text-danger" })
             </div>
         </div>
-       @*<div id="previousCompanyDiv">
-           @Html.EditorFor(m => m.previousCompanyList)
-       </div>
-        <input id="btnAdd" type="button" value="Add Previous Company" onclick="AddPreviousCompany();" />*@
-
-        
 
         <div class="form-group">
             @Html.LabelFor(model => model.Qualifications, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -176,23 +170,8 @@
 
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "HRHomePage")
 </div>
-@*<script> 
-    function AddPreviousCompany() {
-        var m = $('#previousCompanyDiv input:last-child').attr('name');
-        var index = 0;
-        if (m != null && m.length > 0) {
-            index = m.split('previousCompanyList[')[1].replace('].PreviousCompany', '');
-            index++;
-        }
-
-        var html = '<label for=\"previousCompanyList_' + index + '__PreviousCompany\">PreviousCompany</label>' +
-            '<input id=\"previousCompanyList_' + index + '__PreviousCompany\" class=\"text-box single-line\"' +
-            ' type=\"text\" value=\"\" name=\"previousCompanyList[' + index + '].PreviousCompany\">';
-        $('#previousCompanyDiv').append(html);
-    };
-</script>*@
 
 <script type="text/javascript">
       function GetExistingDynamicTextBoxes(value) {
