@@ -63,7 +63,7 @@
                 data: JSON.stringify({ "CandidateID": CandidateID }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
-                success: function (data) {
+                success: function (data) { 
                    
                 }
             })

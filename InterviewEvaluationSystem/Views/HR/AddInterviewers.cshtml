@@ -93,7 +93,6 @@
     </div>
 }
 
-
 <div id="gridContent">
 
     @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
@@ -105,22 +104,11 @@
         
         mode: WebGridPagerModes.All,
 
-        //@grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-        //        headerStyle: "webgrid-header",
-        //        footerStyle: "webgrid-footer",
-        //        alternatingRowStyle: "webgrid-alternating-row",
-        //        selectedRowStyle: "webgrid-selected-row",
-        //        rowStyle: "webgrid-row-style",
-        //        mode: WebGridPagerModes.All,
         columns:
         grid.Columns(
-            // grid.Column("UserID", "UserID"),
             grid.Column("UserID", format: @<text>  <span class="display-mode">@item.UserID </span> <label id="lblUserID" class="edit-mode">@item.UserID</label> </text>),
-
             grid.Column("Sr.No.", format: item => rowVal = rowVal + 1),
-            // grid.Column(null,null,format: @<input type="hidden" name="UserID" value="@item.UserID" style:"hidecol",header:""/>),
-
-            grid.Column("UserName", "UserName", format: @<text>  <span class="display-mode"> <label id="lblName">@item.UserName</label> </span> <input type="text" id="Name" value="@item.UserName" class="edit-mode" /></text>),
+            grid.Column("UserName", "UserName", format: @<text>  <span class="display-mode"> <label id="lblUserName">@item.UserName</label> </span> <input type="text" id="UserName" value="@item.UserName" class="edit-mode" /></text>),
             grid.Column("EmployeeId", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>),
             grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>),
             grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> </text>),

@@ -450,16 +450,16 @@ namespace InterviewEvaluationSystem.Controllers
         }
          
         [HttpPost]
-        public ActionResult UpdateInterviewer(int UserID, string Name, string Email, string Designation)
+        public ActionResult UpdateInterviewer(int UserID, string UserName, string Email, string Designation)
         {
             tblUser updateInterviewer = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
-            updateInterviewer.UserName = Name;
+            updateInterviewer.UserName = UserName;
             updateInterviewer.Email = Email;
             updateInterviewer.Designation = Designation;
             updateInterviewer.ModifiedBy = "hr";
             updateInterviewer.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
-            return Json(new { UserName = Name, Email = Email, Designation=Designation }, JsonRequestBehavior.AllowGet);
+            return Json(new { UserName = UserName, Email = Email, Designation=Designation }, JsonRequestBehavior.AllowGet);
 
            
         }
