@@ -310,7 +310,6 @@
     <Content Include="Content\formstyle.css" />
     <Content Include="Content\layout.css" />
     <Content Include="Content\menustyle.css" />
-    <Content Include="Content\navbarstyle.css" />
     <Content Include="Content\sb-admin.css" />
     <Content Include="Content\sb-admin.min.css" />
     <Content Include="Content\startmin.css" />
