@@ -2,10 +2,14 @@
 
 @{
     ViewBag.Title = "Skill";
-    // Layout = "~/Views/Shared/_Layout.cshtml";
-    //Layout = "~/Views/Shared/HRLayout.cshtml";
-    //List<SelectListItem> selectedlist = ViewData["category"] as List<SelectListItem>;
 }
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="~/HR/HRHomePage">Home Page</a>
+    </li>
+    <li class="breadcrumb-item active">Skills</li>
+</ol>
 
 <h2>Skill</h2>
 
@@ -49,14 +53,13 @@
         var gridview = new WebGrid(ViewBag.Skillcategories, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
 
-    @gridview.GetHtml(
-
-        tableStyle: "webgrid-table",
-        headerStyle: "webgrid-header",
-        footerStyle: "webgrid-footer",
-        selectedRowStyle: "webgrid-selected-row",
-        rowStyle: "webgrid-row-style",
-        mode: WebGridPagerModes.All,
+    @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+                 headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                 mode: WebGridPagerModes.All,
     columns: new[]
 
 {
@@ -92,49 +95,8 @@
 )
 </div>
 
-
-<style type="text/css">
-    #form1 {
-        font-family: "Times New Roman", Arial, Helvetica, sans-serif;
-        font-size: 1.2em;
-        color: dodgerblue !important;
-    }
-
-    .webgrid-table {
-        font-family: "Times New Roman", Arial, Helvetica, sans-serif;
-        font-size: 1.2em;
-        width: 100%;
-        display: table;
-        border-collapse: separate;
-        border: solid 1px dodgerblue;
-        background-color: white;
-    }
-
-        .webgrid-table td, th {
-            border: 1px solid dodgerblue;
-            padding: 3px 7px 2px;
-        }
-
-    .webgrid-header {
-        background-color: black;
-        color: black !important;
-        padding-bottom: 4px;
-        padding-top: 5px;
-        text-align: left;
-    }
-
-    .webgrid-footer {
-    }
-
-    .webgrid-row-style {
-        padding: 3px 7px 2px;
-    }
-</style>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="~/Scripts/Askill.js"></script>
-
-
-

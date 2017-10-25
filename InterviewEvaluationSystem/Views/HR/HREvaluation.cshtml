@@ -14,6 +14,17 @@
 <script src="~/Scripts/hrevaluation.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="~/HR/HRHomePage">Home Page</a>
+    </li>
+    <li class="breadcrumb-item active">Interviews</li>
+    <li class="breadcrumb-item">
+        <a href="~/HR/CandidateStatus">Interview Evaluation Status</a>
+    </li>
+    <li class="breadcrumb-item active">Interview Evaluation</li>
+</ol>
+
 @if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
 {
     <h2>Interview Evaluation Form</h2>

@@ -2,18 +2,23 @@
 
 @{
     ViewBag.Title = "SkillCategory";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
-    //Layout = "~/Views/Shared/HRLayout.cshtml";
 }
 
-<h2>SkillCategory</h2>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="~/HR/HRHomePage">Home Page</a>
+    </li>
+    <li class="breadcrumb-item active">Skill Categories</li>
+</ol>
 
+<h2>SkillCategory</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <div ID="form1" class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
             @Html.LabelFor(model => model.SkillCategory, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -30,48 +35,6 @@
             </div>
         </div>
 
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ModifiedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ModifiedBy, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ModifiedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ModifiedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ModifiedDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ModifiedDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.IsDeleted)
-                        @Html.ValidationMessageFor(model => model.IsDeleted, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>*@
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -85,13 +48,13 @@
         var gridview = new WebGrid(ViewBag.Roles, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
 
-    @gridview.GetHtml(
-        tableStyle: "webgrid-table",
-        headerStyle: "webgrid-header",
-        footerStyle: "webgrid-footer",
-        selectedRowStyle: "webgrid-selected-row",
-        rowStyle: "webgrid-row-style",
-        mode: WebGridPagerModes.All,
+    @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+                 headerStyle: "webgrid-header",
+                 footerStyle: "webgrid-footer",
+                 alternatingRowStyle: "webgrid-alternating-row",
+                 selectedRowStyle: "webgrid-selected-row",
+                 rowStyle: "webgrid-row-style",
+                 mode: WebGridPagerModes.All,
     columns: new[]
 
 {
@@ -121,43 +84,6 @@
 )
 </div>
 
-<style type="text/css">
-    #form1 {
-        font-family: "Times New Roman", Arial, Helvetica, sans-serif;
-        font-size: 1.2em;
-        color: dodgerblue !important;
-    }
-
-    .webgrid-table {
-        font-family: "Times New Roman", Arial, Helvetica, sans-serif;
-        font-size: 1.2em;
-        width: 100%;
-        display: table;
-        border-collapse: separate;
-        border: solid 1px dodgerblue;
-        background-color: white;
-    }
-
-        .webgrid-table td, th {
-            border: 1px solid dodgerblue;
-            padding: 3px 7px 2px;
-        }
-
-    .webgrid-header {
-        background-color: black;
-        color: black !important;
-        padding-bottom: 4px;
-        padding-top: 5px;
-        text-align: left;
-    }
-
-    .webgrid-footer {
-    }
-
-    .webgrid-row-style {
-        padding: 3px 7px 2px;
-    }
-</style>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>

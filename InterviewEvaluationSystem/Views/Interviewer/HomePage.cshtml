@@ -5,37 +5,36 @@
 
 <link href="~/Content/startmin.css" rel="stylesheet" />
 
-<h2>HomePage</h2>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="~/Interviewer/HomePage">Home Page</a>
+    </li>
+    <li class="breadcrumb-item active">Dashboard</li>
+</ol>
+
 @if (TempData["Success"] != null)
 {
     <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
 }
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-primary">
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="panel panel-primary bg-primary">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-xs-3">
+                        <div class="col-sm-3">
                             <br />
-                            <i class="fa fa-users fa-5x"></i>
+                            <i class="fa fa-users fa-4x"></i>
                         </div>
-                        <div class="col-xs-9 text-right">
+                        <div class="col-sm-9 text-right">
                             <div class="huge">@Model.NewCandidateCount</div>
                             <div class="text">New Candidates</div>
                         </div>
                     </div>
                 </div>
-                <a href="~/Interviewer/EvaluationStatus">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-xl-3 col-sm-6 mb-3">
             <div class="panel panel-green">
                 <div class="panel-heading">
                     <div class="row">
@@ -49,16 +48,9 @@
                         </div>
                     </div>
                 </div>
-                <a href="~/Interviewer/EvaluationStatus">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-xl-3 col-sm-6 mb-3">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
                     <div class="row">
@@ -72,16 +64,9 @@
                         </div>
                     </div>
                 </div>
-                <a href="~/Interviewer/EvaluationStatus">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-xl-3 col-sm-6 mb-3">
             <div class="panel panel-red">
                 <div class="panel-heading">
                     <div class="row">
@@ -95,16 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="~/Interviewer/EvaluationStatus">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
             </div>
         </div>
     </div>
 </div>
-
-@Html.ActionLink("Go to Evaluation", "EvaluationStatus", "Interviewer")
