@@ -73,4 +73,5 @@ namespace InterviewEvaluationSystem.Models
         public int UserID { get; set; }
 
     }
+
 }

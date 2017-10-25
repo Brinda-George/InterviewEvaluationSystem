@@ -64,7 +64,7 @@
             <div class="col-md-10">
                
                 @Html.PasswordFor(model => model.Password, new {  @class = "form-control", placeholder = "Password"  })
-
+                <div class="text-danger">@ViewBag.PasswordErrorMessage</div>
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>

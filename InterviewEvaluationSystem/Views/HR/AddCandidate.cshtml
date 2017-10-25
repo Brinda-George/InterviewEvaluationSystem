@@ -10,10 +10,9 @@
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 <h2>Add Candidate</h2>
 
-@using (Html.BeginForm(new { id = "frmCreate" }))
-{
 
-                @*<form id="frmCreate">*@
+
+              <form id="frmCreate">
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
         <hr />
@@ -101,12 +100,6 @@
                 @Html.ValidationMessageFor(model => model.PreviousCompany, "", new { @class = "text-danger" })
             </div>
         </div>
-       @*<div id="previousCompanyDiv">
-           @Html.EditorFor(m => m.previousCompanyList)
-       </div>
-        <input id="btnAdd" type="button" value="Add Previous Company" onclick="AddPreviousCompany();" />*@
-
-        
 
         <div class="form-group">
             @Html.LabelFor(model => model.Qualifications, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -130,8 +123,8 @@
             </div>
         </div>
     </div>
-@*</form>*@
-}
+</form>
+
 
 @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
@@ -151,7 +144,7 @@
     <table>
         <tr>
             <td><input type="text" class="form-control" id="CandidateNameText" /></td>
-            <td><input type="button" id="searchCandidate" value="Search" /></td>
+            <td><input type="button" id="searchCandidate" value="Search" class="btn btn-primary"/></td>
         </tr>
     </table>
 </div>
@@ -175,10 +168,10 @@
              gridCandidate.Column("InterviewerName", "Interviewer Name", format: @<text> <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span> @Html.DropDownList("user", null, string.Empty, new {id="ddlInterviewerName", @class = "edit-modeCandidate form-control" })  </text>),
 
             gridCandidate.Column("Action", format: @<text>
-                <button class="edit-userCandidate display-modeCandidate">Edit</button>
-                <button class="save-userCandidate edit-modeCandidate">Save</button>
-                <button class="cancel-userCandidate edit-modeCandidate">Cancel</button>
-                <button class="delete-userCandidate">Delete</button>
+                <button class="edit-userCandidate display-modeCandidate btn btn-primary">Edit</button>
+                <button class="save-userCandidate edit-modeCandidate btn btn-primary">Save</button>
+                <button class="cancel-userCandidate edit-modeCandidate btn btn-primary">Cancel</button>
+                <button class="delete-userCandidate btn btn-primary">Delete</button>
             </text>))
         )
 </div>

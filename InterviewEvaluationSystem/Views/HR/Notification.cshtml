@@ -1,7 +1,7 @@
-﻿@model InterviewEvaluationSystem.Models.NotificationViewModel
-
+﻿
 @{
     ViewBag.Title = "Notification";
+    
 }
 
 <script src="~/Scripts/Notification.js"></script>
@@ -12,7 +12,19 @@
     var grid = new WebGrid(ViewBag.notificationList, canPage: true, rowsPerPage: 15, canSort: true);
 }
 
-@grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+@if (ViewBag.notificationList == null)
+{
+
+    <div class="alert alert-success">
+        <strong>No notifications exists. </strong>  @Html.ActionLink("Redirect To Add Candidate Page", "AddCandidate", "HR", new { @class = "alert-link" }, null)
+
+    </div>
+}
+
+
+else
+{
+   @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
@@ -30,7 +42,7 @@
                 {
                     return new HtmlString("<input type='button' value='Proceed To Next Round' class='ProceedNext' />");
                 }
-                else if(item.Recommended == true && item.RoundID == item.totalRound)
+                else if (item.Recommended == true && item.RoundID == item.totalRound)
                 {
                     return new HtmlString("<input type='button' value='Hire The Candidate' class='HireCandidate' />");
                     //return Html.Raw(string.Format("Hired"));
@@ -45,3 +57,9 @@
 
 <div id="ProceedCandidateDiv">
 </div>
+}
+
+
+
+
+
