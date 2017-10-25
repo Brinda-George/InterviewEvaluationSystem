@@ -49,7 +49,7 @@ namespace InterviewEvaluationSystem.Controllers
             tblUser loginUser = new tblUser();
             var result = db.spLogin(user.UserName, user.Password).Single();
             int ReturnValue = result.ReturnValue;
-            if(ReturnValue == 1)
+            if (ReturnValue == 1)
             {
                 loginUser.UserID = result.UserID;
                 loginUser.UserName = result.UserName;
@@ -145,7 +145,7 @@ namespace InterviewEvaluationSystem.Controllers
                 }
                 else
                 {
-                    ViewBag.PasswordErrorMessage = "The password should contain minimum " + passwordLength + "characters";
+                    ViewBag.PasswordErrorMessage = "The password should contain minimum " + passwordLength + " characters";
                 }
                 return View();
             }
