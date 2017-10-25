@@ -309,6 +309,7 @@
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\formstyle.css" />
     <Content Include="Content\layout.css" />
+    <Content Include="Content\LoginTemplate.css" />
     <Content Include="Content\menustyle.css" />
     <Content Include="Content\sb-admin.css" />
     <Content Include="Content\sb-admin.min.css" />
@@ -321,6 +322,7 @@
     <Content Include="Images\1.png" />
     <Content Include="Images\2.png" />
     <Content Include="Images\3.png" />
+    <Content Include="Images\IMG1.png" />
     <Content Include="Images\suyati.jpg" />
     <Content Include="Models\InterviewModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -2,6 +2,7 @@
 using InterviewEvaluationSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -444,6 +445,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
+            var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
             if (string.IsNullOrEmpty(user.UserName))
             {
                 ModelState.AddModelError("UserName", "Enter Name");
@@ -467,17 +469,14 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 ModelState.AddModelError("Pincode", "Enter Pincode");
             }
-            if (string.IsNullOrEmpty(user.Password))
-            {
-                ModelState.AddModelError("Password", "Enter Password");
-            }
             if (string.IsNullOrEmpty(user.Email))
             {
                 ModelState.AddModelError("Email", "Enter Email");
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && user.Password.Length >= Convert.ToInt32(passwordLength))
             {
+
                 user.UserTypeID = Convert.ToInt32(userType);
                 user.CreatedBy = Convert.ToInt32(Session["UserID"]);
                 user.CreatedDate = System.DateTime.Now;
@@ -495,24 +494,29 @@ namespace InterviewEvaluationSystem.Controllers
                     selectedlistInner.Add(selectlistitem);
                 }
                 ViewBag.userType = selectedlistInner;
-                List<tblUser> usersInner = dbContext.tblUsers.ToList();
+                List<tblUser> usersInner = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
                 ViewBag.Users = usersInner;
+                ModelState.Clear();
                 return View();
             }
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblUserType userType1 in dbContext.tblUserTypes)
+            else
             {
-                SelectListItem selectlistitem = new SelectListItem
+                ViewBag.PasswordErrorMessage = "The password should contain minimum " + passwordLength + "characters";
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                foreach (tblUserType userType1 in dbContext.tblUserTypes)
                 {
-                    Text = userType1.UserType,
-                    Value = userType1.UserTypeID.ToString()
-                };
-                selectedlist.Add(selectlistitem);
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = userType1.UserType,
+                        Value = userType1.UserTypeID.ToString()
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.userType = selectedlist;
+                List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
+                ViewBag.Users = users;
+                return View(user);
             }
-            ViewBag.userType = selectedlist;
-            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false).ToList();
-            ViewBag.Users = users;
-            return View(user);
 
         }
 

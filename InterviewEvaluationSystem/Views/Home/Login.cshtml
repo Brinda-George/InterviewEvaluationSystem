@@ -1,21 +1,34 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Login</h2>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <form class="form-signin" method="post" action="">
-                <h2 class="form-signin-heading">Please login</h2>
-                <input type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" /><br />
-                <input type="password" class="form-control" name="Password" placeholder="Password" required="" />
-                <button class="btn" type="submit">Login</button>
-            </form>
-        </div>
-    </div>
+<h1 class="title">Suyati Technologies</h1>
+<hr />
+
+<div id="loginForm">
+    <table>
+        <tr>
+            <td>
+                <h2>LOGIN</h2><br/>
+                <form class="form-signin" method="post" action="">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                        <input id="in" type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                        <input id="in" type="password" class="form-control" name="Password" placeholder="Password" required="" />
+                    </div>
+                    <br />
+                    <button class="btn btn-primary btn-lg btn-block login-button" type="submit">Login</button>
+                </form>
+            </td>
+        </tr>
+    </table>
 </div>
 
+<link href="~/Content/LoginTemplate.css" rel="stylesheet" />

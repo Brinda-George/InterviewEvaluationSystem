@@ -17,6 +17,7 @@ namespace InterviewEvaluationSystem.Controllers
     public class HomeController : Controller
     {
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
+        Services services = new Services();
 
         public ActionResult Index()
         {
@@ -47,20 +48,28 @@ namespace InterviewEvaluationSystem.Controllers
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             tblUser loginUser = new tblUser();
             var result = db.spLogin(user.UserName, user.Password).Single();
-            loginUser.UserID = result.UserID;
-            loginUser.UserName = result.UserName;
-            loginUser.UserTypeID = result.UserTypeID;
-            Session["UserTypeID"] = loginUser.UserTypeID;
-            Session["UserName"] = loginUser.UserName;
-            Session["UserID"] = loginUser.UserID;
-            if (loginUser.UserTypeID == 1)
+            int ReturnValue = result.ReturnValue;
+            if(ReturnValue == 1)
             {
-                return RedirectToAction("HRHomePage", "HR");
-            }
-            else if (loginUser.UserTypeID == 2)
-            {
-                return RedirectToAction("HomePage", "Interviewer");
+                loginUser.UserID = result.UserID;
+                loginUser.UserName = result.UserName;
+                loginUser.UserTypeID = result.UserTypeID;
+                Session["UserTypeID"] = loginUser.UserTypeID;
+                Session["UserName"] = loginUser.UserName;
+                Session["UserID"] = loginUser.UserID;
+                if (loginUser.UserTypeID == 1)
+                {
+                    return RedirectToAction("HRHomePage", "HR");
+                }
+                else if (loginUser.UserTypeID == 2)
+                {
+                    return RedirectToAction("HomePage", "Interviewer");
 
+                }
+                else
+                {
+                    Response.Write("Invalid credentials");
+                }
             }
             else
             {
@@ -121,15 +130,22 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                Services services = new Services();
-                int returnValue = services.UpdatePassword(Convert.ToInt32(Session["UserID"]), changePasswordViewModel);
-                if (returnValue == 1)
+                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
+                if (ModelState.IsValid && changePasswordViewModel.NewPassword.Length >= Convert.ToInt32(passwordLength))
                 {
-                    ViewBag.result = "Password Updated Successfully!";
+                    int returnValue = services.UpdatePassword(Convert.ToInt32(Session["UserID"]), changePasswordViewModel);
+                    if (returnValue == 1)
+                    {
+                        ViewBag.result = "Password Updated Successfully!";
+                    }
+                    else
+                    {
+                        ViewBag.result = "Wrong Password!!";
+                    }
                 }
                 else
                 {
-                    ViewBag.result = "Wrong Password!!";
+                    ViewBag.PasswordErrorMessage = "The password should contain minimum " + passwordLength + "characters";
                 }
                 return View();
             }

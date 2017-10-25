@@ -27,5 +27,6 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
+        public int ReturnValue { get; set; }
     }
 }
