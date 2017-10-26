@@ -1,6 +1,6 @@
 ﻿@{
     // Layout = "~/Views/Shared/_Layout.cshtml";
-    var count = Convert.ToInt32(Session["Count"]);
+    var count = Convert.ToInt32(Session["UserTypeID"]);
     switch(count)
     {
         case 1: Layout = "~/Views/Shared/HRLayout.cshtml";

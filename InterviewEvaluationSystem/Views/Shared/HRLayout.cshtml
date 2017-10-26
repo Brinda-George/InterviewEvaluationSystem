@@ -65,9 +65,9 @@
                             <li><a href="/Home/Logout">Logout</a></li>
                         </ul>
                     </li>
-                    @if (@ Session["UserName"] != null)
+                    @if (@Session["UserName"] != null)
                     {
-                            <li style="color:white; font-size:20px">Welcome  Session["UserName"] </li>
+                            <li style="color:white; font-size:20px">Welcome  @Session["UserName"] </li>
                     }
                     else
                     {

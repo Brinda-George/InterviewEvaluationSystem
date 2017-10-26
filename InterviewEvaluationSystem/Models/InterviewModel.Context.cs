@@ -38,6 +38,19 @@ namespace InterviewEvaluationSystem.Models
         public virtual DbSet<tblUser> tblUsers { get; set; }
         public virtual DbSet<tblUserType> tblUserTypes { get; set; }
     
+        public virtual ObjectResult<Nullable<int>> spAuthenticate(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spAuthenticate", usernameParameter, passWordParameter);
+        }
+    
         public virtual ObjectResult<spCandidateWebGrid_Result> spCandidateWebGrid()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCandidateWebGrid_Result>("spCandidateWebGrid");

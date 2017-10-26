@@ -11,7 +11,9 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class tblSkill
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,6 +23,9 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int SkillID { get; set; }
+        [Required(ErrorMessage ="Please enter a Skill Name")]
+        [Remote("IsSkillExist", "HR", AdditionalFields = "Id",
+             ErrorMessage = "SkillName already exists")]
         public string SkillName { get; set; }
         public Nullable<int> SkillCategoryID { get; set; }
         public string CreatedBy { get; set; }

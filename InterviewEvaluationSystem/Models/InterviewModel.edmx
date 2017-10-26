@@ -263,6 +263,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spAuthenticate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="PassWord" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spCandidateWebGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
@@ -689,6 +693,10 @@
             <End Role="tblUserType" EntitySet="tblUserTypes" />
             <End Role="tblUser" EntitySet="tblUsers" />
           </AssociationSet>
+          <FunctionImport Name="spAuthenticate" ReturnType="Collection(Int32)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="PassWord" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="spCandidateWebGrid" ReturnType="Collection(InterviewEvaluationDbModel.spCandidateWebGrid_Result)" />
           <FunctionImport Name="spGetCandidateInterviewers" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidateInterviewers_Result)">
             <Parameter Name="CandidateID" Mode="In" Type="Int32" />
@@ -978,6 +986,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spAuthenticate" FunctionName="InterviewEvaluationDbModel.Store.spAuthenticate" />
           <FunctionImportMapping FunctionImportName="spCandidateWebGrid" FunctionName="InterviewEvaluationDbModel.Store.spCandidateWebGrid">
             <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spCandidateWebGrid_Result">

@@ -45,28 +45,30 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Login(tblUser loginUser)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            //tblUser loginUser = new tblUser();
-            var result = db.spLogin(loginUser.UserName, loginUser.Password).Single();
-            loginUser.UserID = result.UserID;
-            loginUser.UserName = result.UserName;
-            loginUser.UserTypeID = result.UserTypeID;
-            Session["UserTypeID"] = loginUser.UserTypeID;
-            Session["UserName"] = loginUser.UserName;
-            Session["UserID"] = loginUser.UserID;
-            if (loginUser.UserTypeID == 1)
+            var result = db.spAuthenticate(loginUser.UserName, loginUser.Password).Single();
+            if (result==0)
             {
-                return RedirectToAction("HRHomePage", "HR");
-            }
-            else if (loginUser.UserTypeID == 2)
-            {
-                return RedirectToAction("HomePage", "Interviewer");
-
+                ViewBag.Message = "Invalid credentials";
             }
             else
             {
-                Response.Write("Invalid credentials");
+                var values = db.spLogin(loginUser.UserName, loginUser.Password).Single();
+                loginUser.UserID = values.UserID;
+                loginUser.UserName = values.UserName;
+                loginUser.UserTypeID = values.UserTypeID;
+                Session["UserTypeID"] = loginUser.UserTypeID;
+                Session["UserName"] = loginUser.UserName;
+                Session["UserID"] = loginUser.UserID;
+                if (loginUser.UserTypeID == 1)
+                {
+                    return RedirectToAction("HRHomePage", "HR");
+                }
+                else if (loginUser.UserTypeID == 2)
+                {
+                    return RedirectToAction("HomePage", "Interviewer");
+
+                }
             }
-            
             return View();
         }
 

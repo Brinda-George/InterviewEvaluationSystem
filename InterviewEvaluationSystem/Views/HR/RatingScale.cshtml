@@ -6,6 +6,8 @@
     //Layout = "~/Views/Shared/HRLayout.cshtml";
 }
 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <h2>RatingScale</h2>
 
 @using (Html.BeginForm()) 
@@ -48,7 +50,7 @@
     </div>
 }
 
-<div id="ajaxgrid">
+<div class="container" id="ajaxgrid">
     @{
         var gridview = new WebGrid(ViewBag.Roles, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
@@ -88,7 +90,9 @@
     gridview.Column("Action", style: "button",
                 format:
                 @<text>
+                    
                     <button class="edit-case read" id="@item.RateScaleID">Edit</button>
+                    <span class="glyphicon glyphicon-edit"></span>
                     <button class="delete-case read" id="@item.RateScaleID">Delete</button>
                     <button class="update-case edit" style="display:none" id="@item.RateScaleID">Update</button>
                     <button class="cancel-case edit" style="display:none" id="@item.RateScaleID">Cancel</button>

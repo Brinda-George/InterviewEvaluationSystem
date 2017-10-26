@@ -21,11 +21,12 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SkillCategoryID, "SkillCategory", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.category, "Select category", new { id = "categories" })
+                @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.category, "Select category", new { id = "categories"  })
                 @*@Html.DropDownList("category",
                    (IEnumerable<SelectListItem>)ViewBag.category,
                    "Select category")*@
                 @Html.ValidationMessageFor(model => model.SkillCategoryID, "", new { @class = "text-danger" })
+                <label id="lblCategory" class="text-danger"></label>
             </div>
         </div>
 
@@ -39,7 +40,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" id="btnSubmit" value="Create" class="btn btn-default" />
+                <input type="submit" id="btnSubmit" value="Create" class="btn btn-default" onclick="return CheckCategory()"/>
             </div>
         </div>
     </div>
@@ -138,19 +139,23 @@
 </style>
 
 
-@*<script type="text/javascript">
-    $(document).ready(function () {
-        $("[id*=btnSubmit]").click(function () {
-            // var skillcategory = $("[id*=categories]");
-            var skillcategory = document.getElementById('categories').value;
-            if (skillcategory == null) {
-                alert("Please select a category!");
-                return false;
-            }
-            return true;
-        });
-    });
-</script>*@
+<script type="text/javascript">
+    function CheckCategory()
+    {
+        var cat=$("#categories").val();
+        if(cat==0)
+        {
+            $("#lblCategory").html("Please select a category");
+            return false;
+        }
+        else
+        {
+            $("#lblCategory").empty();
+        }
+
+    }
+  
+</script>
 
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>

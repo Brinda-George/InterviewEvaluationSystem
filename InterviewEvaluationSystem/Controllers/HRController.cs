@@ -218,8 +218,6 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Skill(tblSkill skill, string category)
         {
-            //if (ModelState.IsValid)
-            //{
                 InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
                 skill.CreatedBy = "admin";
                 skill.CreatedDate = DateTime.Now;
@@ -257,7 +255,6 @@ namespace InterviewEvaluationSystem.Controllers
 
                 //return View(new tblSkill());
                 return RedirectToAction("Skill");
-          
         }
 
         [HttpPost]
