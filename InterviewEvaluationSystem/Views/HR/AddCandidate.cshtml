@@ -8,14 +8,14 @@
 
 <script src="~/Scripts/Candidate.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
-<h2>Add Candidate</h2>
+@*<h2>Add Candidate</h2>*@
 
 
 
               <form id="frmCreate">
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
-        <hr />
+        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
