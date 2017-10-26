@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace InterviewEvaluationSystem.Models
 {
@@ -33,7 +34,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> Hired { get; set; }
         public Nullable<int> Rejected { get; set; }
     }
-    
+
     public class ColumnChartViewModel
     {
         public Nullable<int> January { get; set; }
@@ -52,30 +53,42 @@ namespace InterviewEvaluationSystem.Models
 
     public class RatingScaleViewModel
     {
-        [Required(ErrorMessage = "Error: Must Choose a Rate")]
         public int RateScaleID { get; set; }
+        [Required]
+        [Remote("IsScaleExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Scale already exists")]
         public string RateScale { get; set; }
+        [Required]
+        [Remote("IsValueExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Value already exists")]
         public int Value { get; set; }
+        [Required]
         public string Description { get; set; }
     }
 
     public class SkillCategoryViewModel
     {
         public int SkillCategoryID { get; set; }
+        [Required]
+        [Remote("IsCategoryExist", "HR", AdditionalFields = "Id", ErrorMessage = "Skill Category already exists")]
         public string SkillCategory { get; set; }
+        [Required]
         public string Description { get; set; }
     }
 
     public class SkillViewModel
     {
         public int SkillID { get; set; }
+        [Required]
+        [Remote("IsSkillExist", "HR", AdditionalFields = "Id", ErrorMessage = "Skill Name already exists")]
         public string SkillName { get; set; }
-        public Nullable<int> SkillCategoryID { get; set; }
+        [Required]
+        public int SkillCategoryID { get; set; }
     }
-
+    
     public class RoundViewModel
     {
         public int RoundID { get; set; }
+        [Required]
+        [Remote("IsRoundExist", "HR", AdditionalFields = "Id", ErrorMessage = "Round Name already exists")]
         public string RoundName { get; set; }
     }
 
@@ -90,7 +103,7 @@ namespace InterviewEvaluationSystem.Models
         public string Password { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        public Nullable<int> UserTypeID { get; set; }
+        public int UserTypeID { get; set; }
     }
 
     public class CandidateViewModel
@@ -208,7 +221,7 @@ namespace InterviewEvaluationSystem.Models
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
         public string OldPassword { get; set; }
-        
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]

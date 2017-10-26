@@ -16,6 +16,7 @@ namespace InterviewEvaluationSystem.Controllers
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
         Services services = new Services();
 
+        #region Home Page
         public ActionResult HomePage()
         {
             try
@@ -33,7 +34,9 @@ namespace InterviewEvaluationSystem.Controllers
                 return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
             }
         }
+        #endregion
 
+        #region Evaluation Status
         public ActionResult EvaluationStatus()
         {
             try
@@ -45,9 +48,10 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "Interviewer", "HomePage"));
             }
-
         }
+        #endregion
 
+        #region Interview Evaluation
         public ActionResult InterviewEvaluation(StatusViewModel statusViewModel, string Name)
         {
             try
@@ -144,7 +148,9 @@ namespace InterviewEvaluationSystem.Controllers
                 return View("Error", new HandleErrorInfo(ex, "Interviewer", "InterviewEvaluation"));
             }
         }
+        #endregion
 
+        #region Email Notifiication
         public ActionResult SentEmailNotification(MailViewModel mailViewModel)
         {
             try
@@ -180,5 +186,7 @@ namespace InterviewEvaluationSystem.Controllers
                 return View("Error", new HandleErrorInfo(ex, "Interviewer", "InterviewEvaluation"));
             }
         }
+        #endregion
+
     }
 }

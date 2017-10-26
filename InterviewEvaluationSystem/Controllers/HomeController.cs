@@ -19,23 +19,7 @@ namespace InterviewEvaluationSystem.Controllers
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
         Services services = new Services();
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
-
+        #region Login
         [HttpGet]
         public ActionResult Login()
         {
@@ -43,17 +27,16 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(tblUser loginUser)
+        public ActionResult Login(UserViewModel loginUser)
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var result = db.spAuthenticate(loginUser.UserName, loginUser.Password).Single();
+            var result = dbContext.spAuthenticate(loginUser.UserName, loginUser.Password).Single();
             if (result == 0)
             {
                 ViewBag.Message = "Invalid credentials";
             }
             else
             {
-                var values = db.spLogin(loginUser.UserName, loginUser.Password).Single();
+                var values = dbContext.spLogin(loginUser.UserName, loginUser.Password).Single();
                 loginUser.UserID = values.UserID;
                 loginUser.UserName = values.UserName;
                 loginUser.UserTypeID = values.UserTypeID;
@@ -72,7 +55,9 @@ namespace InterviewEvaluationSystem.Controllers
             }
             return View();
         }
+        #endregion
 
+        #region Profile Update
         [HttpGet]
         public ActionResult ProfileUpdate()
         {
@@ -80,7 +65,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProfileUpdate(tblUser user)
+        public ActionResult ProfileUpdate(UserViewModel user)
         {
             var name = Convert.ToString(Session["UserName"]);
             var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
@@ -97,14 +82,9 @@ namespace InterviewEvaluationSystem.Controllers
                 return RedirectToAction("HomePage", "Interviewer");
             }
         }
+        #endregion
 
-        public ActionResult Logout(tblUser user)
-        {
-            Session["UserName"] = null;
-            Session.Abandon();
-            return RedirectToAction("Login", "Home");
-        }
-
+        #region View Profile
         public ActionResult ViewProfile()
         {
             var name = Convert.ToString(Session["UserName"]);
@@ -112,7 +92,18 @@ namespace InterviewEvaluationSystem.Controllers
             ViewBag.Details = item;
             return View();
         }
+        #endregion
 
+        #region Logout
+        public ActionResult Logout(UserViewModel user)
+        {
+            Session["UserName"] = null;
+            Session.Abandon();
+            return RedirectToAction("Login", "Home");
+        }
+        #endregion
+
+        #region Change Password
         [HttpGet]
         public ActionResult ChangePassword()
         {
@@ -148,5 +139,7 @@ namespace InterviewEvaluationSystem.Controllers
                 return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
             }
         }
+        #endregion
+
     }
 }
