@@ -27,6 +27,13 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> TotalCandidateCount { get; set; }
     }
 
+    public class PieChartViewModel
+    {
+        public Nullable<int> InProgress { get; set; }
+        public Nullable<int> Hired { get; set; }
+        public Nullable<int> Rejected { get; set; }
+    }
+
     public class RatingScaleViewModel
     {
         [Required(ErrorMessage = "Error: Must Choose a Rate")]

@@ -221,5 +221,10 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
         }
+    
+        public virtual ObjectResult<spGetPieChart_Result> spGetPieChart()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart");
+        }
     }
 }

@@ -492,6 +492,7 @@
         <Function Name="spGetInterviewerDashBoard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetPieChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPreviousRoundScores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
           <Parameter Name="RoundID" Type="int" Mode="In" />
@@ -1354,6 +1355,7 @@
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="PassWord" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spGetPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetPieChart_Result)" />
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -1443,6 +1445,11 @@
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
           <Property Type="Int32" Name="ReturnValue" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spGetPieChart_Result">
+          <Property Type="Int32" Name="InProgress" Nullable="true" />
+          <Property Type="Int32" Name="Hired" Nullable="true" />
+          <Property Type="Int32" Name="Rejected" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1746,6 +1753,15 @@
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="ReturnValue" ColumnName="ReturnValue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetPieChart" FunctionName="InterviewEvaluationDbModel.Store.spGetPieChart">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetPieChart_Result">
+                <ScalarProperty Name="InProgress" ColumnName="InProgress" />
+                <ScalarProperty Name="Hired" ColumnName="Hired" />
+                <ScalarProperty Name="Rejected" ColumnName="Rejected" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

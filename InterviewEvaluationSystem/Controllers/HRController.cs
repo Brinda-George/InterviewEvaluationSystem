@@ -1,10 +1,14 @@
 ﻿using InterviewEvaluationSystem.Business_Logic;
 using InterviewEvaluationSystem.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace InterviewEvaluationSystem.Controllers
@@ -27,6 +31,20 @@ namespace InterviewEvaluationSystem.Controllers
             hrDashBoardViewModel.TotalCandidateCount = hrDashBoard.TotalCandidateCount;
             hrDashBoardViewModel.AvailableInterviewerCount = hrDashBoard.AvailableInterviewerCount;
             return View(hrDashBoardViewModel);
+        }
+
+        public ActionResult ChartPie()
+        {
+            PieChartViewModel pieChartViewModel = new PieChartViewModel();
+            var result = dbContext.spGetPieChart().Single();
+            pieChartViewModel.InProgress = result.InProgress;
+            pieChartViewModel.Hired = result.Hired;
+            pieChartViewModel.Rejected = result.Rejected;
+            Chart chart = new Chart(width: 500, height: 300, theme: ChartTheme.Vanilla3D)
+                .AddLegend("Summary")
+                .AddSeries("Default", chartType: "Pie", xValue: new[] { "Inprogress - #PERCENT{P0}", "Hired - #PERCENT{P0}", "Rejected - #PERCENT{P0}" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .Write("bmp");
+            return null;
         }
 
         [HttpGet]
