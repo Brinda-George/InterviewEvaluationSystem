@@ -11,7 +11,7 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spLogin_Result
+    public partial class spLogin_Result1
     {
         public int UserID { get; set; }
         public string UserName { get; set; }

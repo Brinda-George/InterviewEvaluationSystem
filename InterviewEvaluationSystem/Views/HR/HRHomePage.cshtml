@@ -147,12 +147,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="card mb-3">
-            <div class="card-header">
-                <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
+        <div class="col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
+                </div>
+                <div class="card-body">
+                    <img src="@Url.Action("ChartPie")" alt="Chart" />
+                </div>
             </div>
-            <div class="card-body">
-                <img src="@Url.Action("ChartPie")" alt="Chart" />
+        </div>
+        <div class="col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-bar-chart"></i> Statistics - Column Chart
+                </div>
+                <div class="card-body">
+                    <img src="@Url.Action("ChartColumn")" alt="Chart" />
+                </div>
             </div>
         </div>
     </div>

@@ -43,17 +43,20 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(tblUser user)
+        public ActionResult Login(tblUser loginUser)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            tblUser loginUser = new tblUser();
-            var result = db.spLogin(user.UserName, user.Password).Single();
-            int ReturnValue = result.ReturnValue;
-            if (ReturnValue == 1)
+            var result = db.spAuthenticate(loginUser.UserName, loginUser.Password).Single();
+            if (result == 0)
             {
-                loginUser.UserID = result.UserID;
-                loginUser.UserName = result.UserName;
-                loginUser.UserTypeID = result.UserTypeID;
+                ViewBag.Message = "Invalid credentials";
+            }
+            else
+            {
+                var values = db.spLogin(loginUser.UserName, loginUser.Password).Single();
+                loginUser.UserID = values.UserID;
+                loginUser.UserName = values.UserName;
+                loginUser.UserTypeID = values.UserTypeID;
                 Session["UserTypeID"] = loginUser.UserTypeID;
                 Session["UserName"] = loginUser.UserName;
                 Session["UserID"] = loginUser.UserID;
@@ -66,16 +69,7 @@ namespace InterviewEvaluationSystem.Controllers
                     return RedirectToAction("HomePage", "Interviewer");
 
                 }
-                else
-                {
-                    Response.Write("Invalid credentials");
-                }
             }
-            else
-            {
-                Response.Write("Invalid credentials");
-            }
-
             return View();
         }
 

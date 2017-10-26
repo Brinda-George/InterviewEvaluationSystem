@@ -238,6 +238,9 @@
     <Compile Include="Models\spGetCandidateInterviewers_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetCloumnChart_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetComments_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -269,6 +272,9 @@
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spLogin_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spLogin_Result1.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblCandidate.cs">

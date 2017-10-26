@@ -40,10 +40,36 @@ namespace InterviewEvaluationSystem.Controllers
             pieChartViewModel.InProgress = result.InProgress;
             pieChartViewModel.Hired = result.Hired;
             pieChartViewModel.Rejected = result.Rejected;
-            Chart chart = new Chart(width: 500, height: 300, theme: ChartTheme.Vanilla3D)
+            Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
                 .AddLegend("Summary")
                 .AddSeries("Default", chartType: "Pie", xValue: new[] { "Inprogress - #PERCENT{P0}", "Hired - #PERCENT{P0}", "Rejected - #PERCENT{P0}" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
                 .Write("bmp");
+            return null;
+        }
+
+        public ActionResult ChartColumn()
+        {
+            ColumnChartViewModel columnChartViewModel = new ColumnChartViewModel();
+            var result = dbContext.spGetCloumnChart(2017).Single();
+            columnChartViewModel.January = result.January;
+            columnChartViewModel.February = result.February;
+            columnChartViewModel.March = result.March;
+            columnChartViewModel.April = result.April;
+            columnChartViewModel.May = result.May;
+            columnChartViewModel.June = result.June;
+            columnChartViewModel.July = result.July;
+            columnChartViewModel.August = result.August;
+            columnChartViewModel.August = result.September;
+            columnChartViewModel.October = result.October;
+            columnChartViewModel.November = result.November;
+            columnChartViewModel.December = result.December;
+            new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
+            .AddSeries("Default", chartType: "column", 
+                xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }, 
+                yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
+            .SetXAxis("2017")
+            .SetYAxis("Candidates")
+            .Write("bmp");
             return null;
         }
 
@@ -436,7 +462,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult AddInterviewers()
         {
-            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false).ToList();
+            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
             ViewBag.Users = users;
             List<SelectListItem> selectedlistInner = new List<SelectListItem>();
             foreach (tblUserType userType1 in dbContext.tblUserTypes)
@@ -455,6 +481,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public JsonResult IsInterviewerExists(string UserName, string EmployeeId)
         {
+            //  bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
             bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
 
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
@@ -463,7 +490,6 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
-            var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
             if (string.IsNullOrEmpty(user.UserName))
             {
                 ModelState.AddModelError("UserName", "Enter Name");
@@ -487,14 +513,17 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 ModelState.AddModelError("Pincode", "Enter Pincode");
             }
+            if (string.IsNullOrEmpty(user.Password))
+            {
+                ModelState.AddModelError("Password", "Enter Password");
+            }
             if (string.IsNullOrEmpty(user.Email))
             {
                 ModelState.AddModelError("Email", "Enter Email");
             }
 
-            if (ModelState.IsValid && user.Password.Length >= Convert.ToInt32(passwordLength))
+            if (ModelState.IsValid)
             {
-
                 user.UserTypeID = Convert.ToInt32(userType);
                 user.CreatedBy = Convert.ToInt32(Session["UserID"]);
                 user.CreatedDate = System.DateTime.Now;
@@ -517,43 +546,41 @@ namespace InterviewEvaluationSystem.Controllers
                 ModelState.Clear();
                 return View();
             }
-            else
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            foreach (tblUserType userType1 in dbContext.tblUserTypes)
             {
-                ViewBag.PasswordErrorMessage = "The password should contain minimum " + passwordLength + "characters";
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblUserType userType1 in dbContext.tblUserTypes)
+                SelectListItem selectlistitem = new SelectListItem
                 {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = userType1.UserType,
-                        Value = userType1.UserTypeID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.userType = selectedlist;
-                List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
-                ViewBag.Users = users;
-                return View(user);
+                    Text = userType1.UserType,
+                    Value = userType1.UserTypeID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
             }
+            ViewBag.userType = selectedlist;
+            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
+            ViewBag.Users = users;
+            return View(user);
 
         }
 
         [HttpPost]
-        public ActionResult UpdateInterviewer(string EmployeeId, string Name, string Email, string Designation)
+        public ActionResult UpdateInterviewer(int UserID, string UserName, string Email, string Designation)
         {
-            tblUser updateInterviewer = dbContext.tblUsers.Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
-            updateInterviewer.UserName = Name;
+            tblUser updateInterviewer = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
+            updateInterviewer.UserName = UserName;
             updateInterviewer.Email = Email;
             updateInterviewer.Designation = Designation;
             updateInterviewer.ModifiedBy = Convert.ToInt32(Session["UserID"]);
             updateInterviewer.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
-            return Json(new { UserName = Name, Email = Email, Designation = Designation }, JsonRequestBehavior.AllowGet);
+            return Json(new { UserName = UserName, Email = Email, Designation = Designation }, JsonRequestBehavior.AllowGet);
+
+
         }
 
-        public ActionResult DeleteInterviewer(string EmployeeId)
+        public ActionResult DeleteInterviewer(int UserID)
         {
-            tblUser user = dbContext.tblUsers.Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
+            tblUser user = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
             user.IsDeleted = true;
             user.ModifiedBy = Convert.ToInt32(Session["UserID"]);
             user.ModifiedDate = System.DateTime.Now;
@@ -572,9 +599,9 @@ namespace InterviewEvaluationSystem.Controllers
                     DateOfInterview = s.DateOfInterview,
                     InterviewerName = s.UserName
                 }).ToList();
-            addCandidateViewModel.users = dbContext.tblUsers.ToList();
+            addCandidateViewModel.users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
             List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblUser user in dbContext.tblUsers)
+            foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
             {
                 SelectListItem selectlistitem = new SelectListItem
                 {
@@ -588,8 +615,9 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCandidate(AddCandidateViewModels candidateView, string user, string Name, string[] txtBoxes)
+        public JsonResult AddCandidate(AddCandidateViewModels candidateView, string user, string Name, string[] txtBoxes)
         {
+
             if (user != null)
             {
                 tblCandidate candidate = new tblCandidate();
@@ -614,14 +642,16 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     tblPreviousCompany previousCmpny = new tblPreviousCompany();
                     previousCmpny.CandidateID = candidate.CandidateID;
-                    previousCmpny.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                    previousCmpny.CreatedDate = System.DateTime.Now;
                     foreach (string textboxValue in txtBoxes)
                     {
                         previousCmpny.PreviousCompany = textboxValue;
+                        previousCmpny.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                        previousCmpny.CreatedDate = System.DateTime.Now;
+                        previousCmpny.IsDeleted = false;
                         dbContext.tblPreviousCompanies.Add(previousCmpny);
                         dbContext.SaveChanges();
                     }
+
                 }
 
                 tblEvaluation eval = new tblEvaluation();
@@ -632,10 +662,14 @@ namespace InterviewEvaluationSystem.Controllers
                 eval.CreatedDate = DateTime.Now;
                 eval.IsDeleted = false;
                 dbContext.tblEvaluations.Add(eval);
+
                 dbContext.SaveChanges();
             }
+
+
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
             return Json(new { Url = redirectUrl });
+
         }
 
         [HttpPost]
@@ -654,17 +688,21 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string UserName)
+        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, int UserID)
         {
             tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
             updateCandidate.Name = CandidateName;
             updateCandidate.DateOfInterview = DateOfInterview;
+            updateCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            updateCandidate.ModifiedDate = System.DateTime.Now;
+
             dbContext.SaveChanges();
-            tblUser uid = dbContext.tblUsers.Where(x => x.UserName == UserName).FirstOrDefault();
-            var userid = uid.UserID;
-            dbContext.spUpdateCandidateInterviewer(userid, CandidateID);
+            //tblUser uid = dbContext.tblUsers.Where(x => x.UserName == UserName).FirstOrDefault();
+            //var userid = uid.UserID;
+
+            dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
             dbContext.SaveChanges();
-            return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview, UserName = UserName }, JsonRequestBehavior.AllowGet);
+            return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString(), UserID = UserID }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -672,6 +710,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             tblCandidate deleteCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
             deleteCandidate.IsDeleted = true;
+            deleteCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            deleteCandidate.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
             return RedirectToAction("AddCandidate");
         }

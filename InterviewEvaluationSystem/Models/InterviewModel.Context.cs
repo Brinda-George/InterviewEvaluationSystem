@@ -209,6 +209,24 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
         }
     
+        public virtual ObjectResult<spGetPieChart_Result> spGetPieChart()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart");
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spAuthenticate(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spAuthenticate", usernameParameter, passWordParameter);
+        }
+    
         public virtual ObjectResult<spLogin_Result> spLogin(string username, string passWord)
         {
             var usernameParameter = username != null ?
@@ -222,9 +240,13 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
         }
     
-        public virtual ObjectResult<spGetPieChart_Result> spGetPieChart()
+        public virtual ObjectResult<spGetCloumnChart_Result> spGetCloumnChart(Nullable<int> year)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart");
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCloumnChart_Result>("spGetCloumnChart", yearParameter);
         }
     }
 }

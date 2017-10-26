@@ -477,9 +477,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spAuthenticate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="PassWord" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spCandidateWebGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spGetCloumnChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="year" Type="int" Mode="In" />
         </Function>
         <Function Name="spGetComments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
@@ -1351,11 +1358,18 @@
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spGetPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetPieChart_Result)" />
+          <FunctionImport Name="spAuthenticate" ReturnType="Collection(Int32)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="PassWord" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="spLogin" ReturnType="Collection(InterviewEvaluationDbModel.spLogin_Result)">
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="PassWord" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetPieChart_Result)" />
+          <FunctionImport Name="spGetCloumnChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetCloumnChart_Result)">
+          <Parameter Name="year" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -1444,12 +1458,41 @@
           <Property Type="Int32" Name="ModifiedBy" Nullable="true" />
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
-          <Property Type="Int32" Name="ReturnValue" Nullable="false" />
         </ComplexType>
         <ComplexType Name="spGetPieChart_Result">
           <Property Type="Int32" Name="InProgress" Nullable="true" />
           <Property Type="Int32" Name="Hired" Nullable="true" />
           <Property Type="Int32" Name="Rejected" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spLogin_Result1">
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="EmployeeId" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="Pincode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="UserTypeID" Nullable="false" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="ModifiedBy" Nullable="true" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spGetCloumnChart_Result">
+          <Property Type="Int32" Name="January" Nullable="true" />
+          <Property Type="Int32" Name="February" Nullable="true" />
+          <Property Type="Int32" Name="March" Nullable="true" />
+          <Property Type="Int32" Name="April" Nullable="true" />
+          <Property Type="Int32" Name="May" Nullable="true" />
+          <Property Type="Int32" Name="June" Nullable="true" />
+          <Property Type="Int32" Name="July" Nullable="true" />
+          <Property Type="Int32" Name="August" Nullable="true" />
+          <Property Type="Int32" Name="September" Nullable="true" />
+          <Property Type="Int32" Name="October" Nullable="true" />
+          <Property Type="Int32" Name="November" Nullable="true" />
+          <Property Type="Int32" Name="December" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1735,8 +1778,18 @@
           <FunctionImportMapping FunctionImportName="spRegister" FunctionName="InterviewEvaluationDbModel.Store.spRegister" />
           <FunctionImportMapping FunctionImportName="spUpdateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.spUpdateCandidateInterviewer" />
           <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
-          <FunctionImportMapping FunctionImportName="spLogin" FunctionName="InterviewEvaluationDbModel.Store.spLogin">
+          <FunctionImportMapping FunctionImportName="spGetPieChart" FunctionName="InterviewEvaluationDbModel.Store.spGetPieChart">
             <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetPieChart_Result">
+                <ScalarProperty Name="InProgress" ColumnName="InProgress" />
+                <ScalarProperty Name="Hired" ColumnName="Hired" />
+                <ScalarProperty Name="Rejected" ColumnName="Rejected" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spAuthenticate" FunctionName="InterviewEvaluationDbModel.Store.spAuthenticate" />
+          <FunctionImportMapping FunctionImportName="spLogin" FunctionName="InterviewEvaluationDbModel.Store.spLogin">
+          <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spLogin_Result">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -1752,16 +1805,24 @@
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ReturnValue" ColumnName="ReturnValue" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetPieChart" FunctionName="InterviewEvaluationDbModel.Store.spGetPieChart">
+          <FunctionImportMapping FunctionImportName="spGetCloumnChart" FunctionName="InterviewEvaluationDbModel.Store.spGetCloumnChart">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetPieChart_Result">
-                <ScalarProperty Name="InProgress" ColumnName="InProgress" />
-                <ScalarProperty Name="Hired" ColumnName="Hired" />
-                <ScalarProperty Name="Rejected" ColumnName="Rejected" />
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetCloumnChart_Result">
+                <ScalarProperty Name="January" ColumnName="January" />
+                <ScalarProperty Name="February" ColumnName="February" />
+                <ScalarProperty Name="March" ColumnName="March" />
+                <ScalarProperty Name="April" ColumnName="April" />
+                <ScalarProperty Name="May" ColumnName="May" />
+                <ScalarProperty Name="June" ColumnName="June" />
+                <ScalarProperty Name="July" ColumnName="July" />
+                <ScalarProperty Name="August" ColumnName="August" />
+                <ScalarProperty Name="September" ColumnName="September" />
+                <ScalarProperty Name="October" ColumnName="October" />
+                <ScalarProperty Name="November" ColumnName="November" />
+                <ScalarProperty Name="December" ColumnName="December" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
