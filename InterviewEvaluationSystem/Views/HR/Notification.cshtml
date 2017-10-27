@@ -5,7 +5,6 @@
 }
 
 <script src="~/Scripts/Notification.js"></script>
-<link href="~/Content/webgridstyle.css" rel="stylesheet" />
 
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -14,13 +13,21 @@
     <li class="breadcrumb-item active">Notifications</li>
 </ol>
 
-<h2>Notification</h2>
-
 @{
     var grid = new WebGrid(ViewBag.notificationList, canPage: true, rowsPerPage: 15, canSort: true);
 }
 
-@grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+@if (ViewBag.notificationList.Count == 0)
+{
+    <div class="alert alert-success">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <strong>You have No Notifications!! </strong>
+    </div>
+    @Html.ActionLink("Back To Dash Board", "HRHomePage", "HR")
+}
+else
+{
+    @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
@@ -49,5 +56,5 @@
             }))
             )
 
-<div id="ProceedCandidateDiv">
-</div>
+    <div id="ProceedCandidateDiv"></div>
+}

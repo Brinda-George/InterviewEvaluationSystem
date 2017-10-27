@@ -14,11 +14,14 @@
 
 @if (TempData["Success"] != null)
 {
-    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+    <div class="alert alert-success">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>@TempData["Success"]</strong>
+    </div>
 }
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-primary bg-primary">
                 <div class="panel-heading">
                     <div class="row">
@@ -34,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-green">
                 <div class="panel-heading">
                     <div class="row">
@@ -50,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
                     <div class="row">
@@ -66,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-red">
                 <div class="panel-heading">
                     <div class="row">
@@ -79,6 +82,28 @@
                             <div class="text">Total Candidates</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-6 col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
+                </div>
+                <div class="card-body">
+                    <img src="@Url.Action("ChartPie")" alt="PieChart" />
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-bar-chart"></i> Statistics - Column Chart
+                </div>
+                <div class="card-body">
+                    <img src="@Url.Action("ChartColumn")" alt="ColumnChart" />
                 </div>
             </div>
         </div>

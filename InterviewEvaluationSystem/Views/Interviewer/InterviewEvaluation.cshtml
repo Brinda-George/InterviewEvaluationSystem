@@ -16,6 +16,9 @@
     <li class="breadcrumb-item">
         <a href="~/Interviewer/HomePage">Home Page</a>
     </li>
+    <li class="breadcrumb-item">
+        <a href="~/Interviewer/EvaluationStatus">Interview Evaluation Status</a>
+    </li>
     <li class="breadcrumb-item active">Interview Evaluation</li>
 </ol>
 
@@ -23,7 +26,7 @@
 
 <input type="hidden" id="roundId" value="@TempData["roundID"]" />
 <input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
-<h3>Name of Candidate: @Model.CandidateName</h3>
+<p>Name of Candidate: @Model.CandidateName</p>
 
 @using (Html.BeginForm())
 {

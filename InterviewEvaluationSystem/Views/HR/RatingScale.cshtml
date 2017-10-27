@@ -11,12 +11,9 @@
     <li class="breadcrumb-item active">Rating Scale</li>
 </ol>
 
-<h2>RatingScale</h2>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div ID="form1" class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -45,7 +42,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add Rating Scale" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -90,10 +87,10 @@
     gridview.Column("Action", style: "button",
                 format:
                 @<text>
-                    <button class="edit-case read" id="@item.RateScaleID">Edit</button>
-                    <button class="delete-case read" id="@item.RateScaleID">Delete</button>
-                    <button class="update-case edit" style="display:none" id="@item.RateScaleID">Update</button>
-                    <button class="cancel-case edit" style="display:none" id="@item.RateScaleID">Cancel</button>
+                    <button class="edit-case read btn btn-default" id="@item.RateScaleID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                    <button class="delete-case read btn btn-default" id="@item.RateScaleID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                    <button class="update-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                    <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                 </text>)
                             }
                         )

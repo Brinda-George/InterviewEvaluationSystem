@@ -11,12 +11,9 @@
     <li class="breadcrumb-item active">Skills</li>
 </ol>
 
-<h2>Skill</h2>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div ID="form1" class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -38,7 +35,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add Skill" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -75,15 +72,30 @@
     gridview.Column("Action", style: "button",
                 format:
                 @<text>
-                    <button class="edit-case read" id="@item.skillno">Edit</button>
-                    <button class="delete-case read" id="@item.skillno">Delete</button>
-                    <button class="update-case edit" style="display:none" id="@item.skillno">Update</button>
-                    <button class="cancel-case edit" style="display:none" id="@item.skillno">Cancel</button>
+                    <button class="edit-case read btn btn-default" id="@item.skillno"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                    <button class="delete-case read btn btn-default" id="@item.skillno"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                    <button class="update-case edit btn btn-default" style="display:none" id="@item.skillno"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                    <button class="cancel-case edit btn btn-default" style="display:none" id="@item.skillno"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                 </text>)
     }
 )
 </div>
+<script type="text/javascript">
+    function CheckCategory()
+    {
+        var cat=$("#categories").val();
+        if(cat==0)
+        {
+            $("#lblCategory").html("Please select a category");
+            return false;
+        }
+        else
+        {
+            $("#lblCategory").empty();
+        }
 
+    }
+</script>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>

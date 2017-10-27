@@ -204,10 +204,11 @@ namespace InterviewEvaluationSystem.Models
         [DataType(DataType.EmailAddress)]
         [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Please enter valid email id.")]
         public string Email { get; set; }
-        public Nullable<int> RoundID { get; set; }
+        public int RoundID { get; set; }
         public int EvaluationID { get; set; }
-        public Nullable<int> CandidateID { get; set; }
+        public int CandidateID { get; set; }
         public Nullable<bool> Recommended { get; set; }
+        public Nullable<bool> CandidateStatus { get; set; }
     }
 
     public class CommentViewModel
@@ -246,6 +247,7 @@ namespace InterviewEvaluationSystem.Models
     public class MailViewModel
     {
         public string From { get; set; }
+        public string To { get; set; }
         public string Sender { get; set; }
         public string Candidate { get; set; }
         public string Subject { get; set; }

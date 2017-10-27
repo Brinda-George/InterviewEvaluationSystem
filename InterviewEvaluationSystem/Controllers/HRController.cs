@@ -71,7 +71,7 @@ namespace InterviewEvaluationSystem.Controllers
                 xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }, 
                 yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
             .SetXAxis("2017")
-            .SetYAxis("Candidates")
+            .SetYAxis("No of Candidates")
             .Write("bmp");
             return null;
         }
@@ -428,38 +428,42 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddInterviewers(tblUser user, string userType)
         {
+            var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
             if (string.IsNullOrEmpty(user.UserName))
             {
-                ModelState.AddModelError("UserName", "Enter Name");
+                ModelState.AddModelError("UserName", "The Name Field is Required");
             }
 
             if (string.IsNullOrEmpty(user.EmployeeId))
             {
-                ModelState.AddModelError("EmployeeId", "Enter Employee Id");
+                ModelState.AddModelError("EmployeeId", "The Employee Id Field is Required");
             }
 
             if (string.IsNullOrEmpty(user.Designation))
             {
-                ModelState.AddModelError("Designation", "Enter Designation");
+                ModelState.AddModelError("Designation", "The Designation Field is Required");
             }
 
             if (string.IsNullOrEmpty(user.Address))
             {
-                ModelState.AddModelError("Address", "Enter Address");
+                ModelState.AddModelError("Address", "The Address Field is Required");
             }
             if (string.IsNullOrEmpty(user.Pincode))
             {
-                ModelState.AddModelError("Pincode", "Enter Pincode");
+                ModelState.AddModelError("Pincode", "The Pincode Field is Required");
             }
-            if (string.IsNullOrEmpty(user.Password))
+            if ((string.IsNullOrEmpty(user.Password)) || (user.Password.Length < Convert.ToInt32(passwordLength)))
             {
-                ModelState.AddModelError("Password", "Enter Password");
+                ModelState.AddModelError("Password", "The password field is required and should contain minimum " + passwordLength + " characters");
             }
             if (string.IsNullOrEmpty(user.Email))
             {
-                ModelState.AddModelError("Email", "Enter Email");
+                ModelState.AddModelError("Email", "The Email Field is Required");
             }
-
+            if (string.IsNullOrWhiteSpace(userType))
+            {
+                ModelState.AddModelError("UserTypeID", "Select User Type");
+            }
             if (ModelState.IsValid)
             {
                 user.UserTypeID = Convert.ToInt32(userType);

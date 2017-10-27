@@ -22,18 +22,29 @@
     padding: 3px 7px 2px;
 }
 
-.col1Width {
-    width: 55px;
+.colWidth {
+    width: 300px;
 }
 
-.col2Width {
-    width: 220px;
+save-userCandidate {
+    display: none;
 }
 
-save-userCandidate{
-    display:none;
+delete-userCandidate {
+    display: none;
 }
 
-delete-userCandidate{
-    display:none;
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
 }

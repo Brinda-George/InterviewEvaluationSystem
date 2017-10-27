@@ -1,15 +1,12 @@
 ﻿@model InterviewEvaluationSystem.Models.tblUser
-@{
-    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 15, canSort: true, ajaxUpdateContainerId: "gridContent", fieldNamePrefix: "f1", pageFieldName: "p1");
 
-    int rowVal = 0;
-}
 @{
+    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 10, canSort: true, ajaxUpdateContainerId: "gridContent", fieldNamePrefix: "f1", pageFieldName: "p1");
+    int rowVal = 0;
     ViewBag.Title = "AddInterviewers";
 }
 
 <script src="~/Scripts/Interviewer.js"></script>
-<link href="~/Content/webgridstyle.css" rel="stylesheet" />
 
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -19,27 +16,23 @@
     <li class="breadcrumb-item active">Interviewers</li>
 </ol>
 
-<h2>Add Interviewers</h2>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.UserName, "User Name", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "User Name" } })
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.EmployeeId, "Employee ID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control", @placeholder = "Employee Id" } })
                 @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -47,7 +40,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control", @placeholder = "Designation" } })
                 @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -55,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address" } })
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -63,7 +56,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Pincode, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Pincode", @type = "number" } })
                 @Html.ValidationMessageFor(model => model.Pincode, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -72,7 +65,7 @@
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
-                @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Password" })
                 <div class="text-danger">@ViewBag.PasswordErrorMessage</div>
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
@@ -81,22 +74,22 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserTypeID, "UserTypeID", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.UserTypeID, "User Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("userType", null, string.Empty, new { @class = "form-control" })
+                @Html.DropDownList("userType", null,"--Select--", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add Interviewers" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -116,21 +109,21 @@
         columns:
         grid.Columns(
             grid.Column("UserID", format: @<text>  <span class="display-mode">@item.UserID </span> <label id="lblUserID" class="edit-mode">@item.UserID</label> </text>),
-            grid.Column("Sr.No.", format: item => rowVal = rowVal + 1),
-            grid.Column("UserName", "UserName", format: @<text>  <span class="display-mode"> <label id="lblUserName">@item.UserName</label> </span> <input type="text" id="UserName" value="@item.UserName" class="edit-mode" /></text>),
-            grid.Column("EmployeeId", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>),
+            grid.Column("S.No.", format: item => rowVal = rowVal + 1),
+            grid.Column("UserName", "User Name", format: @<text>  <span class="display-mode"> <label id="lblUserName">@item.UserName</label> </span> <input type="text" id="UserName" value="@item.UserName" class="edit-mode" /></text>),
+            grid.Column("EmployeeId", "Employee ID", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>),
             grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>),
             grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> </text>),
             grid.Column("Action", format: @<text>
-                <button class="edit-user display-mode">Edit</button>
-                <button class="save-user edit-mode">Save</button>
-                <button class="cancel-user edit-mode">Cancel</button>
-                <button class="delete-user">Delete</button>
+                <button class="edit-user display-mode btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                <button class="save-user edit-mode btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                <button class="cancel-user edit-mode btn btn-default"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
+                <button class="delete-user btn btn-default"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </text>))
             )
 </div>
 <div>
-    @Html.ActionLink("Back to List", "AddInterviewers")
+    @Html.ActionLink("Back To Dash Board", "HRHomePage", "HR")
 </div>
 
 @Scripts.Render("~/bundles/jqueryval")

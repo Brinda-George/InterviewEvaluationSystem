@@ -11,8 +11,6 @@
     <li class="breadcrumb-item active">Skill Categories</li>
 </ol>
 
-<h2>SkillCategory</h2>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -37,7 +35,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add Skill Category" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -75,10 +73,10 @@
     gridview.Column("Action", style: "button",
                 format:
                 @<text>
-                    <button class="edit-case read" id="@item.SkillCategoryID">Edit</button>
-                    <button class="delete-case read" id="@item.SkillCategoryID">Delete</button>
-                    <button class="update-case edit" style="display:none" id="@item.SkillCategoryID">Update</button>
-                    <button class="cancel-case edit" style="display:none" id="@item.SkillCategoryID">Cancel</button>
+                    <button class="edit-case read btn btn-default" id="@item.SkillCategoryID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                    <button class="delete-case read btn btn-default" id="@item.SkillCategoryID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                    <button class="update-case edit btn btn-default" style="display:none" id="@item.SkillCategoryID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                    <button class="cancel-case edit btn btn-default" style="display:none" id="@item.SkillCategoryID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                 </text>)
     }
 )

@@ -6,7 +6,6 @@
 
 <script src="~/Scripts/Candidate.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
-<h2>Search Candidate</h2>
 
 @{
     var gridCandidate = new WebGrid(Model.CandidateList, canPage: true, rowsPerPage: 5, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
@@ -25,26 +24,26 @@
             @<text>
                 <span class="display-modeCandidate">@item.CandidateID </span>
                 <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label>
-            </text>, style: "col1Width"),
+            </text>, style: "colWidth"),
             gridCandidate.Column("CandidateName", "CandidateName", format:
             @<text>
                 <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span>
                 <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" />
-            </text>, style: "col2Width"),
+            </text>, style: "colWidth"),
             gridCandidate.Column("DateOfInterview", "DateOfInterview", format:
             @<text>
                 <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span>
                 <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" />
-            </text>, style: "col2Width"),
+            </text>, style: "colWidth"),
             gridCandidate.Column("InterviewerName", "InterviewerName", format:
             @<text>
                 <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span>
                 <input type="text" id="InterviewerName" value="@item.InterviewerName" class="edit-modeCandidate" />
-            </text>, style: "col2Width"),
+            </text>, style: "colWidth"),
             gridCandidate.Column("Action", format: @<text>
-                <button class="edit-userCandidate display-modeCandidate">Edit</button>
-                <button class="save-userCandidate edit-modeCandidate">Save</button>
-                <button class="cancel-userCandidate edit-modeCandidate">Cancel</button>
-                <button class="delete-userCandidate">Delete</button>
-            </text>, style: "col3Width", canSort: false))
+                <button class="edit-userCandidate display-modeCandidate"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>> Edit</button>
+                <button class="save-userCandidate edit-modeCandidate"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                <button class="cancel-userCandidate edit-modeCandidate"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
+                <button class="delete-userCandidate"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+            </text>, style: "colWidth", canSort: false))
         )

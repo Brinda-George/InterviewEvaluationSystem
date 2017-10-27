@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblCandidate">
           <Key>
             <PropertyRef Name="CandidateID" />
@@ -493,12 +493,18 @@
         </Function>
         <Function Name="spGetCurrentStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetEmailByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CandidateID" Type="int" Mode="In" />
           <Parameter Name="UserID" Type="int" Mode="In" />
         </Function>
         <Function Name="spGetHRDashBoard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetInterviewerCloumnChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="year" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetInterviewerDashBoard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetInterviewerPieChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPieChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPreviousRoundScores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
@@ -659,8 +665,7 @@
             <End Role="tblUser" EntitySet="tblUser" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InterviewEvaluationDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1315,21 +1320,18 @@
           </FunctionImport>
           <FunctionImport Name="spCandidateWebGrid" ReturnType="Collection(InterviewEvaluationDbModel.spCandidateWebGrid_Result)" />
           <FunctionImport Name="spGetCandidateInterviewers" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidateInterviewers_Result)">
-            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetCloumnChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetCloumnChart_Result)">
-            <Parameter Name="year" Mode="In" Type="Int32" />
+          <Parameter Name="year" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetComments" ReturnType="Collection(InterviewEvaluationDbModel.spGetComments_Result)">
-            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetCurrentStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetCurrentStatus_Result)" />
-          <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="spGetHRDashBoard" ReturnType="Collection(InterviewEvaluationDbModel.spGetHRDashBoard_Result)" />
           <FunctionImport Name="spGetInterviewerDashBoard" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewerDashBoard_Result)">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetPieChart_Result)" />
           <FunctionImport Name="spGetPreviousRoundScores" ReturnType="Collection(InterviewEvaluationDbModel.spGetPreviousRoundScores_Result)">
@@ -1337,10 +1339,10 @@
             <Parameter Name="RoundID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetSkillsBySkillCategory" ReturnType="Collection(InterviewEvaluationDbModel.spGetSkillsBySkillCategory_Result)">
-            <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
+          <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetStatus_Result)">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spHRNotificationGrid" ReturnType="Collection(InterviewEvaluationDbModel.spHRNotificationGrid_Result)" />
           <FunctionImport Name="spInsertJoinDetails">
@@ -1370,6 +1372,15 @@
             <Parameter Name="UserId" Mode="In" Type="Int32" />
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetInterviewerPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewerPieChart_Result)" />
+          <FunctionImport Name="spGetInterviewerCloumnChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewerCloumnChart_Result)">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="year" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
+            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
@@ -1416,6 +1427,7 @@
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="HREmail" Nullable="false" MaxLength="100" />
         </ComplexType>
         <ComplexType Name="spGetHRDashBoard_Result">
           <Property Type="Int32" Name="NewCandidateCount" Nullable="true" />
@@ -1479,6 +1491,31 @@
           <Property Type="Int32" Name="ModifiedBy" Nullable="true" />
           <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spGetInterviewerPieChart_Result">
+          <Property Type="Int32" Name="InProgress" Nullable="true" />
+          <Property Type="Int32" Name="Hired" Nullable="true" />
+          <Property Type="Int32" Name="Rejected" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetInterviewerCloumnChart_Result">
+          <Property Type="Int32" Name="January" Nullable="true" />
+          <Property Type="Int32" Name="February" Nullable="true" />
+          <Property Type="Int32" Name="March" Nullable="true" />
+          <Property Type="Int32" Name="April" Nullable="true" />
+          <Property Type="Int32" Name="May" Nullable="true" />
+          <Property Type="Int32" Name="June" Nullable="true" />
+          <Property Type="Int32" Name="July" Nullable="true" />
+          <Property Type="Int32" Name="August" Nullable="true" />
+          <Property Type="Int32" Name="September" Nullable="true" />
+          <Property Type="Int32" Name="October" Nullable="true" />
+          <Property Type="Int32" Name="November" Nullable="true" />
+          <Property Type="Int32" Name="December" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetEmailByUserID_Result1">
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="HREmail" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1705,15 +1742,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetEmailByUserID" FunctionName="InterviewEvaluationDbModel.Store.spGetEmailByUserID">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetEmailByUserID_Result">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetHRDashBoard" FunctionName="InterviewEvaluationDbModel.Store.spGetHRDashBoard">
             <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetHRDashBoard_Result">
@@ -1813,6 +1841,43 @@
           <FunctionImportMapping FunctionImportName="spRegister" FunctionName="InterviewEvaluationDbModel.Store.spRegister" />
           <FunctionImportMapping FunctionImportName="spUpdateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.spUpdateCandidateInterviewer" />
           <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
+          <FunctionImportMapping FunctionImportName="spGetInterviewerPieChart" FunctionName="InterviewEvaluationDbModel.Store.spGetInterviewerPieChart">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetInterviewerPieChart_Result">
+                <ScalarProperty Name="InProgress" ColumnName="InProgress" />
+                <ScalarProperty Name="Hired" ColumnName="Hired" />
+                <ScalarProperty Name="Rejected" ColumnName="Rejected" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetInterviewerCloumnChart" FunctionName="InterviewEvaluationDbModel.Store.spGetInterviewerCloumnChart">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetInterviewerCloumnChart_Result">
+                <ScalarProperty Name="January" ColumnName="January" />
+                <ScalarProperty Name="February" ColumnName="February" />
+                <ScalarProperty Name="March" ColumnName="March" />
+                <ScalarProperty Name="April" ColumnName="April" />
+                <ScalarProperty Name="May" ColumnName="May" />
+                <ScalarProperty Name="June" ColumnName="June" />
+                <ScalarProperty Name="July" ColumnName="July" />
+                <ScalarProperty Name="August" ColumnName="August" />
+                <ScalarProperty Name="September" ColumnName="September" />
+                <ScalarProperty Name="October" ColumnName="October" />
+                <ScalarProperty Name="November" ColumnName="November" />
+                <ScalarProperty Name="December" ColumnName="December" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetEmailByUserID" FunctionName="InterviewEvaluationDbModel.Store.spGetEmailByUserID">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetEmailByUserID_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="HREmail" ColumnName="HREmail" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

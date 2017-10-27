@@ -27,7 +27,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add Round" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -58,10 +58,10 @@
     gridview.Column("Action", style: "button",
                 format:
                 @<text>
-                    <button class="edit-case read" id="@item.RoundID">Edit</button>
-                    <button class="delete-case read" id="@item.RoundID">Delete</button>
-                    <button class="update-case edit" style="display:none" id="@item.RoundID">Update</button>
-                    <button class="cancel-case edit" style="display:none" id="@item.RoundID">Cancel</button>
+                    <button class="edit-case read btn btn-default" id="@item.RoundID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                    <button class="delete-case read btn btn-default" id="@item.RoundID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                    <button class="update-case edit btn btn-default" style="display:none" id="@item.RoundID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                    <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RoundID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                 </text>)
                             }
                         )

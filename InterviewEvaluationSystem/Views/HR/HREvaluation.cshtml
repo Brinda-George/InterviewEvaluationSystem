@@ -12,13 +12,11 @@
 }
 
 <script src="~/Scripts/hrevaluation.js"></script>
-<link href="~/Content/webgridstyle.css" rel="stylesheet" />
 
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="~/HR/HRHomePage">Home Page</a>
     </li>
-    <li class="breadcrumb-item active">Interviews</li>
     <li class="breadcrumb-item">
         <a href="~/HR/CandidateStatus">Interview Evaluation Status</a>
     </li>
@@ -33,12 +31,10 @@ else
 {
     <h2>HR Evaluation</h2>
 }
-
 <input type="hidden" id="roundId" value="@TempData["roundID"]" />
 <input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
 <input type="hidden" id="recommended" value="@TempData["recommended"].ToString()" />
-<h3>Name of Candidate: @Model.CandidateName</h3>
-
+<p>Name of Candidate: @Model.CandidateName</p>
 @using (Html.BeginForm())
 {
     <h3>Rating Scale</h3>
@@ -53,7 +49,7 @@ else
                  rowStyle: "webgrid-row-style",
                  mode: WebGridPagerModes.All,
                  columns: webgridRatingScale.Columns(
-                     webgridRatingScale.Column(columnName: "RateScale", header: "RateScale"),
+                     webgridRatingScale.Column(columnName: "RateScale", header: "RateScale", style: "colWidth"),
                      webgridRatingScale.Column(columnName: "Value", header: "Value"),
                      webgridRatingScale.Column(columnName: "Description", header: "Description")
                      )

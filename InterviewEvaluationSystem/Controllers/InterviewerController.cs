@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using InterviewEvaluationSystem.Business_Logic;
 using System.Web.Helpers;
 using System.Net.Mail;
+using System.Configuration;
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -33,6 +34,48 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
             }
+        }
+        #endregion
+
+        #region Chart
+        public ActionResult ChartPie()
+        {
+            PieChartViewModel pieChartViewModel = new PieChartViewModel();
+            var result = dbContext.spGetInterviewerPieChart().Single();
+            pieChartViewModel.InProgress = result.InProgress;
+            pieChartViewModel.Hired = result.Hired;
+            pieChartViewModel.Rejected = result.Rejected;
+            Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+                .AddLegend("Summary")
+                .AddSeries("Default", chartType: "Pie", xValue: new[] { "Inprogress - #PERCENT{P0}", "Recoommended - #PERCENT{P0}", "Rejected - #PERCENT{P0}" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .Write("bmp");
+            return null;
+        }
+
+        public ActionResult ChartColumn()
+        {
+            ColumnChartViewModel columnChartViewModel = new ColumnChartViewModel();
+            var result = dbContext.spGetCloumnChart(2017).Single();
+            columnChartViewModel.January = result.January;
+            columnChartViewModel.February = result.February;
+            columnChartViewModel.March = result.March;
+            columnChartViewModel.April = result.April;
+            columnChartViewModel.May = result.May;
+            columnChartViewModel.June = result.June;
+            columnChartViewModel.July = result.July;
+            columnChartViewModel.August = result.August;
+            columnChartViewModel.August = result.September;
+            columnChartViewModel.October = result.October;
+            columnChartViewModel.November = result.November;
+            columnChartViewModel.December = result.December;
+            new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
+            .AddSeries("Default", chartType: "column",
+                xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
+                yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
+            .SetXAxis("2017")
+            .SetYAxis("No of Candidates")
+            .Write("bmp");
+            return null;
         }
         #endregion
 
@@ -93,36 +136,31 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                if (evaluationID != 0)
+                for (int i = 1; i < values.Length; i++)
                 {
-                    for (int i = 1; i < values.Length; i++)
+                    dbContext.tblScores.Add(new tblScore
                     {
-                        dbContext.tblScores.Add(new tblScore
-                        {
-                            EvaluationID = evaluationID,
-                            SkillID = i,
-                            RateScaleID = values[i],
-                            CreatedBy = Convert.ToInt32(Session["UserID"]),
-                            CreatedDate = DateTime.Now
-                        });
-                        dbContext.SaveChanges();
-                    }
-                    int EvaluationID = Convert.ToInt16(evaluationID);
-                    tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
-                    evaluation.Comment = comments;
-                    evaluation.Recommended = recommended;
-                    evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                    evaluation.ModifiedDate = DateTime.Now;
+                        EvaluationID = evaluationID,
+                        SkillID = i,
+                        RateScaleID = values[i],
+                        CreatedBy = Convert.ToInt32(Session["UserID"]),
+                        CreatedDate = DateTime.Now
+                    });
                     dbContext.SaveChanges();
                 }
+                int EvaluationID = Convert.ToInt16(evaluationID);
+                tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
+                evaluation.Comment = comments;
+                evaluation.Recommended = recommended;
+                evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                evaluation.ModifiedDate = DateTime.Now;
+                dbContext.SaveChanges();
                 MailViewModel mailViewModel = new MailViewModel();
-                var mailmodel = dbContext.spGetEmailByUserID(4);
-                foreach (var item in mailmodel)
-                {
-                    mailViewModel.Sender = item.UserName;
-                    mailViewModel.Candidate = item.Name;
-                    mailViewModel.From = item.Email;
-                }
+                var mailmodel = dbContext.spGetEmailByUserID(evaluation.CandidateID, Convert.ToInt32(Session["UserID"])).Single();
+                mailViewModel.Sender = mailmodel.UserName;
+                mailViewModel.Candidate = mailmodel.Name;
+                mailViewModel.From = mailmodel.Email;
+                mailViewModel.To = mailmodel.HREmail;
                 string status;
                 if (recommended == true)
                 {
@@ -150,14 +188,14 @@ namespace InterviewEvaluationSystem.Controllers
         }
         #endregion
 
-        #region Email Notifiication
+        #region Email Notification
         public ActionResult SentEmailNotification(MailViewModel mailViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    MailMessage mailMessage = new MailMessage("brindageorge94@gmail.com", "brindageorge94@gmail.com");
+                    MailMessage mailMessage = new MailMessage(mailViewModel.From, mailViewModel.To);
                     mailMessage.Subject = mailViewModel.Subject;
                     mailMessage.Body = "<b>Interviewer: </b>" + mailViewModel.Sender + "<br/>"
                       + "<b>Interviewer Email : </b>" + mailViewModel.From + "<br/>"
@@ -168,8 +206,8 @@ namespace InterviewEvaluationSystem.Controllers
                     SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
                     smtpClient.Credentials = new System.Net.NetworkCredential()
                     {
-                        UserName = "brindageorge94@gmail.com",
-                        Password = "jehovah_jireh123"
+                        UserName = mailViewModel.From,
+                        Password = "*********"
                     };
                     smtpClient.EnableSsl = true;
                     smtpClient.Send(mailMessage);

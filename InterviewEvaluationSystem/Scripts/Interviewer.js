@@ -12,7 +12,12 @@
         $('.edit-mode').hide();
         $('.edit-user, .cancel-user').on('click', function () {
             var tr = $(this).parents('tr:first');
+            $('.delete-user').hide();
             tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.cancel-user').on('click', function () {
+            $('.delete-user').show();
         });
 
         $('.save-user').on('click', function () {
@@ -33,6 +38,8 @@
                     tr.find("#lblUserName").text(data.UserName);
                     tr.find("#lblDesignation").text(data.Designation);
                     tr.find("#lblEmail").text(data.Email);
+                    alert("Successfully Updated");
+                    $('.delete-user').show();
                 }
             });
         });
@@ -47,6 +54,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     location.reload();
+                    alert("Successfully Deleted");
                 }
             })
         });

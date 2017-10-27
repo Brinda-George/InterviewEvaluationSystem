@@ -11,11 +11,10 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spGetEmailByUserID_Result
+    public partial class spGetInterviewerPieChart_Result
     {
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Name { get; set; }
-        public string HREmail { get; set; }
+        public Nullable<int> InProgress { get; set; }
+        public Nullable<int> Hired { get; set; }
+        public Nullable<int> Rejected { get; set; }
     }
 }
