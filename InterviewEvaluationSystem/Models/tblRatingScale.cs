@@ -11,9 +11,7 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
-
+    
     public partial class tblRatingScale
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,13 +21,8 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int RateScaleID { get; set; }
-        [Required]
-        [Remote("IsScaleExist", "HR", AdditionalFields = "Id", ErrorMessage = "RateScale already exists")]
         public string RateScale { get; set; }
-        [Required]
-        [Remote("IsValueExist", "HR", AdditionalFields = "Id", ErrorMessage = "RateValue already exists")]
         public int RateValue { get; set; }
-        [Required]
         public string Description { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }

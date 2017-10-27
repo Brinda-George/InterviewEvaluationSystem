@@ -193,12 +193,12 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult RatingScale(RatingScaleViewModel rate)
+        public ActionResult RatingScale(RateScaleViewModel rate)
         {
             dbContext.tblRatingScales.Add(new tblRatingScale
             {
                 RateScale = rate.RateScale,
-                RateValue = rate.Value,
+                RateValue = rate.RateValue,
                 Description = rate.Description,
                 CreatedBy = Convert.ToInt32(Session["UserID"]),
                 CreatedDate = DateTime.Now,
@@ -755,8 +755,8 @@ namespace InterviewEvaluationSystem.Controllers
             List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
             if (!String.IsNullOrEmpty(searchString))
             {
-                CurrentStatuses = CurrentStatuses.Where(s => s.Name.StartsWith(searchString)
-                                       || s.Email.StartsWith(searchString)).ToList();
+                CurrentStatuses = CurrentStatuses.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
             }
             return View(CurrentStatuses);
         }

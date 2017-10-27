@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ef92bb43e2984055b67b6f3488e27050" Name="Diagram1">
+      <Diagram DiagramId="d36ad6c70a694386abd10b1c58d3c058" Name="Diagram1">
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblCandidate" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblEvaluation" Width="1.5" PointX="7.5" PointY="9.875" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblPreviousCompany" Width="1.5" PointX="10.5" PointY="10.125" IsExpanded="true" />
@@ -15,33 +15,33 @@
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblSkillCategory" Width="1.5" PointX="5.25" PointY="23.5" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblUser" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
         <EntityTypeShape EntityType="InterviewEvaluationDbModel.tblUserType" Width="1.5" PointX="0.75" PointY="13" IsExpanded="true" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblCandid__Creat__440B1D61" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblCandid__Modif__44FF419A" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Candi__4CA06362" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Candi__47DBAE45" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Creat__4F7CD00D" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Modif__5070F446" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Round__4D94879B" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__UserI__4E88ABD4" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Evalua__534D60F1" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Creat__48CFD27E" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Modif__49C3F6B7" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRating__Creat__37A5467C" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRating__Modif__38996AB5" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__RateSc__5535A963" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRound__Create__32E0915F" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRound__Modifi__33D4B598" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Create__5629CD9C" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Modifi__571DF1D5" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__SkillI__5441852A" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__Create__403A8C7D" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__Modifi__412EB0B6" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__SkillC__3F466844" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkillC__Creat__3B75D760" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkillC__Modif__3C69FB99" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__Created__2F10007B" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__Modifie__300424B4" ManuallyRouted="false" />
-        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__UserTyp__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblCandid__Creat__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblCandid__Modif__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Candi__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Candi__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Creat__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Modif__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__Round__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblEvalua__UserI__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Evalua__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Creat__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblPrevio__Modif__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRating__Creat__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRating__Modif__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__RateSc__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRound__Create__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblRound__Modifi__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Create__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__Modifi__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblScore__SkillI__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__Create__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__Modifi__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkill__SkillC__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkillC__Creat__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblSkillC__Modif__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__Created__29572725" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__Modifie__2A4B4B5E" ManuallyRouted="false" />
+        <AssociationConnector Association="InterviewEvaluationDbModel.FK__tblUser__UserTyp__286302EC" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

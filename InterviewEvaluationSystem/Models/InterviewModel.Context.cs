@@ -38,6 +38,19 @@ namespace InterviewEvaluationSystem.Models
         public virtual DbSet<tblUser> tblUsers { get; set; }
         public virtual DbSet<tblUserType> tblUserTypes { get; set; }
     
+        public virtual ObjectResult<Nullable<int>> spAuthenticate(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spAuthenticate", usernameParameter, passWordParameter);
+        }
+    
         public virtual ObjectResult<spCandidateWebGrid_Result> spCandidateWebGrid()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCandidateWebGrid_Result>("spCandidateWebGrid");
@@ -50,6 +63,15 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("CandidateID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateInterviewers_Result>("spGetCandidateInterviewers", candidateIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetCloumnChart_Result> spGetCloumnChart(Nullable<int> year)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCloumnChart_Result>("spGetCloumnChart", yearParameter);
         }
     
         public virtual ObjectResult<spGetComments_Result> spGetComments(Nullable<int> candidateID)
@@ -87,6 +109,11 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("UserID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerDashBoard_Result>("spGetInterviewerDashBoard", userIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetPieChart_Result> spGetPieChart()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart");
         }
     
         public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)
@@ -144,6 +171,19 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("DateOfJoining", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertJoinDetails", userIDParameter, candidateIDParameter, offeredSalaryParameter, dateOfJoiningParameter);
+        }
+    
+        public virtual ObjectResult<spLogin_Result> spLogin(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> spRegister(string username, string employeeid, string designation, string address, string pincode, string password, string email)
@@ -207,46 +247,6 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("NewPassword", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
-        }
-    
-        public virtual ObjectResult<spGetPieChart_Result> spGetPieChart()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart");
-        }
-    
-        public virtual ObjectResult<Nullable<int>> spAuthenticate(string username, string passWord)
-        {
-            var usernameParameter = username != null ?
-                new ObjectParameter("Username", username) :
-                new ObjectParameter("Username", typeof(string));
-    
-            var passWordParameter = passWord != null ?
-                new ObjectParameter("PassWord", passWord) :
-                new ObjectParameter("PassWord", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spAuthenticate", usernameParameter, passWordParameter);
-        }
-    
-        public virtual ObjectResult<spLogin_Result> spLogin(string username, string passWord)
-        {
-            var usernameParameter = username != null ?
-                new ObjectParameter("Username", username) :
-                new ObjectParameter("Username", typeof(string));
-    
-            var passWordParameter = passWord != null ?
-                new ObjectParameter("PassWord", passWord) :
-                new ObjectParameter("PassWord", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
-        }
-    
-        public virtual ObjectResult<spGetCloumnChart_Result> spGetCloumnChart(Nullable<int> year)
-        {
-            var yearParameter = year.HasValue ?
-                new ObjectParameter("year", year) :
-                new ObjectParameter("year", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCloumnChart_Result>("spGetCloumnChart", yearParameter);
         }
     }
 }

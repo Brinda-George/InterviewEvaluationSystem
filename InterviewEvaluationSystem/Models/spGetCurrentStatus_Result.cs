@@ -19,5 +19,6 @@ namespace InterviewEvaluationSystem.Models
         public int EvaluationID { get; set; }
         public int CandidateID { get; set; }
         public Nullable<bool> Recommended { get; set; }
+        public Nullable<bool> CandidateStatus { get; set; }
     }
 }
