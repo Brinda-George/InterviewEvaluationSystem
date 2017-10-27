@@ -401,16 +401,21 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 ModelState.AddModelError("Pincode", "Enter Pincode");
             }
-            //if(string.IsNullOrEmpty(user.Password))
-            //{
-            //    ModelState.AddModelError("Password", "Enter Password");
-            //}
-            if(string.IsNullOrEmpty(user.Email))
+            if((string.IsNullOrEmpty(user.Password)) || (user.Password.Length<Convert.ToInt32(passwordLength)))
+            {
+                ModelState.AddModelError("Password", "The password field is required and should contain minimum " + passwordLength + " characters");
+            }
+            if (string.IsNullOrEmpty(user.Email))
             {
                 ModelState.AddModelError("Email", "Enter Email");
             }
+            if(string.IsNullOrWhiteSpace(userType))
+            {
+                ModelState.AddModelError("UserTypeID", "Select User Type");
+            }
 
-            if(ModelState.IsValid && user.Password.Length>=Convert.ToInt32(passwordLength))
+
+            if(ModelState.IsValid)
             {
                 
                 user.UserTypeID = Convert.ToInt32(userType);
@@ -437,7 +442,6 @@ namespace InterviewEvaluationSystem.Controllers
             }
             else
             {
-                ViewBag.PasswordErrorMessage = "The password should contain minimum " + passwordLength + "characters";
                 List<SelectListItem> selectedlist = new List<SelectListItem>();
                 foreach (tblUserType userType1 in dbContext.tblUserTypes)
                 {
