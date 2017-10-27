@@ -17,6 +17,7 @@
             <td>
                 <h2 @*style="color:darkblue;"*@>Login</h2>
                 <form class="form-signin" method="post" action="">
+                    <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                         <input id="in" type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" />
@@ -27,13 +28,17 @@
                         <input id="in" type="password" class="form-control" name="Password" placeholder="Password" required="" />
                     </div>
                     <br />
+                    <div class="text-danger">@ViewBag.Wronguser</div>
                     <div class="text-danger">@ViewBag.Message</div>
                     <button @*style="height:50px;text-align:center;background-color:darkblue;"*@ class="btn btn-primary btn-lg btn-block login-button" type="submit">Login</button>
+                    @Html.ActionLink("Forgot Password ?", "PasswordReset", "Home", new { @class = "elements" }, null)
                 </form>
             </td>
         </tr>
     </table>
 </div>
+
+
 
 <style type="text/css">
     #loginForm {
@@ -46,9 +51,18 @@
         background: rgba(0, 0, 0, 0.43);
         box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
         padding-left: 2%;
-        padding-top:3%;
+        /*padding-top:3%;*/
         padding-bottom:7%;
     } 
+    .profile-img-card {
+    width: 66px;
+    height: 66px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
 
     h1{
         text-align:center;

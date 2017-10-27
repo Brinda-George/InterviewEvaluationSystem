@@ -93,6 +93,8 @@ namespace InterviewEvaluationSystem.Controllers
             rate.RateScale = Ratescale;
             rate.RateValue = Ratevalue;
             rate.Description = description;
+            rate.ModifiedBy = "admin";
+            rate.ModifiedDate = DateTime.Now;
             db.SaveChanges();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
             return Json(new { Url = redirectUrl, RateScale = Ratescale, RateValue = Ratevalue, Description = description }, JsonRequestBehavior.AllowGet);
@@ -113,6 +115,8 @@ namespace InterviewEvaluationSystem.Controllers
             //Session["Rates"] = list;
             // db.tblRatingScales.Remove(rate);
             rate.IsDeleted = true;
+            rate.ModifiedBy = "admin";
+            rate.ModifiedDate = DateTime.Now;
             db.SaveChanges();
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
@@ -159,6 +163,8 @@ namespace InterviewEvaluationSystem.Controllers
             tblSkillCategory category = db.tblSkillCategories.Find(SkillCategoryID);
             category.SkillCategory = SkillCategory;
             category.Description = description;
+            category.ModifiedBy = "admin";
+            category.ModifiedDate = DateTime.Now;
             db.SaveChanges();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
             return Json(new { Url = redirectUrl, SkillCategory = SkillCategory, Description = description }, JsonRequestBehavior.AllowGet);
@@ -179,6 +185,8 @@ namespace InterviewEvaluationSystem.Controllers
             //Session["Categories"] = list;
             //db.tblSkillCategories.Remove(category);
             skill.IsDeleted = true;
+            skill.ModifiedBy = "admin";
+            skill.ModifiedDate = DateTime.Now;
             db.SaveChanges();
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
@@ -263,6 +271,8 @@ namespace InterviewEvaluationSystem.Controllers
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             tblSkill skill = db.tblSkills.Find(SkillID);
             skill.SkillName = Skillname;
+            skill.ModifiedBy = "admin";
+            skill.ModifiedDate = DateTime.Now;
             db.SaveChanges();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
             return Json(new { Url = redirectUrl, SkillName = Skillname }, JsonRequestBehavior.AllowGet);
@@ -282,6 +292,8 @@ namespace InterviewEvaluationSystem.Controllers
             //Session["Skills"] = list;
             //db.tblSkills.Remove(skill);
             skills.IsDeleted = true;
+            skills.ModifiedBy = "admin";
+            skills.ModifiedDate = DateTime.Now;
             db.SaveChanges();
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");

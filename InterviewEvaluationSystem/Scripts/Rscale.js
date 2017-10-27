@@ -33,6 +33,7 @@
                             tr.find('#ratescale').text(data.RateScale);
                             tr.find('#ratevalue').text(data.RateValue);
                             tr.find('#description').text(data.Description);
+                            alert('Successfully updated');
                             window.location = data.Url;
                         
                         },
@@ -67,7 +68,7 @@
                         dataType: "json",
                        // data: { id:id },
                         success: function (data) {
-                            alert('Delete success');
+                            alert('Successfully deleted');
                             window.location.href = data.Url;
                         },
                         error: function () {

@@ -23,7 +23,7 @@
                 tr.find('.edit, .read').toggle();
                 $('.edit').hide();
                 tr.find('#skillname').text(data.SkillName);
-                // alert('Update success');
+                alert('Successfully updated');
                 window.location = data.Url;
             },
             error: function (data) {
@@ -51,7 +51,7 @@
             data:{ "SkillID": SkillID },
             dataType: "json",
             success: function (data) {
-                alert('Delete success');
+                alert('Successfully deleted');
                 window.location.href = data.Url;
             },
             error: function () {

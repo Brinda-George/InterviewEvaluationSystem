@@ -414,6 +414,8 @@
     <Content Include="Views\Shared\HRLayout.cshtml" />
     <Content Include="Views\Shared\InterviewerLayout.cshtml" />
     <Content Include="Views\HR\AddRound.cshtml" />
+    <Content Include="Views\Home\PasswordReset.cshtml" />
+    <Content Include="Views\Shared\ResetPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

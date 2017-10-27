@@ -28,6 +28,7 @@ $(document).ready(function () {
                 $('.edit').hide();
                 tr.find('#skillcategory').text(data.SkillCategory);
                 tr.find('#description').text(data.Description);
+                alert('Successfully updated');
                 window.location = data.Url;
             },
             error: function (err) {
@@ -56,7 +57,7 @@ $(document).ready(function () {
             data: { "SkillCategoryID": SkillCategoryID },
             dataType: "json",
             success: function (data) {
-                alert('Delete success');
+                alert('Successfully deleted');
                 window.location.href = data.Url;
             },
             error: function () {
