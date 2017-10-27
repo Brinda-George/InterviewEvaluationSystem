@@ -7,22 +7,15 @@
         $(document).on("click", ".edit-userCandidate, .cancel-userCandidate", function () {
             
             var tr = $(this).parents('tr:first');
-            
             var UserName = tr.find("#lblInterviewerName").text();
-         //   $('#ddlInterviewerName').get(0).selectedIndex = UserName;
-            //  tr.find('#ddlInterviewerName').text(UserName);
             tr.find('#ddlInterviewerName').val(UserName);
-         //   $('#ddlInterviewerName').text("UserName");
-          //  $('#ddlInterviewerName').val(UserName).attr("selected", "selected");
-          //  $("#ddlInterviewerName").find("option[val='UserName']").attr("selected", "selected");
-           // $('#ddlInterviewerName option[value="UserName"]').attr("selected", true);
-           // $('#ddlInterviewerName').val($("#ddlInterviewerName option:contains('UserName')").val());
-         //  $("#ddlInterviewerName option[text='UserName']").attr("selected", "selected");
-            $('#ddlInterviewerName').val(UserName).change();
-            $('#ddlInterviewerName option:contains("UserName")').prop('selected', true);
             tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
+            $('.delete-userCandidate').hide();
         });
 
+        $(document).on("click", ".cancel-userCandidate", function () {
+                    $('.delete-userCandidate').show();
+        });
 
         $(document).on("click", ".save-userCandidate", function () {
         
@@ -40,10 +33,12 @@
                 success: function (data) {
                     // alert('Successfully Updated Interviewer');   
                     location.reload();
+                    alert("Successfully Updated");
                     //tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();                                        
                     //tr.find("#lblCandidateName").text(data.Name);
                     //tr.find("#lblDateOfInterview").text(data.DateOfInterview);
                     //tr.find("#lblInterviewerName").text(data.UserName);
+                    $('.delete-userCandidate').show();
                     
                 }
             });
@@ -61,6 +56,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) { 
                     location.reload();
+                    alert("Successfully Deleted");
                 }
             })
         });
@@ -82,7 +78,11 @@
         });
 
         $(document).on("click", "#btnCreate", function () {
-
+            var CandidateName = $('#Name').val();
+            if (CandidateName == "")
+            {
+                $('#lblCandidateName').html("Candidate Name Required");
+            }
             $.ajax({
                 url: '/HR/AddCandidate',
                 type: 'Post',

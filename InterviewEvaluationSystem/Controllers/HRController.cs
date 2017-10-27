@@ -440,7 +440,7 @@ namespace InterviewEvaluationSystem.Controllers
                 ModelState.Clear();
                 return View();
             }
-            else
+            else  
             {
                 List<SelectListItem> selectedlist = new List<SelectListItem>();
                 foreach (tblUserType userType1 in dbContext.tblUserTypes)
