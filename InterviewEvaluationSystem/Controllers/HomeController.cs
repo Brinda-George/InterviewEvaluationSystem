@@ -1,16 +1,13 @@
 ﻿using InterviewEvaluationSystem.Business_Logic;
 using InterviewEvaluationSystem.Models;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
+using System.Net.Mail;
+using System.Text;
 using System.Web.Mvc;
-using System.Web.Security;
-using System.Web.UI.WebControls;
+
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -59,6 +56,16 @@ namespace InterviewEvaluationSystem.Controllers
         }
         #endregion
 
+        #region View Profile
+        public ActionResult ViewProfile()
+        {
+            var name = Convert.ToString(Session["UserName"]);
+            var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
+            ViewBag.Details = item;
+            return View();
+        }
+        #endregion
+
         #region Profile Update
         [HttpGet]
         public ActionResult ProfileUpdate()
@@ -86,22 +93,54 @@ namespace InterviewEvaluationSystem.Controllers
         }
         #endregion
 
-        #region View Profile
-        public ActionResult ViewProfile()
+        #region ResetPassword
+        [HttpGet]
+        public ActionResult PasswordReset()
         {
-            var name = Convert.ToString(Session["UserName"]);
-            var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
-            ViewBag.Details = item;
             return View();
         }
-        #endregion
 
-        #region Logout
-        public ActionResult Logout(UserViewModel user)
+        [HttpPost]
+        public ActionResult PasswordReset(string email)
         {
-            Session["UserName"] = null;
-            Session.Abandon();
-            return RedirectToAction("Login", "Home");
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            int result;
+            Random r = new Random();
+            var data = db.tblUsers.Where(x => x.Email == email).FirstOrDefault();
+            if (data != null)
+            {
+                string otp;
+                const string pool = "abcdefghijklmnopqrstuvwxyz0123456789";
+                var builder = new StringBuilder();
+                int length = 7;
+                for (var i = 0; i < length; i++)
+                {
+                    var c = pool[r.Next(0, pool.Length)];
+                    builder.Append(c);
+                }
+                otp = builder.ToString();
+                Session["OTP"] = otp;
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.To.Add(email);
+                mailMessage.Subject = "Password Reset";
+                mailMessage.Body = "Please use the following password to login to your account " + Session["OTP"] + ".You may later change it after logging into your account";
+                mailMessage.IsBodyHtml = true;
+                SmtpClient smtpClient = new SmtpClient();
+                smtpClient.Send(mailMessage);
+                result = 1;
+                return Json(new { Url = Url.Action("ResetPartial"), result = result });
+            }
+            else
+            {
+                ViewBag.Valid = "Email entered is not registered.Please enter a registered email.";
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ResetPartial()
+        {
+            return PartialView("ResetPartial");
         }
         #endregion
 
@@ -140,6 +179,15 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
             }
+        }
+        #endregion
+
+        #region Logout
+        public ActionResult Logout(UserViewModel user)
+        {
+            Session["UserName"] = null;
+            Session.Abandon();
+            return RedirectToAction("Login", "Home");
         }
         #endregion
 

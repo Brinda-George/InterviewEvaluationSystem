@@ -158,10 +158,26 @@
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
         columns: gridCandidate.Columns(
-            gridCandidate.Column("CandidateID", format: @<text>  <span class="display-modeCandidate">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label> </text>),
-            gridCandidate.Column("CandidateName", "CandidateName", format: @<text>  <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" /></text>),
-            gridCandidate.Column("DateOfInterview", "Date Of Interview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidate" /></text>),
-            gridCandidate.Column("InterviewerName", "Interviewer Name", format: @<text> <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span> @Html.DropDownList("user", null, string.Empty, new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })  </text>),
+            gridCandidate.Column("CandidateID", format: 
+            @<text>  
+                <span class="display-modeCandidate">@item.CandidateID </span> 
+                <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label>
+            </text>),
+            gridCandidate.Column("CandidateName", "CandidateName", format: 
+            @<text>  
+                <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> 
+                <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" />
+            </text>),
+            gridCandidate.Column("DateOfInterview", "Date Of Interview", format: 
+            @<text>  
+                <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span> 
+                <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidate" />
+            </text>),
+            gridCandidate.Column("InterviewerName", "Interviewer Name", format: 
+            @<text> 
+                <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span> 
+                @Html.DropDownList("user", null, string.Empty, new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })  
+            </text>),
             gridCandidate.Column("Action", format: @<text>
                 <button class="edit-userCandidate display-modeCandidate btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
                 <button class="save-userCandidate edit-modeCandidate btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
@@ -174,3 +190,39 @@
 <div>
     @Html.ActionLink("Back to DashBoard", "HRHomePage")
 </div>
+
+<script>
+    function GetExistingDynamicTextBoxes(value) {
+        var div = $(" <div />");
+
+        var textBox = $(" <input />").attr("type", "textbox").attr("name", "txtBoxes");
+        textBox.addClass('form-control');
+        textBox.val(value);
+        div.append(textBox);
+
+        var button = $(" <input />").attr("type", "button").attr("value", "Remove");
+        button.attr("onclick", "DeleteTextBox(this)");
+        button.addClass('btn btn-default');
+        div.append(button);
+
+        return div;
+    }
+    function AppendTextBox() {
+        var div = GetExistingDynamicTextBoxes("");
+        $("#divTextBoxes").append(div);
+    }
+
+    function DeleteTextBox(button) {
+        $(button).parent().remove();
+    }
+
+    $(function () {
+        var values = eval('@Html.Raw(ViewBag.DemoMessage)');
+        if (values != null) {
+            $("#divTextBoxes").html("");
+            $(values).each(function () {
+                $("#divTextBoxes").append(GetExistingDynamicTextBoxes(this));
+            });
+        }
+    });
+</script>

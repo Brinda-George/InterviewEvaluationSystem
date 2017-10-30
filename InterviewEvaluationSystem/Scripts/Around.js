@@ -23,7 +23,6 @@
                 $('.edit').hide();
                 tr.find('#roundname').text(data.RoundName);
                 window.location = data.Url;
-
             },
             error: function (err) {
                 alert("Error occured during update.");
@@ -52,7 +51,7 @@
             data: { "RoundID": RoundID },
             dataType: "json",
             success: function (data) {
-                alert('Delete success');
+                alert('Successfully Deleted!!');
                 window.location.href = data.Url;
             },
             error: function () {

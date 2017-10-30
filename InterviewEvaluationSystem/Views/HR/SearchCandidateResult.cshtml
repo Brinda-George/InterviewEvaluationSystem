@@ -8,7 +8,6 @@
 
 <script src="~/Scripts/Candidate.js"></script>
 
-
 @gridCandidate.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
@@ -27,11 +26,11 @@
                 <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span>
                 <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" />
             </text>, style: "colWidth"),
-            gridCandidate.Column("DateOfInterview", "DateOfInterview", format:
-            @<text>
-                <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span>
-                <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" />
-            </text>, style: "colWidth"),
+            gridCandidate.Column("DateOfInterview", "Date Of Interview", format: 
+            @<text>  
+                <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span> 
+                <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidate" />
+            </text>),
             gridCandidate.Column("InterviewerName", "InterviewerName", format:
             @<text>
                 <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span>

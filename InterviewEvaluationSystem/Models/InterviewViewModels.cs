@@ -53,7 +53,7 @@ namespace InterviewEvaluationSystem.Models
     {
         public int RoundID { get; set; }
         [Required]
-        [Remote("IsRoundExist", "HR", AdditionalFields = "Id", ErrorMessage = "Round Name already exists")]
+        [Remote("IsRoundExist", "HR", ErrorMessage = "Round Name already exists")]
         public string RoundName { get; set; }
     }
 
@@ -61,10 +61,10 @@ namespace InterviewEvaluationSystem.Models
     {
         public int RateScaleID { get; set; }
         [Required]
-        [Remote("IsScaleExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Scale already exists")]
+        [Remote("IsScaleExist", "HR", ErrorMessage = "Rate Scale already exists")]
         public string RateScale { get; set; }
         [Required]
-        [Remote("IsValueExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Value already exists")]
+        [Remote("IsValueExist", "HR", ErrorMessage = "Rate Value already exists")]
         public int RateValue { get; set; }
         [Required]
         public string Description { get; set; }
@@ -74,7 +74,7 @@ namespace InterviewEvaluationSystem.Models
     {
         public int SkillCategoryID { get; set; }
         [Required]
-        [Remote("IsCategoryExist", "HR", AdditionalFields = "Id", ErrorMessage = "Skill Category already exists")]
+        [Remote("IsCategoryExist", "HR", ErrorMessage = "Skill Category already exists")]
         public string SkillCategory { get; set; }
         [Required]
         public string Description { get; set; }
@@ -94,9 +94,10 @@ namespace InterviewEvaluationSystem.Models
     {
         public int UserID { get; set; }
         [Required]
-        [Remote("IsInterviewerExists", "HR", AdditionalFields = "Id", ErrorMessage = "Skill Name already exists")]
+        [Remote("IsInterviewerUserNameExists", "HR", ErrorMessage = "Interviewer already exists")]
         public string UserName { get; set; }
         [Required]
+        [Remote("IsInterviewerEmployeeIdExists", "HR", ErrorMessage = "Employee ID already exists")]
         public string EmployeeId { get; set; }
         [Required]
         public string Designation { get; set; }
@@ -194,8 +195,6 @@ namespace InterviewEvaluationSystem.Models
     public class CurrentStatusViewModel
     {
         public string Name { get; set; }
-        [DataType(DataType.EmailAddress)]
-        [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Please enter valid email id.")]
         public string Email { get; set; }
         public int RoundID { get; set; }
         public int EvaluationID { get; set; }

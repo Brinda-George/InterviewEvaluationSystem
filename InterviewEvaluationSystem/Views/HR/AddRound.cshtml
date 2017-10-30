@@ -20,9 +20,9 @@
     <div ID="form1" class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.RoundName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.RoundName, "Round Name", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RoundName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.RoundName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Round Name" } })
                 @Html.ValidationMessageFor(model => model.RoundName, "", new { @class = "text-danger" })
             </div>
         </div>

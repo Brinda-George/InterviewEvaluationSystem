@@ -1,0 +1,18 @@
+﻿@model InterviewEvaluationSystem.Models.tblUser
+
+@{
+    Layout = null;
+}
+
+<label>Enter the OTP sent to your mail in order to login</label>
+
+<div id="loginForm">
+    <form class="form" method="post" action="">
+        <input type="hidden" id="otpHidden" value="@Session["OTP"]" />
+        <input id="otpText" type="text" class="form-control" name="OTP" placeholder="OTP" required="" autofocus="" />
+        <br />
+        <label class="text-danger" id="lblOtp"></label>
+        <div class="text-danger">@ViewBag.Message</div>
+        <button id="smtBtn" class="btn btn-primary" type="submit" onclick="return Check()">Submit</button>
+    </form>
+</div>

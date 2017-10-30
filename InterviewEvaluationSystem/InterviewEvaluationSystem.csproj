@@ -320,6 +320,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\formstyle.css" />
     <Content Include="Content\layout.css" />
     <Content Include="Content\LoginTemplate.css" />
@@ -331,6 +332,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\IMG1.png" />
+    <Content Include="Images\suyati.PNG" />
     <Content Include="Models\InterviewModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>InterviewModel.edmx</DependentUpon>
@@ -358,6 +360,11 @@
     <Content Include="Models\InterviewModel.edmx.diagram">
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\hrevaluation.js" />
     <Content Include="Scripts\interviewevaluation.js" />
@@ -374,6 +381,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Notification.js" />
+    <Content Include="Scripts\resetpartial.js" />
+    <Content Include="Scripts\resetpassword.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\sb-admin.min.js" />
@@ -439,6 +448,8 @@
     <Content Include="Views\Shared\_InterviewerLayout.cshtml" />
     <Content Include="Views\HR\AddRound.cshtml" />
     <Content Include="Views\Shared\_HRLayout.cshtml" />
+    <Content Include="Views\Home\PasswordReset.cshtml" />
+    <Content Include="Views\Shared\ResetPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

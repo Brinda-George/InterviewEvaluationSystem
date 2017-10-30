@@ -5,74 +5,63 @@
     var det = ViewBag.Details;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>ViewProfile</title>
-    <style>
-        #formProfile {
-            width: 400px;
-            height: 400px;
-            color: dodgerblue;
-            font-family: 'Times New Roman';
-            font-size: 20px;
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        @if (Convert.ToInt32(Session["UserTypeID"]) == 1)
+        {
+            <a href="~/HR/HRHomePage">Home Page</a>
         }
-    </style>
-</head>
-<body>
-    <div id="formProfile">
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.UserName)
-            </dt>
+        else
+        {
+            <a href="~/Interviewer/HomePage">Home Page</a>
+        }
+    </li>
+    <li class="breadcrumb-item active">View Profile</li>
+</ol>
 
-            <dd>
-                @det.UserName
-            </dd>
+<div id="formProfile">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @det.UserName
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.EmployeeId)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeId)
+        </dt>
+        <dd>
+            @det.EmployeeId
+        </dd>
 
-            <dd>
-                @det.EmployeeId
-            </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Designation)
+        </dt>
+        <dd>
+            @det.Designation
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Designation)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @det.Address
+        </dd>
 
-            <dd>
-                @det.Designation
-            </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pincode)
+        </dt>
+        <dd>
+            @det.Pincode
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Address)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @det.Email
+        </dd>
 
-            <dd>
-                @det.Address
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Pincode)
-            </dt>
-
-            <dd>
-                @det.Pincode
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-
-            <dd>
-                @det.Email
-            </dd>
-
-        </dl>
-    </div>
-</body>
-</html>
+    </dl>
+</div>
