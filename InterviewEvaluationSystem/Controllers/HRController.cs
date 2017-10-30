@@ -77,53 +77,6 @@ namespace InterviewEvaluationSystem.Controllers
         }
         #endregion
 
-        #region Register
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        [HttpPost]
-
-        public ActionResult Register(UserViewModel user)
-        {
-            var count = dbContext.spRegister(user.UserName, user.EmployeeId, user.Designation, user.Address, user.Pincode, user.Password, user.Email);
-            var item = count.FirstOrDefault();
-            int usercount = Convert.ToInt32(item);
-            string message = string.Empty;
-            switch (usercount)
-            {
-                case -1:
-                    message = "Username already exists.\\nPlease choose a different username.";
-                    break;
-                case -2:
-                    message = "EmployeeID has already been used.";
-                    break;
-                case -3:
-                    message = "Email address has already been used.";
-                    break;
-                default:
-                    message = "Registration successful.\\nUser Id: " + user.UserID.ToString();
-                    dbContext.tblUsers.Add(new tblUser
-                    {
-                        UserName = user.UserName,
-                        EmployeeId = user.EmployeeId,
-                        Designation = user.Designation,
-                        Address = user.Address,
-                        Pincode = user.Pincode,
-                        Password = user.Password,
-                        Email = user.Email,
-                        UserTypeID = user.UserTypeID
-                    });
-                    dbContext.SaveChanges();
-                    break;
-            }
-            ViewBag.Message = message;
-            return View();
-        }
-        #endregion
-
         #region Round
         [HttpGet]
         public ActionResult AddRound()
@@ -169,10 +122,10 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult IsRoundExist(string RoundName, int? Id)
+        public JsonResult IsRoundExist(string RoundName)
         {
             var validateScale = dbContext.tblRounds.FirstOrDefault
-                                (x => x.RoundName == RoundName && x.RoundID != Id && x.IsDeleted != true);
+                                (x => x.RoundName == RoundName && x.IsDeleted != true);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -231,10 +184,10 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult IsScaleExist(string RateScale, int? Id)
+        public JsonResult IsScaleExist(string RateScale)
         {
             var validateScale = dbContext.tblRatingScales.FirstOrDefault
-                                (x => x.RateScale == RateScale && x.RateScaleID != Id);
+                                (x => x.RateScale == RateScale);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -245,10 +198,10 @@ namespace InterviewEvaluationSystem.Controllers
             }
         }
 
-        public JsonResult IsValueExist(int RateValue, int? Id)
+        public JsonResult IsValueExist(int RateValue)
         {
             var validateScale = dbContext.tblRatingScales.FirstOrDefault
-                                (x => x.RateValue == RateValue && x.RateScaleID != Id);
+                                (x => x.RateValue == RateValue);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -304,10 +257,10 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult IsCategoryExist(string SkillCategory, int? Id)
+        public JsonResult IsCategoryExist(string SkillCategory)
         {
             var validateScale = dbContext.tblSkillCategories.FirstOrDefault
-                                (x => x.SkillCategory == SkillCategory && x.SkillCategoryID != Id);
+                                (x => x.SkillCategory == SkillCategory);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -383,10 +336,10 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult IsSkillExist(string SkillName, int? Id)
+        public JsonResult IsSkillExist(string SkillName)
         {
             var validateScale = dbContext.tblSkills.FirstOrDefault
-                                (x => x.SkillName == SkillName && x.SkillID != Id);
+                                (x => x.SkillName == SkillName);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -401,7 +354,19 @@ namespace InterviewEvaluationSystem.Controllers
         #region Interviewer
         public ActionResult AddInterviewers()
         {
-            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
+            List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
+                .Select(u => new UserViewModel
+                {
+                    UserID = u.UserID,
+                    UserName = u.UserName,
+                    Designation = u.Designation,
+                    UserTypeID = u.UserTypeID,
+                    Address = u.Address,
+                    Email = u.Email,
+                    EmployeeId = u.EmployeeId,
+                    Password = u.Password,
+                    Pincode = u.Pincode,
+                }).ToList();
             ViewBag.Users = users;
             List<SelectListItem> selectedlistInner = new List<SelectListItem>();
             foreach (tblUserType userType1 in dbContext.tblUserTypes)
@@ -418,76 +383,22 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpGet]
-        public JsonResult IsInterviewerExists(string UserName, string EmployeeId)
+        public JsonResult IsInterviewerUserNameExists(string UserName)
         {
-            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
-
+            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName)).FirstOrDefault() != null;
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
+        {
+            bool IsExists = dbContext.tblUsers.Where(u => u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult AddInterviewers(tblUser user, string userType)
+        public ActionResult AddInterviewers(UserViewModel user, string userType)
         {
             var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
-            if (string.IsNullOrEmpty(user.UserName))
-            {
-                ModelState.AddModelError("UserName", "The Name Field is Required");
-            }
-
-            if (string.IsNullOrEmpty(user.EmployeeId))
-            {
-                ModelState.AddModelError("EmployeeId", "The Employee Id Field is Required");
-            }
-
-            if (string.IsNullOrEmpty(user.Designation))
-            {
-                ModelState.AddModelError("Designation", "The Designation Field is Required");
-            }
-
-            if (string.IsNullOrEmpty(user.Address))
-            {
-                ModelState.AddModelError("Address", "The Address Field is Required");
-            }
-            if (string.IsNullOrEmpty(user.Pincode))
-            {
-                ModelState.AddModelError("Pincode", "The Pincode Field is Required");
-            }
-            if ((string.IsNullOrEmpty(user.Password)) || (user.Password.Length < Convert.ToInt32(passwordLength)))
-            {
-                ModelState.AddModelError("Password", "The password field is required and should contain minimum " + passwordLength + " characters");
-            }
-            if (string.IsNullOrEmpty(user.Email))
-            {
-                ModelState.AddModelError("Email", "The Email Field is Required");
-            }
-            if (string.IsNullOrWhiteSpace(userType))
-            {
-                ModelState.AddModelError("UserTypeID", "Select User Type");
-            }
-            if (ModelState.IsValid)
-            {
-                user.UserTypeID = Convert.ToInt32(userType);
-                user.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                user.CreatedDate = System.DateTime.Now;
-                user.IsDeleted = false;
-                dbContext.tblUsers.Add(user);
-                dbContext.SaveChanges();
-                List<SelectListItem> selectedlistInner = new List<SelectListItem>();
-                foreach (tblUserType userType1 in dbContext.tblUserTypes)
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = userType1.UserType,
-                        Value = userType1.UserTypeID.ToString()
-                    };
-                    selectedlistInner.Add(selectlistitem);
-                }
-                ViewBag.userType = selectedlistInner;
-                List<tblUser> usersInner = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
-                ViewBag.Users = usersInner;
-                ModelState.Clear();
-                return View();
-            }
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             foreach (tblUserType userType1 in dbContext.tblUserTypes)
             {
@@ -499,8 +410,45 @@ namespace InterviewEvaluationSystem.Controllers
                 selectedlist.Add(selectlistitem);
             }
             ViewBag.userType = selectedlist;
-            List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
+            List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
+                .Select(u => new UserViewModel
+                {
+                    UserID = u.UserID,
+                    UserName = u.UserName,
+                    Designation = u.Designation,
+                    UserTypeID = u.UserTypeID,
+                    Address = u.Address,
+                    Email = u.Email,
+                    EmployeeId = u.EmployeeId,
+                    Password = u.Password,
+                    Pincode = u.Pincode,
+                }).ToList();
             ViewBag.Users = users;
+            if (ModelState.IsValid && user.Password.Length >= Convert.ToInt32(passwordLength))
+            {
+                dbContext.tblUsers.Add(new tblUser
+                {
+                    UserID = user.UserID,
+                    UserName = user.UserName,
+                    Designation = user.Designation,
+                    UserTypeID = Convert.ToInt32(userType),
+                    Address = user.Address,
+                    Email = user.Email,
+                    EmployeeId = user.EmployeeId,
+                    Password = user.Password,
+                    Pincode = user.Pincode,
+                    CreatedBy = Convert.ToInt32(Session["UserID"]),
+                    CreatedDate = System.DateTime.Now,
+                    IsDeleted = false
+                });
+                dbContext.SaveChanges();
+                ModelState.Clear();
+                return View();
+            }
+            else
+            {
+                ViewBag.PasswordErrorMessage = "The password field is required and should contain minimum " + passwordLength + " characters";
+            }
             return View(user);
         }
 
@@ -531,7 +479,7 @@ namespace InterviewEvaluationSystem.Controllers
         #region Candidate
         public ActionResult AddCandidate()
         {
-            AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
+            CandidateViewModel addCandidateViewModel = new CandidateViewModel();
             addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid()
                 .Select(s => new CandidateGridViewModel
                 {
@@ -556,7 +504,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddCandidate(AddCandidateViewModels candidateView, string user, string Name, string[] txtBoxes)
+        public JsonResult AddCandidate(CandidateViewModel candidateView, string user, string Name, string[] txtBoxes)
         {
             if (user != null)
             {
@@ -568,7 +516,7 @@ namespace InterviewEvaluationSystem.Controllers
                 candidate.Email = candidateView.Email;
                 candidate.PAN = candidateView.PAN;
                 candidate.ExpectedSalary = candidateView.ExpectedSalary;
-                candidate.NoticePeriodInMonths = candidateView.NoticePeriodInMonths;
+                candidate.NoticePeriodInMonths = (int)candidateView.NoticePeriodInMonths;
                 candidate.TotalExperience = candidateView.TotalExperience;
                 candidate.Qualifications = candidateView.Qualifications;
                 candidate.IsLocked = true;
@@ -609,8 +557,8 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult SearchCandidateResult(string Name)
         {
-            AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
-            addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.StartsWith(Name))
+            CandidateViewModel candidateViewModel = new CandidateViewModel();
+            candidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.StartsWith(Name))
                 .Select(s => new CandidateGridViewModel
                 {
                     CandidateID = s.CandidateID,
@@ -618,7 +566,7 @@ namespace InterviewEvaluationSystem.Controllers
                     DateOfInterview = s.DateOfInterview,
                     InterviewerName = s.UserName
                 }).ToList();
-            return PartialView("SearchCandidateResult", addCandidateViewModel);
+            return PartialView("SearchCandidateResult", candidateViewModel);
         }
 
         [HttpPost]

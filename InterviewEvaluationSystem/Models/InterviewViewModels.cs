@@ -84,7 +84,7 @@ namespace InterviewEvaluationSystem.Models
     {
         public int SkillID { get; set; }
         [Required]
-        [Remote("IsSkillExist", "HR", AdditionalFields = "Id", ErrorMessage = "Skill Name already exists")]
+        [Remote("IsSkillExist", "HR", ErrorMessage = "Skill Name already exists")]
         public string SkillName { get; set; }
         [Required]
         public int SkillCategoryID { get; set; }
@@ -93,14 +93,23 @@ namespace InterviewEvaluationSystem.Models
     public class UserViewModel
     {
         public int UserID { get; set; }
+        [Required]
+        [Remote("IsInterviewerExists", "HR", AdditionalFields = "Id", ErrorMessage = "Skill Name already exists")]
         public string UserName { get; set; }
+        [Required]
         public string EmployeeId { get; set; }
+        [Required]
         public string Designation { get; set; }
+        [Required]
         public string Address { get; set; }
+        [Required]
         public string Pincode { get; set; }
+        [Required]
+
         public string Password { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        [Required]
         public int UserTypeID { get; set; }
     }
 
@@ -108,20 +117,25 @@ namespace InterviewEvaluationSystem.Models
     {
         public int CandidateID { get; set; }
         public string Name { get; set; }
-        [DateValidation(ErrorMessage = "Sorry, the date can't be later than today's date")]
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
-        [InterviewDateValidation(ErrorMessage = "Sorry, the date can't be earlier than today's date")]
         public string Designation { get; set; }
+        [DataType(DataType.Date)]
         public DateTime DateOfInterview { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string PAN { get; set; }
         public decimal ExpectedSalary { get; set; }
         public Nullable<int> NoticePeriodInMonths { get; set; }
+        public string PreviousCompany { get; set; }
         public int TotalExperience { get; set; }
         public string Qualifications { get; set; }
+        public string Interviewer { get; set; }
         public Nullable<decimal> OfferedSalary { get; set; }
         public Nullable<DateTime> DateOfJoining { get; set; }
+        public List<CandidateGridViewModel> CandidateList { get; set; }
+        public List<tblUser> users { get; set; }
+        public IEnumerable<PreviousCompanyViewModel> previousCompanyList { get; set; }
     }
 
     public class EvaluationViewModel
@@ -175,9 +189,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> RateScaleID { get; set; }
         public Nullable<int> CandidateID { get; set; }
         public Nullable<int> RoundID { get; set; }
-    }
-
-    
+    }    
 
     public class CurrentStatusViewModel
     {
@@ -234,27 +246,6 @@ namespace InterviewEvaluationSystem.Models
         public string Subject { get; set; }
         public string Status { get; set; }
         public string Comments { get; set; }
-    }
-
-    public class AddCandidateViewModels
-    {
-        public string Name { get; set; }
-        public string Designation { get; set; }
-        [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
-        [DataType(DataType.Date)]
-        public DateTime DateOfInterview { get; set; }
-        public string Email { get; set; }
-        public string PAN { get; set; }
-        public decimal ExpectedSalary { get; set; }
-        public int NoticePeriodInMonths { get; set; }
-        public int TotalExperience { get; set; }
-        public string PreviousCompany { get; set; }
-        public string Qualifications { get; set; }
-        public string Interviewer { get; set; }
-        public List<CandidateGridViewModel> CandidateList { get; set; }
-        public List<tblUser> users { get; set; }
-        public IEnumerable<PreviousCompanyViewModel> previousCompanyList { get; set; }
     }
 
     public class PreviousCompanyViewModel

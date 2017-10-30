@@ -1,11 +1,11 @@
-﻿@model InterviewEvaluationSystem.Models.AddCandidateViewModels
+﻿@model InterviewEvaluationSystem.Models.CandidateViewModel
 
 @{
     ViewBag.Title = "SearchCandidateResult";
 }
 
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/Candidate.js"></script>
-<link href="~/Content/webgridstyle.css" rel="stylesheet" />
 
 @{
     var gridCandidate = new WebGrid(Model.CandidateList, canPage: true, rowsPerPage: 5, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
@@ -41,7 +41,7 @@
                 <input type="text" id="InterviewerName" value="@item.InterviewerName" class="edit-modeCandidate" />
             </text>, style: "colWidth"),
             gridCandidate.Column("Action", format: @<text>
-                <button class="edit-userCandidate display-modeCandidate"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>> Edit</button>
+                <button class="edit-userCandidate display-modeCandidate"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
                 <button class="save-userCandidate edit-modeCandidate"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
                 <button class="cancel-userCandidate edit-modeCandidate"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                 <button class="delete-userCandidate"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
