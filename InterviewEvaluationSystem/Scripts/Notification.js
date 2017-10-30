@@ -4,7 +4,6 @@
         $('.HireCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
             var CandidateID = tr.find("#lblCandidateID").text();
-            $.session.set('NotificationsCount', notificationCount - 1);
             $.ajax({
                 url: '/HR/HireCandidate/',
                 data: JSON.stringify({ "CandidateID": CandidateID }),

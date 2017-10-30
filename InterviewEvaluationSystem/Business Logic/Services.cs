@@ -27,7 +27,7 @@ namespace InterviewEvaluationSystem.Business_Logic
                 {
                     RateScaleID = r.RateScaleID,
                     RateScale = r.RateScale,
-                    Value = r.RateValue,
+                    RateValue = r.RateValue,
                     Description = r.Description
                 }).ToList();
             return RatingScales;

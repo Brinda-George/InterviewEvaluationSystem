@@ -193,7 +193,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult RatingScale(RateScaleViewModel rate)
+        public ActionResult RatingScale(RatingScaleViewModel rate)
         {
             dbContext.tblRatingScales.Add(new tblRatingScale
             {

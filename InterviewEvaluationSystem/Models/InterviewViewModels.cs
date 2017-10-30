@@ -65,19 +65,6 @@ namespace InterviewEvaluationSystem.Models
         public string RateScale { get; set; }
         [Required]
         [Remote("IsValueExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Value already exists")]
-        public int Value { get; set; }
-        [Required]
-        public string Description { get; set; }
-    }
-
-    public class RateScaleViewModel
-    {
-        public int RateScaleID { get; set; }
-        [Required]
-        [Remote("IsScaleExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Scale already exists")]
-        public string RateScale { get; set; }
-        [Required]
-        [Remote("IsValueExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Value already exists")]
         public int RateValue { get; set; }
         [Required]
         public string Description { get; set; }

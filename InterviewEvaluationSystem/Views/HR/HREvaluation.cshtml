@@ -50,7 +50,7 @@ else
                  mode: WebGridPagerModes.All,
                  columns: webgridRatingScale.Columns(
                      webgridRatingScale.Column(columnName: "RateScale", header: "RateScale", style: "colWidth"),
-                     webgridRatingScale.Column(columnName: "Value", header: "Value"),
+                     webgridRatingScale.Column(columnName: "RateValue", header: "Value"),
                      webgridRatingScale.Column(columnName: "Description", header: "Description")
                      )
                  )
@@ -84,7 +84,7 @@ else
                     {
                         ColumnName = round.RoundName,
                         Header = round.RoundName,
-                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
                     });
                     @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
                 }
@@ -94,7 +94,7 @@ else
                     {
                         ColumnName = round.RoundName,
                         Header = round.RoundName,
-                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "Value"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
                     });
                     @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
                 }
