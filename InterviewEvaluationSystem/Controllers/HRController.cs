@@ -439,6 +439,7 @@ namespace InterviewEvaluationSystem.Controllers
                 });
                 dbContext.SaveChanges();
                 ModelState.Clear();
+                ViewBag.result = "Interviewer Added Successfully !!";
                 return View();
             }
             else
@@ -544,6 +545,7 @@ namespace InterviewEvaluationSystem.Controllers
                 eval.IsDeleted = false;
                 dbContext.tblEvaluations.Add(eval);
                 dbContext.SaveChanges();
+                ViewBag.result = "Interviewer Added Successfully !!";
             }
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
             return Json(new { Url = redirectUrl });

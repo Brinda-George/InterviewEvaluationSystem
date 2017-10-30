@@ -16,6 +16,14 @@
     <li class="breadcrumb-item active">Interviewers</li>
 </ol>
 
+@if (ViewBag.result != null)
+{
+    <div class="alert alert-success">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>@ViewBag.result</strong>
+    </div>
+}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
