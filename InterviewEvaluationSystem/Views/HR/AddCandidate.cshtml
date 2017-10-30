@@ -1,13 +1,13 @@
 ﻿@model InterviewEvaluationSystem.Models.AddCandidateViewModels
 
+
+
 @{
     ViewBag.Title = "AddCandidate";
     var grid = new WebGrid(Model.users, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f1", pageFieldName: "p1");
     var gridCandidate = new WebGrid(source: Model.CandidateList, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f2", pageFieldName: "p2");
 }
 
-<script src="~/Scripts/Candidate.js"></script>
-<link href="~/Content/webgridstyle.css" rel="stylesheet" />
 @*<h2>Add Candidate</h2>*@
 <br />
 <br />
@@ -21,8 +21,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control",placeholder="Candidate Name" } })
-                @Html.Label("",htmlAttributes:  new { @id="lblCandidateName"})
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control",placeholder="Candidate Name",id= "Name" } })
+                <label id="lblCandidateName" class="text-danger"></label>
+               @*@Html.Label("",htmlAttributes:  new { @id="lblCandidateName"})*@
                 @*@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -30,8 +31,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control",placeholder="Post Applied For" } })
-                @Html.Label("", htmlAttributes: new { @id = "lblDesignation" })
+                @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control",placeholder="Post Applied For",id= "Designation" } })
+                <label id="lblDesignation" class="text-danger"></label>
+                @*@Html.Label("", htmlAttributes: new { @id = "lblDesignation" })*@
                 @*@Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -39,8 +41,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfBirth, "Date Of Birth", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.Label("", htmlAttributes: new { @id = "lblDOB" })
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control",id= "DateOfBirth" } })
+                <label id="lblDOB" class="text-danger"></label>
+                @*@Html.Label("", htmlAttributes: new { @id = "lblDOB" })*@
                 @*@Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -48,8 +51,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfInterview, "Date Of Interview", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfInterview, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.Label("", htmlAttributes: new { @id = "lblDOI" })
+                @Html.EditorFor(model => model.DateOfInterview, new { htmlAttributes = new { @class = "form-control",id= "DateOfInterview" } })
+                <label id="lblDOI" class="text-danger"></label>
+                @*@Html.Label("", htmlAttributes: new { @id = "lblDOI" })*@
                 @*@Html.ValidationMessageFor(model => model.DateOfInterview, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -57,8 +61,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control",placeholder="Email" } })
-                @Html.Label("", htmlAttributes: new { @id = "lblEmail" })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control",placeholder="Email",id= "Email" } })
+                <label id="lblEmail" class="text-danger"></label>
+                @*@Html.Label("", htmlAttributes: new { @id = "lblEmail" })*@
                 @*@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -66,8 +71,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PAN, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PAN, new { htmlAttributes = new { @class = "form-control",placeholder="PAN Number" } })
-                @Html.Label("", htmlAttributes: new { @id = "lblPAN" })
+                @Html.EditorFor(model => model.PAN, new { htmlAttributes = new { @class = "form-control",placeholder="PAN Number",id= "PAN" } })
+                <label id="lblPAN" class="text-danger"></label>
+                @*@Html.Label("", htmlAttributes: new { @id = "lblPAN" })*@
                 @*@Html.ValidationMessageFor(model => model.PAN, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -111,8 +117,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Qualifications, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Qualifications, new { htmlAttributes = new { @class = "form-control",placeholder="Qualification" } })
-                @Html.Label("", htmlAttributes: new { @id = "lblQualification" })
+                @Html.EditorFor(model => model.Qualifications, new { htmlAttributes = new { @class = "form-control",placeholder="Qualification",id= "Qualifications" } })
+                <label id="lblQualification" class="text-danger"></label>
+                 @*@Html.Label("", htmlAttributes: new { @id = "lblQualification" })*@
                 @*@Html.ValidationMessageFor(model => model.Qualifications, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -120,15 +127,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Interviewer, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("user", null, "--Select--", new { @class = "form-control" })
-                @Html.Label("", htmlAttributes: new { @id = "lblInterviewer" })
+                @Html.DropDownList("user", null, "--Select--", new { @class = "form-control",id="ddlUser" })
+                <label id="lblInterviewer" class="text-danger"></label>
+                @*@Html.Label("", htmlAttributes: new { @id = "lblInterviewer" })*@
                 @*@Html.ValidationMessageFor(model => model.Interviewer, "", new { @class = "text-danger" })*@
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="button" id="btnCreate" value="Add Candidate" class="btn btn-default" />
+                <input type="button" id="btnCreate" onclick="candidateValidation()" value="Add Candidate" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -152,10 +160,14 @@
 <div id="SearchCandidate">
     <table>
         <tr>
-            <td><input type="text" class="form-control" id="CandidateNameText" /></td>
-            <td><input type="button" id="searchCandidate" value="Search" class="btn btn-primary"/></td>
+            <td><input type="text" class="form-control" id="CandidateNameText" placeholder="Search Candidate"/></td>
+            <td><input type="button" value="Search" class="btn btn-primary searchCandidate"/></td>
         </tr>
     </table>
+</div>
+
+<div id="gridContentCandidateResult">
+
 </div>
 
 <div id="gridContentCandidate">
@@ -189,6 +201,7 @@
 <div>
    @Html.ActionLink("Back To Dash Board", "HRHomePage", "HR")
 </div>
+
 
 
 <script type="text/javascript">
@@ -227,5 +240,6 @@
     });
 </script>
 
-
+<script src="~/Scripts/Candidate.js"></script>
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
 

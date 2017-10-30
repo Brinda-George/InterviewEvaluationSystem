@@ -365,12 +365,24 @@ namespace InterviewEvaluationSystem.Controllers
             return View();
         }
 
-        [HttpGet]
-        public JsonResult IsInterviewerExists(string UserName,string EmployeeId)
-        {
-          //  bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
-            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
+        //[HttpGet]
+        //public JsonResult IsInterviewerExists(string UserName,string EmployeeId)
+        //{
+        //  //  bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
+        //    bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
 
+        //    return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        //}
+        [HttpGet]
+        public JsonResult IsInterviewerUserNameExists(string UserName)
+        {
+           bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName)).FirstOrDefault() != null;
+           return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
+        {
+            bool IsExists = dbContext.tblUsers.Where(u=>u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
 
@@ -573,6 +585,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult SearchCandidateResult(string Name)
         {
+
             AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
             addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.StartsWith(Name))
                 .Select(s => new CandidateGridViewModel
@@ -582,6 +595,19 @@ namespace InterviewEvaluationSystem.Controllers
                     DateOfInterview = s.DateOfInterview,
                     InterviewerName = s.UserName
                 }).ToList();
+
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+            {
+                SelectListItem selectlistitem = new SelectListItem
+                {
+                    Text = user.UserName,
+                    Value = user.UserID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            ViewBag.user = selectedlist;
+
             return PartialView("SearchCandidateResult", addCandidateViewModel);
         }
 
