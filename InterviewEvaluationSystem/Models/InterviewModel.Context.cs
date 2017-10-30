@@ -274,5 +274,10 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmailByUserID_Result>("spGetEmailByUserID", candidateIDParameter, userIDParameter);
         }
+    
+        public virtual ObjectResult<Nullable<int>> spGetCandidatesInProgress()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetCandidatesInProgress");
+        }
     }
 }

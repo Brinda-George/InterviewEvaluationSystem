@@ -45,6 +45,8 @@ namespace InterviewEvaluationSystem.Controllers
                 Session["UserID"] = loginUser.UserID;
                 if (loginUser.UserTypeID == 1)
                 {
+                    var Notifications = dbContext.spHRNotificationGrid();
+                    Session["NotificationsCount"] = Notifications.Count();
                     return RedirectToAction("HRHomePage", "HR");
                 }
                 else if (loginUser.UserTypeID == 2)

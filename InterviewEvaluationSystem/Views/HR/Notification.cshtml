@@ -17,6 +17,8 @@
     var grid = new WebGrid(ViewBag.notificationList, canPage: true, rowsPerPage: 15, canSort: true);
 }
 
+<input type="hidden" id="notificationCount" value="@Session["NotificationsCount"]" />
+
 @if (ViewBag.notificationList.Count == 0)
 {
     <div class="alert alert-success">

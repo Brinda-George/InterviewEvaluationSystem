@@ -48,3 +48,13 @@ delete-userCandidate {
 .closebtn:hover {
     color: black;
 }
+
+.label {
+    border-radius: 50%;
+    font-size: .9em;
+    width: 22px;
+    background: #f77738;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+}

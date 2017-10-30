@@ -485,6 +485,7 @@
         <Function Name="spGetCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetCandidatesInProgress" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCloumnChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="year" Type="int" Mode="In" />
         </Function>
@@ -1386,6 +1387,7 @@
             <Parameter Name="CandidateID" Mode="In" Type="Int32" />
             <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="spGetCandidatesInProgress" ReturnType="Collection(Int32)" />
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -1438,10 +1440,10 @@
           <Property Type="Int32" Name="NotificationCount" Nullable="true" />
           <Property Type="Int32" Name="TodaysInterviewCount" Nullable="true" />
           <Property Type="Int32" Name="AvailableInterviewerCount" Nullable="true" />
-          <Property Type="Int32" Name="SkillCategoryCount" Nullable="true" />
           <Property Type="Int32" Name="SkillCount" Nullable="true" />
           <Property Type="Int32" Name="HiredCandidateCount" Nullable="true" />
           <Property Type="Int32" Name="TotalCandidateCount" Nullable="true" />
+          <Property Type="Int32" Name="CandidatesInProgress" Nullable="true" />
         </ComplexType>
         <ComplexType Name="spGetInterviewerDashBoard_Result">
           <Property Type="Int32" Name="NewCandidateCount" Nullable="true" />
@@ -1753,10 +1755,10 @@
                 <ScalarProperty Name="NotificationCount" ColumnName="NotificationCount" />
                 <ScalarProperty Name="TodaysInterviewCount" ColumnName="TodaysInterviewCount" />
                 <ScalarProperty Name="AvailableInterviewerCount" ColumnName="AvailableInterviewerCount" />
-                <ScalarProperty Name="SkillCategoryCount" ColumnName="SkillCategoryCount" />
                 <ScalarProperty Name="SkillCount" ColumnName="SkillCount" />
                 <ScalarProperty Name="HiredCandidateCount" ColumnName="HiredCandidateCount" />
                 <ScalarProperty Name="TotalCandidateCount" ColumnName="TotalCandidateCount" />
+                <ScalarProperty Name="CandidatesInProgress" ColumnName="CandidatesInProgress" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1882,6 +1884,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetCandidatesInProgress" FunctionName="InterviewEvaluationDbModel.Store.spGetCandidatesInProgress" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

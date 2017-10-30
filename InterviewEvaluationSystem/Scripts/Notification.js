@@ -4,7 +4,7 @@
         $('.HireCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
             var CandidateID = tr.find("#lblCandidateID").text();
-
+            $.session.set('NotificationsCount', notificationCount - 1);
             $.ajax({
                 url: '/HR/HireCandidate/',
                 data: JSON.stringify({ "CandidateID": CandidateID }),
@@ -37,7 +37,6 @@
             var Name = tr.find("#lblCandidateName").text();
             var Email = tr.find("#lblCandidateEmail").text();
             var RoundID = tr.find("#lblCandidateRound").text();
-            
             $.ajax({
                 url: '/HR/ProceedCandidate/',
                 data: JSON.stringify({"CandidateID":CandidateID,"Name": Name, "Email": Email, "RoundID": RoundID }),

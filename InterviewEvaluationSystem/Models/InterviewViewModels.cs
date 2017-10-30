@@ -12,10 +12,10 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> NotificationCount { get; set; }
         public Nullable<int> TodaysInterviewCount { get; set; }
         public Nullable<int> AvailableInterviewerCount { get; set; }
-        public Nullable<int> SkillCategoryCount { get; set; }
         public Nullable<int> SkillCount { get; set; }
         public Nullable<int> HiredCandidateCount { get; set; }
         public Nullable<int> TotalCandidateCount { get; set; }
+        public Nullable<int> CandidatesInProgress { get; set; }
     }
 
     public class InterviewerDashboardViewModel
@@ -49,6 +49,14 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> December { get; set; }
     }
 
+    public class RoundViewModel
+    {
+        public int RoundID { get; set; }
+        [Required]
+        [Remote("IsRoundExist", "HR", AdditionalFields = "Id", ErrorMessage = "Round Name already exists")]
+        public string RoundName { get; set; }
+    }
+
     public class RatingScaleViewModel
     {
         public int RateScaleID { get; set; }
@@ -58,6 +66,19 @@ namespace InterviewEvaluationSystem.Models
         [Required]
         [Remote("IsValueExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Value already exists")]
         public int Value { get; set; }
+        [Required]
+        public string Description { get; set; }
+    }
+
+    public class RateScaleViewModel
+    {
+        public int RateScaleID { get; set; }
+        [Required]
+        [Remote("IsScaleExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Scale already exists")]
+        public string RateScale { get; set; }
+        [Required]
+        [Remote("IsValueExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Value already exists")]
+        public int RateValue { get; set; }
         [Required]
         public string Description { get; set; }
     }
@@ -80,14 +101,6 @@ namespace InterviewEvaluationSystem.Models
         public string SkillName { get; set; }
         [Required]
         public int SkillCategoryID { get; set; }
-    }
-    
-    public class RoundViewModel
-    {
-        public int RoundID { get; set; }
-        [Required]
-        [Remote("IsRoundExist", "HR", AdditionalFields = "Id", ErrorMessage = "Round Name already exists")]
-        public string RoundName { get; set; }
     }
 
     public class UserViewModel
@@ -134,14 +147,6 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<bool> Recommended { get; set; }
     }
 
-    public class ScoreViewModel
-    {
-        public int ScoreID { get; set; }
-        public Nullable<int> EvaluationID { get; set; }
-        public Nullable<int> SkillID { get; set; }
-        public Nullable<int> RateScaleID { get; set; }
-    }
-
     public class InterviewEvaluationViewModel
     {
         public string CandidateName { get; set; }
@@ -185,18 +190,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> RoundID { get; set; }
     }
 
-    public class RateScaleViewModel
-    {
-        public int RateScaleID { get; set; }
-        [Required]
-        [Remote("IsScaleExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Scale already exists")]
-        public string RateScale { get; set; }
-        [Required]
-        [Remote("IsValueExist", "HR", AdditionalFields = "Id", ErrorMessage = "Rate Value already exists")]
-        public int RateValue { get; set; }
-        [Required]
-        public string Description { get; set; }
-    }
+    
 
     public class CurrentStatusViewModel
     {

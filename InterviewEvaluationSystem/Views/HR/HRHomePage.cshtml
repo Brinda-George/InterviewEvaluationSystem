@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-sm-9 text-right">
                             <div class="huge">@Model.NewCandidateCount</div>
-                            <div class="text">New Candidates</div>
+                            <div class="text">Candidates in HR Round</div>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
 
     <div class="row">
         <div class="col-xl-3 col-sm-3 mb-3">
-            <div class="panel panel-violet">
+            <div class="panel panel-red">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-sm-3">
@@ -90,15 +90,15 @@
                             <i class="fa fa-graduation-cap fa-4x"></i>
                         </div>
                         <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.SkillCategoryCount</div>
-                            <div class="text">Skill Categories</div>
+                            <div class="huge">@Model.SkillCount</div>
+                            <div class="text">Number of Skills</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
-            <div class="panel panel-red">
+            <div class="panel panel-violet">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-sm-3">
@@ -106,8 +106,8 @@
                             <i class="fa fa-shield fa-4x"></i>
                         </div>
                         <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.SkillCount</div>
-                            <div class="text">Number of Skills</div>
+                            <div class="huge">@Model.CandidatesInProgress</div>
+                            <div class="text">Candidates In Progress</div>
                         </div>
                     </div>
                 </div>

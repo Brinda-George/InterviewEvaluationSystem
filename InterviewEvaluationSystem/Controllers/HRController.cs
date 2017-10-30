@@ -26,7 +26,7 @@ namespace InterviewEvaluationSystem.Controllers
             hrDashBoardViewModel.NewCandidateCount = hrDashBoard.NewCandidateCount;
             hrDashBoardViewModel.NotificationCount = hrDashBoard.NotificationCount;
             hrDashBoardViewModel.TodaysInterviewCount = hrDashBoard.TodaysInterviewCount;
-            hrDashBoardViewModel.SkillCategoryCount = hrDashBoard.SkillCategoryCount;
+            hrDashBoardViewModel.CandidatesInProgress = hrDashBoard.CandidatesInProgress;
             hrDashBoardViewModel.SkillCount = hrDashBoard.SkillCount;
             hrDashBoardViewModel.HiredCandidateCount = hrDashBoard.HiredCandidateCount;
             hrDashBoardViewModel.TotalCandidateCount = hrDashBoard.TotalCandidateCount;
@@ -679,6 +679,7 @@ namespace InterviewEvaluationSystem.Controllers
             candidateProceed.Email = Email;
             candidateProceed.ProceedTo = RoundID + 1;
             TempData["CandidateID"] = CandidateID;
+            Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             List<CandidateInterviewersViewModel> interviewers = dbContext.spGetCandidateInterviewers(CandidateID)
                 .Select(i => new CandidateInterviewersViewModel
@@ -716,6 +717,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult RejectCandidate(int CandidateID)
         {
+            Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
             tblCandidate rejectCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
             rejectCandidate.CandidateStatus = false;
             dbContext.SaveChanges();
@@ -724,6 +726,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult HireCandidate(int CandidateID)
         {
+            Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
             tblCandidate hireCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
             hireCandidate.CandidateStatus = true;
             dbContext.SaveChanges();
