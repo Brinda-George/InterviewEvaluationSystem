@@ -504,7 +504,9 @@
         <Function Name="spGetInterviewerDashBoard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
         </Function>
-        <Function Name="spGetInterviewerPieChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetInterviewerPieChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetPieChart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPreviousRoundScores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
@@ -1373,7 +1375,9 @@
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetInterviewerPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewerPieChart_Result)" />
+          <FunctionImport Name="spGetInterviewerPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewerPieChart_Result)" >
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="spGetInterviewerCloumnChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewerCloumnChart_Result)">
             <Parameter Name="UserID" Mode="In" Type="Int32" />
             <Parameter Name="year" Mode="In" Type="Int32" />

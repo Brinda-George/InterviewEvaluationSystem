@@ -240,9 +240,13 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
         }
     
-        public virtual ObjectResult<spGetInterviewerPieChart_Result> spGetInterviewerPieChart()
+        public virtual ObjectResult<spGetInterviewerPieChart_Result> spGetInterviewerPieChart(Nullable<int> userID)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerPieChart_Result>("spGetInterviewerPieChart");
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerPieChart_Result>("spGetInterviewerPieChart", userIDParameter);
         }
     
         public virtual ObjectResult<spGetInterviewerCloumnChart_Result> spGetInterviewerCloumnChart(Nullable<int> userID, Nullable<int> year)

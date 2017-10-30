@@ -41,7 +41,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ChartPie()
         {
             PieChartViewModel pieChartViewModel = new PieChartViewModel();
-            var result = dbContext.spGetInterviewerPieChart().Single();
+            var result = dbContext.spGetInterviewerPieChart(Convert.ToInt32(Session["UserID"])).Single();
             pieChartViewModel.InProgress = result.InProgress;
             pieChartViewModel.Hired = result.Hired;
             pieChartViewModel.Rejected = result.Rejected;
@@ -195,7 +195,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    MailMessage mailMessage = new MailMessage(mailViewModel.From, mailViewModel.To);
+                    MailMessage mailMessage = new MailMessage("brindageorge94@gmail.com", mailViewModel.To);
                     mailMessage.Subject = mailViewModel.Subject;
                     mailMessage.Body = "<b>Interviewer: </b>" + mailViewModel.Sender + "<br/>"
                       + "<b>Interviewer Email : </b>" + mailViewModel.From + "<br/>"
@@ -206,8 +206,8 @@ namespace InterviewEvaluationSystem.Controllers
                     SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
                     smtpClient.Credentials = new System.Net.NetworkCredential()
                     {
-                        UserName = mailViewModel.From,
-                        Password = "*********"
+                        UserName = "brindageorge94@gmail.com",
+                        Password = "jehovah_jireh123"
                     };
                     smtpClient.EnableSsl = true;
                     smtpClient.Send(mailMessage);
