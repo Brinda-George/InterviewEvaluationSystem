@@ -23,7 +23,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -31,7 +31,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control", @placeholder = "Designation" } })
                 @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -55,7 +55,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -63,7 +63,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PAN, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PAN, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.PAN, new { htmlAttributes = new { @class = "form-control", @placeholder = "PAN" } })
                 @Html.ValidationMessageFor(model => model.PAN, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -71,7 +71,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ExpectedSalary, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ExpectedSalary, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ExpectedSalary, new { htmlAttributes = new { @class = "form-control", @placeholder = "Expected Salary" } })
                 @Html.ValidationMessageFor(model => model.ExpectedSalary, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NoticePeriodInMonths, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NoticePeriodInMonths, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.NoticePeriodInMonths, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notice Period In Months" } })
                 @Html.ValidationMessageFor(model => model.NoticePeriodInMonths, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -87,7 +87,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TotalExperience, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TotalExperience, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.TotalExperience, new { htmlAttributes = new { @class = "form-control", @placeholder = "Total Experience" } })
                 @Html.ValidationMessageFor(model => model.TotalExperience, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -95,7 +95,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PreviousCompany, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input id="btnAddTextBox" type="button" value="Add Previous Company" onclick="AppendTextBox()" class="btn btn-default" /><br />
+                <input id="btnAddTextBox" type="button" value="Add Previous Company" onclick="AppendTextBox()" class="btn btn-default" placeholder="Previous Company"/><br />
                 <div id="divTextBoxes">
                     @Html.ValidationMessageFor(model => model.PreviousCompany, "", new { @class = "text-danger" })
                 </div>
@@ -105,7 +105,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Qualifications, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Qualifications, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Qualifications, new { htmlAttributes = new { @class = "form-control", @placeholder = "Qualifications" } })
                 @Html.ValidationMessageFor(model => model.Qualifications, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -113,7 +113,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Interviewer, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("user", null, string.Empty, new { @class = "form-control" })
+                @Html.DropDownList("user", null, "--select--", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Interviewer, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -125,8 +125,9 @@
         </div>
     </div>
 </form>
-
-@grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+@if (Model.users.Any())
+{
+    @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
@@ -139,6 +140,7 @@
             grid.Column("Email", "Email"),
             grid.Column("Designation", "Designation"))
         )
+}
 
 <div id="SearchCandidate">
     <table>
@@ -150,6 +152,8 @@
 </div>
 <br />
 <div id="gridContentCandidate">
+@if (Model.CandidateList.Any())
+{
     @gridCandidate.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
@@ -158,25 +162,25 @@
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
         columns: gridCandidate.Columns(
-            gridCandidate.Column("CandidateID", format: 
-            @<text>  
-                <span class="display-modeCandidate">@item.CandidateID </span> 
+            gridCandidate.Column("CandidateID", format:
+            @<text>
+                <span class="display-modeCandidate">@item.CandidateID </span>
                 <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label>
             </text>),
-            gridCandidate.Column("CandidateName", "CandidateName", format: 
-            @<text>  
-                <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> 
+            gridCandidate.Column("CandidateName", "CandidateName", format:
+            @<text>
+                <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span>
                 <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" />
             </text>),
-            gridCandidate.Column("DateOfInterview", "Date Of Interview", format: 
-            @<text>  
-                <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span> 
+            gridCandidate.Column("DateOfInterview", "Date Of Interview", format:
+            @<text>
+                <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span>
                 <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidate" />
             </text>),
-            gridCandidate.Column("InterviewerName", "Interviewer Name", format: 
-            @<text> 
-                <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span> 
-                @Html.DropDownList("user", null, string.Empty, new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })  
+            gridCandidate.Column("InterviewerName", "Interviewer Name", format:
+            @<text>
+                <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span>
+                @Html.DropDownList("user", null, string.Empty, new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
             </text>),
             gridCandidate.Column("Action", format: @<text>
                 <button class="edit-userCandidate display-modeCandidate btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
@@ -185,6 +189,7 @@
                 <button class="delete-userCandidate btn btn-default"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </text>))
         )
+}
 </div>
 
 <div>

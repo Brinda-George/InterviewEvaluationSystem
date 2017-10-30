@@ -18,6 +18,14 @@
     <li class="breadcrumb-item active">Update Profile</li>
 </ol>
 
+@if (ViewBag.result != null)
+{
+    <div class="alert alert-success">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>@ViewBag.result</strong>
+    </div>
+}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -42,7 +50,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Update Profile" class="btn btn-default" />
             </div>
         </div>
     </div>

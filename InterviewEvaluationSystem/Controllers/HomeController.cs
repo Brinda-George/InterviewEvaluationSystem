@@ -80,16 +80,11 @@ namespace InterviewEvaluationSystem.Controllers
             var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
+            item.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            item.ModifiedDate = DateTime.Now;
             dbContext.SaveChanges();
-            int id = Convert.ToInt32(item.UserTypeID);
-            if (id == 1)
-            {
-                return RedirectToAction("HRHomePage", "HR");
-            }
-            else
-            {
-                return RedirectToAction("HomePage", "Interviewer");
-            }
+            ViewBag.result = "Successfully Updated!!";
+            return View();
         }
         #endregion
 

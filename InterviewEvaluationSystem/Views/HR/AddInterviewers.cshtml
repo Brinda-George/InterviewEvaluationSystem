@@ -82,7 +82,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserTypeID, "User Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("userType", null,"--Select--", new { @class = "form-control" })
+                @Html.DropDownList("userType", null, "--Select--", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UserTypeID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -96,8 +96,9 @@
 }
 
 <div id="gridContent">
-
-    @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+    @if (ViewBag.Users.Count != 0)
+    {
+        @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
@@ -121,6 +122,7 @@
                 <button class="delete-user btn btn-default"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </text>))
             )
+    }
 </div>
 <div>
     @Html.ActionLink("Back To Dash Board", "HRHomePage", "HR")

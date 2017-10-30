@@ -47,8 +47,9 @@
     @{
         var gridview = new WebGrid(ViewBag.Roles, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
-
-    @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+    @if (ViewBag.Roles.Count != 0)
+    {
+        @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
                  headerStyle: "webgrid-header",
                  footerStyle: "webgrid-footer",
                  alternatingRowStyle: "webgrid-alternating-row",
@@ -57,7 +58,7 @@
                  mode: WebGridPagerModes.All,
                  columns: new[]{
                  gridview.Column("SkillCategory", format:
-                @<text>
+                 @<text>
                     <span id="skillcategory" class="read">@item.SkillCategory</span>
                     @Html.TextBox("SkillCategory", (string)item.SkillCategory, new { @class = "edit",@style="display:none"  })
                 </text>),
@@ -74,4 +75,5 @@
                     <button class="cancel-case edit btn btn-default" style="display:none" id="@item.SkillCategoryID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                 </text>)
                 })
+}
 </div>

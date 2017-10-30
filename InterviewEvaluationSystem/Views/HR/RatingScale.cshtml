@@ -54,15 +54,16 @@
     @{
         var gridview = new WebGrid(ViewBag.Roles, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
     }
-
-    @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-                 headerStyle: "webgrid-header",
-                 footerStyle: "webgrid-footer",
-                 alternatingRowStyle: "webgrid-alternating-row",
-                 selectedRowStyle: "webgrid-selected-row",
-                 rowStyle: "webgrid-row-style",
-                 mode: WebGridPagerModes.All,
-                 columns: new[]{
+    @if (ViewBag.Roles.Count != 0)
+    {
+        @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+                     headerStyle: "webgrid-header",
+                     footerStyle: "webgrid-footer",
+                     alternatingRowStyle: "webgrid-alternating-row",
+                     selectedRowStyle: "webgrid-selected-row",
+                     rowStyle: "webgrid-row-style",
+                     mode: WebGridPagerModes.All,
+                     columns: new[]{
                     gridview.Column("RateScale",format:
                     @<text>
                         <span id="ratescale" class="read">@item.RateScale</span>
@@ -84,5 +85,6 @@
                         <button class="update-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                     </text>)
-                 })
+                     })
+}
 </div>

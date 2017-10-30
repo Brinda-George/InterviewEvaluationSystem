@@ -22,7 +22,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SkillCategoryID, "Skill Category", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.category, "Select category",new { @class = "form-control", @id = "categories" })
+                @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.category, "Select category", new { @class = "form-control", @id = "categories" })
                 <label id="lblCategory" class="text-danger"></label>
                 @Html.ValidationMessageFor(model => model.SkillCategoryID, "", new { @class = "text-danger" })
             </div>
@@ -38,7 +38,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Add Skill" class="btn btn-primary" onclick="return CheckCategory()"/>
+                <input type="submit" value="Add Skill" class="btn btn-primary" onclick="return CheckCategory()" />
             </div>
         </div>
     </div>
@@ -49,8 +49,9 @@
     @{
         var gridview = new WebGrid(ViewBag.Skillcategories, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 10);
     }
-
-    @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+    @if (ViewBag.Skillcategories != null)
+    {
+        @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
                  headerStyle: "webgrid-header",
                  footerStyle: "webgrid-footer",
                  alternatingRowStyle: "webgrid-alternating-row",
@@ -75,4 +76,5 @@
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.skillno"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                     </text>)
                 })
+    }    
 </div>

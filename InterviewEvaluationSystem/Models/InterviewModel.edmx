@@ -153,7 +153,7 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK__tblCandid__Creat__3D5E1FD2">
+        <Association Name="FK__tblCandid__Creat__02FC7413">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblCandidate" Type="Self.tblCandidate" Multiplicity="*" />
           <ReferentialConstraint>
@@ -165,7 +165,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblCandid__Modif__3E52440B">
+        <Association Name="FK__tblCandid__Modif__03F0984C">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblCandidate" Type="Self.tblCandidate" Multiplicity="*" />
           <ReferentialConstraint>
@@ -177,7 +177,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblEvalua__Candi__45F365D3">
+        <Association Name="FK__tblEvalua__Candi__0B91BA14">
           <End Role="tblCandidate" Type="Self.tblCandidate" Multiplicity="1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -189,7 +189,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblEvalua__Creat__48CFD27E">
+        <Association Name="FK__tblEvalua__Creat__0E6E26BF">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -201,7 +201,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblEvalua__Modif__49C3F6B7">
+        <Association Name="FK__tblEvalua__Modif__0F624AF8">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -213,7 +213,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblEvalua__Round__46E78A0C">
+        <Association Name="FK__tblEvalua__Round__0C85DE4D">
           <End Role="tblRound" Type="Self.tblRound" Multiplicity="1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -225,7 +225,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblEvalua__UserI__47DBAE45">
+        <Association Name="FK__tblEvalua__UserI__0D7A0286">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -237,7 +237,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblPrevio__Candi__412EB0B6">
+        <Association Name="FK__tblPrevio__Candi__06CD04F7">
           <End Role="tblCandidate" Type="Self.tblCandidate" Multiplicity="1" />
           <End Role="tblPreviousCompany" Type="Self.tblPreviousCompany" Multiplicity="*" />
           <ReferentialConstraint>
@@ -249,7 +249,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblPrevio__Creat__4222D4EF">
+        <Association Name="FK__tblPrevio__Creat__07C12930">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblPreviousCompany" Type="Self.tblPreviousCompany" Multiplicity="*" />
           <ReferentialConstraint>
@@ -261,7 +261,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblPrevio__Modif__4316F928">
+        <Association Name="FK__tblPrevio__Modif__08B54D69">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblPreviousCompany" Type="Self.tblPreviousCompany" Multiplicity="*" />
           <ReferentialConstraint>
@@ -273,7 +273,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblRating__Creat__30F848ED">
+        <Association Name="FK__tblRating__Creat__797309D9">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblRatingScale" Type="Self.tblRatingScale" Multiplicity="*" />
           <ReferentialConstraint>
@@ -285,7 +285,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblRating__Modif__31EC6D26">
+        <Association Name="FK__tblRating__Modif__7A672E12">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblRatingScale" Type="Self.tblRatingScale" Multiplicity="*" />
           <ReferentialConstraint>
@@ -297,7 +297,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblRound__Create__2D27B809">
+        <Association Name="FK__tblRound__Create__75A278F5">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblRound" Type="Self.tblRound" Multiplicity="*" />
           <ReferentialConstraint>
@@ -309,7 +309,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblRound__Modifi__2E1BDC42">
+        <Association Name="FK__tblRound__Modifi__76969D2E">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblRound" Type="Self.tblRound" Multiplicity="*" />
           <ReferentialConstraint>
@@ -321,7 +321,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__Create__4F7CD00D">
+        <Association Name="FK__tblScore__Create__151B244E">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -333,7 +333,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__Evalua__4CA06362">
+        <Association Name="FK__tblScore__Evalua__123EB7A3">
           <End Role="tblEvaluation" Type="Self.tblEvaluation" Multiplicity="1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -345,7 +345,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__Modifi__5070F446">
+        <Association Name="FK__tblScore__Modifi__160F4887">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -357,7 +357,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__RateSc__4E88ABD4">
+        <Association Name="FK__tblScore__RateSc__14270015">
           <End Role="tblRatingScale" Type="Self.tblRatingScale" Multiplicity="1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -369,7 +369,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblScore__SkillI__4D94879B">
+        <Association Name="FK__tblScore__SkillI__1332DBDC">
           <End Role="tblSkill" Type="Self.tblSkill" Multiplicity="1" />
           <End Role="tblScore" Type="Self.tblScore" Multiplicity="*" />
           <ReferentialConstraint>
@@ -381,7 +381,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblSkill__Create__398D8EEE">
+        <Association Name="FK__tblSkill__Create__7F2BE32F">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblSkill" Type="Self.tblSkill" Multiplicity="*" />
           <ReferentialConstraint>
@@ -393,7 +393,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblSkill__Modifi__3A81B327">
+        <Association Name="FK__tblSkill__Modifi__00200768">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblSkill" Type="Self.tblSkill" Multiplicity="*" />
           <ReferentialConstraint>
@@ -405,7 +405,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblSkill__SkillC__38996AB5">
+        <Association Name="FK__tblSkill__SkillC__7E37BEF6">
           <End Role="tblSkillCategory" Type="Self.tblSkillCategory" Multiplicity="1" />
           <End Role="tblSkill" Type="Self.tblSkill" Multiplicity="*" />
           <ReferentialConstraint>
@@ -417,31 +417,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblSkillC__Creat__34C8D9D1">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
-          <End Role="tblSkillCategory" Type="Self.tblSkillCategory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="tblSkillCategory">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tblSkillC__Modif__35BCFE0A">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
-          <End Role="tblSkillCategory" Type="Self.tblSkillCategory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="tblSkillCategory">
-              <PropertyRef Name="ModifiedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tblUser__Created__29572725">
+        <Association Name="FK__tblUser__Created__71D1E811">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblUser1" Type="Self.tblUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -453,7 +429,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblUser__Modifie__2A4B4B5E">
+        <Association Name="FK__tblUser__Modifie__72C60C4A">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="0..1" />
           <End Role="tblUser1" Type="Self.tblUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -465,7 +441,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tblUser__UserTyp__286302EC">
+        <Association Name="FK__tblUser__UserTyp__70DDC3D8">
           <End Role="tblUserType" Type="Self.tblUserType" Multiplicity="1" />
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="*" />
           <ReferentialConstraint>
@@ -559,111 +535,103 @@
           <EntitySet Name="tblSkillCategory" EntityType="Self.tblSkillCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserType" EntityType="Self.tblUserType" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__tblCandid__Creat__3D5E1FD2" Association="Self.FK__tblCandid__Creat__3D5E1FD2">
+          <AssociationSet Name="FK__tblCandid__Creat__02FC7413" Association="Self.FK__tblCandid__Creat__02FC7413">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblCandidate" EntitySet="tblCandidate" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblCandid__Modif__3E52440B" Association="Self.FK__tblCandid__Modif__3E52440B">
+          <AssociationSet Name="FK__tblCandid__Modif__03F0984C" Association="Self.FK__tblCandid__Modif__03F0984C">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblCandidate" EntitySet="tblCandidate" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__Candi__45F365D3" Association="Self.FK__tblEvalua__Candi__45F365D3">
+          <AssociationSet Name="FK__tblEvalua__Candi__0B91BA14" Association="Self.FK__tblEvalua__Candi__0B91BA14">
             <End Role="tblCandidate" EntitySet="tblCandidate" />
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__Creat__48CFD27E" Association="Self.FK__tblEvalua__Creat__48CFD27E">
+          <AssociationSet Name="FK__tblEvalua__Creat__0E6E26BF" Association="Self.FK__tblEvalua__Creat__0E6E26BF">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__Modif__49C3F6B7" Association="Self.FK__tblEvalua__Modif__49C3F6B7">
+          <AssociationSet Name="FK__tblEvalua__Modif__0F624AF8" Association="Self.FK__tblEvalua__Modif__0F624AF8">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__Round__46E78A0C" Association="Self.FK__tblEvalua__Round__46E78A0C">
+          <AssociationSet Name="FK__tblEvalua__Round__0C85DE4D" Association="Self.FK__tblEvalua__Round__0C85DE4D">
             <End Role="tblRound" EntitySet="tblRound" />
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblEvalua__UserI__47DBAE45" Association="Self.FK__tblEvalua__UserI__47DBAE45">
+          <AssociationSet Name="FK__tblEvalua__UserI__0D7A0286" Association="Self.FK__tblEvalua__UserI__0D7A0286">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblPrevio__Candi__412EB0B6" Association="Self.FK__tblPrevio__Candi__412EB0B6">
+          <AssociationSet Name="FK__tblPrevio__Candi__06CD04F7" Association="Self.FK__tblPrevio__Candi__06CD04F7">
             <End Role="tblCandidate" EntitySet="tblCandidate" />
             <End Role="tblPreviousCompany" EntitySet="tblPreviousCompany" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblPrevio__Creat__4222D4EF" Association="Self.FK__tblPrevio__Creat__4222D4EF">
+          <AssociationSet Name="FK__tblPrevio__Creat__07C12930" Association="Self.FK__tblPrevio__Creat__07C12930">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblPreviousCompany" EntitySet="tblPreviousCompany" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblPrevio__Modif__4316F928" Association="Self.FK__tblPrevio__Modif__4316F928">
+          <AssociationSet Name="FK__tblPrevio__Modif__08B54D69" Association="Self.FK__tblPrevio__Modif__08B54D69">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblPreviousCompany" EntitySet="tblPreviousCompany" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblRating__Creat__30F848ED" Association="Self.FK__tblRating__Creat__30F848ED">
+          <AssociationSet Name="FK__tblRating__Creat__797309D9" Association="Self.FK__tblRating__Creat__797309D9">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblRatingScale" EntitySet="tblRatingScale" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblRating__Modif__31EC6D26" Association="Self.FK__tblRating__Modif__31EC6D26">
+          <AssociationSet Name="FK__tblRating__Modif__7A672E12" Association="Self.FK__tblRating__Modif__7A672E12">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblRatingScale" EntitySet="tblRatingScale" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblRound__Create__2D27B809" Association="Self.FK__tblRound__Create__2D27B809">
+          <AssociationSet Name="FK__tblRound__Create__75A278F5" Association="Self.FK__tblRound__Create__75A278F5">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblRound" EntitySet="tblRound" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblRound__Modifi__2E1BDC42" Association="Self.FK__tblRound__Modifi__2E1BDC42">
+          <AssociationSet Name="FK__tblRound__Modifi__76969D2E" Association="Self.FK__tblRound__Modifi__76969D2E">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblRound" EntitySet="tblRound" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__Create__4F7CD00D" Association="Self.FK__tblScore__Create__4F7CD00D">
+          <AssociationSet Name="FK__tblScore__Create__151B244E" Association="Self.FK__tblScore__Create__151B244E">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblScore" EntitySet="tblScore" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__Evalua__4CA06362" Association="Self.FK__tblScore__Evalua__4CA06362">
+          <AssociationSet Name="FK__tblScore__Evalua__123EB7A3" Association="Self.FK__tblScore__Evalua__123EB7A3">
             <End Role="tblEvaluation" EntitySet="tblEvaluation" />
             <End Role="tblScore" EntitySet="tblScore" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__Modifi__5070F446" Association="Self.FK__tblScore__Modifi__5070F446">
+          <AssociationSet Name="FK__tblScore__Modifi__160F4887" Association="Self.FK__tblScore__Modifi__160F4887">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblScore" EntitySet="tblScore" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__RateSc__4E88ABD4" Association="Self.FK__tblScore__RateSc__4E88ABD4">
+          <AssociationSet Name="FK__tblScore__RateSc__14270015" Association="Self.FK__tblScore__RateSc__14270015">
             <End Role="tblRatingScale" EntitySet="tblRatingScale" />
             <End Role="tblScore" EntitySet="tblScore" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblScore__SkillI__4D94879B" Association="Self.FK__tblScore__SkillI__4D94879B">
+          <AssociationSet Name="FK__tblScore__SkillI__1332DBDC" Association="Self.FK__tblScore__SkillI__1332DBDC">
             <End Role="tblSkill" EntitySet="tblSkill" />
             <End Role="tblScore" EntitySet="tblScore" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblSkill__Create__398D8EEE" Association="Self.FK__tblSkill__Create__398D8EEE">
+          <AssociationSet Name="FK__tblSkill__Create__7F2BE32F" Association="Self.FK__tblSkill__Create__7F2BE32F">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblSkill" EntitySet="tblSkill" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblSkill__Modifi__3A81B327" Association="Self.FK__tblSkill__Modifi__3A81B327">
+          <AssociationSet Name="FK__tblSkill__Modifi__00200768" Association="Self.FK__tblSkill__Modifi__00200768">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblSkill" EntitySet="tblSkill" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblSkill__SkillC__38996AB5" Association="Self.FK__tblSkill__SkillC__38996AB5">
+          <AssociationSet Name="FK__tblSkill__SkillC__7E37BEF6" Association="Self.FK__tblSkill__SkillC__7E37BEF6">
             <End Role="tblSkillCategory" EntitySet="tblSkillCategory" />
             <End Role="tblSkill" EntitySet="tblSkill" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblSkillC__Creat__34C8D9D1" Association="Self.FK__tblSkillC__Creat__34C8D9D1">
-            <End Role="tblUser" EntitySet="tblUser" />
-            <End Role="tblSkillCategory" EntitySet="tblSkillCategory" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tblSkillC__Modif__35BCFE0A" Association="Self.FK__tblSkillC__Modif__35BCFE0A">
-            <End Role="tblUser" EntitySet="tblUser" />
-            <End Role="tblSkillCategory" EntitySet="tblSkillCategory" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tblUser__Created__29572725" Association="Self.FK__tblUser__Created__29572725">
+          <AssociationSet Name="FK__tblUser__Created__71D1E811" Association="Self.FK__tblUser__Created__71D1E811">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblUser1" EntitySet="tblUser" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblUser__Modifie__2A4B4B5E" Association="Self.FK__tblUser__Modifie__2A4B4B5E">
+          <AssociationSet Name="FK__tblUser__Modifie__72C60C4A" Association="Self.FK__tblUser__Modifie__72C60C4A">
             <End Role="tblUser" EntitySet="tblUser" />
             <End Role="tblUser1" EntitySet="tblUser" />
           </AssociationSet>
-          <AssociationSet Name="FK__tblUser__UserTyp__286302EC" Association="Self.FK__tblUser__UserTyp__286302EC">
+          <AssociationSet Name="FK__tblUser__UserTyp__70DDC3D8" Association="Self.FK__tblUser__UserTyp__70DDC3D8">
             <End Role="tblUserType" EntitySet="tblUserType" />
             <End Role="tblUser" EntitySet="tblUser" />
           </AssociationSet>
