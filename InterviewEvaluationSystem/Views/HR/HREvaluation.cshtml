@@ -35,6 +35,7 @@ else
 <input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
 <input type="hidden" id="recommended" value="@TempData["recommended"].ToString()" />
 <p>Name of Candidate: @Model.CandidateName</p>
+ 
 @using (Html.BeginForm())
 {
     <h3>Rating Scale</h3>

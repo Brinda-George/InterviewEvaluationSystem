@@ -156,7 +156,7 @@ namespace InterviewEvaluationSystem.Controllers
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
                 MailViewModel mailViewModel = new MailViewModel();
-                var mailmodel = dbContext.spGetEmailByUserID(evaluation.CandidateID, Convert.ToInt32(Session["UserID"])).Single();
+                var mailmodel = dbContext.spGetEmailByUserID(evaluation.CandidateID, Convert.ToInt32(Session["UserID"])).FirstOrDefault();
                 mailViewModel.Sender = mailmodel.UserName;
                 mailViewModel.Candidate = mailmodel.Name;
                 mailViewModel.From = mailmodel.Email;
@@ -173,6 +173,7 @@ namespace InterviewEvaluationSystem.Controllers
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("SentEmailNotification", "Interviewer", new
                 {
                     From = mailViewModel.From,
+                    To = mailViewModel.To,
                     Sender = mailViewModel.Sender,
                     Candidate = mailViewModel.Candidate,
                     Subject = "Notification",
@@ -195,7 +196,8 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    MailMessage mailMessage = new MailMessage("brindageorge94@gmail.com", mailViewModel.To);
+                    var sender = ConfigurationManager.AppSettings["EmailSender"];
+                    MailMessage mailMessage = new MailMessage(sender, mailViewModel.To);
                     mailMessage.Subject = mailViewModel.Subject;
                     mailMessage.Body = "<b>Interviewer: </b>" + mailViewModel.Sender + "<br/>"
                       + "<b>Interviewer Email : </b>" + mailViewModel.From + "<br/>"
@@ -204,10 +206,11 @@ namespace InterviewEvaluationSystem.Controllers
                       + "<b>Comments : </b>" + mailViewModel.Comments;
                     mailMessage.IsBodyHtml = true;
                     SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                    var emailPassword = ConfigurationManager.AppSettings["EmailPassword"];
                     smtpClient.Credentials = new System.Net.NetworkCredential()
                     {
-                        UserName = "brindageorge94@gmail.com",
-                        Password = "jehovah_jireh123"
+                        UserName = sender,
+                        Password = emailPassword
                     };
                     smtpClient.EnableSsl = true;
                     smtpClient.Send(mailMessage);

@@ -4,6 +4,8 @@
     ViewBag.Title = "SkillCategory";
 }
 
+<script src="~/Scripts/Scategory.js"></script>
+
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="~/HR/HRHomePage">Home Page</a>
@@ -35,7 +37,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Add Skill Category" class="btn btn-primary"/>
+                <input type="submit" value="Add Skill Category" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -53,36 +55,23 @@
                  selectedRowStyle: "webgrid-selected-row",
                  rowStyle: "webgrid-row-style",
                  mode: WebGridPagerModes.All,
-    columns: new[]
-
-{
-    gridview.Column("SkillCategory",
-        format:
-        @<text>
-            <span id="skillcategory" class="read">@item.SkillCategory</span>
-            @Html.TextBox("SkillCategory", (string)item.SkillCategory, new { @class = "edit",@style="display:none"  })
-        </text>),
-
-    gridview.Column("Description",
-         format:
-        @<text>
-            <span id="description" class="read">@item.Description</span>
-            @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
-        </text>),
-
-    gridview.Column("Action", style: "button",
-                format:
+                 columns: new[]{
+                 gridview.Column("SkillCategory", format:
+                @<text>
+                    <span id="skillcategory" class="read">@item.SkillCategory</span>
+                    @Html.TextBox("SkillCategory", (string)item.SkillCategory, new { @class = "edit",@style="display:none"  })
+                </text>),
+                gridview.Column("Description", format:
+                @<text>
+                    <span id="description" class="read">@item.Description</span>
+                    @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
+                </text>),
+                gridview.Column("Action", style: "button", format:
                 @<text>
                     <button class="edit-case read btn btn-default" id="@item.SkillCategoryID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
                     <button class="delete-case read btn btn-default" id="@item.SkillCategoryID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                     <button class="update-case edit btn btn-default" style="display:none" id="@item.SkillCategoryID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
                     <button class="cancel-case edit btn btn-default" style="display:none" id="@item.SkillCategoryID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                 </text>)
-    }
-)
+                })
 </div>
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script src="~/Scripts/Scategory.js"></script>

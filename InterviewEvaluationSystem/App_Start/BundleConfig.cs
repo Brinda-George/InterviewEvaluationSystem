@@ -21,17 +21,17 @@ namespace InterviewEvaluationSystem
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/sb-admin.min.js",
+                      "~/Scripts/bootstrap.bundle.min.js",
+                      "~/Scripts/jquery.easing.min.js",
                       "~/Scripts/respond.js"));
 
-            bundles.UseCdn = true;   //enable CDN support
-
-            var fontAwesomeCdnPath = "http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css";
-
-            bundles.Add(new ScriptBundle("~/Content/css", fontAwesomeCdnPath).Include(
-                        "~/Content/font-awesome.css"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/layout.css",
+                      "~/Content/sb-admin.css",
+                      "~/Content/font-awesome/css/font-awesome.css",
+                      "~/Content/commonstyles.css",
+                      "~/ Content/layout.css",
                       "~/Content/Site.css"));
         }
     }

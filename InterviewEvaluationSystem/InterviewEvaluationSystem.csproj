@@ -324,11 +324,10 @@
     <Content Include="Content\formstyle.css" />
     <Content Include="Content\layout.css" />
     <Content Include="Content\LoginTemplate.css" />
-    <Content Include="Content\menustyle.css" />
     <Content Include="Content\sb-admin.css" />
     <Content Include="Content\sb-admin.min.css" />
-    <Content Include="Content\startmin.css" />
-    <Content Include="Content\webgridstyle.css" />
+    <Content Include="Content\dashboardstyle.css" />
+    <Content Include="Content\commonstyles.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -432,7 +431,6 @@
     <Content Include="Views\HR\SkillCategory.cshtml" />
     <Content Include="Views\HR\Skill.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\HR\Register.cshtml" />
     <Content Include="Views\Home\ProfileUpdate.cshtml" />
     <Content Include="Views\Home\Logout.cshtml" />
     <Content Include="Views\Home\ViewProfile.cshtml" />

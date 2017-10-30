@@ -2,15 +2,12 @@
 
 @{
     ViewBag.Title = "SearchCandidateResult";
-}
-
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/Candidate.js"></script>
-
-@{
     var gridCandidate = new WebGrid(Model.CandidateList, canPage: true, rowsPerPage: 5, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
     gridCandidate.Pager(WebGridPagerModes.All);
 }
+
+<script src="~/Scripts/Candidate.js"></script>
+
 
 @gridCandidate.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",

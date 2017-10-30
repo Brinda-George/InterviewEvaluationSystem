@@ -1,14 +1,13 @@
-﻿
-    $(document).ready(function () {
-        $('.edit').hide();
-        $(document).on('click',".edit-case", function () {
-            var tr = $(this).parents('tr:first');
-            var SkillName = tr.find('#skillname').text();
-            tr.find('#SkillName').val(SkillName);
-            tr.find('.edit, .read').toggle();
-        });
+﻿$(document).ready(function () {
+    $('.edit').hide();
+    $(document).on('click', ".edit-case", function () {
+        var tr = $(this).parents('tr:first');
+        var SkillName = tr.find('#skillname').text();
+        tr.find('#SkillName').val(SkillName);
+        tr.find('.edit, .read').toggle();
+    });
 
-        $(document).on('click',".update-case", function (e) {
+    $(document).on('click', ".update-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         SkillID = $(this).prop('id');
@@ -30,9 +29,9 @@
                 alert("Error occured during update.");
             }
         });
-        });
+    });
 
-        $(document).on('click', ".cancel-case",function (e) {
+    $(document).on('click', ".cancel-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         var id = $(this).prop('id');
@@ -40,7 +39,7 @@
         $('.edit').hide();
     });
 
-        $(document).on('click', ".delete-case", function (e) {
+    $(document).on('click', ".delete-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         SkillID = $(this).prop('id');
@@ -48,7 +47,7 @@
             type: 'POST',
             //contentType: "application/json; charset=utf-8",
             url: '/HR/SkillDelete/',
-            data:{ "SkillID": SkillID },
+            data: { "SkillID": SkillID },
             dataType: "json",
             success: function (data) {
                 alert('Delete success');
@@ -59,5 +58,16 @@
             }
         });
     });
-
 });
+
+function CheckCategory() {
+    var cat = $("#categories").val();
+    if (cat == 0) {
+        $("#lblCategory").html("Please select a category");
+        return false;
+    }
+    else {
+        $("#lblCategory").empty();
+    }
+
+}

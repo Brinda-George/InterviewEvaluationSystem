@@ -1,6 +1,4 @@
 ﻿$(document).ready(function () {
-
-
     $(function () {
         $('.edit-modeCandidate').hide();
 
@@ -95,4 +93,38 @@
             });
         });
     });
+});
+
+function GetExistingDynamicTextBoxes(value) {
+    var div = $(" <div />");
+
+    var textBox = $(" <input />").attr("type", "textbox").attr("name", "txtBoxes");
+    textBox.addClass('form-control');
+    textBox.val(value);
+    div.append(textBox);
+
+    var button = $(" <input />").attr("type", "button").attr("value", "Remove");
+    button.attr("onclick", "DeleteTextBox(this)");
+    button.addClass('btn btn-default');
+    div.append(button);
+
+    return div;
+}
+function AppendTextBox() {
+    var div = GetExistingDynamicTextBoxes("");
+    $("#divTextBoxes").append(div);
+}
+
+function DeleteTextBox(button) {
+    $(button).parent().remove();
+}
+
+$(function () {
+    var values = eval('@Html.Raw(ViewBag.DemoMessage)');
+    if (values != null) {
+        $("#divTextBoxes").html("");
+        $(values).each(function () {
+            $("#divTextBoxes").append(GetExistingDynamicTextBoxes(this));
+        });
+    }
 });

@@ -4,6 +4,8 @@
     ViewBag.Title = "RatingScale";
 }
 
+<script src="~/Scripts/Rscale.js"></script>
+
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="~/HR/HRHomePage">Home Page</a>
@@ -60,43 +62,27 @@
                  selectedRowStyle: "webgrid-selected-row",
                  rowStyle: "webgrid-row-style",
                  mode: WebGridPagerModes.All,
-                 columns: new[]
-                 {
-
-    gridview.Column("RateScale",
-        format:
-        @<text>
-            <span id="ratescale" class="read">@item.RateScale</span>
-            @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit",@style="display:none"  })
-        </text>),
-
-    gridview.Column("Value",
-        format:
-        @<text>
-            <span id="ratevalue" class="read">@item.RateValue</span>
-            @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit",@style="display:none"  })
-        </text>),
-
-    gridview.Column("Description",
-         format:
-        @<text>
-            <span id="description" class="read">@item.Description</span>
-            @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
-        </text>),
-
-    gridview.Column("Action", style: "button",
-                format:
-                @<text>
-                    <button class="edit-case read btn btn-default" id="@item.RateScaleID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                    <button class="delete-case read btn btn-default" id="@item.RateScaleID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-                    <button class="update-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
-                    <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
-                </text>)
-                            }
-                        )
+                 columns: new[]{
+                    gridview.Column("RateScale",format:
+                    @<text>
+                        <span id="ratescale" class="read">@item.RateScale</span>
+                        @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit",@style="display:none"  })
+                    </text>),
+                     gridview.Column("Value",format:
+                    @<text>
+                        <span id="ratevalue" class="read">@item.RateValue</span>
+                        @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit",@style="display:none"  })
+                    </text>),
+                     gridview.Column("Description",format:
+                    @<text><span id="description" class="read">@item.Description</span>
+                    @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
+                    </text>),
+                     gridview.Column("Action", style: "button",format:
+                    @<text>
+                        <button class="edit-case read btn btn-default" id="@item.RateScaleID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                        <button class="delete-case read btn btn-default" id="@item.RateScaleID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                        <button class="update-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                        <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
+                    </text>)
+                 })
 </div>
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script src="~/Scripts/Rscale.js"></script>
