@@ -137,6 +137,18 @@ namespace InterviewEvaluationSystem.Controllers
         {
             return PartialView("ResetPartial");
         }
+
+        [HttpPost]
+        public ActionResult CheckOtp(string value)
+        {
+            if (value == Session["OTP"].ToString())
+            {
+                Session["OTP"] = null;
+                var redirectUrl = new UrlHelper(Request.RequestContext).Action("UpdatePassword", "Home");
+                return Json(new { Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            }
+            return View();
+        }
         #endregion
 
         #region Change Password

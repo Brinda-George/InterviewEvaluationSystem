@@ -49,12 +49,12 @@ namespace InterviewEvaluationSystem.Controllers
         {
             var result = dbContext.spGetCloumnChart(2017).Single();
             Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
-                .AddSeries("Default", chartType: "column",
-                    xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
-                    yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
-                .SetXAxis("2017")
-                .SetYAxis("No of Candidates")
-                .Write("bmp");
+            .AddSeries("Default", chartType: "column",
+                xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
+                yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
+            .SetXAxis("2017")
+            .SetYAxis("No of Candidates")
+            .Write("bmp");
         }
         #endregion
 

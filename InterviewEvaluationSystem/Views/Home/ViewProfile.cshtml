@@ -65,3 +65,14 @@
 
     </dl>
 </div>
+
+<div>
+    @if (Convert.ToInt32(Session["UserTypeID"]) == 1)
+    {
+        @Html.ActionLink("Back to Home", "HRHomePage", "HR")
+    }
+    else
+    {
+        @Html.ActionLink("Back to Home", "HomePage", "Interviewer")
+    }
+</div>

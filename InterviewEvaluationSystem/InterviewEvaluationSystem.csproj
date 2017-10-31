@@ -249,9 +249,6 @@
     <Compile Include="Models\spGetEmailByUserID_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\spGetEmailByUserID_Result1.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\spGetHRDashBoard_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -353,6 +350,11 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
     <EntityDeploy Include="Models\InterviewModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>InterviewModel.Designer.cs</LastGenOutput>
@@ -360,11 +362,6 @@
     <Content Include="Models\InterviewModel.edmx.diagram">
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\hrevaluation.js" />
     <Content Include="Scripts\interviewevaluation.js" />

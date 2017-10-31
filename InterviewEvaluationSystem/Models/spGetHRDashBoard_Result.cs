@@ -17,9 +17,9 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> NotificationCount { get; set; }
         public Nullable<int> TodaysInterviewCount { get; set; }
         public Nullable<int> AvailableInterviewerCount { get; set; }
+        public Nullable<int> CandidatesInProgress { get; set; }
         public Nullable<int> SkillCount { get; set; }
         public Nullable<int> HiredCandidateCount { get; set; }
         public Nullable<int> TotalCandidateCount { get; set; }
-        public Nullable<int> CandidatesInProgress { get; set; }
     }
 }

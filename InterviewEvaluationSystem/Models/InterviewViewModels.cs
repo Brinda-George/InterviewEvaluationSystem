@@ -81,7 +81,7 @@ namespace InterviewEvaluationSystem.Models
         [Required]
         public string Address { get; set; }
         [Required]
-        public string Pincode { get; set; }
+        public int Pincode { get; set; }
         [Required]
 
         public string Password { get; set; }
