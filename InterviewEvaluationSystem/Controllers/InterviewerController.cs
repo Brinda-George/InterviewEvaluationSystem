@@ -36,44 +36,25 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Chart
-        public ActionResult ChartPie()
+        public void ChartPie()
         {
-            PieChartViewModel pieChartViewModel = new PieChartViewModel();
             var result = dbContext.spGetInterviewerPieChart(Convert.ToInt32(Session["UserID"])).Single();
-            pieChartViewModel.InProgress = result.InProgress;
-            pieChartViewModel.Hired = result.Hired;
-            pieChartViewModel.Rejected = result.Rejected;
             Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
-                .AddLegend("Summary")
-                .AddSeries("Default", chartType: "Pie", xValue: new[] { "Inprogress - #PERCENT{P0}", "Recoommended - #PERCENT{P0}", "Rejected - #PERCENT{P0}" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
-                .Write("bmp");
-            return null;
+            .AddLegend("Summary")
+            .AddSeries("Default", chartType: "Pie", xValue: new[] { "Inprogress - #PERCENT{P0}", "Recoommended - #PERCENT{P0}", "Rejected - #PERCENT{P0}" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+            .Write("bmp");
         }
 
-        public ActionResult ChartColumn()
+        public void ChartColumn()
         {
-            ColumnChartViewModel columnChartViewModel = new ColumnChartViewModel();
             var result = dbContext.spGetCloumnChart(2017).Single();
-            columnChartViewModel.January = result.January;
-            columnChartViewModel.February = result.February;
-            columnChartViewModel.March = result.March;
-            columnChartViewModel.April = result.April;
-            columnChartViewModel.May = result.May;
-            columnChartViewModel.June = result.June;
-            columnChartViewModel.July = result.July;
-            columnChartViewModel.August = result.August;
-            columnChartViewModel.August = result.September;
-            columnChartViewModel.October = result.October;
-            columnChartViewModel.November = result.November;
-            columnChartViewModel.December = result.December;
-            new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
-            .AddSeries("Default", chartType: "column",
-                xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
-                yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
-            .SetXAxis("2017")
-            .SetYAxis("No of Candidates")
-            .Write("bmp");
-            return null;
+            Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
+                .AddSeries("Default", chartType: "column",
+                    xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
+                    yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
+                .SetXAxis("2017")
+                .SetYAxis("No of Candidates")
+                .Write("bmp");
         }
         #endregion
 

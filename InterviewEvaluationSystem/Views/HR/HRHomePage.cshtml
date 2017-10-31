@@ -146,25 +146,31 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-6 col-sm-6">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
-                </div>
-                <div class="card-body">
-                    <img src="@Url.Action("ChartPie")" alt="Chart" />
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 col-sm-6">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-bar-chart"></i> Statistics - Column Chart
-                </div>
-                <div class="card-body">
-                    <img src="@Url.Action("ChartColumn")" alt="Chart" />
+        @if (Url.Action("ChartPie") == null)
+        {
+            <div class="col-xl-6 col-sm-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
+                    </div>
+                    <div class="card-body">
+                        <img src="@Url.Action("ChartPie")" alt="Chart" />
+                    </div>
                 </div>
             </div>
-        </div>
+        }
+        @if (Url.Action("ChartColumn") == null)
+        {
+            <div class="col-xl-6 col-sm-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-bar-chart"></i> Statistics - Column Chart
+                    </div>
+                    <div class="card-body">
+                        <img src="@Url.Action("ChartColumn")" alt="Chart" />
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
