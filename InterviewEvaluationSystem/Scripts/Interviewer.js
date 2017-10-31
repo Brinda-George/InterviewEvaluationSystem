@@ -2,12 +2,12 @@
     $(function () {
 
         //To hide the first column in webgrid that contains user id
-        hideColumn = function (column) {
-            $('tr').each(function () {
-                $(this).find('td,th').eq(column).hide();
-            });
-        };
-        hideColumn(0);
+        //hideColumn = function (column) {
+        //    $('tr').each(function () {
+        //        $(this).find('td,th').eq(column).hide();
+        //    });
+        //};
+        //hideColumn(0);
 
         $('.edit-mode').hide();
         $('.edit-user, .cancel-user').on('click', function () {
@@ -23,10 +23,36 @@
         $('.save-user').on('click', function () {
             var tr = $(this).parents('tr:first');
             var UserName = tr.find("#UserName").val();
+            if (UserName == "")
+            {
+                $('#lblUserName').html('The UserName Is Required');
+            }
+            else
+            {
+                $('#lblUserName').empty();
+            }
             var Email = tr.find("#Email").val();
+            if (Email == "")
+            {
+                $('#lblEmail').html('The Email Is Required');
+            }
+            else
+            {
+                $('#lblEmail').empty();
+            }
             var Designation = tr.find("#Designation").val();
+            if (Designation == "")
+            {
+                $('#lblDesignation').html('The Designation Is Required');
+            }
+            else
+            {
+                $('#lblDesignation').empty();
+            }
+            return false;
             var EmployeeId = tr.find("#lblEmployeeId").html();
-            var UserID = tr.find('#lblUserID').html();
+            //var UserID = tr.find('#lblUserID').html();
+            var UserID = $(this).prop('id');
             $.ajax({
                 url: '/HR/UpdateInterviewer/',
                 data: JSON.stringify({ "UserID": UserID, "UserName": UserName, "Email": Email, "Designation": Designation }),
@@ -46,17 +72,27 @@
 
         $('.delete-user').on('click', function () {
             var tr = $(this).parents('tr:first');
-            var UserID = tr.find('#lblUserID').html();
-            $.ajax({
-                url: '/HR/DeleteInterviewer/',
-                data: JSON.stringify({ "UserID": UserID }),
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    location.reload();
-                    alert("Successfully Deleted");
-                }
-            })
+            //var UserID = tr.find('#lblUserID').html();
+            var UserID = $(this).prop('id');
+           // var flag = confirm('You are about to delete Employee ID ' + employeeId + ' permanently.Are you sure you want to delete this record?');
+            var flag = confirm('Do you want to delete the record');
+            if (flag) {
+
+                $.ajax({
+                    url: '/HR/DeleteInterviewer/',
+                    data: JSON.stringify({ "UserID": UserID }),
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        location.reload();
+                        alert("Successfully Deleted");
+                    }
+                })
+            }
+            else
+            {
+                return false;
+            }
         });
     });
 });

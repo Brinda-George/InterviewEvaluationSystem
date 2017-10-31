@@ -15,7 +15,7 @@
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
         columns: gridCandidateResult.Columns(
-            gridCandidateResult.Column("CandidateID", format: @<text>  <span class="display-modeCandidateResult">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidateResult">@item.CandidateID</label> </text>),
+            @*gridCandidateResult.Column("CandidateID", format: @<text>  <span class="display-modeCandidateResult">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidateResult">@item.CandidateID</label> </text>),*@
             gridCandidateResult.Column("CandidateName", "Candidate Name", format: @<text>  <span class="display-modeCandidateResult"> <label id="lblCandidateName">@item.CandidateName</label> </span> <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidateResult" /></text>),
              //   gridCandidate.Column("DateOfInterview", "Date Of Interview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" /></text>),
              gridCandidateResult.Column("DateOfInterview", "Date Of Interview", format: @<text>  <span class="display-modeCandidateResult"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidateResult" /></text>),
@@ -25,10 +25,10 @@
              gridCandidateResult.Column("InterviewerName", "Interviewer Name", format: @<text> <span class="display-modeCandidateResult"> <label id="lblInterviewerName">@item.InterviewerName</label> </span> @Html.DropDownList("user", null, string.Empty, new { id = "ddlInterviewerName", @class = "edit-modeCandidateResult form-control" })  </text>),
 
             gridCandidateResult.Column("Action", format: @<text>
-                <button class="edit-userCandidateResult display-modeCandidateResult btn btn-primary">Edit</button>
-                <button class="save-userCandidateResult edit-modeCandidateResult btn btn-primary">Save</button>
-                <button class="cancel-userCandidateResult edit-modeCandidateResult btn btn-primary">Cancel</button>
-                <button class="delete-userCandidateResult btn btn-primary">Delete</button>
+                <button class="edit-userCandidateResult display-modeCandidateResult btn btn-primary" id="@item.CandidateID">Edit</button>
+                <button class="save-userCandidateResult edit-modeCandidateResult btn btn-primary" id="@item.CandidateID">Save</button>
+                <button class="cancel-userCandidateResult edit-modeCandidateResult btn btn-primary" id="@item.CandidateID">Cancel</button>
+                <button class="delete-userCandidateResult btn btn-primary" id="@item.CandidateID">Delete</button>
             </text>))
         )
 </div>

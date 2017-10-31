@@ -1,7 +1,7 @@
 ﻿@model InterviewEvaluationSystem.Models.tblUser
 @{
-    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 5, canSort: true, fieldNamePrefix: "f1", pageFieldName: "p1");
-
+    var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 5, canSort: true);
+  //  var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 15, canSort: true, fieldNamePrefix: "f1", pageFieldName: "p1");
     int rowVal = 0;
 }
 @{
@@ -104,17 +104,18 @@
 
         columns:
         grid.Columns(
-            grid.Column("UserID", format: @<text>  <span class="display-mode">@item.UserID </span> <label id="lblUserID" class="edit-mode">@item.UserID</label> </text>),
-            grid.Column("S.No.", format: item => rowVal = rowVal + 1),
-            grid.Column("UserName", "User Name", format: @<text>  <span class="display-mode"> <label id="lblUserName">@item.UserName</label> </span> <input type="text" id="UserName" value="@item.UserName" class="edit-mode" /></text>),
+            @*grid.Column("UserID", format: @<text>  <span class="display-mode">@item.UserID </span> <label id="lblUserID" class="edit-mode">@item.UserID</label> </text>),*@
+            //grid.Column("S.No.", format: item => rowVal = rowVal + 1),
+            grid.Column("UserName", "User Name", format: @<text>  <span class="display-mode"> <label id="lblUserName">@item.UserName</label> </span> <input type="text" id="UserName" value="@item.UserName" class="edit-mode" /><label id="lblUserName" class="text-danger"></label></text>),
             grid.Column("EmployeeId", "Employee Id", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>),
-            grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> </text>),
-            grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> </text>),
+            grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /><label id="lblEmail" class="text-danger"></label></text>),
+            grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /><label id="Designation" class="text-danger"></label> </text>),
             grid.Column("Action", format: @<text>
-                <button class="edit-user display-mode btn btn-default">Edit</button>
-                <button class="save-user edit-mode btn btn-default">Save</button>
-                <button class="cancel-user edit-mode btn btn-default">Cancel</button>
-                <button class="delete-user btn btn-default">Delete</button>
+                <button class="edit-user display-mode btn btn-default" id="@item.UserID">Edit</button>
+                <button class="save-user edit-mode btn btn-default" id="@item.UserID">Save</button>
+                <button class="cancel-user edit-mode btn btn-default" id="@item.UserID">Cancel</button>
+                @*<button class="delete-user btn btn-default" id="@item.UserID" onclick = "return confirm('Are you sure you want to delete?');">Delete</button>*@
+                <button class="delete-user btn btn-default" id="@item.UserID">Delete</button>
             </text>))
             )
 <div>

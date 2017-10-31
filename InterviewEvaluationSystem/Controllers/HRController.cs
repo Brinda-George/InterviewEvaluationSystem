@@ -426,7 +426,7 @@ namespace InterviewEvaluationSystem.Controllers
                 ModelState.AddModelError("UserTypeID", "Select User Type");
             }
 
-
+            
             if(ModelState.IsValid)
             {
                 
@@ -587,7 +587,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
 
             AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
-            addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.StartsWith(Name))
+            addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
                 .Select(s => new CandidateGridViewModel
                 {
                     CandidateID = s.CandidateID,

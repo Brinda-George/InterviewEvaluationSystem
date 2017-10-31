@@ -6,6 +6,8 @@
     ViewBag.Title = "AddCandidate";
     var grid = new WebGrid(Model.users, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f1", pageFieldName: "p1");
     var gridCandidate = new WebGrid(source: Model.CandidateList, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f2", pageFieldName: "p2");
+    //int rowValUser = 0;
+    //int rowValCandidate = 0;
 }
 
 @*<h2>Add Candidate</h2>*@
@@ -89,15 +91,17 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NoticePeriodInMonths, "Notice Period In Months", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NoticePeriodInMonths, new { htmlAttributes = new { @class = "form-control", @min = "0",placeholder="Notice Period In Months" } })
-                @Html.ValidationMessageFor(model => model.NoticePeriodInMonths, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.NoticePeriodInMonths, new { htmlAttributes = new { @class = "form-control", @min = "0",placeholder="Notice Period In Months",id="noticeperiod" } })
+                <label id="lblNoticePeriod" class="text-danger"></label>
+                
+                 @Html.ValidationMessageFor(model => model.NoticePeriodInMonths, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.TotalExperience, "Total Experience", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TotalExperience, new { htmlAttributes = new { @class = "form-control",@min="0" } })
+                @Html.EditorFor(model => model.TotalExperience, new { htmlAttributes = new { @class = "form-control",@min="0",id="totalexperience" } })
                 @Html.ValidationMessageFor(model => model.TotalExperience, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -151,6 +155,7 @@
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
         columns: grid.Columns(
+            //grid.Column("S.No.", format: item => rowValUser = rowValUser + 1),
             grid.Column("UserName", "User Name"),
             grid.Column("EmployeeId", "Employee Id"),
             grid.Column("Email", "Email"),
@@ -171,7 +176,9 @@
 </div>
 
 <div id="gridContentCandidate">
-    @gridCandidate.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+    @gridCandidate.GetHtml(
+        htmlAttributes: new { id = "WebGridCandidate" },
+        tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
@@ -179,7 +186,8 @@
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
         columns: gridCandidate.Columns(
-            gridCandidate.Column("CandidateID", format: @<text>  <span class="display-modeCandidate">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label> </text>),
+            @*gridCandidate.Column("CandidateID", format: @<text>  <span class="display-modeCandidate">@item.CandidateID </span> <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label> </text>),*@
+            //grid.Column("S.No.", format: item => rowValCandidate = rowValCandidate + 1),
             gridCandidate.Column("CandidateName", "Candidate Name", format: @<text>  <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" /></text>),
          //   gridCandidate.Column("DateOfInterview", "Date Of Interview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" /></text>),
              gridCandidate.Column("DateOfInterview", "Date Of Interview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidate" /></text>),
@@ -189,10 +197,10 @@
              gridCandidate.Column("InterviewerName", "Interviewer Name", format: @<text> <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span> @Html.DropDownList("user", null, string.Empty, new {id="ddlInterviewerName", @class = "edit-modeCandidate form-control" })  </text>),
 
             gridCandidate.Column("Action", format: @<text>
-                <button class="edit-userCandidate display-modeCandidate btn btn-primary">Edit</button>
-                <button class="save-userCandidate edit-modeCandidate btn btn-primary">Save</button>
-                <button class="cancel-userCandidate edit-modeCandidate btn btn-primary">Cancel</button>
-                <button class="delete-userCandidate btn btn-primary">Delete</button>
+                <button class="edit-userCandidate display-modeCandidate btn btn-primary" id="@item.CandidateID">Edit</button>
+                <button class="save-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Save</button>
+                <button class="cancel-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Cancel</button>
+                <button class="delete-userCandidate btn btn-primary" id="@item.CandidateID">Delete</button>
             </text>))
         )
 </div>
@@ -204,21 +212,29 @@
 
 
 
-<script type="text/javascript">
-      function GetExistingDynamicTextBoxes(value) {
-        var div = $(" <div />");
+@*<script type="text/javascript">
+    function GetExistingDynamicTextBoxes(value) {
+        var noticeperiod=$('#noticeperiod').val();
+        var totalexp = $('#totalexperience').val();
+        if (totalexp == "0" || noticeperiod=="") {
+            alert("Give values for total experience and notice period");
+            return false;
+        }
+        else {
+            var div = $(" <div />");
 
-        var textBox = $(" <input />").attr("type", "textbox").attr("name", "txtBoxes");
-        textBox.addClass('form-control');
-        textBox.val(value);
-        div.append(textBox);
+            var textBox = $(" <input />").attr("type", "textbox").attr("name", "txtBoxes");
+            textBox.addClass('form-control');
+            textBox.val(value);
+            div.append(textBox);
 
-        var button = $(" <input />").attr("type", "button").attr("value", "Remove");
-        button.attr("onclick", "DeleteTextBox(this)");
-        button.addClass('btn btn-default');
-        div.append(button);
+            var button = $(" <input />").attr("type", "button").attr("value", "Remove");
+            button.attr("onclick", "DeleteTextBox(this)");
+            button.addClass('btn btn-default');
+            div.append(button);
 
-        return div;
+            return div;
+        }
     }
     function AppendTextBox() {
         var div = GetExistingDynamicTextBoxes("");
@@ -229,7 +245,7 @@
         $(button).parent().remove();
     }
 
-    $(function () {
+    @*$(function () {
         var values = eval('@Html.Raw(ViewBag.DemoMessage)');
         if (values != null) {
             $("#divTextBoxes").html("");
@@ -237,8 +253,8 @@
                 $("#divTextBoxes").append(GetExistingDynamicTextBoxes(this));
             });
         }
-    });
-</script>
+    });*@
+@*</script>*@
 
 <script src="~/Scripts/Candidate.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
