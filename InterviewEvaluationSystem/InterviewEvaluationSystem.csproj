@@ -447,6 +447,7 @@
     <Content Include="Views\Shared\_HRLayout.cshtml" />
     <Content Include="Views\Home\PasswordReset.cshtml" />
     <Content Include="Views\Shared\ResetPartial.cshtml" />
+    <Content Include="Views\Home\UpdatePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

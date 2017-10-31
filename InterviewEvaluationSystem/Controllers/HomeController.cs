@@ -98,12 +98,13 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult PasswordReset(string email)
         {
-            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             int result;
             Random r = new Random();
-            var data = db.tblUsers.Where(x => x.Email == email).FirstOrDefault();
+            var data = dbContext.tblUsers.Where(x => x.Email == email).FirstOrDefault();
+
             if (data != null)
             {
+                Session["Email"] = data.Email;
                 string otp;
                 const string pool = "abcdefghijklmnopqrstuvwxyz0123456789";
                 var builder = new StringBuilder();
@@ -118,7 +119,7 @@ namespace InterviewEvaluationSystem.Controllers
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.To.Add(email);
                 mailMessage.Subject = "Password Reset";
-                mailMessage.Body = "Please use the following password to login to your account " + Session["OTP"] + ".You may later change it after logging into your account";
+                mailMessage.Body = "Please use the following password to change your password. " + "<br/>" + Session["OTP"] + "<br/>" + ".You may later change it after logging into your account";
                 mailMessage.IsBodyHtml = true;
                 SmtpClient smtpClient = new SmtpClient();
                 smtpClient.Send(mailMessage);
@@ -127,14 +128,16 @@ namespace InterviewEvaluationSystem.Controllers
             }
             else
             {
-                ViewBag.Valid = "Email entered is not registered.Please enter a registered email.";
+                result = 2;
+                return Json(new { result = result });
             }
-            return View();
         }
+
 
         [HttpPost]
         public ActionResult ResetPartial()
         {
+
             return PartialView("ResetPartial");
         }
 
@@ -146,6 +149,27 @@ namespace InterviewEvaluationSystem.Controllers
                 Session["OTP"] = null;
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("UpdatePassword", "Home");
                 return Json(new { Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult UpdatePassword()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdatePassword(UpdatePasswordViewModel updatePasswordViewModel)
+        {
+            var sessionValue = Session["Email"];
+            int result = dbContext.spResetPassword(sessionValue.ToString(), updatePasswordViewModel.NewPassword);
+            if (result == 1)
+            {
+                ViewBag.result = "Password Updated Successfully";
+                Session["Email"] = null;
             }
             return View();
         }

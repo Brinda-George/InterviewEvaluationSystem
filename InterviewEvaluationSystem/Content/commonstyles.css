@@ -1,4 +1,12 @@
-﻿.webgrid-header, .webgrid-header a {
+﻿/*#grid th{
+    width:2000px;
+} 
+
+#grid td{
+    width:2000px;
+}*/ 
+
+.webgrid-header, .webgrid-header a {
     background-color: #005396;
     color: #ffffff;
     text-align: left;
@@ -15,7 +23,7 @@
 }
 
 .colWidth {
-    width: 300px;
+    width: 200px;
 }
 
 save-userCandidate {
@@ -64,4 +72,20 @@ delete-userCandidate {
     -o-transform: scale(2);
     -ms-transform: scale(2);
     opacity: .3;
+}
+
+.blinking {
+    font-size: 10px;
+    color: #fff;
+}
+
+.blinking {
+  -webkit-animation: blink-animation 1s;
+  animation: blink-animation 1s ease 2 normal;
+}
+
+@-webkit-keyframes blink-animation {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
 }

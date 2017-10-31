@@ -30,7 +30,7 @@
 
 @using (Html.BeginForm())
 {
-    <h3>Rating Scale</h3>
+    <h4>Rating Scale</h4>
     if (Model.RatingScale.Any())
     {
         <div id="grid1">
@@ -52,7 +52,7 @@
 
     for (int i = 0; i < Model.SkillCategories.Count; i++)
     {
-        <h3>@Model.SkillCategories[i].SkillCategory</h3>
+        <h4>@Model.SkillCategories[i].SkillCategory</h4>
         List<WebGridColumn> columns = new List<WebGridColumn>();
         WebGridColumn column = new WebGridColumn();
         column.ColumnName = "SkillName";
@@ -66,7 +66,7 @@
                 {
                     ColumnName = round.RoundName,
                     Header = round.RoundName,
-                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @style = "colWidth" })
                 });
             }
             else
@@ -75,7 +75,7 @@
                 {
                     ColumnName = round.RoundName,
                     Header = round.RoundName,
-                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @style = "colWidth" })
                 });
             }
 
@@ -87,6 +87,7 @@
                 alternatingRowStyle: "webgrid-alternating-row",
                 selectedRowStyle: "webgrid-selected-row",
                 rowStyle: "webgrid-row-style",
+                htmlAttributes: new { id = "grid" },
                 mode: WebGridPagerModes.All,
                 columns: columns
             )

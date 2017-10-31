@@ -77,7 +77,8 @@ namespace InterviewEvaluationSystem.Business_Logic
                     CandidateID = e.CandidateID,
                     RoundID = e.RoundID,
                     EvaluationID = e.EvaluationID,
-                    Recommended = e.Recommended
+                    Recommended = e.Recommended,
+                    DateOfInterview = e.DateOfInterview
                 }).ToList();
             return Statuses;
         }

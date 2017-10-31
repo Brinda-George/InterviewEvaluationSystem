@@ -159,6 +159,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<int> RoundID { get; set; }
         public int EvaluationID { get; set; }
         public Nullable<bool> Recommended { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
     }
 
     public class ScoreEvaluationViewModel
@@ -261,6 +262,21 @@ namespace InterviewEvaluationSystem.Models
     {
         public string UserName { get; set; }
         public int UserID { get; set; }
+    }
+
+    public class UpdatePasswordViewModel
+    {
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "New password")]
+        public string NewPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new password")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
     }
 
 }

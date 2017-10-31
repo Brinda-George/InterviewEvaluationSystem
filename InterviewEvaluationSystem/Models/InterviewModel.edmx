@@ -539,6 +539,10 @@
           <Parameter Name="password" Type="varchar" Mode="In" />
           <Parameter Name="email" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spResetPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="NewPassword" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spUpdateCandidateInterviewer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userid" Type="int" Mode="In" />
           <Parameter Name="candidateid" Type="int" Mode="In" />
@@ -1388,6 +1392,10 @@
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spResetPassword">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="NewPassword" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -1492,6 +1500,7 @@
           <Property Type="Int32" Name="RoundID" Nullable="false" />
           <Property Type="Int32" Name="EvaluationID" Nullable="false" />
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
+          <Property Type="DateTime" Name="DateOfInterview" Nullable="false" />
         </ComplexType>
         <ComplexType Name="spHRNotificationGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -1840,6 +1849,7 @@
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
                 <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
                 <ScalarProperty Name="Recommended" ColumnName="Recommended" />
+                <ScalarProperty Name="DateOfInterview" ColumnName="DateOfInterview" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1879,6 +1889,7 @@
           <FunctionImportMapping FunctionImportName="spRegister" FunctionName="InterviewEvaluationDbModel.Store.spRegister" />
           <FunctionImportMapping FunctionImportName="spUpdateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.spUpdateCandidateInterviewer" />
           <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
+          <FunctionImportMapping FunctionImportName="spResetPassword" FunctionName="InterviewEvaluationDbModel.Store.spResetPassword" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

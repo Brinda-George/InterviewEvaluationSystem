@@ -1,14 +1,5 @@
 ﻿$(document).ready(function () {
     $(function () {
-
-        //To hide the first column in webgrid that contains user id
-        hideColumn = function (column) {
-            $('tr').each(function () {
-                $(this).find('td,th').eq(column).hide();
-            });
-        };
-        hideColumn(0);
-
         $('.edit-mode').hide();
         $('.edit-user, .cancel-user').on('click', function () {
             var tr = $(this).parents('tr:first');
@@ -26,7 +17,7 @@
             var Email = tr.find("#Email").val();
             var Designation = tr.find("#Designation").val();
             var EmployeeId = tr.find("#lblEmployeeId").html();
-            var UserID = tr.find('#lblUserID').html();
+            var UserID = $(this).prop('id');
             $.ajax({
                 url: '/HR/UpdateInterviewer/',
                 data: JSON.stringify({ "UserID": UserID, "UserName": UserName, "Email": Email, "Designation": Designation }),
@@ -46,7 +37,7 @@
 
         $('.delete-user').on('click', function () {
             var tr = $(this).parents('tr:first');
-            var UserID = tr.find('#lblUserID').html();
+            var UserID = $(this).prop('id');
             $.ajax({
                 url: '/HR/DeleteInterviewer/',
                 data: JSON.stringify({ "UserID": UserID }),

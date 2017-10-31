@@ -19,5 +19,6 @@ namespace InterviewEvaluationSystem.Models
         public int RoundID { get; set; }
         public int EvaluationID { get; set; }
         public Nullable<bool> Recommended { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
     }
 }
