@@ -28,43 +28,43 @@
     @if (Model.Any())
     {
         @webgridStatus.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-                     headerStyle: "webgrid-header",
-                     footerStyle: "webgrid-footer",
-                     alternatingRowStyle: "webgrid-alternating-row",
-                     selectedRowStyle: "webgrid-selected-row",
-                     rowStyle: "webgrid-row-style",
-                     mode: WebGridPagerModes.All,
-                     columns: webgridStatus.Columns(
-                         webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "HREvaluation", new
-                         {
-                             Name = item.Name,
-                             CandidateID = item.CandidateID,
-                             RoundID = item.RoundID,
-                             EvaluationID = item.EvaluationID,
-                             recommended = item.Recommended
-                         })),
-                         webgridStatus.Column(columnName: "Email", header: "Email"),
-                         webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) =>
-                         {
-                             if (item.Recommended == true && item.CandidateStatus == true)
-                             {
-                                 return Html.Raw(string.Format("Hired"));
-                             }
-                             else if (item.Recommended == true && item.CandidateStatus == null)
-                             {
-                                 return Html.Raw(string.Format("HR Round Completed"));
-                             }
-                             else if (item.Recommended == false || (item.Recommended == true && item.CandidateStatus == false))
-                             {
-                                 return Html.Raw(string.Format("Rejected"));
-                             }
-                             else
-                             {
-                                 return Html.Raw(string.Format("Proceeded to HR Round"));
-                             }
-                         })
-                         )
-                     )
+                headerStyle: "webgrid-header",
+                footerStyle: "webgrid-footer",
+                alternatingRowStyle: "webgrid-alternating-row",
+                selectedRowStyle: "webgrid-selected-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.All,
+                columns: webgridStatus.Columns(
+                    webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "HREvaluation", new
+                    {
+                        Name = item.Name,
+                        CandidateID = item.CandidateID,
+                        RoundID = item.RoundID,
+                        EvaluationID = item.EvaluationID,
+                        recommended = item.Recommended
+                    })),
+                    webgridStatus.Column(columnName: "Email", header: "Email"),
+                    webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) =>
+                    {
+                        if (item.Recommended == true && item.CandidateStatus == true)
+                        {
+                            return Html.Raw(string.Format("Hired"));
+                        }
+                        else if (item.Recommended == true && item.CandidateStatus == null)
+                        {
+                            return Html.Raw(string.Format("HR Round Completed"));
+                        }
+                        else if (item.Recommended == false || (item.Recommended == true && item.CandidateStatus == false))
+                        {
+                            return Html.Raw(string.Format("Rejected"));
+                        }
+                        else
+                        {
+                            return Html.Raw(string.Format("Proceeded to HR Round"));
+                        }
+                    })
+                    )
+                )
     }
     else
     {

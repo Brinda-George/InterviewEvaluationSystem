@@ -102,11 +102,8 @@ else
             }
         }
         <div class="grid">
-            @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-             headerStyle: "webgrid-header",
-             footerStyle: "webgrid-footer",
+            @webgrids[i].GetHtml(headerStyle: "webgrid-header",
              alternatingRowStyle: "webgrid-alternating-row",
-             selectedRowStyle: "webgrid-selected-row",
              rowStyle: "webgrid-row-style",
              mode: WebGridPagerModes.All,
              columns: columns
@@ -126,29 +123,29 @@ else
         {
             <div id="gridcomments">
                 @webgridComments.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-             headerStyle: "webgrid-header",
-             footerStyle: "webgrid-footer",
-             alternatingRowStyle: "webgrid-alternating-row",
-             selectedRowStyle: "webgrid-selected-row",
-             rowStyle: "webgrid-row-style",
-             mode: WebGridPagerModes.All,
-             columns: webgridComments.Columns(
-                 webgridComments.Column(columnName: "RoundName", header: "Round Name"),
-                 webgridComments.Column(columnName: "UserName", header: "Interviewer"),
-                 webgridComments.Column(columnName: "Comment", header: "Comments"),
-                 webgridComments.Column(columnName: "Recommended", header: "Recommended", format: (item) =>
-                 {
-                     if (item.Recommended == true)
-                     {
-                         return Html.Raw(string.Format("Yes"));
-                     }
-                     else
-                     {
-                         return Html.Raw(string.Format("No"));
-                     }
-                 })
-                 )
-             )
+                     headerStyle: "webgrid-header",
+                     footerStyle: "webgrid-footer",
+                     alternatingRowStyle: "webgrid-alternating-row",
+                     selectedRowStyle: "webgrid-selected-row",
+                     rowStyle: "webgrid-row-style",
+                     mode: WebGridPagerModes.All,
+                     columns: webgridComments.Columns(
+                         webgridComments.Column(columnName: "RoundName", header: "Round Name"),
+                         webgridComments.Column(columnName: "UserName", header: "Interviewer"),
+                         webgridComments.Column(columnName: "Comment", header: "Comments"),
+                         webgridComments.Column(columnName: "Recommended", header: "Recommended", format: (item) =>
+                         {
+                             if (item.Recommended == true)
+                             {
+                                 return Html.Raw(string.Format("Yes"));
+                             }
+                             else
+                             {
+                                 return Html.Raw(string.Format("No"));
+                             }
+                         })
+                         )
+                     )
             </div>
         }
     }

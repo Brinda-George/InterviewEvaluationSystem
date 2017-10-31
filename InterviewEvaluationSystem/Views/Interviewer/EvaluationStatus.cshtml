@@ -12,34 +12,41 @@
     <li class="breadcrumb-item active">Evaluation Status</li>
 </ol>
 
-<div id="grid1">
-    @if (Model.Any())
-    {
-        @webgridStatus.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
-            headerStyle: "webgrid-header",
-            footerStyle: "webgrid-footer",
-            alternatingRowStyle: "webgrid-alternating-row",
-            selectedRowStyle: "webgrid-selected-row",
-            rowStyle: "webgrid-row-style",
-            mode: WebGridPagerModes.All,
-            columns: webgridStatus.Columns(
-                webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "InterviewEvaluation", new
-                {
-                    Name = item.Name,
-                    CandidateID = item.CandidateID,
-                    RoundID = item.RoundID,
-                    EvaluationID = item.EvaluationID
-                })),
-                webgridStatus.Column(columnName: "RoundName", header: "Current Round"))
-            )
-    }
-    else
-    {
-        <div class="alert alert-success">
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <strong>You have No Candidates Assigned!! </strong>
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Evaluation Status
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            @if (Model.Any())
+            {
+                @webgridStatus.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+                    headerStyle: "webgrid-header",
+                    footerStyle: "webgrid-footer",
+                    alternatingRowStyle: "webgrid-alternating-row",
+                    selectedRowStyle: "webgrid-selected-row",
+                    rowStyle: "webgrid-row-style",
+                    mode: WebGridPagerModes.All,
+                    columns: webgridStatus.Columns(
+                        webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "InterviewEvaluation", new
+                        {
+                            Name = item.Name,
+                            CandidateID = item.CandidateID,
+                            RoundID = item.RoundID,
+                            EvaluationID = item.EvaluationID
+                        })),
+                        webgridStatus.Column(columnName: "RoundName", header: "Current Round"))
+                    )
+            }
+            else
+            {
+                <div class="alert alert-success">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>You have No Candidates Assigned!! </strong>
+                </div>
+            }
         </div>
-    }
+    </div>
 </div>
 
 <div>
