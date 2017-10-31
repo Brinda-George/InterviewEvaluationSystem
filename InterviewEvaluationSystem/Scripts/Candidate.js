@@ -217,6 +217,7 @@ function candidateValidation() {
     else {
         $('#lblPAN').empty();
     }
+    var noticeperiod = $('#noticeperiod').val();
     if (noticeperiod == "") {
         $('#lblNoticePeriod').html('The Notice Period Is Required');
     }

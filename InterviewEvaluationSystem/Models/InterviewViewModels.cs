@@ -85,6 +85,7 @@ namespace InterviewEvaluationSystem.Models
         [Required]
 
         public string Password { get; set; }
+        [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         [Required]
