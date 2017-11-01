@@ -15,8 +15,7 @@
 
         $('.edit-modeCandidate').hide();
         $('.edit-userCandidate, .cancel-userCandidate').on('click', function () {
-        //$(document).on("click", ".edit-userCandidate, .cancel-userCandidate", function () {
-            
+                   
             var tr = $(this).parents('tr:first');
             var UserName = tr.find("#lblInterviewerName").text();
             tr.find('#ddlInterviewerName').val(UserName);
@@ -25,18 +24,46 @@
             
         });
         $('.cancel-userCandidate').on('click', function () {
-        //$(document).on("click", ".cancel-userCandidate", function () {
+        
                     $('.delete-userCandidate').show();
         });
 
 
         $('.save-userCandidate').on('click', function () {
-        //$(document).on("click", ".save-userCandidate", function () {
-        
+                
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
             var DateOfInterview = tr.find("#DateOfInterview").val();
             var UserID = tr.find("#ddlInterviewerName").val();
+            
+            var flag = 0;
+            if (CandidateName == "") {
+                tr.find('#lblCandidateNameValidation').html('The Candidate Name Is Required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblCandidateNameValidation').empty();
+            }
+
+            if (DateOfInterview == "") {
+                tr.find('#lblDateOfInterviewValidation').html('Date Of Interview Is Required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblDateOfInterviewValidation').empty();
+            }
+
+            if (UserID == null) {
+                tr.find('#lblInterviewerNameValidation').html('Interviewer Is Required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblInterviewerNameValidation').empty();
+            }
+            if (flag == 1)
+            {
+                return false;
+            }
             var CandidateID = $(this).prop('id');
             $.ajax({
                 url: '/HR/UpdateCandidate/', 
@@ -125,6 +152,34 @@
             var CandidateName = tr.find("#CandidateName").val();
             var DateOfInterview = tr.find("#DateOfInterview").val();
             var UserID = tr.find("#ddlInterviewerName").val();
+
+            var flag = 0;
+            if (CandidateName == "") {
+                tr.find('#lblCandidateNameValidation').html('The Candidate Name Is Required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblCandidateNameValidation').empty();
+            }
+
+            if (DateOfInterview == "") {
+                tr.find('#lblDateOfInterviewValidation').html('Date Of Interview Is Required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblDateOfInterviewValidation').empty();
+            }
+
+            if (UserID == null) {
+                tr.find('#lblInterviewerNameValidation').html('Interviewer Is Required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblInterviewerNameValidation').empty();
+            }
+            if (flag == 1) {
+                return false;
+            }
             var CandidateID = $(this).prop('id');
             $.ajax({
                 url: '/HR/UpdateCandidate/',

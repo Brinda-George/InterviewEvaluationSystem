@@ -351,17 +351,17 @@ namespace InterviewEvaluationSystem.Controllers
         {
             List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID==2).ToList();
             ViewBag.Users = users;
-            List<SelectListItem> selectedlistInner = new List<SelectListItem>();
-            foreach (tblUserType userType1 in dbContext.tblUserTypes)
-            {
-                SelectListItem selectlistitem = new SelectListItem
-                {
-                    Text = userType1.UserType,
-                    Value = userType1.UserTypeID.ToString()
-                };
-                selectedlistInner.Add(selectlistitem);
-            }
-            ViewBag.userType = selectedlistInner;
+            //List<SelectListItem> selectedlistInner = new List<SelectListItem>();
+            //foreach (tblUserType userType1 in dbContext.tblUserTypes)
+            //{
+            //    SelectListItem selectlistitem = new SelectListItem
+            //    {
+            //        Text = userType1.UserType,
+            //        Value = userType1.UserTypeID.ToString()
+            //    };
+            //    selectedlistInner.Add(selectlistitem);
+            //}
+            //ViewBag.userType = selectedlistInner;
             return View();
         }
 
@@ -386,93 +386,88 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public ActionResult AddInterviewers(tblUser user, string userType)
+        [HttpGet]
+        public JsonResult IsInterviewerEmailExists(string Email)
         {
-            var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
-            if (string.IsNullOrEmpty(user.UserName))
-            {
-                ModelState.AddModelError("UserName", "Enter Name");
-            }
+            bool IsExists = dbContext.tblUsers.Where(u => u.Email.Equals(Email)).FirstOrDefault() != null;
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
 
-            if(string.IsNullOrEmpty(user.EmployeeId))
-            {
-                ModelState.AddModelError("EmployeeId", "Enter Employee Id");
-            }
-
-            if(string.IsNullOrEmpty(user.Designation))
-            {
-                ModelState.AddModelError("Designation", "Enter Designation");
-            }
-
-            if(string.IsNullOrEmpty(user.Address))
-            {
-                ModelState.AddModelError("Address", "Enter Address");
-            }
-            if(string.IsNullOrEmpty(user.Pincode))
-            {
-                ModelState.AddModelError("Pincode", "Enter Pincode");
-            }
-            if((string.IsNullOrEmpty(user.Password)) || (user.Password.Length<Convert.ToInt32(passwordLength)))
-            {
-                ModelState.AddModelError("Password", "The password field is required and should contain minimum " + passwordLength + " characters");
-            }
-            if (string.IsNullOrEmpty(user.Email))
-            {
-                ModelState.AddModelError("Email", "Enter Email");
-            }
-            if(string.IsNullOrWhiteSpace(userType))
-            {
-                ModelState.AddModelError("UserTypeID", "Select User Type");
-            }
-
+        [HttpPost]
+        //public ActionResult AddInterviewers(tblUser user, string userType)
+        public ActionResult AddInterviewers(UserViewModel userViewModel)
+        {
             
-            if(ModelState.IsValid)
+            var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
+            var usernameLength = ConfigurationManager.AppSettings["UserNameLength"];
+
+            if (ModelState.IsValid)
             {
-                
-                user.UserTypeID = Convert.ToInt32(userType);
-                user.CreatedBy = "hr";
-                user.CreatedDate = System.DateTime.Now;
-                user.IsDeleted = false;
-                dbContext.tblUsers.Add(user);
-                dbContext.SaveChanges();
-                List<SelectListItem> selectedlistInner = new List<SelectListItem>();
-                foreach (tblUserType userType1 in dbContext.tblUserTypes)
+                var flag = false;
+                if (userViewModel.Password != userViewModel.ConfirmPassword)
                 {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = userType1.UserType,
-                        Value = userType1.UserTypeID.ToString()
-                    };
-                    selectedlistInner.Add(selectlistitem);
+                    ViewBag.PasswordMismatchMessage = "Password And Confirm Password Not Matching";
+                    flag = true;
                 }
-                ViewBag.userType = selectedlistInner;
+                if (userViewModel.Password.Length < Convert.ToInt32(passwordLength))
+                {
+                    ViewBag.PasswordErrorMessage = "The Password Should Have Minimum Length of " + passwordLength;
+                    flag = true;
+                }
+                if (userViewModel.UserName.Length < Convert.ToInt32(usernameLength))
+                {
+                    ViewBag.UserNameErrorMessage = "The User Name Should Have Minimum Length Of " + usernameLength;
+                    flag = true;
+                }
+                if (flag == false)
+                {
+                    tblUser user = new tblUser();
+                    user.UserName = userViewModel.UserName;
+                    user.EmployeeId = userViewModel.EmployeeId;
+                    user.Designation = userViewModel.Designation;
+                    user.Address = userViewModel.Address;
+                    user.Pincode = userViewModel.Pincode;
+                    user.Password = userViewModel.Password;
+                    user.Email = userViewModel.Email;
+                    user.UserTypeID = 2;
+                    user.CreatedBy = "hr";
+                    user.CreatedDate = System.DateTime.Now;
+                    user.IsDeleted = false;
+                    dbContext.tblUsers.Add(user);
+                    dbContext.SaveChanges();
+                   
+
+                    
+                }
                 List<tblUser> usersInner = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
                 ViewBag.Users = usersInner;
-                ModelState.Clear();
+                
                 return View();
+
             }
-            else  
+
+            else
             {
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblUserType userType1 in dbContext.tblUserTypes)
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = userType1.UserType,
-                        Value = userType1.UserTypeID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.userType = selectedlist;
+                //List<SelectListItem> selectedlist = new List<SelectListItem>();
+                //foreach (tblUserType userType1 in dbContext.tblUserTypes)
+                //{
+                //    SelectListItem selectlistitem = new SelectListItem
+                //    {
+                //        Text = userType1.UserType,
+                //        Value = userType1.UserTypeID.ToString()
+                //    };
+                //    selectedlist.Add(selectlistitem);
+                //}
+                //ViewBag.userType = selectedlist;
+
+
+                // ViewBag.EmployeeIdErrorMessage = "The Employee Id Should Have Minimum Length Of " + employeeIdLength;
                 List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
                 ViewBag.Users = users;
-                return View(user);
             }
-            
-            
+                return View(userViewModel);
+           
         }
-         
         [HttpPost]
         public ActionResult UpdateInterviewer(int UserID, string UserName, string Email, string Designation)
         {

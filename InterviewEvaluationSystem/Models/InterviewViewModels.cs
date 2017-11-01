@@ -36,19 +36,19 @@ namespace InterviewEvaluationSystem.Models
         public string RoundName { get; set; }
     }
 
-    public class UserViewModel
-    {
-        public int UserID { get; set; }
-        public string UserName { get; set; }
-        public string EmployeeId { get; set; }
-        public string Designation { get; set; }
-        public string Address { get; set; }
-        public string Pincode { get; set; }
-        public string Password { get; set; }
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-        public Nullable<int> UserTypeID { get; set; }
-    }
+    //public class UserViewModel
+    //{
+    //    public int UserID { get; set; }
+    //    public string UserName { get; set; }
+    //    public string EmployeeId { get; set; }
+    //    public string Designation { get; set; }
+    //    public string Address { get; set; }
+    //    public string Pincode { get; set; }
+    //    public string Password { get; set; }
+    //    [DataType(DataType.EmailAddress)]
+    //    public string Email { get; set; }
+    //    public Nullable<int> UserTypeID { get; set; }
+    //}
 
     public class CandidateViewModel
     {

@@ -3,9 +3,33 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace InterviewEvaluationSystem.Models
 {
+    public class UserViewModel
+    {
+        [Required]
+        [Remote("IsInterviewerUserNameExists", "HR",ErrorMessage = "The UserName Already Exists")]
+        public string UserName { get; set; }
+        [Required]
+        [Remote("IsInterviewerEmployeeIdExists", "HR", ErrorMessage = "The EmployeeId Already Exists")]
+        public string EmployeeId { get; set; }
+        [Required]
+        public string Designation { get; set; }
+        [Required]
+        public string Address { get; set; }
+        [Required]
+        public string Pincode { get; set; }
+        [Required]
+        public string Password { get; set; }
+        [Required]
+
+        public string ConfirmPassword { get; set; }
+        [Required]
+        [Remote("IsInterviewerEmailExists", "HR", ErrorMessage = "The Email Already Exists")]
+        public string Email { get; set; }
+    }
     public class AddCandidateViewModels
     { 
         [Required(ErrorMessage ="Name is required")]
