@@ -49,7 +49,6 @@
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-
                     tr.find('.edit-mode, .display-mode').toggle();
                     tr.find("#lblUserName").text(data.UserName);
                     tr.find("#lblDesignation").text(data.Designation);
@@ -63,16 +62,22 @@
         $('.delete-user').on('click', function () {
             var tr = $(this).parents('tr:first');
             var UserID = $(this).prop('id');
-            $.ajax({
-                url: '/HR/DeleteInterviewer/',
-                data: JSON.stringify({ "UserID": UserID }),
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    location.reload();
-                    alert("Successfully Deleted");
-                }
-            })
+            var flag = confirm('Do you want to delete the record');
+            if (flag) {
+                $.ajax({
+                    url: '/HR/DeleteInterviewer/',
+                    data: JSON.stringify({ "UserID": UserID }),
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        location.reload();
+                        alert("Successfully Deleted");
+                    }
+                });
+            }
+            else {
+                return false;
+            }
         });
     });
 });

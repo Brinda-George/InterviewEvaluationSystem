@@ -1900,7 +1900,6 @@ pre code {
 }
 
 select.form-control:not([size]):not([multiple]) {
-  width: 15%;
   height: calc(2.25rem + 2px);
 }
 

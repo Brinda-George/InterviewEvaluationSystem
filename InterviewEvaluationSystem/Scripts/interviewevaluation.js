@@ -19,7 +19,7 @@ function getValues(element) {
     for (var i = 1; i <= count; i++) {
         var itemid = "id" + roundID + i;
         if ($('#' + itemid).find('option:selected').val().length === 0) {
-            alert("Please select a rate!!")
+            alert("Please select all rates!!")
             return false;
         }
         else {
@@ -31,7 +31,7 @@ function getValues(element) {
         alert("Please enter your comments!!")
         return false;
     }
-    else if ($('#Comments').val().length > 250) {
+    else if ($('#Comments').val().length > 500) {
         alert("The Comments field cannot contain more than 500 characters!!!")
         return false;
     }

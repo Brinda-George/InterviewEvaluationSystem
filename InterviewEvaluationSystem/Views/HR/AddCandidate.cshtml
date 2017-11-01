@@ -170,11 +170,6 @@
         htmlAttributes: new { id = "WebGridCandidate" },
         mode: WebGridPagerModes.All,
         columns: gridCandidate.Columns(
-            gridCandidate.Column("CandidateID", format:
-            @<text>
-                <span class="display-modeCandidate">@item.CandidateID </span>
-                <label id="lblCandidateID" class="edit-modeCandidate">@item.CandidateID</label>
-            </text>),
             gridCandidate.Column("CandidateName", "CandidateName", format:
             @<text>
                 <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span>
@@ -191,10 +186,10 @@
                 @Html.DropDownList("user", null, string.Empty, new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
             </text>),
             gridCandidate.Column("Action", format: @<text>
-                <button class="edit-userCandidate display-modeCandidate btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                <button class="save-userCandidate edit-modeCandidate btn btn-default"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
-                <button class="cancel-userCandidate edit-modeCandidate btn btn-default"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
-                <button class="delete-userCandidate btn btn-default"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                <button class="edit-userCandidate display-modeCandidate btn btn-default" id="@item.CandidateID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                <button class="save-userCandidate edit-modeCandidate btn btn-default" id="@item.CandidateID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                <button class="cancel-userCandidate edit-modeCandidate btn btn-default" id="@item.CandidateID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
+                <button class="delete-userCandidate btn btn-default" id="@item.CandidateID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </text>))
         )
 }

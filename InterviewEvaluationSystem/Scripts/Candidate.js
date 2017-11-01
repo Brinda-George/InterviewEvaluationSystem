@@ -1,38 +1,18 @@
 ﻿$(document).ready(function () {
-
-
     $(function () {
-
-        //$("#WebGridCandidate th:nth-child(1)").hide();
-        //$("#WebGridCandidate td:nth-child(1)").hide();
-
-        //hideColumn = function (column) {
-        //    $('tr').each(function () {
-        //        $('#WebGridCandidate').find('td,th').eq(column).hide();
-        //    });
-        //};
-        //hideColumn(0);
-
         $('.edit-modeCandidate').hide();
         $('.edit-userCandidate, .cancel-userCandidate').on('click', function () {
-            //$(document).on("click", ".edit-userCandidate, .cancel-userCandidate", function () {
-
             var tr = $(this).parents('tr:first');
             var UserName = tr.find("#lblInterviewerName").text();
             tr.find('#ddlInterviewerName').val(UserName);
             $('.delete-userCandidate').hide();
             tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
-
         });
         $('.cancel-userCandidate').on('click', function () {
-            //$(document).on("click", ".cancel-userCandidate", function () {
             $('.delete-userCandidate').show();
         });
 
-
         $('.save-userCandidate').on('click', function () {
-            //$(document).on("click", ".save-userCandidate", function () {
-
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
             var DateOfInterview = tr.find("#DateOfInterview").val();
@@ -40,18 +20,12 @@
             var CandidateID = $(this).prop('id');
             $.ajax({
                 url: '/HR/UpdateCandidate/',
-                // data: JSON.stringify(tblNewUser),
                 data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserID": UserID }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    // alert('Successfully Updated Interviewer');   
+                success: function (data) { 
                     location.reload();
                     alert("Successfully Updated");
-                    //tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();                                        
-                    //tr.find("#lblCandidateName").text(data.Name);
-                    //tr.find("#lblDateOfInterview").text(data.DateOfInterview);
-                    //tr.find("#lblInterviewerName").text(data.UserName);
                     $('.delete-userCandidate').show();
 
                 }
@@ -59,8 +33,6 @@
 
         });
         $('.delete-userCandidate').on('click', function () {
-            //$(document).on("click", ".delete-userCandidate", function () {
-
             var tr = $(this).parents('tr:first');
             var CandidateID = $(this).prop('id');
             var flag = confirm('Do you want to delete the record');
@@ -82,11 +54,8 @@
         });
 
         $('.searchCandidate').on('click', function () {
-            // $(document).on("click", "#searchCandidate", function () {
-
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateNameText").val();
-
             $.ajax({
                 type: "post",
                 url: "/HR/SearchCandidateResult",
@@ -99,8 +68,6 @@
             });
         });
 
-
-        // $('.edit-userCandidateResult, .cancel-userCandidateResult').on('click', function () {
         $(document).on("click", ".edit-userCandidateResult, .cancel-userCandidateResult", function () {
 
             var tr = $(this).parents('tr:first');
@@ -111,13 +78,10 @@
 
         });
 
-        //$('.cancel-userCandidateResult').on('click', function () {
         $(document).on("click", ".cancel-userCandidateResult", function () {
             $('.delete-userCandidateResult').show();
         });
 
-
-        //$('.save-userCandidateResult').on('click', function () {
         $(document).on("click", ".save-userCandidateResult", function () {
 
             var tr = $(this).parents('tr:first');
@@ -127,27 +91,19 @@
             var CandidateID = $(this).prop('id');
             $.ajax({
                 url: '/HR/UpdateCandidate/',
-                // data: JSON.stringify(tblNewUser),
                 data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserID": UserID }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    // alert('Successfully Updated Interviewer');   
                     location.reload();
                     alert("Successfully Updated");
-                    //tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();                                        
-                    //tr.find("#lblCandidateName").text(data.Name);
-                    //tr.find("#lblDateOfInterview").text(data.DateOfInterview);
-                    //tr.find("#lblInterviewerName").text(data.UserName);
                     $('.delete-userCandidateResult').show();
 
                 }
             });
-
         });
-        //$('.delete-userCandidateResult').on('click', function () {
-        $(document).on("click", ".delete-userCandidateResult", function () {
 
+        $(document).on("click", ".delete-userCandidateResult", function () {
             var tr = $(this).parents('tr:first');
             var CandidateID = $(this).prop('id');
             var flag = confirm('Do you want to delete the record');

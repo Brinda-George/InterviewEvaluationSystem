@@ -154,7 +154,7 @@
                     <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
                 </div>
                 <div class="card-body">
-                    @Html.DropDownList("pieChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "form-control" })
+                    @Html.DropDownList("pieChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "year" })
                     <img id="pieChart" src="@Url.Action("ChartPie", new { year = DateTime.Today.Year})" alt="No Data for this year!!" />
                 </div>
             </div>
@@ -165,7 +165,7 @@
                     <i class="fa fa-bar-chart"></i> Statistics - Column Chart
                 </div>
                 <div class="card-body">
-                    @Html.DropDownList("columnChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "form-control" })
+                    @Html.DropDownList("columnChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "year" })
                     <img id="columnChart" src="@Url.Action("ChartColumn", new { year = DateTime.Today.Year})" alt="No Data for this year!!" />
                 </div>
             </div>
