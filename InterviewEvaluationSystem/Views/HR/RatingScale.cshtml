@@ -56,11 +56,9 @@
     }
     @if (ViewBag.Roles.Count != 0)
     {
-        @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        @gridview.GetHtml(tableStyle: "table table-bordered table-striped",
                      headerStyle: "webgrid-header",
-                     footerStyle: "webgrid-footer",
                      alternatingRowStyle: "webgrid-alternating-row",
-                     selectedRowStyle: "webgrid-selected-row",
                      rowStyle: "webgrid-row-style",
                      mode: WebGridPagerModes.All,
                      columns: new[]{
@@ -68,15 +66,18 @@
                     @<text>
                         <span id="ratescale" class="read">@item.RateScale</span>
                         @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit",@style="display:none"  })
+                        <label class="text-danger" id="scaleLbl"></label>
                     </text>),
                      gridview.Column("Value",format:
                     @<text>
                         <span id="ratevalue" class="read">@item.RateValue</span>
                         @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit",@style="display:none"  })
+                        <label class="text-danger" id="valueLbl"></label>
                     </text>),
                      gridview.Column("Description",format:
-                    @<text><span id="description" class="read">@item.Description</span>
-                    @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
+                        @<text><span id="description" class="read">@item.Description</span>
+                        @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
+                        <label class="text-danger" id="desLbl"></label>
                     </text>),
                      gridview.Column("Action", style: "button",format:
                     @<text>

@@ -133,18 +133,26 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerDashBoard_Result>("spGetInterviewerDashBoard", userIDParameter);
         }
     
-        public virtual ObjectResult<spGetInterviewerPieChart_Result> spGetInterviewerPieChart(Nullable<int> userID)
+        public virtual ObjectResult<spGetInterviewerPieChart_Result> spGetInterviewerPieChart(Nullable<int> userID, Nullable<int> year)
         {
             var userIDParameter = userID.HasValue ?
                 new ObjectParameter("UserID", userID) :
                 new ObjectParameter("UserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerPieChart_Result>("spGetInterviewerPieChart", userIDParameter);
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerPieChart_Result>("spGetInterviewerPieChart", userIDParameter, yearParameter);
         }
     
-        public virtual ObjectResult<spGetPieChart_Result> spGetPieChart()
+        public virtual ObjectResult<spGetPieChart_Result> spGetPieChart(Nullable<int> year)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart");
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart", yearParameter);
         }
     
         public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)

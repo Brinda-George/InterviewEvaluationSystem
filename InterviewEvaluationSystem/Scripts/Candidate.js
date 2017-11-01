@@ -175,75 +175,69 @@
 
 function candidateValidation() {
     var CandidateName = $('#Name').val();
-    if (CandidateName == "") {
-        $('#lblCandidateName').html("The Candidate Name field is required.");
-    }
-    else {
-        $('#lblCandidateName').empty();
-    }
     var Designation = $('#Designation').val();
-    if (Designation == "") {
-        $('#lblDesignation').html("The Designation field is required.");
-    }
-    else {
-        $('#lblDesignation').empty();
-    }
     var DateOfBirth = $('#DateOfBirth').val();
-    if (DateOfBirth == "") {
-        $('#lblDOB').html('The Date Of Birth field is required.');
-    }
-    else {
-        $('#lblDOB').empty();
-    }
     var DateOfInterview = $('#DateOfInterview').val();
-    if (DateOfInterview == "") {
-        $('#lblDOI').html('The Date Of Interview field is required.');
-    }
-    else {
-        $('#lblDOI').empty();
-    }
     var Email = $('#Email').val();
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(Email)) {
-        $('#lblEmail').empty();
-    }
-    else {
-        $('#lblEmail').html('A valid Email is required.');
-    }
     var PAN = $('#PAN').val();
     var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+    var noticeperiod = $('#noticeperiod').val();
+    var Qualifications = $('#Qualifications').val();
+    var interviewer = $('#ddlUser').val();
+    var flag = 0;
+    if (CandidateName == "") {
+        $('#lblCandidateName').html("The Candidate Name field is required.");
+        flag = 1;
+    }
+    if (Designation == "") {
+        $('#lblDesignation').html("The Designation field is required.");
+        flag = 1;
+    }
+    if (DateOfBirth == "") {
+        $('#lblDOB').html('The Date Of Birth field is required.');
+        flag = 1;
+    }
+    if (DateOfInterview == "") {
+        $('#lblDOI').html('The Date Of Interview field is required.');
+        flag = 1;
+    }
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(Email))) {
+        $('#lblEmail').html('A valid Email is required.');
+        flag = 1;
+    }
     if (PAN == "" || !regpan.test(PAN)) {
         $('#lblPAN').html('A valid PAN is Required');
+        flag = 1;
     }
-    else {
-        $('#lblPAN').empty();
-    }
-    var noticeperiod = $('#noticeperiod').val();
     if (noticeperiod == "") {
         $('#lblNoticePeriod').html('The Notice Period Is Required');
+        flag = 1;
     }
-    else {
-        $('#lblNoticePeriod').empty();
-    }
-    var Qualifications = $('#Qualifications').val();
     if (Qualifications == "") {
         $('#lblQualification').html('The Qualification field is required.');
+        flag = 1;
     }
-    else {
-        $('#lblQualification').empty();
-    }
-    var interviewer = $('#ddlUser').val();
     if (interviewer == "") {
         $('#lblInterviewer').html('The Interviewer field is required.');
+        flag = 1;
     }
-    else {
-        $('#lblInterviewer').empty();
+    if (flag == 1) {
+        return false;
     }
-    return false;
     $.ajax({
         url: '/HR/AddCandidate',
         type: 'Post',
         data: $('#frmCreate').serialize(),
         success: function (response) {
+            $('#lblCandidateName').empty();
+            $('#lblDesignation').empty();
+            $('#lblDOB').empty();
+            $('#lblDOI').empty();
+            $('#lblEmail').empty();
+            $('#lblPAN').empty();
+            $('#lblNoticePeriod').empty();
+            $('#lblQualification').empty();
+            $('#lblInterviewer').empty();
             window.location.href = response.Url;
         },
         error: function (data) {

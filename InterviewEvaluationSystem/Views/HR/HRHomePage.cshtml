@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "HRHomePage";
 }
+
+<script src="~/Scripts/chart.js"></script>
 <link href="~/Content/dashboardstyle.css" rel="stylesheet" />
 
 <ol class="breadcrumb">
@@ -146,28 +148,27 @@
         </div>
     </div>
     <div class="row">
-        @if (@Model.TotalCandidateCount != 0)
-        {
-            <div class="col-xl-6 col-sm-6">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
-                    </div>
-                    <div class="card-body">
-                        <img src="@Url.Action("ChartPie")" alt="Chart" />
-                    </div>
+        <div class="col-xl-6 col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
+                </div>
+                <div class="card-body">
+                    @Html.DropDownList("pieChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "form-control" })
+                    <img id="pieChart" src="@Url.Action("ChartPie", new { year = DateTime.Today.Year})" alt="No Data for this year!!" />
                 </div>
             </div>
-            <div class="col-xl-6 col-sm-6">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fa fa-bar-chart"></i> Statistics - Column Chart
-                    </div>
-                    <div class="card-body">
-                        <img src="@Url.Action("ChartColumn")" alt="Chart" />
-                    </div>
+        </div>
+        <div class="col-xl-6 col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-bar-chart"></i> Statistics - Column Chart
+                </div>
+                <div class="card-body">
+                    @Html.DropDownList("columnChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "form-control" })
+                    <img id="columnChart" src="@Url.Action("ChartColumn", new { year = DateTime.Today.Year})" alt="No Data for this year!!" />
                 </div>
             </div>
-        }
+        </div>
     </div>
 </div>

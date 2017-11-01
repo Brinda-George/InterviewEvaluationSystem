@@ -53,6 +53,7 @@
                      @<text>
                         <span id="roundname" class="read">@item.RoundName</span>
                         @Html.TextBox("RoundName", (string)item.RoundName, new { @class = "edit",@style="display:none"  })
+                        <label class="text-danger" id="roundLbl"></label>
                      </text>),
                      gridview.Column("Action", style: "button",format:
                      @<text>

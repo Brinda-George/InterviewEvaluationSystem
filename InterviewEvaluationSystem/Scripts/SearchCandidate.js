@@ -16,7 +16,6 @@
             var CandidateID = tr.find("#lblCandidateID").html();
             $.ajax({
                 url: '/HR/UpdateCandidate/',
-                // data: JSON.stringify(tblNewUser),
                 data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "InterviewerName": InterviewerName }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',

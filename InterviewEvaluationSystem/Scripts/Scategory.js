@@ -16,6 +16,18 @@
         SkillCategoryID = $(this).prop('id');
         var SkillCategory = tr.find('#SkillCategory').val();
         var Description = tr.find('#Description').val();
+        var flag = 0;
+        if (SkillCategory == "") {
+            tr.find('#catLbl').html("Please enter a valid Skill Category");
+            flag = 1;
+        }
+        if (Description == "") {
+            tr.find('#desLbl').html("Please enter a valid description");
+            flag = 1;
+        }
+        if (flag == 1) {
+            return false;
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -23,6 +35,8 @@
             data: JSON.stringify({ "SkillCategoryID": SkillCategoryID, "SkillCategory": SkillCategory, "Description": Description }),
             dataType: "json",
             success: function (data) {
+                tr.find('#catLbl').empty();
+                tr.find('#desLbl').empty();
                 tr.find('.edit, .read').toggle();
                 $('.edit').hide();
                 tr.find('#skillcategory').text(data.SkillCategory);
@@ -46,20 +60,22 @@
 
     $(document).on('click', ".delete-case", function (e) {
         e.preventDefault();
-        var tr = $(this).parents('tr:first');
-        SkillCategoryID = $(this).prop('id');
-        $.ajax({
-            type: 'POST',
-            url: '/HR/CategoryDelete/',
-            data: { "SkillCategoryID": SkillCategoryID },
-            dataType: "json",
-            success: function (data) {
-                alert('Successfully Deleted!!');
-                window.location.href = data.Url;
-            },
-            error: function () {
-                alert('Error occured during delete.');
-            }
-        });
+        if (confirm("Are you sure you want to delete")) {
+            var tr = $(this).parents('tr:first');
+            SkillCategoryID = $(this).prop('id');
+            $.ajax({
+                type: 'POST',
+                url: '/HR/CategoryDelete/',
+                data: { "SkillCategoryID": SkillCategoryID },
+                dataType: "json",
+                success: function (data) {
+                    alert('Successfully Deleted!!');
+                    window.location.href = data.Url;
+                },
+                error: function () {
+                    alert('Error occured during delete.');
+                }
+            });
+        }
     });
 });

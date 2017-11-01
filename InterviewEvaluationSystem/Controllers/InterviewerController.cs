@@ -36,18 +36,21 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Chart
-        public void ChartPie()
+        public void ChartPie(int year)
         {
-            var result = dbContext.spGetInterviewerPieChart(Convert.ToInt32(Session["UserID"])).Single();
-            Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
-            .AddLegend("Summary")
-            .AddSeries("Default", chartType: "Pie", xValue: new[] { "Inprogress - #PERCENT{P0}", "Recoommended - #PERCENT{P0}", "Rejected - #PERCENT{P0}" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
-            .Write("bmp");
+            var result = dbContext.spGetInterviewerPieChart(Convert.ToInt32(Session["UserID"]), year).Single();
+            if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
+            {
+                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+                .AddLegend("Summary")
+                .AddSeries("Default", chartType: "Pie", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Recoommended - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .Write("bmp");
+            }  
         }
 
-        public void ChartColumn()
+        public void ChartColumn(int year)
         {
-            var result = dbContext.spGetCloumnChart(2017).Single();
+            var result = dbContext.spGetCloumnChart(year).Single();
             Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
             .AddSeries("Default", chartType: "column",
                 xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },

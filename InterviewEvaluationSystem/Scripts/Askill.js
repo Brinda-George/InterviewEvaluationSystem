@@ -12,6 +12,10 @@
         var tr = $(this).parents('tr:first');
         SkillID = $(this).prop('id');
         var SkillName = tr.find('#SkillName').val();
+        if (SkillName == "") {
+            tr.find('#skillLbl').html("Please enter a valid Skill");
+            return false;
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -19,10 +23,10 @@
             data: JSON.stringify({ "SkillID": SkillID, "SkillName": SkillName }),
             dataType: "json",
             success: function (data) {
+                tr.find('#skillLbl').empty();
                 tr.find('.edit, .read').toggle();
                 $('.edit').hide();
                 tr.find('#skillname').text(data.SkillName);
-                // alert('Update success');
                 window.location = data.Url;
             },
             error: function (data) {
@@ -41,22 +45,23 @@
 
     $(document).on('click', ".delete-case", function (e) {
         e.preventDefault();
-        var tr = $(this).parents('tr:first');
-        SkillID = $(this).prop('id');
-        $.ajax({
-            type: 'POST',
-            //contentType: "application/json; charset=utf-8",
-            url: '/HR/SkillDelete/',
-            data: { "SkillID": SkillID },
-            dataType: "json",
-            success: function (data) {
-                alert('Delete success');
-                window.location.href = data.Url;
-            },
-            error: function () {
-                alert('Error occured during delete.');
-            }
-        });
+        if (confirm("Are you sure you want to delete")) {
+            var tr = $(this).parents('tr:first');
+            SkillID = $(this).prop('id');
+            $.ajax({
+                type: 'POST',
+                url: '/HR/SkillDelete/',
+                data: { "SkillID": SkillID },
+                dataType: "json",
+                success: function (data) {
+                    alert('Successfully Deleted');
+                    window.location.href = data.Url;
+                },
+                error: function () {
+                    alert('Error occured during delete.');
+                }
+            });
+        }
     });
 });
 

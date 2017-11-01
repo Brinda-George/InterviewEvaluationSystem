@@ -18,6 +18,22 @@
         var RateScale = tr.find('#RateScale').val();
         var RateValue = tr.find('#RateValue').val();
         var Description = tr.find('#Description').val();
+        var flag = 0;
+        if (RateScale == "") {
+            tr.find('#scaleLbl').html("Please enter a valid Rate Scale");
+            flag = 1;
+        }
+        if (RateValue == "") {
+            tr.find('#valueLbl').html("Please enter a valid Rate Value");
+            flag = 1;
+        }
+        if (Description == "") {
+            tr.find('#desLbl').html("Please enter a valid Description");
+            flag = 1;
+        }
+        if(flag == 1) {
+            return false;
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -25,6 +41,9 @@
             data: JSON.stringify({ "RateScaleID": RateScaleID, "RateScale": RateScale, "RateValue": RateValue, "Description": Description }),
             dataType: "json",
             success: function (data) {
+                tr.find('#desLbl').empty();
+                tr.find('#valueLbl').empty();
+                tr.find('#scaleLbl').empty();
                 tr.find('.edit, .read').toggle();
                 $('.edit').hide();
                 tr.find('#ratescale').text(data.RateScale);
@@ -38,7 +57,6 @@
         });
     });
 
-
     $('.cancel-case').on('click', function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
@@ -47,30 +65,25 @@
         $('.edit').hide();
     });
 
-
-
     $('.delete-case').on('click', function (e) {
         e.preventDefault();
-        var tr = $(this).parents('tr:first');
-        RateScaleID = $(this).prop('id');
-        $.ajax({
-            // type: 'POST',
-            //  url: '/Service/ServiceDelete',
-            type: 'POST',
-            //contentType: "application/json; charset=utf-8",
-            url: '/HR/RateDelete/',
-            data: { "RateScaleID": RateScaleID },
-            dataType: "json",
-            // data: { id:id },
-            success: function (data) {
-                alert('Successfully Deleted!!');
-                window.location.href = data.Url;
-            },
-            error: function () {
-                alert('Error occured during delete.');
-            }
-        });
+        if (confirm("Are you sure you want to delete")) {
+            var tr = $(this).parents('tr:first');
+            RateScaleID = $(this).prop('id');
+            $.ajax({
+                type: 'POST',
+                url: '/HR/RateDelete/',
+                data: { "RateScaleID": RateScaleID },
+                dataType: "json",
+                success: function (data) {
+                    alert('Successfully Deleted!!');
+                    window.location.href = data.Url;
+                },
+                error: function () {
+                    alert('Error occured during delete.');
+                }
+            });
+        }
     });
-
 
 });

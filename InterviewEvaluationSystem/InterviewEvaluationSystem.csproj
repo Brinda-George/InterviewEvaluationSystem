@@ -363,6 +363,7 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\hrevaluation.js" />
     <Content Include="Scripts\interviewevaluation.js" />
     <Content Include="Scripts\Candidate.js" />

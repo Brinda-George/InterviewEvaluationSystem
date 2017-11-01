@@ -32,25 +32,31 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Chart
-        public void ChartPie()
+        public void ChartPie(int year)
         {
-            var result = dbContext.spGetPieChart().Single();
-            Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
-            .AddLegend("Summary")
-            .AddSeries("Default", chartType: "Pie", xValue: new[] { "Inprogress - #PERCENT{P0}", "Hired - #PERCENT{P0}", "Rejected - #PERCENT{P0}" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
-            .Write("bmp");
+            var result = dbContext.spGetPieChart(year).Single();
+            if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
+            {
+                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+                .AddLegend("Summary")
+                .AddSeries("Default", chartType: "Pie", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0)? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .Write("bmp");
+            }
         }
 
-        public void ChartColumn()
+        public void ChartColumn(int year)
         {
-            var result = dbContext.spGetCloumnChart(2017).Single();
-            Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
-            .AddSeries("Default", chartType: "column",
-                xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
-                yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
-            .SetXAxis("2017")
-            .SetYAxis("No of Candidates")
-            .Write("bmp");
+            var result = dbContext.spGetCloumnChart(year).Single();
+            if(result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
+            {
+                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
+                .AddSeries("Default", chartType: "column",
+                    xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
+                    yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
+                .SetXAxis("2017")
+                .SetYAxis("No of Candidates")
+                .Write("bmp");
+            }
         }
         #endregion
 
@@ -346,48 +352,15 @@ namespace InterviewEvaluationSystem.Controllers
                     Pincode = u.Pincode,
                 }).ToList();
             ViewBag.Users = users;
-            List<SelectListItem> selectedlistInner = new List<SelectListItem>();
-            foreach (tblUserType userType1 in dbContext.tblUserTypes)
-            {
-                SelectListItem selectlistitem = new SelectListItem
-                {
-                    Text = userType1.UserType,
-                    Value = userType1.UserTypeID.ToString()
-                };
-                selectedlistInner.Add(selectlistitem);
-            }
-            ViewBag.userType = selectedlistInner;
             return View();
         }
 
-        [HttpGet]
-        public JsonResult IsInterviewerUserNameExists(string UserName)
-        {
-            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName)).FirstOrDefault() != null;
-            return Json(!IsExists, JsonRequestBehavior.AllowGet);
-        }
-        [HttpGet]
-        public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
-        {
-            bool IsExists = dbContext.tblUsers.Where(u => u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
-            return Json(!IsExists, JsonRequestBehavior.AllowGet);
-        }
-
         [HttpPost]
-        public ActionResult AddInterviewers(UserViewModel user, string userType)
+        public ActionResult AddInterviewers(UserViewModel user)
         {
             var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (tblUserType userType1 in dbContext.tblUserTypes)
-            {
-                SelectListItem selectlistitem = new SelectListItem
-                {
-                    Text = userType1.UserType,
-                    Value = userType1.UserTypeID.ToString()
-                };
-                selectedlist.Add(selectlistitem);
-            }
-            ViewBag.userType = selectedlist;
+            var userNameLength = ConfigurationManager.AppSettings["UserNameLength"];
+            user.UserTypeID = 2;
             List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
                 .Select(u => new UserViewModel
                 {
@@ -402,31 +375,45 @@ namespace InterviewEvaluationSystem.Controllers
                     Pincode = u.Pincode,
                 }).ToList();
             ViewBag.Users = users;
-            if (ModelState.IsValid && user.Password.Length >= Convert.ToInt32(passwordLength))
+            bool flag = false;
+            if (ModelState.IsValid)
             {
-                dbContext.tblUsers.Add(new tblUser
+                if (user.Password.Length < Convert.ToInt32(passwordLength))
                 {
-                    UserID = user.UserID,
-                    UserName = user.UserName,
-                    Designation = user.Designation,
-                    UserTypeID = Convert.ToInt32(userType),
-                    Address = user.Address,
-                    Email = user.Email,
-                    EmployeeId = user.EmployeeId,
-                    Password = user.Password,
-                    Pincode = user.Pincode,
-                    CreatedBy = Convert.ToInt32(Session["UserID"]),
-                    CreatedDate = System.DateTime.Now,
-                    IsDeleted = false
-                });
-                dbContext.SaveChanges();
-                ModelState.Clear();
-                ViewBag.result = "Interviewer Added Successfully !!";
+                    flag = true;
+                    ViewBag.PasswordErrorMessage = "The password field is required and should contain minimum " + passwordLength + " characters";
+                }
+                if (user.UserName.Length < Convert.ToInt32(userNameLength))
+                {
+                    flag = true;
+                    ViewBag.UserNameErrorMessage = "The User Name field is required and should contain minimum " + userNameLength + " characters";
+                }
+                if(flag == false)
+                {
+                    dbContext.tblUsers.Add(new tblUser
+                    {
+                        UserID = user.UserID,
+                        UserName = user.UserName,
+                        Designation = user.Designation,
+                        UserTypeID = Convert.ToInt32(user.UserTypeID),
+                        Address = user.Address,
+                        Email = user.Email,
+                        EmployeeId = user.EmployeeId,
+                        Password = user.Password,
+                        Pincode = user.Pincode,
+                        CreatedBy = Convert.ToInt32(Session["UserID"]),
+                        CreatedDate = System.DateTime.Now,
+                        IsDeleted = false
+                    });
+                    dbContext.SaveChanges();
+                    ModelState.Clear();
+                    ViewBag.result = "Interviewer Added Successfully !!";
+                }
                 return View();
             }
             else
             {
-                ViewBag.PasswordErrorMessage = "The password field is required and should contain minimum " + passwordLength + " characters";
+                
             }
             return View(user);
         }
@@ -452,6 +439,26 @@ namespace InterviewEvaluationSystem.Controllers
             user.ModifiedDate = System.DateTime.Now;
             dbContext.SaveChanges();
             return RedirectToAction("AddInterviewers");
+        }
+
+        [HttpGet]
+        public JsonResult IsInterviewerUserNameExists(string UserName)
+        {
+            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName)).FirstOrDefault() != null;
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
+        {
+            bool IsExists = dbContext.tblUsers.Where(u => u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult IsInterviewerEmailExists(string Email)
+        {
+            bool IsExists = dbContext.tblUsers.Where(u => u.Email.Equals(Email)).FirstOrDefault() != null;
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

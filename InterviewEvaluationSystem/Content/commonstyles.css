@@ -45,9 +45,9 @@ delete-userCandidate {
     transition: 0.3s;
 }
 
-    .closebtn:hover {
-        color: black;
-    }
+.closebtn:hover {
+    color: black;
+}
 
 .label {
     border-radius: 50%;
@@ -88,4 +88,9 @@ delete-userCandidate {
   0%   { opacity: 0; }
   50%  { opacity: 1; }
   100% { opacity: 0; }
+}
+
+#pieChart, #columnChart{
+    color: #155724;
+    font-weight: bold;
 }

@@ -83,10 +83,10 @@ namespace InterviewEvaluationSystem.Models
         [Required]
         public int Pincode { get; set; }
         [Required]
-
         public string Password { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
+        [Remote("IsInterviewerEmailExists", "HR", ErrorMessage = "Email already exists")]
         public string Email { get; set; }
         [Required]
         public int UserTypeID { get; set; }
@@ -207,6 +207,7 @@ namespace InterviewEvaluationSystem.Models
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
+        //[NotEqualTo("OldPassword", ErrorMessage = "The new password and Old password are same.")]
         public string NewPassword { get; set; }
         [Required]
         [DataType(DataType.Password)]
