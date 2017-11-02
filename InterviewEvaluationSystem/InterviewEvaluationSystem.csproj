@@ -330,6 +330,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\IMG1.png" />
     <Content Include="Images\suyati.PNG" />
+    <Content Include="Images\user.png" />
     <Content Include="Models\InterviewModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>InterviewModel.edmx</DependentUpon>

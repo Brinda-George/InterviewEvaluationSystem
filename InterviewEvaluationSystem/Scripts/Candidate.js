@@ -3,12 +3,20 @@
         $('.edit-modeCandidate').hide();
         $('.edit-userCandidate, .cancel-userCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
+            var date = tr.find('#lblDateOfInterview').text();
+            var newdate = date.split("/").reverse().join("-");
+            tr.find('#DateOfInterview').val(newdate);
             var UserName = tr.find("#lblInterviewerName").text();
             tr.find('#ddlInterviewerName').val(UserName);
             $('.delete-userCandidate').hide();
             tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
+            tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
         });
         $('.cancel-userCandidate').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('#lblCandidateNameValidation').html('');
+            tr.find('#lblDateOfInterviewValidation').html('');
+            tr.find('#lblInterviewerNameValidation').html('');
             $('.delete-userCandidate').show();
         });
 
@@ -69,21 +77,26 @@
         });
 
         $(document).on("click", ".edit-userCandidateResult, .cancel-userCandidateResult", function () {
-
             var tr = $(this).parents('tr:first');
             var UserName = tr.find("#lblInterviewerName").text();
+            var date = tr.find('#lblDateOfInterview').text();
+            var newdate = date.split("-").reverse().join("-");
+            tr.find('#DateOfInterview').val(newdate);
             tr.find('#ddlInterviewerName').val(UserName);
             $('.delete-userCandidateResult').hide();
             tr.find('.edit-modeCandidateResult, .display-modeCandidateResult').toggle();
-
+            tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
         });
 
         $(document).on("click", ".cancel-userCandidateResult", function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('#lblCandidateNameValidation').html('');
+            tr.find('#lblDateOfInterviewValidation').html('');
+            tr.find('#lblInterviewerNameValidation').html('');
             $('.delete-userCandidateResult').show();
         });
 
         $(document).on("click", ".save-userCandidateResult", function () {
-
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
             var DateOfInterview = tr.find("#DateOfInterview").val();

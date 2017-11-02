@@ -107,21 +107,44 @@
         mode: WebGridPagerModes.All,
         columns:
         grid.Columns(
-            grid.Column("UserName", "User Name", format: 
-            @<text>  
-                <span class="display-mode"> 
-                    <label id="lblUserName">@item.UserName</label> 
-                </span> 
-                <input type="text" id="UserName" value="@item.UserName" class="edit-mode" />
+            grid.Column("UserName", "User Name", format:
+            @<text>
+                <span class="display-mode">
+                    <label id="lblUserName">@item.UserName</label>
+                </span>
+                <input type="text" id="UserName" value="@item.UserName" class="edit-mode form-control" />
                 <div>
                     <label id="lblUserNameValidation" class="text-danger"></label>
                 </div>
             </text>),
-            grid.Column("EmployeeId", "Employee ID", format: @<text>  <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label> </text>),
-            grid.Column("Email", "Email", format: @<text> <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>  <input type="text" id="Email" value="@item.Email" class="edit-mode" /> <div><label id="lblEmailValidation" class="text-danger"></label> </div>
+            grid.Column("EmployeeId", "Employee ID", format:
+            @<text>
+                <span class="display-mode">
+                    <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label>
+                </span>
             </text>),
-            grid.Column("Designation", "Designation", format: @<text> <span class="display-mode"> <label id="lblDesignation">@item.Designation</label> </span>  <input type="text" id="Designation" value="@item.Designation" class="edit-mode" /> <div><label id="lblDesignationValidation" class="text-danger"></label></div></text>),
-            grid.Column("Action", format: @<text>
+            grid.Column("Email", "Email", format:
+            @<text>
+                <span class="display-mode">
+                    <label id="lblEmail">@item.Email</label>
+                </span>
+                <input type="text" id="Email" value="@item.Email" class="edit-mode form-control" />
+                <div>
+                    <label id="lblEmailValidation" class="text-danger"></label>
+                </div>
+            </text>),
+            grid.Column("Designation", "Designation", format:
+            @<text>
+                <span class="display-mode">
+                    <label id="lblDesignation">@item.Designation</label>
+                </span>
+                <input type="text" id="Designation" value="@item.Designation" class="edit-mode form-control" />
+                <div>
+                    <label id="lblDesignationValidation" class="text-danger"></label>
+                </div>
+            </text>),
+            grid.Column("Action", format:
+            @<text>
                 <button class="edit-user display-mode btn btn-default" id="@item.UserID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
                 <button class="save-user edit-mode btn btn-default" id="@item.UserID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
                 <button class="cancel-user edit-mode btn btn-default" id="@item.UserID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>

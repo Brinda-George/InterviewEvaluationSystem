@@ -60,9 +60,8 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewProfile()
         {
             var name = Convert.ToString(Session["UserName"]);
-            var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
-            ViewBag.Details = item;
-            return View();
+            var user = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
+            return View(user);
         }
         #endregion
 

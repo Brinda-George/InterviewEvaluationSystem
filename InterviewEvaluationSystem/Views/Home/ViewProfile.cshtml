@@ -1,8 +1,8 @@
-﻿@model InterviewEvaluationSystem.Models.UserViewModel
+﻿@model InterviewEvaluationSystem.Models.tblUser
 
 @{
     ViewBag.Title = "ViewProfile";
-    var det = ViewBag.Details;
+    //var det = ViewBag.Details;
 }
 
 <ol class="breadcrumb">
@@ -19,51 +19,108 @@
     <li class="breadcrumb-item active">View Profile</li>
 </ol>
 
-<div id="formProfile">
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd>
-            @det.UserName
-        </dd>
+<style>
+    .user-row {
+        margin-bottom: 14px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EmployeeId)
-        </dt>
-        <dd>
-            @det.EmployeeId
-        </dd>
+        .user-row:last-child {
+            margin-bottom: 0;
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Designation)
-        </dt>
-        <dd>
-            @det.Designation
-        </dd>
+    .tablediv {
+        overflow-x: auto;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd>
-            @det.Address
-        </dd>
+    .table-user-information > tbody > tr {
+        border-top: 1px solid rgb(221, 221, 221);
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Pincode)
-        </dt>
-        <dd>
-            @det.Pincode
-        </dd>
+        .table-user-information > tbody > tr:first-child {
+            border-top: 0;
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @det.Email
-        </dd>
 
-    </dl>
+        .table-user-information > tbody > tr > td {
+            border-top: 0;
+        }
+
+    .toppad {
+        margin-top: 20px;
+    }
+
+    .imgspan {
+        padding-top: 50%;
+    }
+
+    .img-circle {
+        border-radius: 50%;
+        width: 60%;
+        text-align: center;
+    }
+    /*.fa-edit{
+        background-color:cadetblue;
+    }*/
+</style>
+<div class="row">
+    <div class="col-xl-6 col-sm-12 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-user"></i> User Name : @Model.UserName
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <span class="imgspan"><img alt="User Pic" src="~/Images/user.png" class="img-circle"></span>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8 tablediv">
+                        <table class="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.EmployeeId)
+                                    </td>
+                                    <td>@Model.EmployeeId</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-briefcase" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </td>
+                                    <td>@Model.Designation</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-globe" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.Address)
+                                    </td>
+                                    <td>@Model.Address</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.Pincode)
+                                    </td>
+                                    <td>@Model.Pincode</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.Email)
+                                    </td>
+                                    <td>@Model.Email</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer small text-muted">
+                @Html.ActionLink(" Update Profile", "ProfileUpdate", "Home", new { @class = "btn btn-primary fa fa-edit" })
+            </div>
+        </div>
+    </div>
 </div>
 
 <div>
