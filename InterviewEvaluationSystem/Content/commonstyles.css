@@ -1,12 +1,4 @@
-﻿/*#grid th{
-    width:2000px;
-} 
-
-#grid td{
-    width:2000px;
-}*/
-
-.webgrid-header, .webgrid-header a {
+﻿.webgrid-header, .webgrid-header a {
     background-color: #005396;
     color: #ffffff;
     text-align: left;
@@ -128,7 +120,7 @@ delete-userCandidate {
     margin-left: 45%;
 }
 
-#reject{
+#reject {
     margin-left: 10px;
     width: 8%;
 }

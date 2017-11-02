@@ -47,17 +47,13 @@
         $('#searchCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
-          //  debugger;
             $.ajax({
                 type: "post",
                 url: "/HR/SearchCandidateResult",
-
                 data: { Name: $('#CandidateNameText').val() },
                 datatype: "json",
                 success: function (Name) {
                     $('#gridContentCandidate').html(Name);
-
-
                 }
             });
         });

@@ -80,6 +80,15 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+                @*<div class="text-danger">@ViewBag.PasswordMismatchMessage</div>*@
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
@@ -98,11 +107,9 @@
 <div id="gridContent">
     @if (ViewBag.Users.Count != 0)
     {
-        @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        @grid.GetHtml(tableStyle: "table table-bordered table-striped",
         headerStyle: "webgrid-header",
-        footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
-        selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
         columns:
@@ -120,8 +127,9 @@
             grid.Column("EmployeeId", "Employee ID", format:
             @<text>
                 <span class="display-mode">
-                    <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label>
+                    <label id="lblEmployeeId">@item.EmployeeId</label>
                 </span>
+                <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label>
             </text>),
             grid.Column("Email", "Email", format:
             @<text>

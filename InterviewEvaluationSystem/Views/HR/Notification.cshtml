@@ -22,17 +22,15 @@
 @if (ViewBag.notificationList.Count == 0)
 {
     <div class="alert alert-success">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <strong>You have No Notifications!! </strong>
     </div>
 }
 else
 {
-    @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+    @grid.GetHtml(tableStyle: "table table-bordered table-striped",
         headerStyle: "webgrid-header",
-        footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
-        selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
         columns: grid.Columns(

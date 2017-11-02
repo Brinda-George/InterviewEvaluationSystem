@@ -20,18 +20,18 @@
         var Description = tr.find('#Description').val();
         var flag = 0;
         if (RateScale == "") {
-            tr.find('#scaleLbl').html("Please enter a valid Rate Scale");
+            tr.find('#scaleLbl').html("The Rate Scale field is required");
             flag = 1;
         }
         if (RateValue == "") {
-            tr.find('#valueLbl').html("Please enter a valid Rate Value");
+            tr.find('#valueLbl').html("The Rate Value field is required");
             flag = 1;
         }
         if (Description == "") {
-            tr.find('#desLbl').html("Please enter a valid Description");
+            tr.find('#desLbl').html("The Description field is required");
             flag = 1;
         }
-        if(flag == 1) {
+        if (flag == 1) {
             return false;
         }
         $.ajax({
@@ -63,11 +63,14 @@
         var id = $(this).prop('id');
         tr.find('.edit, .read').toggle();
         $('.edit').hide();
+        tr.find('#desLbl').empty();
+        tr.find('#valueLbl').empty();
+        tr.find('#scaleLbl').empty();
     });
 
     $('.delete-case').on('click', function (e) {
         e.preventDefault();
-        if (confirm("Are you sure you want to delete")) {
+        if (confirm("Are you sure you want to delete?")) {
             var tr = $(this).parents('tr:first');
             RateScaleID = $(this).prop('id');
             $.ajax({

@@ -11,7 +11,7 @@
     background-color: #fff;
 }
 
-.panel-heading{
+.panel-heading {
     height: 110px;
 }
 
@@ -28,6 +28,7 @@
     border-color: #5cb85c;
     color: #fff;
     background-color: #5cb85c;
+
 }
 
 .panel-green a {
@@ -70,7 +71,7 @@
     color: #d9534f;
 }
 
-.panel-red a:hover {
+.panel-red a:hover { 
     color: #b52b27;
 }
 
@@ -97,7 +98,7 @@
     border-color: #d858c9;
 }
 
-.panel-pink .panel-heading {
+.panel-pink .panel-heading { 
     border-color: #d858c9;
     color: #fff;
     background-color: #d858c9;

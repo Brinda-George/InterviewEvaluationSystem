@@ -16,7 +16,7 @@
             var UserName = tr.find("#UserName").val();
             var flag = 0;
             if (UserName == "") {
-                tr.find('#lblUserNameValidation').html('The UserName Is Required');
+                tr.find('#lblUserNameValidation').html('The UserName field is required');
                 flag = 1;
             }
             else {
@@ -24,7 +24,7 @@
             }
             var Email = tr.find("#Email").val();
             if (Email == "") {
-                tr.find('#lblEmailValidation').html('The Email Is Required');
+                tr.find('#lblEmailValidation').html('The Email field is required');
                 flag = 1;
             }
             else {
@@ -32,7 +32,7 @@
             }
             var Designation = tr.find("#Designation").val();
             if (Designation == "") {
-                tr.find('#lblDesignationValidation').html('The Designation Is Required');
+                tr.find('#lblDesignationValidation').html('The Designation field is required');
                 flag = 1;
             }
             else {
@@ -62,7 +62,7 @@
         $('.delete-user').on('click', function () {
             var tr = $(this).parents('tr:first');
             var UserID = $(this).prop('id');
-            var flag = confirm('Do you want to delete the record');
+            var flag = confirm('Are you sure you want to delete?');
             if (flag) {
                 $.ajax({
                     url: '/HR/DeleteInterviewer/',

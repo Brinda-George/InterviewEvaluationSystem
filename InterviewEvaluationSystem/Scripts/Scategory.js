@@ -18,11 +18,11 @@
         var Description = tr.find('#Description').val();
         var flag = 0;
         if (SkillCategory == "") {
-            tr.find('#catLbl').html("Please enter a valid Skill Category");
+            tr.find('#catLbl').html("The Skill Category field is required");
             flag = 1;
         }
         if (Description == "") {
-            tr.find('#desLbl').html("Please enter a valid description");
+            tr.find('#desLbl').html("The Description field is required");
             flag = 1;
         }
         if (flag == 1) {
@@ -56,11 +56,13 @@
         var id = $(this).prop('id');
         tr.find('.edit, .read').toggle();
         $('.edit').hide();
+        tr.find('#catLbl').empty();
+        tr.find('#desLbl').empty();
     });
 
     $(document).on('click', ".delete-case", function (e) {
         e.preventDefault();
-        if (confirm("Are you sure you want to delete")) {
+        if (confirm("Are you sure you want to delete?")) {
             var tr = $(this).parents('tr:first');
             SkillCategoryID = $(this).prop('id');
             $.ajax({

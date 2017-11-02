@@ -1,5 +1,5 @@
 ﻿// Create a jquery plugin that prints the given element.
-jQuery.fn.print = function() {
+jQuery.fn.print = function () {
     // NOTE: We are trimming the jQuery collection down to the
     // first element in the collection.
     if (this.size() > 1) {
@@ -72,7 +72,7 @@ jQuery.fn.print = function() {
     // Have the frame remove itself in about a minute so that
     // we don't build up too many of these frames.
     setTimeout(
-    function() {
+    function () {
         jFrame.remove();
     },
     (60 * 1000)

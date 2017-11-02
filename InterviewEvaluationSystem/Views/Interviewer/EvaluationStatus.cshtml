@@ -20,20 +20,20 @@
         rowStyle: "webgrid-row-style",
         mode: WebGridPagerModes.All,
         columns: webgridStatus.Columns(
-            webgridStatus.Column(columnName: "Name", header: "Name", format: 
-                @<text>
-                    @Html.ActionLink((string)item.Name, "InterviewEvaluation", new
-                       {
-                           Name = item.Name,
-                           CandidateID = item.CandidateID,
-                           RoundID = item.RoundID,
-                           EvaluationID = item.EvaluationID
-                       })
-                    @if (item.DateOfInterview == DateTime.Today)
+            webgridStatus.Column(columnName: "Name", header: "Name", format:
+            @<text>
+                @Html.ActionLink((string)item.Name, "InterviewEvaluation", new
+               {
+                   Name = item.Name,
+                   CandidateID = item.CandidateID,
+                   RoundID = item.RoundID,
+                   EvaluationID = item.EvaluationID
+               })
+                @if (item.DateOfInterview == DateTime.Today)
                     {
-                        <span class="bg-warning blinking"> Today </span>
-                    }
-                </text>),
+                    <span class="bg-warning blinking"> Today </span>
+                }
+            </text>),
             webgridStatus.Column(columnName: "RoundName", header: "Current Round"))
         )
 }

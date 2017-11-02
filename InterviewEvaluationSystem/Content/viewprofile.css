@@ -1,0 +1,38 @@
+﻿.user-row {
+    margin-bottom: 14px;
+}
+
+.user-row:last-child {
+    margin-bottom: 0;
+
+}
+
+.tablediv {
+    overflow-x: auto;
+}
+
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}
+
+.toppad {
+    margin-top: 20px;
+}
+
+.imgspan {
+    padding-top: 50%;
+}
+
+.img-circle {
+    border-radius: 50%;
+    width: 60%;
+    text-align: center;
+}

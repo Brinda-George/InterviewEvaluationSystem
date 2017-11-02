@@ -27,11 +27,9 @@
 <div id="grid1">
     @if (Model.Any())
     {
-        @webgridStatus.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        @webgridStatus.GetHtml(tableStyle: "table table-bordered table-striped",
                 headerStyle: "webgrid-header",
-                footerStyle: "webgrid-footer",
                 alternatingRowStyle: "webgrid-alternating-row",
-                selectedRowStyle: "webgrid-selected-row",
                 rowStyle: "webgrid-row-style",
                 mode: WebGridPagerModes.All,
                 columns: webgridStatus.Columns(

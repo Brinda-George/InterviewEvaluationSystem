@@ -37,31 +37,29 @@
 
 <div id="ajaxgrid">
     @{
-        var gridview = new WebGrid(ViewBag.Rounds, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
+        var gridview = new WebGrid(ViewBag.Rounds, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 10);
     }
     @if (ViewBag.Rounds.Count != 0)
     {
-        @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        @gridview.GetHtml(tableStyle: "table table-bordered table-striped",
                  headerStyle: "webgrid-header",
-                 footerStyle: "webgrid-footer",
                  alternatingRowStyle: "webgrid-alternating-row",
-                 selectedRowStyle: "webgrid-selected-row",
                  rowStyle: "webgrid-row-style",
                  mode: WebGridPagerModes.All,
                  columns: new[]{
                      gridview.Column("RoundName",format:
-                     @<text>
+                    @<text>
                         <span id="roundname" class="read">@item.RoundName</span>
                         @Html.TextBox("RoundName", (string)item.RoundName, new { @class = "edit",@style="display:none"  })
                         <label class="text-danger" id="roundLbl"></label>
-                     </text>),
+                    </text>),
                      gridview.Column("Action", style: "button",format:
-                     @<text>
+                    @<text>
                         <button class="edit-case read btn btn-default" id="@item.RoundID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
                         <button class="delete-case read btn btn-default" id="@item.RoundID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                         <button class="update-case edit btn btn-default" style="display:none" id="@item.RoundID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RoundID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
-                     </text>)
+                    </text>)
                  })
     }
 </div>

@@ -75,9 +75,9 @@
                         <label class="text-danger" id="valueLbl"></label>
                     </text>),
                      gridview.Column("Description",format:
-                        @<text><span id="description" class="read">@item.Description</span>
-                        @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
-                        <label class="text-danger" id="desLbl"></label>
+                    @<text><span id="description" class="read">@item.Description</span>
+                    @Html.TextBox("Description", (string)item.Description, new { @class = "edit",@style="display:none"  })
+                    <label class="text-danger" id="desLbl"></label>
                     </text>),
                      gridview.Column("Action", style: "button",format:
                     @<text>
@@ -87,7 +87,7 @@
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                     </text>)
                      })
-}
+    }
 </div>
 
 <div>

@@ -13,7 +13,7 @@
         RoundID = $(this).prop('id');
         var RoundName = tr.find('#RoundName').val();
         if (RoundName == "") {
-            tr.find('#roundLbl').html("Please enter a valid Round Name");
+            tr.find('#roundLbl').html("The Round Name field is required");
             return false;
         }
         $.ajax({
@@ -35,20 +35,18 @@
         });
     });
 
-
     $('.cancel-case').on('click', function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         var id = $(this).prop('id');
         tr.find('.edit, .read').toggle();
         $('.edit').hide();
+        tr.find('#roundLbl').empty();
     });
-
-
 
     $('.delete-case').on('click', function (e) {
         e.preventDefault();
-        if (confirm("Are you sure you want to delete")) {
+        if (confirm("Are you sure you want to delete?")) {
             var tr = $(this).parents('tr:first');
             RoundID = $(this).prop('id');
             $.ajax({
@@ -66,6 +64,5 @@
             });
         }
     });
-
 
 });

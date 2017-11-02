@@ -26,12 +26,39 @@
             var DateOfInterview = tr.find("#DateOfInterview").val();
             var UserID = tr.find("#ddlInterviewerName").val();
             var CandidateID = $(this).prop('id');
+            var flag = 0;
+            if (CandidateName == "") {
+                tr.find('#lblCandidateNameValidation').html('The Candidate Name field is required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblCandidateNameValidation').empty();
+            }
+
+            if (DateOfInterview == "") {
+                tr.find('#lblDateOfInterviewValidation').html('The Date Of Interview field is required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblDateOfInterviewValidation').empty();
+            }
+
+            if (UserID == null) {
+                tr.find('#lblInterviewerNameValidation').html('The Interviewer field is required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblInterviewerNameValidation').empty();
+            }
+            if (flag == 1) {
+                return false;
+            }
             $.ajax({
                 url: '/HR/UpdateCandidate/',
                 data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserID": UserID }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
-                success: function (data) { 
+                success: function (data) {
                     location.reload();
                     alert("Successfully Updated");
                     $('.delete-userCandidate').show();
@@ -43,7 +70,7 @@
         $('.delete-userCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
             var CandidateID = $(this).prop('id');
-            var flag = confirm('Do you want to delete the record');
+            var flag = confirm('Are you sure you want to delete?');
             if (flag) {
                 $.ajax({
                     url: '/HR/DeleteCandidate/',
@@ -102,6 +129,33 @@
             var DateOfInterview = tr.find("#DateOfInterview").val();
             var UserID = tr.find("#ddlInterviewerName").val();
             var CandidateID = $(this).prop('id');
+            var flag = 0;
+            if (CandidateName == "") {
+                tr.find('#lblCandidateNameValidation').html('The Candidate Name field is required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblCandidateNameValidation').empty();
+            }
+
+            if (DateOfInterview == "") {
+                tr.find('#lblDateOfInterviewValidation').html('The Date Of Interview field is required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblDateOfInterviewValidation').empty();
+            }
+
+            if (UserID == null) {
+                tr.find('#lblInterviewerNameValidation').html('The Interviewer field is required');
+                flag = 1;
+            }
+            else {
+                tr.find('#lblInterviewerNameValidation').empty();
+            }
+            if (flag == 1) {
+                return false;
+            }
             $.ajax({
                 url: '/HR/UpdateCandidate/',
                 data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserID": UserID }),
@@ -119,7 +173,7 @@
         $(document).on("click", ".delete-userCandidateResult", function () {
             var tr = $(this).parents('tr:first');
             var CandidateID = $(this).prop('id');
-            var flag = confirm('Do you want to delete the record');
+            var flag = confirm('Are you sure you want to delete?');
             if (flag) {
                 $.ajax({
                     url: '/HR/DeleteCandidate/',
@@ -158,55 +212,76 @@ function candidateValidation() {
         $('#lblCandidateName').html("The Candidate Name field is required.");
         flag = 1;
     }
+    else {
+        $('#lblCandidateName').empty();
+    }
     if (Designation == "") {
         $('#lblDesignation').html("The Designation field is required.");
         flag = 1;
+    }
+    else {
+        $('#lblDesignation').empty();
     }
     if (DateOfBirth == "") {
         $('#lblDOB').html('The Date Of Birth field is required.');
         flag = 1;
     }
+    else {
+        $('#lblDOB').empty();
+    }
     if (DateOfInterview == "") {
         $('#lblDOI').html('The Date Of Interview field is required.');
         flag = 1;
+    }
+    else {
+        $('#lblDOI').empty();
     }
     if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(Email))) {
         $('#lblEmail').html('A valid Email is required.');
         flag = 1;
     }
+    else {
+        $('#lblEmail').empty();
+    }
     if (PAN == "" || !regpan.test(PAN)) {
         $('#lblPAN').html('A valid PAN is Required');
         flag = 1;
     }
+    else {
+        $('#lblPAN').empty();
+    }
     if (noticeperiod == "") {
-        $('#lblNoticePeriod').html('The Notice Period Is Required');
+        $('#lblNoticePeriod').html('The Notice Period is required');
         flag = 1;
+    }
+    else {
+        $('#lblNoticePeriod').empty();
     }
     if (Qualifications == "") {
         $('#lblQualification').html('The Qualification field is required.');
         flag = 1;
     }
+    else {
+        $('#lblQualification').empty();
+    }
     if (interviewer == "") {
         $('#lblInterviewer').html('The Interviewer field is required.');
         flag = 1;
     }
+    else {
+        $('#lblInterviewer').empty();
+    }
     if (flag == 1) {
         return false;
+    }
+    else {
+
     }
     $.ajax({
         url: '/HR/AddCandidate',
         type: 'Post',
         data: $('#frmCreate').serialize(),
         success: function (response) {
-            $('#lblCandidateName').empty();
-            $('#lblDesignation').empty();
-            $('#lblDOB').empty();
-            $('#lblDOI').empty();
-            $('#lblEmail').empty();
-            $('#lblPAN').empty();
-            $('#lblNoticePeriod').empty();
-            $('#lblQualification').empty();
-            $('#lblInterviewer').empty();
             window.location.href = response.Url;
         },
         error: function (data) {
@@ -231,6 +306,7 @@ function GetExistingDynamicTextBoxes(value) {
 
         var button = $(" <input />").attr("type", "button").attr("value", "Remove");
         button.attr("onclick", "DeleteTextBox(this)");
+        button.addClass('removeBtn');
         button.addClass('btn btn-default');
         div.append(button);
 

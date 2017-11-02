@@ -39,7 +39,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
                 .AddLegend("Summary")
-                .AddSeries("Default", chartType: "Pie", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0)? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .AddSeries("Default", chartType: "Pie", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
                 .Write("bmp");
             }
         }
@@ -47,7 +47,7 @@ namespace InterviewEvaluationSystem.Controllers
         public void ChartColumn(int year)
         {
             var result = dbContext.spGetCloumnChart(year).Single();
-            if(result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
+            if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
             {
                 Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
                 .AddSeries("Default", chartType: "column",
@@ -300,13 +300,18 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public JsonResult SkillEdit(int SkillID, string Skillname)
+        public JsonResult SkillEdit(int SkillID, string Skillname, int CategoryID)
         {
-            tblSkill skill = dbContext.tblSkills.Find(SkillID);
+            InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
+            tblSkill skill = db.tblSkills.Find(SkillID);
+            skill.SkillCategoryID = CategoryID;
             skill.SkillName = Skillname;
-            dbContext.SaveChanges();
+            skill.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            skill.ModifiedDate = DateTime.Now;
+            db.SaveChanges();
+            var SkillCategory = (from item in db.tblSkillCategories where item.SkillCategoryID == CategoryID select item.SkillCategory).FirstOrDefault();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-            return Json(new { Url = redirectUrl, SkillName = Skillname }, JsonRequestBehavior.AllowGet);
+            return Json(new { Url = redirectUrl, SkillName = Skillname, SkillCategory = SkillCategory }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -361,20 +366,6 @@ namespace InterviewEvaluationSystem.Controllers
             var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
             var userNameLength = ConfigurationManager.AppSettings["UserNameLength"];
             user.UserTypeID = 2;
-            List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
-                .Select(u => new UserViewModel
-                {
-                    UserID = u.UserID,
-                    UserName = u.UserName,
-                    Designation = u.Designation,
-                    UserTypeID = u.UserTypeID,
-                    Address = u.Address,
-                    Email = u.Email,
-                    EmployeeId = u.EmployeeId,
-                    Password = u.Password,
-                    Pincode = u.Pincode,
-                }).ToList();
-            ViewBag.Users = users;
             bool flag = false;
             if (ModelState.IsValid)
             {
@@ -388,7 +379,7 @@ namespace InterviewEvaluationSystem.Controllers
                     flag = true;
                     ViewBag.UserNameErrorMessage = "The User Name field is required and should contain minimum " + userNameLength + " characters";
                 }
-                if(flag == false)
+                if (flag == false)
                 {
                     dbContext.tblUsers.Add(new tblUser
                     {
@@ -409,11 +400,21 @@ namespace InterviewEvaluationSystem.Controllers
                     ModelState.Clear();
                     ViewBag.result = "Interviewer Added Successfully !!";
                 }
+                List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
+                .Select(u => new UserViewModel
+                {
+                    UserID = u.UserID,
+                    UserName = u.UserName,
+                    Designation = u.Designation,
+                    UserTypeID = u.UserTypeID,
+                    Address = u.Address,
+                    Email = u.Email,
+                    EmployeeId = u.EmployeeId,
+                    Password = u.Password,
+                    Pincode = u.Pincode,
+                }).ToList();
+                ViewBag.Users = users;
                 return View();
-            }
-            else
-            {
-                
             }
             return View(user);
         }

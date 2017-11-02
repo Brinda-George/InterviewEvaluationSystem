@@ -83,7 +83,12 @@ namespace InterviewEvaluationSystem.Models
         [Required]
         public int Pincode { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
         [Remote("IsInterviewerEmailExists", "HR", ErrorMessage = "Email already exists")]
@@ -207,7 +212,6 @@ namespace InterviewEvaluationSystem.Models
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
-        //[NotEqualTo("OldPassword", ErrorMessage = "The new password and Old password are same.")]
         public string NewPassword { get; set; }
         [Required]
         [DataType(DataType.Password)]

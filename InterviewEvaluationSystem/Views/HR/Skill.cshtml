@@ -22,7 +22,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SkillCategoryID, "Skill Category", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.category, "Select category", new { @class = "form-control", @id = "categories" })
+                @Html.DropDownList("category", null, "Select category", new { @class = "form-control", @id = "categories" })
                 <label id="lblCategory" class="text-danger"></label>
                 @Html.ValidationMessageFor(model => model.SkillCategoryID, "", new { @class = "text-danger" })
             </div>
@@ -51,17 +51,17 @@
     }
     @if (ViewBag.Skillcategories != null)
     {
-        @gridview.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        @gridview.GetHtml(tableStyle: "table table-bordered table-striped",
                  headerStyle: "webgrid-header",
-                 footerStyle: "webgrid-footer",
                  alternatingRowStyle: "webgrid-alternating-row",
-                 selectedRowStyle: "webgrid-selected-row",
                  rowStyle: "webgrid-row-style",
                  mode: WebGridPagerModes.All,
                  columns: new[]{
                     gridview.Column("Skill Category",format:
                     @<text>
-                        <span id="skillcategory">@item.skillcat</span>
+                        <span id="skillcategory" class="read">@item.skillcat</span>
+                        @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.category, "Select category", new { @class = "edit",@id = "categories",@style="display:none"  })
+                        <label class="text-danger" id="catLbl"></label>
                     </text>),
                     gridview.Column("Skill Name",format:
                     @<text>
@@ -77,7 +77,7 @@
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.skillno"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                     </text>)
                 })
-    }    
+    }
 </div>
 
 <div>

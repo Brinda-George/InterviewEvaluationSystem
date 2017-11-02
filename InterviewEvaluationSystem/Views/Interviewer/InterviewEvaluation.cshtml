@@ -34,11 +34,9 @@
     if (Model.RatingScale.Any())
     {
         <div id="grid1">
-            @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+            @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped",
                 headerStyle: "webgrid-header",
-                footerStyle: "webgrid-footer",
                 alternatingRowStyle: "webgrid-alternating-row",
-                selectedRowStyle: "webgrid-selected-row",
                 rowStyle: "webgrid-row-style",
                 mode: WebGridPagerModes.All,
                 columns: webgridRatingScale.Columns(
@@ -81,11 +79,9 @@
 
         }
         <div class="grid">
-            @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+            @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped",
                 headerStyle: "webgrid-header",
-                footerStyle: "webgrid-footer",
                 alternatingRowStyle: "webgrid-alternating-row",
-                selectedRowStyle: "webgrid-selected-row",
                 rowStyle: "webgrid-row-style",
                 htmlAttributes: new { id = "grid" },
                 mode: WebGridPagerModes.All,
