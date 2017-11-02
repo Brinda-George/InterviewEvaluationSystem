@@ -495,6 +495,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public ActionResult AddCandidate()
         {
+            string defaultCountry = "six";
             AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
             addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid()
                 .Select(s => new CandidateGridViewModel
@@ -511,7 +512,8 @@ namespace InterviewEvaluationSystem.Controllers
                 SelectListItem selectlistitem = new SelectListItem
                 {
                     Text = user.UserName,
-                    Value = user.UserID.ToString()
+                    Value = user.UserID.ToString(),
+
                 };
                 selectedlist.Add(selectlistitem);
             }

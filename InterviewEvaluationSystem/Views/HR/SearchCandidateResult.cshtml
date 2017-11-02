@@ -19,7 +19,7 @@
             gridCandidateResult.Column("CandidateName", "Candidate Name", format: 
             @<text>  
                 <span class="display-modeCandidateResult"> <label id="lblCandidateName">@item.CandidateName</label> </span> 
-                <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidateResult" />
+                <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidateResult form-control" />
                 <div><label id="lblCandidateNameValidation" class="text-danger"></label></div>
 
             </text>),
@@ -28,7 +28,7 @@
              gridCandidateResult.Column("DateOfInterview", "Date Of Interview", format: 
              @<text>  
                 <span class="display-modeCandidateResult"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span> 
-                <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidateResult" />
+                <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidateResult form-control" />
                 <div><label id="lblDateOfInterviewValidation" class="text-danger"></label></div>
              </text>),
 

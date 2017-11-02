@@ -175,7 +175,7 @@
 
 </div>
 
-<div id="gridContentCandidate">
+<div id="gridContent">
     @gridCandidate.GetHtml(
         htmlAttributes: new { id = "WebGridCandidate" },
         tableStyle: "table table-bordered table-striped table-condensed",
@@ -191,7 +191,7 @@
             gridCandidate.Column("CandidateName", "Candidate Name", format: 
             @<text>  
                 <span class="display-modeCandidate"> <label id="lblCandidateName">@item.CandidateName</label> </span> 
-                <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate" />
+                <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate form-control" />
                 <div><label id="lblCandidateNameValidation" class="text-danger"></label></div>
             </text>),
             //   gridCandidate.Column("DateOfInterview", "Date Of Interview", format: @<text>  <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview</label> </span> <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview" class="edit-modeCandidate" /></text>),
@@ -199,7 +199,10 @@
             gridCandidate.Column("DateOfInterview", "Date Of Interview", format: 
             @<text>  
                 <span class="display-modeCandidate"> <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label> </span> 
-                <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidate" />
+                @*<input type="date" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidate form-control" />*@
+    <input type="date" id="DateOfInterview" class="edit-modeCandidate form-control" />
+
+                @*@Html.EditorFor(model => model.DateOfInterview, new { htmlAttributes = new { @class = "form-control", id = "DateOfInterview" } })*@
                 <div><label id="lblDateOfInterviewValidation" class="text-danger"></label></div>
             </text>),
 
@@ -209,7 +212,8 @@
             gridCandidate.Column("InterviewerName", "Interviewer Name", format: 
             @<text> 
                  <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span> 
-                 @Html.DropDownList("user", null, string.Empty, new {id="ddlInterviewerName", @class = "edit-modeCandidate form-control" })  
+                 @*@Html.DropDownList("user", null, string.Empty, new {id="ddlInterviewerName", @class = "edit-modeCandidate form-control" })*@ 
+                 @Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" }) 
                  <div><label id="lblInterviewerNameValidation" class="text-danger"></label></div>
             </text>),
 

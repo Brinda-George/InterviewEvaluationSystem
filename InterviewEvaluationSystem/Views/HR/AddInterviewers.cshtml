@@ -123,13 +123,13 @@
                 grid.Column("UserName","User Name", format:
                 @<text>
                     <span class="display-mode"> <label id="lblUserName">@item.UserName</label> </span>
-                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "edit-mode", @Value = @item.UserName } })
-                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-                    @*<input type = "text" id = "UserName" value = "@item.UserName" class="edit-mode" />*@
+                    @*@Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "edit-mode", @Value = @item.UserName } })
+                    @Html.ValidationMessageFor(model => model.UserName, string.Empty, new { @class = "edit-mode text-danger" })*@
+                    <input type = "text" id = "UserName" name="UserName" value = "@item.UserName" class="edit-mode" />
                     <div><label id="lblUserNameValidation" class="text-danger"></label></div>
-
+                
                 </text>),
-
+                
                 grid.Column("EmployeeId", "Employee Id", format:
                 @<text>
                     <span class="display-mode">@item.EmployeeId </span> <label id="lblEmployeeId" class="edit-mode">@item.EmployeeId</label>
@@ -139,7 +139,7 @@
                 @<text>
                     <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>
                     @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "edit-mode", @Value = @item.Email } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "edit-mode text-danger" })
                     @*<input type="text" id="Email" value="@item.Email" class="edit-mode" />*@
                     <div><label id="lblEmailValidation" class="text-danger"></label> </div>
                 </text>),

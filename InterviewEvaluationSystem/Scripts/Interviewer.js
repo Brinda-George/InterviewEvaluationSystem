@@ -24,40 +24,33 @@
             var tr = $(this).parents('tr:first');
             var UserName = tr.find("#UserName").val();
             var flag = 0;
-            if (UserName == "")
-            {
+            if (UserName == "") {
                 tr.find('#lblUserNameValidation').html('The UserName Is Required');
                 flag = 1;
             }
-            else
-            {
+            else {
                 tr.find('#lblUserNameValidation').empty();
             }
             var Email = tr.find("#Email").val();
-            if (Email == "")
-            {
+            if (Email == "") {
                 tr.find('#lblEmailValidation').html('The Email Is Required');
                 flag = 1;
             }
-            else
-            {
+            else {
                 tr.find('#lblEmailValidation').empty();
             }
             var Designation = tr.find("#Designation").val();
-            if (Designation == "")
-            {
+            if (Designation == "") {
                 tr.find('#lblDesignationValidation').html('The Designation Is Required');
                 flag = 1;
             }
-            else
-            {
+            else {
                 tr.find('#lblDesignationValidation').empty();
             }
-            if (flag == 1)
-            {
+            if (flag == 1) {
                 return false;
             }
-            
+
             var EmployeeId = tr.find("#lblEmployeeId").html();
             //var UserID = tr.find('#lblUserID').html();
             var UserID = $(this).prop('id');
@@ -67,7 +60,7 @@
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                   
+
                     tr.find('.edit-mode, .display-mode').toggle();
                     tr.find("#lblUserName").text(data.UserName);
                     tr.find("#lblDesignation").text(data.Designation);
@@ -82,7 +75,7 @@
             var tr = $(this).parents('tr:first');
             //var UserID = tr.find('#lblUserID').html();
             var UserID = $(this).prop('id');
-           // var flag = confirm('You are about to delete Employee ID ' + employeeId + ' permanently.Are you sure you want to delete this record?');
+            // var flag = confirm('You are about to delete Employee ID ' + employeeId + ' permanently.Are you sure you want to delete this record?');
             var flag = confirm('Do you want to delete the record');
             if (flag) {
 
@@ -97,10 +90,43 @@
                     }
                 })
             }
-            else
-            {
+            else {
                 return false;
             }
         });
     });
 });
+
+
+
+
+    //$("#InterviewerForm").validate({
+
+    //    submitHandler: function (form) {
+    //        //submit once validation rules are met
+    //        form.submit();           
+    //    },
+    //    rules: {
+    //        //other validation statements
+
+    //        UserName: {
+    //            required: true,
+                
+    //            remote: {
+    //                url: "/HR/IsInterviewerUserNameExists",
+    //                type: "post",
+    //                data: {
+    //                    UserName: function () {
+    //                        return $('#UserName').val();
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    },
+    //    messages: {
+    //        UserName: {
+    //            remote: "UserName already in use!"
+    //        }
+    //    }
+    //    //other validation statements
+    //});

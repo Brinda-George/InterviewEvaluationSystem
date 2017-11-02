@@ -18,14 +18,22 @@
                    
             var tr = $(this).parents('tr:first');
             var UserName = tr.find("#lblInterviewerName").text();
-            tr.find('#ddlInterviewerName').val(UserName);
+            var date = tr.find('#lblDateOfInterview').text();
+            var newdate = date.split("-").reverse().join("-");
             $('.delete-userCandidate').hide();
             tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
+            tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
+            tr.find('#DateOfInterview').val(newdate);
             
         });
         $('.cancel-userCandidate').on('click', function () {
         
-                    $('.delete-userCandidate').show();
+            $('.delete-userCandidate').show();
+
+            var tr = $(this).parents('tr:first');
+            tr.find('#lblCandidateNameValidation').html('');
+            tr.find('#lblDateOfInterviewValidation').html('');
+            tr.find('#lblInterviewerNameValidation').html('');
         });
 
 
