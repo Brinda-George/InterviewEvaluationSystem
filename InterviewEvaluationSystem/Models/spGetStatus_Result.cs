@@ -14,11 +14,11 @@ namespace InterviewEvaluationSystem.Models
     public partial class spGetStatus_Result
     {
         public string Name { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
         public string RoundName { get; set; }
         public int CandidateID { get; set; }
         public int RoundID { get; set; }
         public int EvaluationID { get; set; }
         public Nullable<bool> Recommended { get; set; }
-        public System.DateTime DateOfInterview { get; set; }
     }
 }
