@@ -11,6 +11,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     alert('Candidate Hired');
+                    location.reload();
                 }
             });
 
@@ -26,6 +27,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     alert('Candidate Rejected');
+                    location.reload();
                 }
             });
         });

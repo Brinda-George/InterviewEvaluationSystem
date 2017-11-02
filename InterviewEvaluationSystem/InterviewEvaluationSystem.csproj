@@ -373,6 +373,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.easing.min.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jQuery.print.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

@@ -763,6 +763,8 @@ namespace InterviewEvaluationSystem.Controllers
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
+            var Notifications = dbContext.spHRNotificationGrid();
+            Session["NotificationsCount"] = Notifications.Count();
             var redirectUrl = "";
             if (recommended == true)
             {

@@ -12,6 +12,7 @@
 }
 
 <script src="~/Scripts/hrevaluation.js"></script>
+<script src="~/Scripts/jQuery.print.js"></script>
 
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -23,26 +24,27 @@
     <li class="breadcrumb-item active">Interview Evaluation</li>
 </ol>
 
-@if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
-{
-    <h1>Interview Evaluation Form</h1>
-}
-else
-{
-    <h2>HR Evaluation</h2>
-}
-<input type="hidden" id="roundId" value="@TempData["roundID"]" />
-<input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
-<input type="hidden" id="recommended" value="@TempData["recommended"].ToString()" />
-<p>Name of Candidate: @Model.CandidateName</p>
- 
-@using (Html.BeginForm())
-{
-    <h4>Rating Scale</h4>
-    if (Model.RatingScale.Any())
+<div class="divContainer">
+    @if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
     {
-        <div id="grid1">
-            @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        <h1>Interview Evaluation Form</h1>
+    }
+    else
+    {
+        <h2>HR Evaluation</h2>
+    }
+    <input type="hidden" id="roundId" value="@TempData["roundID"]" />
+    <input type="hidden" id="evaluationId" value="@TempData["evaluationID"]" />
+    <input type="hidden" id="recommended" value="@TempData["recommended"].ToString()" />
+    <p>Name of Candidate: @Model.CandidateName</p>
+
+    @using (Html.BeginForm())
+    {
+        <h4>Rating Scale</h4>
+        if (Model.RatingScale.Any())
+        {
+            <div id="grid1">
+                @webgridRatingScale.GetHtml(tableStyle: "table table-bordered table-striped ratingScale",
                  headerStyle: "webgrid-header",
                  alternatingRowStyle: "webgrid-alternating-row",
                  rowStyle: "webgrid-row-style",
@@ -53,74 +55,75 @@ else
                      webgridRatingScale.Column(columnName: "Description", header: "Description")
                      )
                  )
-        </div>
-    }
+            </div>
+        }
 
-    for (int i = 0; i < Model.SkillCategories.Count; i++)
-    {
-        <h4>@Model.SkillCategories[i].SkillCategory</h4>
-        List<WebGridColumn> columns = new List<WebGridColumn>();
-        WebGridColumn column = new WebGridColumn();
-        column.ColumnName = "SkillName";
-        column.Header = "Skill Name";
-        columns.Add(column);
-        foreach (var round in Model.Rounds)
+        for (int i = 0; i < Model.SkillCategories.Count; i++)
         {
-            if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
+            <h4>@Model.SkillCategories[i].SkillCategory</h4>
+            List<WebGridColumn> columns = new List<WebGridColumn>();
+            WebGridColumn column = new WebGridColumn();
+            column.ColumnName = "SkillName";
+            column.Header = "Skill Name";
+            columns.Add(column);
+            foreach (var round in Model.Rounds)
             {
-                columns.Add(new WebGridColumn()
-                {
-                    ColumnName = round.RoundName,
-                    Header = round.RoundName,
-                    Format = (item) => Html.LabelFor(m => m.RatingScale[i].RateScaleID, new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { style = "font-weight: normal;" })
-                });
-            }
-            else
-            {
-                if (round.RoundID < Convert.ToInt32(@TempData["roundID"]))
+                if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
                 {
                     columns.Add(new WebGridColumn()
                     {
                         ColumnName = round.RoundName,
                         Header = round.RoundName,
-                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                        Format = (item) => Html.LabelFor(m => m.RatingScale[i].RateScaleID, new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { style = "font-weight: normal;" })
                     });
-                    @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
                 }
                 else
                 {
-                    columns.Add(new WebGridColumn()
+                    if (round.RoundID < Convert.ToInt32(@TempData["roundID"]))
                     {
-                        ColumnName = round.RoundName,
-                        Header = round.RoundName,
-                        Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
-                    });
-                    @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
+                        columns.Add(new WebGridColumn()
+                        {
+                            ColumnName = round.RoundName,
+                            Header = round.RoundName,
+                            Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                        });
+                        @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
+                    }
+                    else
+                    {
+                        columns.Add(new WebGridColumn()
+                        {
+                            ColumnName = round.RoundName,
+                            Header = round.RoundName,
+                            Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID })
+                        });
+                        @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
+                    }
                 }
             }
-        }
-        <div class="grid">
-            @webgrids[i].GetHtml(headerStyle: "webgrid-header",
-             alternatingRowStyle: "webgrid-alternating-row",
-             rowStyle: "webgrid-row-style",
-             mode: WebGridPagerModes.All,
-             columns: columns
+            <div class="grid">
+                @webgrids[i].GetHtml(tableStyle: "table table-bordered table-striped score",
+                headerStyle: "webgrid-header",
+                alternatingRowStyle: "webgrid-alternating-row",
+                rowStyle: "webgrid-row-style",
+                mode: WebGridPagerModes.All,
+                columns: columns
              )
-        </div>
-    }
-    if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == false)
-    {
-        @Html.TextArea("Comments", "", new { @class = "form-control", @placeholder = "comments", rows = "5", cols = "20" })<br />
-        <input type="button" id="hire" value="Hire" class="btn btn-default" onclick="getValues(this)" />
-        <input type="button" id="reject" value="Reject" class="btn btn-default" onclick="getValues(this)" />
-    }
-    else
-    {
-        <h3>Comments</h3>
-        if (Model.Comments.Any())
+            </div>
+        }
+        if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == false)
         {
-            <div id="gridcomments">
-                @webgridComments.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+            @Html.TextArea("Comments", "", new { @class = "form-control", @placeholder = "comments", rows = "5", cols = "20" })<br />
+            <input type="button" id="hire" value="Hire" class="btn btn-primary" onclick="getValues(this)" />
+            <input type="button" id="reject" value="Reject" class="btn btn-primary" onclick="getValues(this)" />
+        }
+        else
+        {
+            <h3>Comments</h3>
+            if (Model.Comments.Any())
+            {
+                <div id="gridcomments">
+                    @webgridComments.GetHtml(tableStyle: "table table-bordered table-striped comment",
                      headerStyle: "webgrid-header",
                      footerStyle: "webgrid-footer",
                      alternatingRowStyle: "webgrid-alternating-row",
@@ -144,9 +147,15 @@ else
                          })
                          )
                      )
-            </div>
+                </div>
+            }
         }
     }
+</div>
+
+@if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == true)
+{
+    <input type='button' id='btnPrint' value='Print This Report' class="btn btn-primary" onclick='printDiv()'>
 }
 
 <div>

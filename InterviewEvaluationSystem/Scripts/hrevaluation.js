@@ -50,3 +50,7 @@ function getValues(element) {
         }
     });
 }
+
+function printDiv() {
+    $(".divContainer").print();
+}
