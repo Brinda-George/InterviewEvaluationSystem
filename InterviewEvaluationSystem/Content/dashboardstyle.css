@@ -155,3 +155,14 @@
 .huge {
     font-size: 50px;
 }
+
+.panel-heading a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.panel-heading a:hover {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}

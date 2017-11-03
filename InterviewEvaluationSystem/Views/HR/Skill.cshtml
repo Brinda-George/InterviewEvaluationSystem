@@ -44,19 +44,20 @@
     </div>
 }
 
-
+@{
+    if (ViewBag.Skillcategories!=null)
+    {
+   
 <div id="ajaxgrid">
     @{
         var gridview = new WebGrid(ViewBag.Skillcategories, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 10);
     }
-    @if (ViewBag.Skillcategories != null)
-    {
         @gridview.GetHtml(tableStyle: "table table-bordered table-striped",
-                 headerStyle: "webgrid-header",
-                 alternatingRowStyle: "webgrid-alternating-row",
-                 rowStyle: "webgrid-row-style",
-                 mode: WebGridPagerModes.All,
-                 columns: new[]{
+                                           headerStyle: "webgrid-header",
+                                           alternatingRowStyle: "webgrid-alternating-row",
+                                           rowStyle: "webgrid-row-style",
+                                           mode: WebGridPagerModes.All,
+                                           columns: new[]{
                     gridview.Column("Skill Category",format:
                     @<text>
                         <span id="skillcategory" class="read">@item.skillcat</span>
@@ -76,10 +77,11 @@
                         <button class="update-case edit btn btn-default" style="display:none" id="@item.skillno"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.skillno"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                     </text>)
-                })
-    }
+                                          })
 </div>
-
+            }
+        
+        }
 <div>
     @Html.ActionLink("Back to Home", "HRHomePage", "HR")
 </div>

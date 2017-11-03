@@ -37,7 +37,7 @@ namespace InterviewEvaluationSystem.Controllers
             var result = dbContext.spGetPieChart(year).Single();
             if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
             {
-                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+                Chart chart = new Chart(width: 550, height: 350, theme: ChartTheme.Vanilla)
                 .AddLegend("Summary")
                 .AddSeries("Default", chartType: "Pie", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
                 .Write("bmp");
@@ -49,7 +49,7 @@ namespace InterviewEvaluationSystem.Controllers
             var result = dbContext.spGetCloumnChart(year).Single();
             if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
             {
-                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
+                Chart chart = new Chart(width: 550, height: 350, theme: ChartTheme.Blue)
                 .AddSeries("Default", chartType: "column",
                     xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
                     yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
@@ -98,8 +98,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public JsonResult IsRoundExist(string RoundName)
         {
-            var validateScale = dbContext.tblRounds.FirstOrDefault
-                                (x => x.RoundName == RoundName && x.IsDeleted != true);
+            var validateScale = dbContext.tblRounds.FirstOrDefault(x => x.RoundName == RoundName && x.IsDeleted == false);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -148,8 +147,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public JsonResult IsScaleExist(string RateScale)
         {
-            var validateScale = dbContext.tblRatingScales.FirstOrDefault
-                                (x => x.RateScale == RateScale);
+            var validateScale = dbContext.tblRatingScales.FirstOrDefault(x => x.RateScale == RateScale && x.IsDeleted == false);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -211,8 +209,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public JsonResult IsCategoryExist(string SkillCategory)
         {
-            var validateScale = dbContext.tblSkillCategories.FirstOrDefault
-                                (x => x.SkillCategory == SkillCategory);
+            var validateScale = dbContext.tblSkillCategories.FirstOrDefault(x => x.SkillCategory == SkillCategory && x.IsDeleted == false);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -248,7 +245,16 @@ namespace InterviewEvaluationSystem.Controllers
                              skillcat = a.SkillCategory,
                              skillname = b.SkillName
                          };
-            ViewBag.Skillcategories = result;
+            if (!result.Any())
+            {
+                ViewBag.Skillcategories = null;
+            }
+
+            else
+            {
+                ViewBag.Skillcategories = result;
+
+            }
             return View();
         }
 
@@ -284,8 +290,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         public JsonResult IsSkillExist(string SkillName)
         {
-            var validateScale = dbContext.tblSkills.FirstOrDefault
-                                (x => x.SkillName == SkillName);
+            var validateScale = dbContext.tblSkills.FirstOrDefault(x => x.SkillName == SkillName && x.IsDeleted == false);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -408,20 +413,20 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public JsonResult IsInterviewerUserNameExists(string UserName)
         {
-            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName)).FirstOrDefault() != null;
+            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.IsDeleted == false).FirstOrDefault() != null;
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
         {
-            bool IsExists = dbContext.tblUsers.Where(u => u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
+            bool IsExists = dbContext.tblUsers.Where(u => u.EmployeeId.Equals(EmployeeId) && u.IsDeleted == false).FirstOrDefault() != null;
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult IsInterviewerEmailExists(string Email)
         {
-            bool IsExists = dbContext.tblUsers.Where(u => u.Email.Equals(Email)).FirstOrDefault() != null;
+            bool IsExists = dbContext.tblUsers.Where(u => u.Email.Equals(Email) && u.IsDeleted == false).FirstOrDefault() != null;
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
         #endregion

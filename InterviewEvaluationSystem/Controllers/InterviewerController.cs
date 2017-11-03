@@ -41,7 +41,7 @@ namespace InterviewEvaluationSystem.Controllers
             var result = dbContext.spGetInterviewerPieChart(Convert.ToInt32(Session["UserID"]), year).Single();
             if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
             {
-                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+                Chart chart = new Chart(width: 550, height: 350, theme: ChartTheme.Vanilla)
                 .AddLegend("Summary")
                 .AddSeries("Default", chartType: "Pie", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Recoommended - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
                 .Write("bmp");
@@ -51,7 +51,7 @@ namespace InterviewEvaluationSystem.Controllers
         public void ChartColumn(int year)
         {
             var result = dbContext.spGetCloumnChart(year).Single();
-            Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
+            Chart chart = new Chart(width: 550, height: 350, theme: ChartTheme.Blue)
             .AddSeries("Default", chartType: "column",
                 xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
                 yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })

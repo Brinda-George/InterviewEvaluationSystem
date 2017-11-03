@@ -18,64 +18,72 @@
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-primary bg-primary">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-users fa-4x"></i>
+                    <a href="@Url.Action("CandidateStatus","HR")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-users fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.NewCandidateCount</div>
+                                <div class="text">Candidates in HR Round</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.NewCandidateCount</div>
-                            <div class="text">Candidates in HR Round</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-green">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-bell fa-4x"></i>
+                    <a href="@Url.Action("Notification","HR")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-bell fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.NotificationCount</div>
+                                <div class="text">Notifications</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.NotificationCount</div>
-                            <div class="text">Notifications</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-calendar fa-4x"></i>
+                    <a href="@Url.Action("CandidateStatus","HR")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-calendar fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.TodaysInterviewCount</div>
+                                <div class="text">Today's Interviews</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.TodaysInterviewCount</div>
-                            <div class="text">Today's Interviews</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-pink">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-user-secret fa-4x"></i>
+                    <a href="@Url.Action("AddInterviewers","HR")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-user-secret fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.AvailableInterviewerCount</div>
+                                <div class="text">Interviewers Available</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.AvailableInterviewerCount</div>
-                            <div class="text">Interviewers Available</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -85,64 +93,72 @@
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-red">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-graduation-cap fa-4x"></i>
+                    <a href="@Url.Action("Skill","HR")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-graduation-cap fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.SkillCount</div>
+                                <div class="text">Number of Skills</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.SkillCount</div>
-                            <div class="text">Number of Skills</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-violet">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-shield fa-4x"></i>
+                    <a href="@Url.Action("CandidateStatus","HR")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-shield fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.CandidatesInProgress</div>
+                                <div class="text">Candidates In Progress</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.CandidatesInProgress</div>
-                            <div class="text">Candidates In Progress</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-lightblue">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-trophy fa-4x"></i>
+                    <a href="@Url.Action("CandidateStatus","HR")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-trophy fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.HiredCandidateCount</div>
+                                <div class="text">Hired Candidates</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.HiredCandidateCount</div>
-                            <div class="text">Hired Candidates</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-lightgreen">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-bar-chart fa-4x"></i>
+                    <a href="@Url.Action("CandidateStatus","HR")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-bar-chart fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.TotalCandidateCount</div>
+                                <div class="text">Total Candidates</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.TotalCandidateCount</div>
-                            <div class="text">Total Candidates</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -155,7 +171,7 @@
                 </div>
                 <div class="card-body">
                     @Html.DropDownList("pieChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "year" })
-                    <img id="pieChart" src="@Url.Action("ChartPie", new { year = DateTime.Today.Year})" alt="No Data for this year!!" />
+                    <img id="pieChart" class="img-responsive" src="@Url.Action("ChartPie", new { year = DateTime.Today.Year})" alt="No Data for this year!!" />
                 </div>
             </div>
         </div>
@@ -166,7 +182,7 @@
                 </div>
                 <div class="card-body">
                     @Html.DropDownList("columnChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "year" })
-                    <img id="columnChart" src="@Url.Action("ChartColumn", new { year = DateTime.Today.Year})" alt="No Data for this year!!" />
+                    <img id="columnChart" class="img-responsive" src="@Url.Action("ChartColumn", new { year = DateTime.Today.Year})" alt="No Data for this year!!" />
                 </div>
             </div>
         </div>
