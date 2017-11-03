@@ -133,7 +133,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult ResetPartial()
         {
 
