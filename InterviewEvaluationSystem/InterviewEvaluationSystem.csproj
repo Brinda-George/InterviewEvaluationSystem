@@ -246,6 +246,9 @@
     <Compile Include="Models\spGetEmailByUserID_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetInterviewersOfCandidate_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetPreviousRoundScores_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -405,6 +408,7 @@
     <Content Include="Views\HR\NotificationProceed.cshtml" />
     <Content Include="Views\HR\HRHomePage.cshtml" />
     <Content Include="Views\Interviewer\HomePage.cshtml" />
+    <Content Include="Views\HR\ChangeCandidateInterviewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

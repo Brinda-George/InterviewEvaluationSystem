@@ -275,6 +275,7 @@
         <Function Name="spGetEmailByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetInterviewersOfCandidate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPreviousRoundScores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
           <Parameter Name="RoundID" Type="int" Mode="In" />
@@ -714,6 +715,7 @@
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spGetInterviewersOfCandidate" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewersOfCandidate_Result)" />
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -770,6 +772,13 @@
           <Property Type="Int32" Name="RoundID" Nullable="true" />
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
           <Property Type="Int32" Name="totalRound" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetInterviewersOfCandidate_Result">
+          <Property Type="Int32" Name="CandidateID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="RoundID" Nullable="true" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1033,6 +1042,17 @@
           <FunctionImportMapping FunctionImportName="spInsertJoinDetails" FunctionName="InterviewEvaluationDbModel.Store.spInsertJoinDetails" />
           <FunctionImportMapping FunctionImportName="spUpdateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.spUpdateCandidateInterviewer" />
           <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
+          <FunctionImportMapping FunctionImportName="spGetInterviewersOfCandidate" FunctionName="InterviewEvaluationDbModel.Store.spGetInterviewersOfCandidate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetInterviewersOfCandidate_Result">
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RoundID" ColumnName="RoundID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

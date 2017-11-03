@@ -161,5 +161,10 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
         }
+    
+        public virtual ObjectResult<spGetInterviewersOfCandidate_Result> spGetInterviewersOfCandidate()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewersOfCandidate_Result>("spGetInterviewersOfCandidate");
+        }
     }
 }
