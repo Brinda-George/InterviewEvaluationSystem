@@ -41,6 +41,7 @@
             @Html.LabelFor(model => model.EmployeeId, "Employee ID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control", @placeholder = "Employee Id" } })
+                <div class="text-danger">@ViewBag.employeeIdLengthErrorMessage</div>
                 @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
             </div>
         </div>

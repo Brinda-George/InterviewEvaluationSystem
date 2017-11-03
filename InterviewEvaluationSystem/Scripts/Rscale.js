@@ -79,7 +79,12 @@
                 data: { "RateScaleID": RateScaleID },
                 dataType: "json",
                 success: function (data) {
-                    alert('Successfully Deleted!!');
+                    if (data.res == 1) {
+                        alert('Successfully Deleted!!');
+                    }
+                    else if (data.res == 0) {
+                        alert('Cannot Delete!!..Please Delete from bottom');
+                    }
                     window.location.href = data.Url;
                 },
                 error: function () {

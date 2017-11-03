@@ -130,5 +130,6 @@ namespace InterviewEvaluationSystem.Business_Logic
             int res = dbContext.spUpdatePassword(userId, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
             return res;
         }
+
     }
 }

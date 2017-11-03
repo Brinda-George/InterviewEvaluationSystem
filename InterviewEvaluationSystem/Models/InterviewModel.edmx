@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InterviewEvaluationDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblCandidate">
           <Key>
             <PropertyRef Name="CandidateID" />
@@ -482,6 +482,18 @@
           <Parameter Name="PassWord" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spCandidateWebGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spDeleteRatingScale" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RateScaleID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spDeleteRound" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoundID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spDeleteSkill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SkillID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spDeleteSkillCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SkillCategoryID" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
         </Function>
@@ -528,6 +540,30 @@
           <Parameter Name="CandidateID" Type="int" Mode="In" />
           <Parameter Name="OfferedSalary" Type="money" Mode="In" />
           <Parameter Name="DateOfJoining" Type="date" Mode="In" />
+        </Function>
+        <Function Name="spInsertRatingScale" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RateScale" Type="varchar" Mode="In" />
+          <Parameter Name="RateValue" Type="int" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+          <Parameter Name="CreatedBy" Type="int" Mode="In" />
+          <Parameter Name="CreatedDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="spInsertRound" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoundName" Type="varchar" Mode="In" />
+          <Parameter Name="CreatedBy" Type="int" Mode="In" />
+          <Parameter Name="CreatedDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="spInsertSkill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SkillName" Type="varchar" Mode="In" />
+          <Parameter Name="SkillCategoryID" Type="int" Mode="In" />
+          <Parameter Name="CreatedBy" Type="int" Mode="In" />
+          <Parameter Name="CreatedDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="spInsertSkillCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SkillCategory" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+          <Parameter Name="CreatedBy" Type="int" Mode="In" />
+          <Parameter Name="CreatedDate" Type="date" Mode="In" />
         </Function>
         <Function Name="spLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Username" Type="varchar" Mode="In" />
@@ -666,8 +702,7 @@
             <End Role="tblUser" EntitySet="tblUser" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InterviewEvaluationDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1322,14 +1357,14 @@
           </FunctionImport>
           <FunctionImport Name="spCandidateWebGrid" ReturnType="Collection(InterviewEvaluationDbModel.spCandidateWebGrid_Result)" />
           <FunctionImport Name="spGetCandidateInterviewers" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidateInterviewers_Result)">
-            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetCandidatesInProgress" ReturnType="Collection(Int32)" />
           <FunctionImport Name="spGetCloumnChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetCloumnChart_Result)">
-            <Parameter Name="year" Mode="In" Type="Int32" />
+          <Parameter Name="year" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetComments" ReturnType="Collection(InterviewEvaluationDbModel.spGetComments_Result)">
-            <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetCurrentStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetCurrentStatus_Result)" />
           <FunctionImport Name="spGetEmailByUserID" ReturnType="Collection(InterviewEvaluationDbModel.spGetEmailByUserID_Result)">
@@ -1342,24 +1377,24 @@
             <Parameter Name="year" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetInterviewerDashBoard" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewerDashBoard_Result)">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetInterviewerPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewerPieChart_Result)">
             <Parameter Name="UserID" Mode="In" Type="Int32" />
             <Parameter Name="year" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetPieChart" ReturnType="Collection(InterviewEvaluationDbModel.spGetPieChart_Result)">
-            <Parameter Name="year" Mode="In" Type="Int32" />
+          <Parameter Name="year" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetPreviousRoundScores" ReturnType="Collection(InterviewEvaluationDbModel.spGetPreviousRoundScores_Result)">
             <Parameter Name="CandidateID" Mode="In" Type="Int32" />
             <Parameter Name="RoundID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetSkillsBySkillCategory" ReturnType="Collection(InterviewEvaluationDbModel.spGetSkillsBySkillCategory_Result)">
-            <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
+          <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetStatus" ReturnType="Collection(InterviewEvaluationDbModel.spGetStatus_Result)">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spHRNotificationGrid" ReturnType="Collection(InterviewEvaluationDbModel.spHRNotificationGrid_Result)" />
           <FunctionImport Name="spInsertJoinDetails">
@@ -1384,6 +1419,42 @@
             <Parameter Name="UserId" Mode="In" Type="Int32" />
             <Parameter Name="OldPassword" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spInsertRound">
+            <Parameter Name="RoundName" Mode="In" Type="String" />
+            <Parameter Name="CreatedBy" Mode="In" Type="Int32" />
+            <Parameter Name="CreatedDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spDeleteRound" ReturnType="Collection(Int32)">
+          <Parameter Name="RoundID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spDeleteRatingScale" ReturnType="Collection(Int32)">
+          <Parameter Name="RateScaleID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spInsertRatingScale">
+            <Parameter Name="RateScale" Mode="In" Type="String" />
+            <Parameter Name="RateValue" Mode="In" Type="Int32" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="CreatedBy" Mode="In" Type="Int32" />
+            <Parameter Name="CreatedDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spInsertSkillCategory">
+            <Parameter Name="SkillCategory" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="CreatedBy" Mode="In" Type="Int32" />
+            <Parameter Name="CreatedDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spDeleteSkillCategory" ReturnType="Collection(Int32)">
+          <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spDeleteSkill" ReturnType="Collection(Int32)">
+            <Parameter Name="SkillID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spInsertSkill">
+            <Parameter Name="SkillName" Mode="In" Type="String" />
+            <Parameter Name="SkillCategoryID" Mode="In" Type="Int32" />
+            <Parameter Name="CreatedBy" Mode="In" Type="Int32" />
+            <Parameter Name="CreatedDate" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
@@ -1878,6 +1949,14 @@
           <FunctionImportMapping FunctionImportName="spResetPassword" FunctionName="InterviewEvaluationDbModel.Store.spResetPassword" />
           <FunctionImportMapping FunctionImportName="spUpdateCandidateInterviewer" FunctionName="InterviewEvaluationDbModel.Store.spUpdateCandidateInterviewer" />
           <FunctionImportMapping FunctionImportName="spUpdatePassword" FunctionName="InterviewEvaluationDbModel.Store.spUpdatePassword" />
+          <FunctionImportMapping FunctionImportName="spInsertRound" FunctionName="InterviewEvaluationDbModel.Store.spInsertRound" />
+          <FunctionImportMapping FunctionImportName="spDeleteRound" FunctionName="InterviewEvaluationDbModel.Store.spDeleteRound" />
+          <FunctionImportMapping FunctionImportName="spDeleteRatingScale" FunctionName="InterviewEvaluationDbModel.Store.spDeleteRatingScale" />
+          <FunctionImportMapping FunctionImportName="spInsertRatingScale" FunctionName="InterviewEvaluationDbModel.Store.spInsertRatingScale" />
+          <FunctionImportMapping FunctionImportName="spInsertSkillCategory" FunctionName="InterviewEvaluationDbModel.Store.spInsertSkillCategory" />
+          <FunctionImportMapping FunctionImportName="spDeleteSkillCategory" FunctionName="InterviewEvaluationDbModel.Store.spDeleteSkillCategory" />
+          <FunctionImportMapping FunctionImportName="spDeleteSkill" FunctionName="InterviewEvaluationDbModel.Store.spDeleteSkill" />
+          <FunctionImportMapping FunctionImportName="spInsertSkill" FunctionName="InterviewEvaluationDbModel.Store.spInsertSkill" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

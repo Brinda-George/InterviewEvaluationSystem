@@ -267,5 +267,125 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
         }
+    
+        public virtual int spInsertRound(string roundName, Nullable<int> createdBy, Nullable<System.DateTime> createdDate)
+        {
+            var roundNameParameter = roundName != null ?
+                new ObjectParameter("RoundName", roundName) :
+                new ObjectParameter("RoundName", typeof(string));
+    
+            var createdByParameter = createdBy.HasValue ?
+                new ObjectParameter("CreatedBy", createdBy) :
+                new ObjectParameter("CreatedBy", typeof(int));
+    
+            var createdDateParameter = createdDate.HasValue ?
+                new ObjectParameter("CreatedDate", createdDate) :
+                new ObjectParameter("CreatedDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertRound", roundNameParameter, createdByParameter, createdDateParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spDeleteRound(Nullable<int> roundID)
+        {
+            var roundIDParameter = roundID.HasValue ?
+                new ObjectParameter("RoundID", roundID) :
+                new ObjectParameter("RoundID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spDeleteRound", roundIDParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spDeleteRatingScale(Nullable<int> rateScaleID)
+        {
+            var rateScaleIDParameter = rateScaleID.HasValue ?
+                new ObjectParameter("RateScaleID", rateScaleID) :
+                new ObjectParameter("RateScaleID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spDeleteRatingScale", rateScaleIDParameter);
+        }
+    
+        public virtual int spInsertRatingScale(string rateScale, Nullable<int> rateValue, string description, Nullable<int> createdBy, Nullable<System.DateTime> createdDate)
+        {
+            var rateScaleParameter = rateScale != null ?
+                new ObjectParameter("RateScale", rateScale) :
+                new ObjectParameter("RateScale", typeof(string));
+    
+            var rateValueParameter = rateValue.HasValue ?
+                new ObjectParameter("RateValue", rateValue) :
+                new ObjectParameter("RateValue", typeof(int));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            var createdByParameter = createdBy.HasValue ?
+                new ObjectParameter("CreatedBy", createdBy) :
+                new ObjectParameter("CreatedBy", typeof(int));
+    
+            var createdDateParameter = createdDate.HasValue ?
+                new ObjectParameter("CreatedDate", createdDate) :
+                new ObjectParameter("CreatedDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertRatingScale", rateScaleParameter, rateValueParameter, descriptionParameter, createdByParameter, createdDateParameter);
+        }
+    
+        public virtual int spInsertSkillCategory(string skillCategory, string description, Nullable<int> createdBy, Nullable<System.DateTime> createdDate)
+        {
+            var skillCategoryParameter = skillCategory != null ?
+                new ObjectParameter("SkillCategory", skillCategory) :
+                new ObjectParameter("SkillCategory", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            var createdByParameter = createdBy.HasValue ?
+                new ObjectParameter("CreatedBy", createdBy) :
+                new ObjectParameter("CreatedBy", typeof(int));
+    
+            var createdDateParameter = createdDate.HasValue ?
+                new ObjectParameter("CreatedDate", createdDate) :
+                new ObjectParameter("CreatedDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertSkillCategory", skillCategoryParameter, descriptionParameter, createdByParameter, createdDateParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spDeleteSkillCategory(Nullable<int> skillCategoryID)
+        {
+            var skillCategoryIDParameter = skillCategoryID.HasValue ?
+                new ObjectParameter("SkillCategoryID", skillCategoryID) :
+                new ObjectParameter("SkillCategoryID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spDeleteSkillCategory", skillCategoryIDParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spDeleteSkill(Nullable<int> skillID)
+        {
+            var skillIDParameter = skillID.HasValue ?
+                new ObjectParameter("SkillID", skillID) :
+                new ObjectParameter("SkillID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spDeleteSkill", skillIDParameter);
+        }
+    
+        public virtual int spInsertSkill(string skillName, Nullable<int> skillCategoryID, Nullable<int> createdBy, Nullable<System.DateTime> createdDate)
+        {
+            var skillNameParameter = skillName != null ?
+                new ObjectParameter("SkillName", skillName) :
+                new ObjectParameter("SkillName", typeof(string));
+    
+            var skillCategoryIDParameter = skillCategoryID.HasValue ?
+                new ObjectParameter("SkillCategoryID", skillCategoryID) :
+                new ObjectParameter("SkillCategoryID", typeof(int));
+    
+            var createdByParameter = createdBy.HasValue ?
+                new ObjectParameter("CreatedBy", createdBy) :
+                new ObjectParameter("CreatedBy", typeof(int));
+    
+            var createdDateParameter = createdDate.HasValue ?
+                new ObjectParameter("CreatedDate", createdDate) :
+                new ObjectParameter("CreatedDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertSkill", skillNameParameter, skillCategoryIDParameter, createdByParameter, createdDateParameter);
+        }
     }
 }

@@ -72,14 +72,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult AddRound(RoundViewModel round)
         {
-            dbContext.tblRounds.Add(new tblRound
-            {
-                RoundName = round.RoundName,
-                CreatedBy = Convert.ToInt32(Session["UserID"]),
-                CreatedDate = DateTime.Now,
-                IsDeleted = false
-            });
-            dbContext.SaveChanges();
+            dbContext.spInsertRound(round.RoundName, Convert.ToInt32(Session["UserID"]), DateTime.Now);
             return RedirectToAction("AddRound");
         }
 
@@ -97,12 +90,10 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RoundDelete(int RoundID)
         {
-            tblRound round = dbContext.tblRounds.Find(RoundID);
-            round.IsDeleted = true;
-            dbContext.SaveChanges();
-            bool result = true;
+            Nullable<int> result = dbContext.spDeleteRound(RoundID).Single();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
-            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { res = result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+
         }
 
         public JsonResult IsRoundExist(string RoundName)
@@ -131,16 +122,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult RatingScale(RatingScaleViewModel rate)
         {
-            dbContext.tblRatingScales.Add(new tblRatingScale
-            {
-                RateScale = rate.RateScale,
-                RateValue = rate.RateValue,
-                Description = rate.Description,
-                CreatedBy = Convert.ToInt32(Session["UserID"]),
-                CreatedDate = DateTime.Now,
-                IsDeleted = false
-            });
-            dbContext.SaveChanges();
+            dbContext.spInsertRatingScale(rate.RateScale, rate.RateValue, rate.Description, Convert.ToInt32(Session["UserID"]), DateTime.Now);
             return RedirectToAction("RatingScale");
         }
 
@@ -159,12 +141,9 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RateDelete(int RateScaleID)
         {
-            tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleID);
-            rate.IsDeleted = true;
-            dbContext.SaveChanges();
-            bool result = true;
+            Nullable<int> result = dbContext.spDeleteRatingScale(RateScaleID).Single();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
-            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { res = result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult IsScaleExist(string RateScale)
@@ -207,15 +186,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult SkillCategory(SkillCategoryViewModel category)
         {
-            dbContext.tblSkillCategories.Add(new tblSkillCategory
-            {
-                SkillCategory = category.SkillCategory,
-                Description = category.Description,
-                CreatedBy = Convert.ToInt32(Session["UserID"]),
-                CreatedDate = DateTime.Now,
-                IsDeleted = false
-            });
-            dbContext.SaveChanges();
+            dbContext.spInsertSkillCategory(category.SkillCategory, category.Description, Convert.ToInt32(Session["UserID"]), DateTime.Now);
             return RedirectToAction("SkillCategory");
         }
 
@@ -233,12 +204,9 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult CategoryDelete(int SkillCategoryID)
         {
-            tblSkillCategory skill = dbContext.tblSkillCategories.Find(SkillCategoryID);
-            skill.IsDeleted = true;
-            dbContext.SaveChanges();
-            bool result = true;
+            Nullable<int> result = dbContext.spDeleteSkillCategory(SkillCategoryID).Single();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
-            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { res = result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult IsCategoryExist(string SkillCategory)
@@ -287,15 +255,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult Skill(SkillViewModel skill, string category)
         {
-            dbContext.tblSkills.Add(new tblSkill
-            {
-                SkillName = skill.SkillName,
-                SkillCategoryID = Convert.ToInt32(category),
-                CreatedBy = Convert.ToInt32(Session["UserID"]),
-                CreatedDate = DateTime.Now,
-                IsDeleted = false
-            });
-            dbContext.SaveChanges();
+            dbContext.spInsertSkill(skill.SkillName, Convert.ToInt32(category), Convert.ToInt32(Session["UserID"]), DateTime.Now);
             return RedirectToAction("Skill");
         }
 
@@ -317,12 +277,9 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult SkillDelete(int SkillID)
         {
-            tblSkill skills = dbContext.tblSkills.Find(SkillID);
-            skills.IsDeleted = true;
-            dbContext.SaveChanges();
-            bool result = true;
+            Nullable<int> result = dbContext.spDeleteSkill(SkillID).Single();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-            return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
+            return Json(new { Url = redirectUrl, res = result }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult IsSkillExist(string SkillName)
@@ -365,6 +322,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
             var userNameLength = ConfigurationManager.AppSettings["UserNameLength"];
+            var employeeIdLength = ConfigurationManager.AppSettings["EmployeeIdLength"];
             user.UserTypeID = 2;
             bool flag = false;
             if (ModelState.IsValid)
@@ -378,6 +336,11 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     flag = true;
                     ViewBag.UserNameErrorMessage = "The User Name field is required and should contain minimum " + userNameLength + " characters";
+                }
+                if (user.EmployeeId.Length > Convert.ToInt32(employeeIdLength))
+                {
+                    ViewBag.employeeIdLengthErrorMessage = "The Employee Id Should Have Maximum Of " + employeeIdLength;
+                    flag = true;
                 }
                 if (flag == false)
                 {

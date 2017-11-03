@@ -81,6 +81,7 @@ namespace InterviewEvaluationSystem.Models
         [Required]
         public string Address { get; set; }
         [Required]
+        [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "PIN should be six digit")]
         public int Pincode { get; set; }
         [Required]
         [DataType(DataType.Password)]
