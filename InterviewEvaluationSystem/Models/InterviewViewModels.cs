@@ -31,6 +31,7 @@ namespace InterviewEvaluationSystem.Models
         public int RoundID { get; set; }
         [Required]
         [Remote("IsRoundExist", "HR", ErrorMessage = "Round Name already exists")]
+        [RegularExpression("^[a-zA-Z0-9 ]*$", ErrorMessage = "Use alphabets,numbers or spaces only please.")]
         public string RoundName { get; set; }
     }
 
@@ -39,9 +40,11 @@ namespace InterviewEvaluationSystem.Models
         public int RateScaleID { get; set; }
         [Required]
         [Remote("IsScaleExist", "HR", ErrorMessage = "Rate Scale already exists")]
+        [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Use alphabets and spaces only please.")]
         public string RateScale { get; set; }
         [Required]
         [Remote("IsValueExist", "HR", ErrorMessage = "Rate Value already exists")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Use numbers only please.")]
         public int RateValue { get; set; }
         [Required]
         public string Description { get; set; }
@@ -52,6 +55,7 @@ namespace InterviewEvaluationSystem.Models
         public int SkillCategoryID { get; set; }
         [Required]
         [Remote("IsCategoryExist", "HR", ErrorMessage = "Skill Category already exists")]
+        [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Use alphabets and spaces only please.")]
         public string SkillCategory { get; set; }
         [Required]
         public string Description { get; set; }
@@ -62,6 +66,7 @@ namespace InterviewEvaluationSystem.Models
         public int SkillID { get; set; }
         [Required]
         [Remote("IsSkillExist", "HR", ErrorMessage = "Skill Name already exists")]
+        [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Use alphabets and spaces only please.")]
         public string SkillName { get; set; }
         [Required]
         public int SkillCategoryID { get; set; }

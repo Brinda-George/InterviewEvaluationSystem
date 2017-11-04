@@ -88,6 +88,7 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region ResetPassword
+
         [HttpGet]
         public ActionResult PasswordReset()
         {
@@ -100,7 +101,6 @@ namespace InterviewEvaluationSystem.Controllers
             int result;
             Random r = new Random();
             var data = dbContext.tblUsers.Where(x => x.Email == email).FirstOrDefault();
-
             if (data != null)
             {
                 Session["Email"] = data.Email;
@@ -118,7 +118,7 @@ namespace InterviewEvaluationSystem.Controllers
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.To.Add(email);
                 mailMessage.Subject = "Password Reset";
-                mailMessage.Body = "Please use the following password to change your password. " + "<br/>" + Session["OTP"] + "<br/>" + ".You may later change it after logging into your account";
+                mailMessage.Body = "Please use the following OTP to change your password. " + "<br/>" + Session["OTP"] + "<br/>" + ".You may change your password after logging in to your account using the credential above";
                 mailMessage.IsBodyHtml = true;
                 SmtpClient smtpClient = new SmtpClient();
                 smtpClient.Send(mailMessage);
@@ -133,7 +133,7 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult ResetPartial()
         {
 
@@ -163,12 +163,15 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult UpdatePassword(UpdatePasswordViewModel updatePasswordViewModel)
         {
-            var sessionValue = Session["Email"];
-            int result = dbContext.spResetPassword(sessionValue.ToString(), updatePasswordViewModel.NewPassword);
-            if (result == 1)
+            if (ModelState.IsValid)
             {
-                ViewBag.result = "Password Updated Successfully";
-                Session["Email"] = null;
+                var sessionValue = Session["Email"];
+                int result = dbContext.spResetPassword(sessionValue.ToString(), updatePasswordViewModel.NewPassword);
+                if (result == 1)
+                {
+                    ViewBag.result = "Password Updated Successfully";
+                    Session["Email"] = null;
+                }
             }
             return View();
         }

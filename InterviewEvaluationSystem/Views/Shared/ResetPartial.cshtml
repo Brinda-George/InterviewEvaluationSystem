@@ -1,5 +1,4 @@
 ﻿@model InterviewEvaluationSystem.Models.tblUser
-
 @{
     Layout = null;
 }
@@ -10,6 +9,7 @@
         <input type="hidden" id="otpHidden" value="@Session["OTP"]" />
         <input id="otpText" type="text" class="form-control" name="OTP" placeholder="OTP" required="" autofocus="" />
         <br />
+
         <label class="text-danger" id="lblOtp"></label>
         <div class="text-danger">@ViewBag.Message</div>
         <button id="smtBtn" style="height:50px;text-align:center;background-color:darkblue;" class="btn btn-primary btn-lg btn-block login-button" type="button" onclick="return Check()">Submit</button>
@@ -21,15 +21,18 @@
         function Check() {
             var value = $('#otpText').val();
             var otp = $("#otpHidden").val();
+
             if (value == "") {
                 $("#lblOtp").html("Please enter the OTP");
                 return false;
             }
+
             else if (otp != value) {
                 $("#lblOtp").html("Please enter valid otp");
                 return false;
             }
             $.ajax({
+
                     type: "POST",
                     url: "/Home/CheckOtp",
                     data: { value: value },
@@ -37,8 +40,10 @@
                         window.location = data.Url;
                     },
                     error: function (data) {
+
                     }
                 });
             }
+
 </script>
 

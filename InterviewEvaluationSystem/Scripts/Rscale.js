@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     $('.edit').hide();
-    $('.edit-case').on('click', function () {
+    $(document).on('click', ".edit-case", function () {
         var tr = $(this).parents('tr:first');
         var RateScale = tr.find('#ratescale').text();
         var RateValue = tr.find('#ratevalue').text();
@@ -11,7 +11,7 @@
         tr.find('.edit, .read').toggle();
     });
 
-    $('.update-case').on('click', function (e) {
+    $(document).on('click', ".update-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         RateScaleID = $(this).prop('id');
@@ -57,7 +57,7 @@
         });
     });
 
-    $('.cancel-case').on('click', function (e) {
+    $(document).on('click', ".cancel-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         var id = $(this).prop('id');
@@ -68,7 +68,7 @@
         tr.find('#scaleLbl').empty();
     });
 
-    $('.delete-case').on('click', function (e) {
+    $(document).on('click', ".delete-case", function (e) {
         e.preventDefault();
         if (confirm("Are you sure you want to delete?")) {
             var tr = $(this).parents('tr:first');

@@ -1,13 +1,13 @@
 ﻿$(document).ready(function () {
     $('.edit').hide();
-    $('.edit-case').on('click', function () {
+    $(document).on('click', ".edit-case", function () {
         var tr = $(this).parents('tr:first');
         var RoundName = tr.find('#roundname').text();
         tr.find('#RoundName').val(RoundName);
         tr.find('.edit, .read').toggle();
     });
 
-    $('.update-case').on('click', function (e) {
+    $(document).on('click', ".update-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         RoundID = $(this).prop('id');
@@ -35,7 +35,7 @@
         });
     });
 
-    $('.cancel-case').on('click', function (e) {
+    $(document).on('click', ".cancel-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         var id = $(this).prop('id');
@@ -44,7 +44,7 @@
         tr.find('#roundLbl').empty();
     });
 
-    $('.delete-case').on('click', function (e) {
+    $(document).on('click', ".delete-case", function (e) {
         e.preventDefault();
         if (confirm("Are you sure you want to delete?")) {
             var tr = $(this).parents('tr:first');

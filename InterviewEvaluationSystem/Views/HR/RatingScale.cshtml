@@ -52,7 +52,7 @@
 
 <div id="ajaxgrid">
     @{
-        var gridview = new WebGrid(ViewBag.Roles, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 5);
+        var gridview = new WebGrid(ViewBag.Roles, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 10);
     }
     @if (ViewBag.Roles.Count != 0)
     {
