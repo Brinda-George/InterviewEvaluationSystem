@@ -291,6 +291,7 @@
     <Compile Include="Models\tblUserType.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UpdatePasswordViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -309,6 +310,7 @@
     <Content Include="Images\IMG1.jpg" />
     <Content Include="Images\IT.jpg" />
     <Content Include="Images\keyboard.jpg" />
+    <Content Include="Images\user.png" />
     <Content Include="Models\InterviewModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>InterviewModel.edmx</DependentUpon>
@@ -401,7 +403,6 @@
     <Content Include="Views\HR\HREvaluation.cshtml" />
     <Content Include="Views\HR\CandidateStatus.cshtml" />
     <Content Include="Views\HR\JoinDetails.cshtml" />
-    <Content Include="Views\Home\ChangePassword.cshtml" />
     <Content Include="Views\HR\AddInterviewers.cshtml" />
     <Content Include="Views\HR\AddCandidate.cshtml" />
     <Content Include="Views\HR\SearchCandidateResult.cshtml" />
@@ -416,6 +417,7 @@
     <Content Include="Views\HR\AddRound.cshtml" />
     <Content Include="Views\Home\PasswordReset.cshtml" />
     <Content Include="Views\Shared\ResetPartial.cshtml" />
+    <Content Include="Views\Home\UpdatePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

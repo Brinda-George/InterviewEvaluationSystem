@@ -12,7 +12,6 @@ namespace InterviewEvaluationSystem.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
 
     public partial class tblRatingScale
     {
@@ -23,15 +22,10 @@ namespace InterviewEvaluationSystem.Models
         }
     
         public int RateScaleID { get; set; }
-        [Required(ErrorMessage ="Please enter a Rate Scale ")]
-        [Remote("IsScaleExist", "HR", AdditionalFields = "Id",
-                ErrorMessage = "RateScale already exists")]
         public string RateScale { get; set; }
-        [Required(ErrorMessage ="Please enter a Rate Value")]
-        [Remote("IsValueExist", "HR", AdditionalFields = "Id",
-              ErrorMessage = "RateValue already exists")]
+        [Required]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Ratevalue must be numeric")]
         public int RateValue { get; set; }
-        [Required(ErrorMessage ="Please enter a Description")]
         public string Description { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

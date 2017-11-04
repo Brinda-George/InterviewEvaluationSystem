@@ -266,16 +266,18 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public JsonResult SkillEdit(int SkillID, string Skillname)
+        public JsonResult SkillEdit(int SkillID, string Skillname,int CategoryID)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             tblSkill skill = db.tblSkills.Find(SkillID);
+            skill.SkillCategoryID = CategoryID;
             skill.SkillName = Skillname;
             skill.ModifiedBy = "admin";
             skill.ModifiedDate = DateTime.Now;
             db.SaveChanges();
+            var SkillCategory = (from item in db.tblSkillCategories where item.SkillCategoryID == CategoryID select item.SkillCategory).FirstOrDefault();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-            return Json(new { Url = redirectUrl, SkillName = Skillname }, JsonRequestBehavior.AllowGet);
+            return Json(new { Url = redirectUrl, SkillName = Skillname, SkillCategory = SkillCategory }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

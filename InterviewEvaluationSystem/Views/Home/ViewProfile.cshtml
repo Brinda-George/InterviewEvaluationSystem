@@ -4,78 +4,98 @@
     ViewBag.Title = "ViewProfile";
     var det = ViewBag.Details;
 }
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ViewProfile</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
     <style>
-        #formProfile{
-            width:400px;
-            height:400px;
-            color:dodgerblue;
-            font-family:'Times New Roman';
-            font-size:20px;
-        }
+        .user-row {
+    margin-bottom: 14px;
+}
+
+.user-row:last-child {
+    margin-bottom: 0;
+}
+
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+
+
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}    
+.toppad
+{margin-top:20px;
+}   
     </style>
 </head>
 <body>
-    <div id="formProfile">
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.UserName)
-            </dt>
-    
-            <dd>
-               @det.UserName
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.EmployeeId)
-            </dt>
-    
-            <dd>
-                @det.EmployeeId
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Designation)
-            </dt>
-    
-            <dd>
-               @det.Designation
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Address)
-            </dt>
-    
-            <dd>
-                @det.Address
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Pincode)
-            </dt>
-    
-            <dd>
-              @det.Pincode
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-    
-            <dd>
-              @det.Email
-            </dd>
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">@det.UserName</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="~/Images/user.png" class="img-circle img-responsive"> </div>
+                    <div class=" col-md-9 col-lg-9 ">
+                        <table class="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-user" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.EmployeeId)
+                                    </td>
+                                    <td>@det.EmployeeId</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-briefcase" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.Designation)
+                                    </td>
+                                    <td>@det.Designation</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-globe" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.Address)
+                                    </td>
+                                    <td>@det.Address</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.Pincode)
+                                    </td>
+                                    <td>@det.Pincode</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="icon-bar"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                                        @Html.DisplayNameFor(model => model.Email)
+                                    </td>
+                                    <td>@det.Email</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        </dl>
-    </div>
+        </div>
 </body>
-@Html.ActionLink("Back to dashboard", "HRHomePage", "HR", new { @class = "elements" }, null)
+<script src="~/Scripts/bootstrap.js"></script>
 
 </html>

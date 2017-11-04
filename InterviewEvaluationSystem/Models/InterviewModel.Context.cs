@@ -191,6 +191,19 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRegister", usernameParameter, employeeidParameter, designationParameter, addressParameter, pincodeParameter, passwordParameter, emailParameter);
         }
     
+        public virtual int spResetPassword(string email, string newPassword)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var newPasswordParameter = newPassword != null ?
+                new ObjectParameter("NewPassword", newPassword) :
+                new ObjectParameter("NewPassword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spResetPassword", emailParameter, newPasswordParameter);
+        }
+    
         public virtual int spUpdateCandidateInterviewer(Nullable<int> userid, Nullable<int> candidateid)
         {
             var useridParameter = userid.HasValue ?

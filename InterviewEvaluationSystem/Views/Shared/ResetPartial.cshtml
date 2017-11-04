@@ -1,1 +1,50 @@
-﻿
+﻿@model InterviewEvaluationSystem.Models.tblUser
+@{ 
+    Layout = null;
+}
+
+<label>Enter the OTP sent to your mail in order to login</label>
+<div id="loginForm">
+                <form class="form-signin" method="post" action="">
+                    <input type="hidden" id="otpHidden" value="@Session["OTP"]"/>
+                    <input id="otpText" type="text" class="form-control" name="OTP" placeholder="OTP" required="" autofocus="" />
+                    <br />
+                   
+                    <label class="text-danger" id="lblOtp"></label>
+                    <div class="text-danger">@ViewBag.Message</div>
+                    <button id="smtBtn" style="height:50px;text-align:center;background-color:darkblue;" class="btn btn-primary btn-lg btn-block login-button" type="button" onclick="return Check()">Submit</button>
+                </form>
+</div>
+
+
+    <script type="text/javascript">
+        function Check() {
+            var value = $('#otpText').val();
+            var otp = $("#otpHidden").val();
+
+            if (value == "") {
+                $("#lblOtp").html("Please enter the OTP");
+                return false;
+            }
+
+            else if (otp != value) {
+                $("#lblOtp").html("Please enter valid otp");
+                return false;
+            }
+            $.ajax({
+               
+                    type: "POST",
+                    url: "/Home/CheckOtp",
+                    data: { value: value },
+                    success: function (data) {
+                        window.location = data.Url;
+                       // location.reload();
+                    },
+                    error: function (data) {
+
+                    }
+                });
+            }
+
+    </script>
+

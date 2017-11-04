@@ -19,6 +19,7 @@ namespace InterviewEvaluationSystem.Controllers
 {
     public class HomeController : Controller
     {
+        InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
         public ActionResult Index()
         {
             return View();
@@ -51,7 +52,7 @@ namespace InterviewEvaluationSystem.Controllers
                 var result = db.spAuthenticate(loginUser.UserName, loginUser.Password).Single();
                 if (result == 0)
                 {
-                    ViewBag.Message = "Wrong Username or Password";
+                    ViewBag.Message = "Invalid Username or Password";
                 }
                 else
                 {
@@ -82,15 +83,19 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult PasswordReset(tblUser user)
+        public ActionResult PasswordReset(string email)
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            string email = user.Email;
-
+            int result;
             Random r = new Random();
-            var validemail = db.tblUsers.Any(x => x.Email == email);
-            if(validemail)
+            var data = db.tblUsers.Where(x => x.Email == email).FirstOrDefault();
+            
+           
+            //Session["UserName"] = data.UserName;
+           // var validemail = db.tblUsers.Any(x => x.Email == email);
+            if(data!=null)
             {
+                Session["Email"] = data.Email;
                 string otp;
                 const string pool = "abcdefghijklmnopqrstuvwxyz0123456789";
                 var builder = new StringBuilder();
@@ -104,17 +109,65 @@ namespace InterviewEvaluationSystem.Controllers
                 Session["OTP"] = otp;
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.To.Add(email);
-                mailMessage.Subject = "Password Reset";
-                mailMessage.Body = "Please use the following password to login to your account " + Session["OTP"] + ".You may later change it after logging into your account";
+                mailMessage.Subject = "Password Reset"; 
+                mailMessage.Body = "Please use the following password to change your password. " +"<br/>"+ Session["OTP"] +"<br/>"+".You may later change it after logging into your account";
                 mailMessage.IsBodyHtml = true;
                 SmtpClient smtpClient = new SmtpClient();
                 smtpClient.Send(mailMessage);
-                ViewBag.Success = "Please check your mail and enter the OTP which was sent to you in order to log in.";
-                return PartialView("ResetPartial");
+              //  ViewBag.Success = "Please check your mail and enter the OTP which was sent to you.";
+                result = 1;
+                return Json(new { Url = Url.Action("ResetPartial"),result=result });
             }
             else
             {
-                ViewBag.Valid = "Email entered is not registered.Please enter a registered email.";
+                result = 2;
+                return Json(new { result = result });
+                //ViewBag.Valid = "Email entered is not registered.Please enter a registered email.";
+            }
+            //return View();
+        }
+        
+
+        [HttpPost]
+        public ActionResult ResetPartial()
+        {
+            
+                return PartialView("ResetPartial");
+        }
+
+        [HttpPost]
+        public ActionResult CheckOtp(string value)
+        {
+            if (value == Session["OTP"].ToString())
+            {
+                Session["OTP"] = null;
+                var redirectUrl = new UrlHelper(Request.RequestContext).Action("UpdatePassword", "Home");
+                return Json(new { Url = redirectUrl}, JsonRequestBehavior.AllowGet);
+                //return View("ChangePass");
+            }
+           
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult UpdatePassword()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdatePassword(UpdatePasswordViewModel updatePasswordViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var sessionValue = Session["Email"];
+                int result = db.spResetPassword(sessionValue.ToString(), updatePasswordViewModel.NewPassword);
+                if (result == 1)
+                {
+                    ViewBag.result = "Password Updated Successfully";
+                    Session["Email"] = null;
+                }
             }
             return View();
         }

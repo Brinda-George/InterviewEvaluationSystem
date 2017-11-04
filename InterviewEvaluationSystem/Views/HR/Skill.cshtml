@@ -67,17 +67,20 @@
             <span id="skillid" >@item.skillno</span>
         </text>),*@
 
-    gridview.Column("Skill ",
+    gridview.Column("Skill Category",
         format:
         @<text>
-            <span id="skillcategory" >@item.skillcat</span>
-        </text>),
+            <span id="skillcategory" class="read">@item.skillcat</span>
+            @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.category, "Select category", new { @class = "edit",@id = "categories",@style="display:none"  })
+            <label class="text-danger" id="catLbl"></label>
+    </text>),
 
     gridview.Column("Skill Name",
          format:
         @<text>
             <span id="skillname" class="read">@item.skillname</span>
             @Html.TextBox("SkillName", (string)item.skillname, new { @class = "edit",@style="display:none" })
+            <label class="text-danger" id="skillLbl"></label>
         </text>),
 
     gridview.Column("Action", style: "button",

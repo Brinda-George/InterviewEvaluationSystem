@@ -12,6 +12,11 @@
         var tr = $(this).parents('tr:first');
         RoundID = $(this).prop('id');
         var RoundName = tr.find('#RoundName').val();
+        if (RoundName == "")
+        {
+            tr.find('#roundLbl').html("Please enter a valid Round Name");
+            return false;
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -19,6 +24,7 @@
             data: JSON.stringify({ "RoundID": RoundID, "RoundName": RoundName}),
             dataType: "json",
             success: function (data) {
+                tr.find('#roundLbl').empty();
                 tr.find('.edit, .read').toggle();
                 $('.edit').hide();
                 tr.find('#roundname').text(data.RoundName);
@@ -45,21 +51,23 @@
 
     $('.delete-case').on('click', function (e) {
         e.preventDefault();
-        var tr = $(this).parents('tr:first');
-        RoundID = $(this).prop('id');
-        $.ajax({
-            type: 'POST',
-            url: '/HR/RoundDelete/',
-            data: { "RoundID": RoundID },
-            dataType: "json",
-            success: function (data) {
-                alert('Successfully deleted');
-                window.location.href = data.Url;
-            },
-            error: function () {
-                alert('Error occured during delete.');
-            }
-        });
+        if (confirm("Are you sure you want to delete")) {
+            var tr = $(this).parents('tr:first');
+            RoundID = $(this).prop('id');
+            $.ajax({
+                type: 'POST',
+                url: '/HR/RoundDelete/',
+                data: { "RoundID": RoundID },
+                dataType: "json",
+                success: function (data) {
+                    alert('Successfully deleted');
+                    window.location.href = data.Url;
+                },
+                error: function () {
+                    alert('Error occured during delete.');
+                }
+            });
+        }
     });
 
 
