@@ -25,64 +25,72 @@
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-primary bg-primary">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-users fa-4x"></i>
+                    <a href="@Url.Action("EvaluationStatus","Interviewer")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-users fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.NewCandidateCount</div>
+                                <div class="text">New Candidates</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.NewCandidateCount</div>
-                            <div class="text">New Candidates</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-green">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-calendar fa-4x"></i>
+                    <a href="@Url.Action("ViewTodaysInterviews","Interviewer")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-calendar fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.TodaysInterviewCount</div>
+                                <div class="text">Today's Interviews</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.TodaysInterviewCount</div>
-                            <div class="text">Today's Interviews</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-graduation-cap fa-4x"></i>
+                    <a href="@Url.Action("ViewRecommendedCandidates","Interviewer")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-graduation-cap fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.HiredCandidateCount</div>
+                                <div class="text">Recommended Candidates</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.HiredCandidateCount</div>
-                            <div class="text">Recommended Candidates</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-3 mb-3">
             <div class="panel panel-red">
                 <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <br />
-                            <i class="fa fa-bar-chart fa-4x"></i>
+                    <a href="@Url.Action("ViewCandidates","Interviewer")">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <br />
+                                <i class="fa fa-bar-chart fa-4x"></i>
+                            </div>
+                            <div class="col-sm-9 text-right">
+                                <div class="huge">@Model.TotalCandidateCount</div>
+                                <div class="text">Total Candidates</div>
+                            </div>
                         </div>
-                        <div class="col-sm-9 text-right">
-                            <div class="huge">@Model.TotalCandidateCount</div>
-                            <div class="text">Total Candidates</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

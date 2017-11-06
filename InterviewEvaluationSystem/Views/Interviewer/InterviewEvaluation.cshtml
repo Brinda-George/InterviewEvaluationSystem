@@ -64,7 +64,7 @@
                 {
                     ColumnName = round.RoundName,
                     Header = round.RoundName,
-                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.SkillID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @style = "colWidth" })
+                    Format = (item) => Html.DropDownListFor(m => m.RatingScale, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.ID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @style = "colWidth" })
                 });
             }
             else
@@ -73,7 +73,7 @@
                 {
                     ColumnName = round.RoundName,
                     Header = round.RoundName,
-                    Format = (item) => Html.DropDownListFor(m => m.RatingScale[i].RateScaleID, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @style = "colWidth" })
+                    Format = (item) => Html.DropDownListFor(m => m.RatingScale, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), "--select--", new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @style = "colWidth" })
                 });
             }
 

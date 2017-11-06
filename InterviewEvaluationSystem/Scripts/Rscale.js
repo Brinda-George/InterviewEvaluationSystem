@@ -11,6 +11,27 @@
         tr.find('.edit, .read').toggle();
     });
 
+
+    $(document).on('change', ".cat", function (e) {
+        var $current = $(this);
+        $current.addClass("thiss");
+
+        $('.cat').each(function () {
+            if ($(this).val() == $current.val() && $(this).attr('class') != $current.attr('class')) {
+                alert('duplicate found!');
+                $current.removeClass("thiss");
+                $('.update-case').prop('disabled', true);
+                location.reload(true);
+                return false;
+            }
+            else {
+                $('.update-case').prop('disabled', false);
+            }
+        });
+
+        $current.removeClass("thiss");
+    });
+
     $(document).on('click', ".update-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
@@ -18,20 +39,16 @@
         var RateScale = tr.find('#RateScale').val();
         var RateValue = tr.find('#RateValue').val();
         var Description = tr.find('#Description').val();
-        var flag = 0;
         if (RateScale == "") {
-            tr.find('#scaleLbl').html("The Rate Scale field is required");
-            flag = 1;
+            tr.find('#scaleLbl').html("Please enter a valid Rate Scale");
+            return false;
         }
         if (RateValue == "") {
-            tr.find('#valueLbl').html("The Rate Value field is required");
-            flag = 1;
+            tr.find('#valueLbl').html("Please enter a valid Rate Value");
+            return false;
         }
         if (Description == "") {
-            tr.find('#desLbl').html("The Description field is required");
-            flag = 1;
-        }
-        if (flag == 1) {
+            tr.find('#desLbl').html("Please enter a valid Description");
             return false;
         }
         $.ajax({
@@ -49,7 +66,9 @@
                 tr.find('#ratescale').text(data.RateScale);
                 tr.find('#ratevalue').text(data.RateValue);
                 tr.find('#description').text(data.Description);
+                alert('Successfully updated');
                 window.location = data.Url;
+
             },
             error: function (err) {
                 alert("Error occured during update.");
@@ -63,9 +82,6 @@
         var id = $(this).prop('id');
         tr.find('.edit, .read').toggle();
         $('.edit').hide();
-        tr.find('#desLbl').empty();
-        tr.find('#valueLbl').empty();
-        tr.find('#scaleLbl').empty();
     });
 
     $(document).on('click', ".delete-case", function (e) {
@@ -79,12 +95,7 @@
                 data: { "RateScaleID": RateScaleID },
                 dataType: "json",
                 success: function (data) {
-                    if (data.res == 1) {
-                        alert('Successfully Deleted!!');
-                    }
-                    else if (data.res == 0) {
-                        alert('Cannot Delete!!..Please Delete from bottom');
-                    }
+                    alert('Successfully deleted');
                     window.location.href = data.Url;
                 },
                 error: function () {
@@ -93,5 +104,4 @@
             });
         }
     });
-
 });

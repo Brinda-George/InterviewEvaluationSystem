@@ -45,14 +45,14 @@
 }
 
 @{
-    if (ViewBag.Skillcategories!=null)
+    if (ViewBag.Skillcategories != null)
     {
-   
-<div id="ajaxgrid">
-    @{
-        var gridview = new WebGrid(ViewBag.Skillcategories, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 10);
-    }
-        @gridview.GetHtml(tableStyle: "table table-bordered table-striped",
+
+        <div id="ajaxgrid">
+            @{
+                var gridview = new WebGrid(ViewBag.Skillcategories, canSort: true, ajaxUpdateContainerId: "ajaxgrid", rowsPerPage: 10);
+            }
+            @gridview.GetHtml(tableStyle: "table table-bordered table-striped",
                                            headerStyle: "webgrid-header",
                                            alternatingRowStyle: "webgrid-alternating-row",
                                            rowStyle: "webgrid-row-style",
@@ -67,7 +67,7 @@
                     gridview.Column("Skill Name",format:
                     @<text>
                         <span id="skillname" class="read">@item.skillname</span>
-                        @Html.TextBox("SkillName", (string)item.skillname, new { @class = "edit",@style="display:none" })
+                        @Html.TextBox("SkillName", (string)item.skillname, new { @class = "edit cat",@style="display:none" })
                         <label class="text-danger" id="skillLbl"></label>
                     </text>),
                     gridview.Column("Action", style: "button",format:
@@ -78,10 +78,17 @@
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.skillno"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                     </text>)
                                           })
-</div>
-            }
-        
-        }
+        </div>
+                }
+                else
+                {
+                    <div class="alert alert-success">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <strong>No Skills!!</strong>
+                    </div>
+                }
+
+}
 <div>
     @Html.ActionLink("Back to Home", "HRHomePage", "HR")
 </div>

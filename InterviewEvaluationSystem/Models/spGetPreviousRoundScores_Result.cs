@@ -17,5 +17,6 @@ namespace InterviewEvaluationSystem.Models
         public int RateScaleID { get; set; }
         public int CandidateID { get; set; }
         public int RoundID { get; set; }
+        public int SkillID { get; set; }
     }
 }

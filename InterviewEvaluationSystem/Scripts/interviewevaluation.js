@@ -16,13 +16,17 @@ function getValues(element) {
     var classname = "class" + roundID;
     var count = $('.' + classname).length;
     var valueArray = [];
-    for (var i = 1; i <= count; i++) {
-        var itemid = "id" + roundID + i;
+    var idArray = [];
+    var skills = $('select[id^="id' + roundID + '"]');
+    for (var i = 0; i < skills.length; i++) {
+        var itemid = $(skills[i]).attr('id');
+        var commonid = "id" + roundID;
         if ($('#' + itemid).find('option:selected').val().length === 0) {
             alert("Please select all rates!!")
             return false;
         }
         else {
+            idArray[i] = itemid.replace(commonid, '');
             valueArray[i] = $('#' + itemid).find('option:selected').val();
         }
     }
@@ -41,7 +45,7 @@ function getValues(element) {
     $.ajax({
         url: '/Interviewer/InterviewEvaluation',
         type: 'post',
-        data: { recommended: recommended, evaluationID: evaluationID, values: valueArray, comments: comments },
+        data: { recommended: recommended, evaluationID: evaluationID, ids: idArray, values: valueArray, comments: comments },
         success: function (response) {
             window.location.href = response.Url;
         },

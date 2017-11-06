@@ -9,6 +9,26 @@
         tr.find('.edit, .read').toggle();
     });
 
+    $(document).on('change', ".cat", function (e) {
+        var $current = $(this);
+        $current.addClass("thiss");
+
+        $('.cat').each(function () {
+            if ($(this).val() == $current.val() && $(this).attr('class') != $current.attr('class')) {
+                alert('duplicate found!');
+                $current.removeClass("thiss");
+                $('.update-case').prop('disabled', true);
+                location.reload(true);
+                return false;
+            }
+            else {
+                $('.update-case').prop('disabled', false);
+            }
+        });
+
+        $current.removeClass("thiss");
+    });
+
 
     $(document).on('click', ".update-case", function (e) {
         e.preventDefault();
@@ -16,16 +36,12 @@
         SkillCategoryID = $(this).prop('id');
         var SkillCategory = tr.find('#SkillCategory').val();
         var Description = tr.find('#Description').val();
-        var flag = 0;
         if (SkillCategory == "") {
-            tr.find('#catLbl').html("The Skill Category field is required");
-            flag = 1;
+            tr.find('#catLbl').html("Please enter a valid Skill Category");
+            return false;
         }
         if (Description == "") {
-            tr.find('#desLbl').html("The Description field is required");
-            flag = 1;
-        }
-        if (flag == 1) {
+            tr.find('#desLbl').html("Please enter a valid description");
             return false;
         }
         $.ajax({
@@ -41,6 +57,7 @@
                 $('.edit').hide();
                 tr.find('#skillcategory').text(data.SkillCategory);
                 tr.find('#description').text(data.Description);
+                alert('Successfully updated');
                 window.location = data.Url;
             },
             error: function (err) {
@@ -49,15 +66,12 @@
         });
     });
 
-
     $(document).on('click', ".cancel-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         var id = $(this).prop('id');
         tr.find('.edit, .read').toggle();
         $('.edit').hide();
-        tr.find('#catLbl').empty();
-        tr.find('#desLbl').empty();
     });
 
     $(document).on('click', ".delete-case", function (e) {
@@ -71,12 +85,7 @@
                 data: { "SkillCategoryID": SkillCategoryID },
                 dataType: "json",
                 success: function (data) {
-                    if (data.res == 1) {
-                        alert('Successfully Deleted!!');
-                    }
-                    else if (data.res == 0) {
-                        alert('Cannot Delete!!..Please Delete from bottom');
-                    }
+                    alert('Successfully deleted');
                     window.location.href = data.Url;
                 },
                 error: function () {
@@ -86,3 +95,4 @@
         }
     });
 });
+

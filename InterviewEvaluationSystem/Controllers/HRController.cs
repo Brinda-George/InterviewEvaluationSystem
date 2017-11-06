@@ -37,9 +37,9 @@ namespace InterviewEvaluationSystem.Controllers
             var result = dbContext.spGetPieChart(year).Single();
             if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
             {
-                Chart chart = new Chart(width: 550, height: 350, theme: ChartTheme.Vanilla)
+                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
                 .AddLegend("Summary")
-                .AddSeries("Default", chartType: "Pie", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .AddSeries("Default", chartType: "doughnut", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
                 .Write("bmp");
             }
         }
@@ -49,11 +49,11 @@ namespace InterviewEvaluationSystem.Controllers
             var result = dbContext.spGetCloumnChart(year).Single();
             if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
             {
-                Chart chart = new Chart(width: 550, height: 350, theme: ChartTheme.Blue)
+                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
                 .AddSeries("Default", chartType: "column",
                     xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
                     yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
-                .SetXAxis("2017")
+                .SetXAxis(year.ToString())
                 .SetYAxis("No of Candidates")
                 .Write("bmp");
             }
@@ -70,12 +70,15 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddRound(RoundViewModel round)
+        public ActionResult AddRound(tblRound round)
         {
-            dbContext.spInsertRound(round.RoundName, Convert.ToInt32(Session["UserID"]), DateTime.Now);
+            round.CreatedBy = Convert.ToInt32(Session["UserID"]);
+            round.CreatedDate = DateTime.Now;
+            round.IsDeleted = false;
+            dbContext.tblRounds.Add(round);
+            dbContext.SaveChanges();
             return RedirectToAction("AddRound");
         }
-
 
         [HttpPost]
         public JsonResult RoundEdit(int RoundID, string RoundName)
@@ -90,10 +93,12 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RoundDelete(int RoundID)
         {
-            Nullable<int> result = dbContext.spDeleteRound(RoundID).Single();
+            tblRound round = dbContext.tblRounds.Find(RoundID);
+            round.IsDeleted = true;
+            dbContext.SaveChanges();
+            bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
-            return Json(new { res = result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
-
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult IsRoundExist(string RoundName)
@@ -119,9 +124,13 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult RatingScale(RatingScaleViewModel rate)
+        public ActionResult RatingScale(tblRatingScale rate)
         {
-            dbContext.spInsertRatingScale(rate.RateScale, rate.RateValue, rate.Description, Convert.ToInt32(Session["UserID"]), DateTime.Now);
+            rate.CreatedBy = Convert.ToInt32(Session["UserID"]);
+            rate.CreatedDate = DateTime.Now;
+            rate.IsDeleted = false;
+            dbContext.tblRatingScales.Add(rate);
+            dbContext.SaveChanges();
             return RedirectToAction("RatingScale");
         }
 
@@ -140,10 +149,16 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RateDelete(int RateScaleID)
         {
-            Nullable<int> result = dbContext.spDeleteRatingScale(RateScaleID).Single();
+            tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleID);
+            rate.IsDeleted = true;
+            rate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            rate.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+            bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
-            return Json(new { res = result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
+
 
         public JsonResult IsScaleExist(string RateScale)
         {
@@ -182,10 +197,15 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult SkillCategory(SkillCategoryViewModel category)
+        public ActionResult SkillCategory(tblSkillCategory category)
         {
-            dbContext.spInsertSkillCategory(category.SkillCategory, category.Description, Convert.ToInt32(Session["UserID"]), DateTime.Now);
+            category.CreatedBy = Convert.ToInt32(Session["UserID"]);
+            category.CreatedDate = DateTime.Now;
+            category.IsDeleted = false;
+            dbContext.tblSkillCategories.Add(category);
+            dbContext.SaveChanges();
             return RedirectToAction("SkillCategory");
+
         }
 
         [HttpPost]
@@ -202,9 +222,14 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult CategoryDelete(int SkillCategoryID)
         {
-            Nullable<int> result = dbContext.spDeleteSkillCategory(SkillCategoryID).Single();
+            tblSkillCategory skill = dbContext.tblSkillCategories.Find(SkillCategoryID);
+            skill.IsDeleted = true;
+            skill.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            skill.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+            bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
-            return Json(new { res = result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult IsCategoryExist(string SkillCategory)
@@ -259,9 +284,14 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Skill(SkillViewModel skill, string category)
+        public ActionResult Skill(tblSkill skill, string category)
         {
-            dbContext.spInsertSkill(skill.SkillName, Convert.ToInt32(category), Convert.ToInt32(Session["UserID"]), DateTime.Now);
+            skill.CreatedBy = Convert.ToInt32(Session["UserID"]);
+            skill.CreatedDate = DateTime.Now;
+            skill.IsDeleted = false;
+            skill.SkillCategoryID = Convert.ToInt32(category);
+            dbContext.tblSkills.Add(skill);
+            dbContext.SaveChanges();
             return RedirectToAction("Skill");
         }
 
@@ -283,9 +313,14 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult SkillDelete(int SkillID)
         {
-            Nullable<int> result = dbContext.spDeleteSkill(SkillID).Single();
+            tblSkill skills = dbContext.tblSkills.Find(SkillID);
+            skills.IsDeleted = true;
+            skills.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            skills.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+            bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-            return Json(new { Url = redirectUrl, res = result }, JsonRequestBehavior.AllowGet);
+            return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult IsSkillExist(string SkillName)
@@ -574,50 +609,80 @@ namespace InterviewEvaluationSystem.Controllers
             return View();
         }
 
-        [HttpPost]
         public ActionResult ProceedCandidate(int CandidateID, string Name, string Email, int RoundID)
         {
-            NotificationProceedViewModel candidateProceed = new NotificationProceedViewModel();
-            candidateProceed.CandidateID = CandidateID;
-            candidateProceed.Name = Name;
-            candidateProceed.Email = Email;
-            candidateProceed.ProceedTo = RoundID + 1;
-            TempData["CandidateID"] = CandidateID;
-            Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            List<CandidateInterviewersViewModel> interviewers = dbContext.spGetCandidateInterviewers(CandidateID)
-                .Select(i => new CandidateInterviewersViewModel
-                {
-                    UserID = i.UserID,
-                    UserName = i.UserName
-                }).ToList();
-            foreach (CandidateInterviewersViewModel interviewer in interviewers)
+            try
             {
-                SelectListItem selectlistitem = new SelectListItem
+                NotificationProceedViewModel candidateProceed = new NotificationProceedViewModel();
+                candidateProceed.CandidateID = CandidateID;
+                candidateProceed.Name = Name;
+                candidateProceed.Email = Email;
+                TempData["CandidateID"] = CandidateID;
+                Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
+                List<SelectListItem> selectedlistround = new List<SelectListItem>();
+                List<CandidateRoundViewModel> CandidateRound = dbContext.spGetCandidateRound(CandidateID)
+                    .Select(i => new CandidateRoundViewModel
+                    {
+                        RoundID = i.RoundID,
+                        RoundName = i.roundName
+                    }).ToList();
+                foreach (CandidateRoundViewModel round1 in CandidateRound)
                 {
-                    Text = interviewer.UserName,
-                    Value = interviewer.UserID.ToString()
-                };
-                selectedlist.Add(selectlistitem);
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = round1.RoundName,
+                        Value = round1.RoundID.ToString()
+                    };
+                    selectedlistround.Add(selectlistitem);
+                }
+                ViewBag.round = selectedlistround;
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                List<CandidateInterviewersViewModel> interviewers = dbContext.spGetCandidateInterviewers(CandidateID)
+                    .Select(i => new CandidateInterviewersViewModel
+                    {
+                        UserID = i.UserID,
+                        UserName = i.UserName
+                    }).ToList();
+                foreach (CandidateInterviewersViewModel interviewer in interviewers)
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = interviewer.UserName,
+                        Value = interviewer.UserID.ToString()
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.interviewers = selectedlist;
+                return PartialView("NotificationProceed", candidateProceed);
             }
-            ViewBag.interviewers = selectedlist;
-            return PartialView("NotificationProceed", candidateProceed);
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "ProceedCandidate"));
+            }
         }
 
-        public ActionResult ProceedCandidateData(NotificationProceedViewModel proceedCandidateData, string interviewers)
+        public ActionResult ProceedCandidateData(string interviewers, int round)
         {
-            dbContext.tblEvaluations.Add(new tblEvaluation
+            try
             {
-                CandidateID = Convert.ToInt16(TempData["CandidateID"]),
-                RoundID = proceedCandidateData.ProceedTo,
-                UserID = Convert.ToInt32(interviewers),
-                CreatedBy = Convert.ToInt32(Session["UserID"]),
-                CreatedDate = System.DateTime.Now,
-                IsDeleted = false
-            });
-            dbContext.SaveChanges();
-            return RedirectToAction("Notification");
+                dbContext.tblEvaluations.Add(new tblEvaluation
+                {
+                    CandidateID = Convert.ToInt16(TempData["CandidateID"]),
+                    RoundID = Convert.ToInt32(round),
+                    UserID = Convert.ToInt32(interviewers),
+                    CreatedBy = Convert.ToInt32(Session["UserID"]),
+                    CreatedDate = System.DateTime.Now,
+                    IsDeleted = false
+                });
+                dbContext.SaveChanges();
+                return RedirectToAction("Notification");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "ProceedCandidateData"));
+            }
         }
+
 
         public ActionResult RejectCandidate(int CandidateID)
         {
@@ -635,6 +700,74 @@ namespace InterviewEvaluationSystem.Controllers
             hireCandidate.CandidateStatus = true;
             dbContext.SaveChanges();
             return RedirectToAction("Notification");
+        }
+        #endregion
+
+        #region View Interviewers
+        public ActionResult ChangeCandidateInterviewer()
+        {
+            List<InterviewersOfCandidateViewModel> CandidateInterviewersList = new List<InterviewersOfCandidateViewModel>();
+            CandidateInterviewersList = dbContext.spGetInterviewersOfCandidate()
+                .Select(n => new InterviewersOfCandidateViewModel
+                {
+                    CandidateID = n.CandidateID,
+                    Name = n.Name,
+                    Email = n.Email,
+                    RoundID = Convert.ToInt32(n.RoundID),
+                    UserName = n.UserName
+                }).ToList();
+            ViewBag.CandidateInterviewersList = CandidateInterviewersList;
+
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+            {
+                SelectListItem selectlistitem = new SelectListItem
+                {
+                    Text = user.UserName,
+                    Value = user.UserID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            ViewBag.user = selectedlist;
+
+            return View();
+        }
+
+        public ActionResult EditCandidateInterviewer(int CandidateID, int UserID)
+        {
+            dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
+            dbContext.SaveChanges();
+            return Json(new { CandidateID = CandidateID, UserID = UserID }, JsonRequestBehavior.AllowGet);
+
+            // return View();
+        }
+
+        public ActionResult SearchInterviewerResult(string UserName)
+        {
+            List<InterviewersOfCandidateViewModel> CandidateInterviewersList = new List<InterviewersOfCandidateViewModel>();
+            CandidateInterviewersList = dbContext.spGetInterviewersOfCandidate().Where(s => s.UserName.ToLower().StartsWith(UserName.ToLower()))
+                .Select(n => new InterviewersOfCandidateViewModel
+                {
+                    CandidateID = n.CandidateID,
+                    Name = n.Name,
+                    Email = n.Email,
+                    RoundID = Convert.ToInt32(n.RoundID),
+                    UserName = n.UserName
+                }).ToList();
+            ViewBag.CandidateInterviewersList = CandidateInterviewersList;
+
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+            {
+                SelectListItem selectlistitem = new SelectListItem
+                {
+                    Text = user.UserName,
+                    Value = user.UserID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            ViewBag.user = selectedlist;
+            return PartialView("SearchInterviewerResult", ViewBag.CandidateInterviewersList);
         }
         #endregion
 
@@ -673,6 +806,46 @@ namespace InterviewEvaluationSystem.Controllers
         }
         #endregion
 
+        #region Candidates in HR Round
+        public ActionResult CandidatesinHRRound()
+        {
+            List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
+            return View(candidates);
+        }
+
+        [HttpPost]
+        public ActionResult CandidatesinHRRound(string searchString)
+        {
+            List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+        #endregion
+
+        #region Today's Interview
+        public ActionResult TodaysInterviews()
+        {
+            List<CurrentStatusViewModel> TodaysInterviews = services.GetTodaysInterview();
+            return View(TodaysInterviews);
+        }
+
+        [HttpPost]
+        public ActionResult TodaysInterviews(string searchString)
+        {
+            List<CurrentStatusViewModel> TodaysInterviews = services.GetTodaysInterview();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                TodaysInterviews = TodaysInterviews.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(TodaysInterviews);
+        }
+        #endregion
+
         #region HR Evaluation
         public ActionResult HREvaluation(StatusViewModel statusViewModel)
         {
@@ -681,13 +854,14 @@ namespace InterviewEvaluationSystem.Controllers
             interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
             interviewEvaluationViewModel.Rounds = services.GetRounds();
             interviewEvaluationViewModel.Skills = services.GetSkills();
-            for (int i = 0; i < interviewEvaluationViewModel.SkillCategories.Count; i++)
+            foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
             {
-                interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkillsByCategory(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
+                interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
             }
-            for (int i = 0; i < interviewEvaluationViewModel.Rounds.Count; i++)
+
+            foreach (var round in interviewEvaluationViewModel.Rounds)
             {
-                interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
+                interviewEvaluationViewModel.ScoresByRound.Add(services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID));
             }
             interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
             interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
@@ -708,16 +882,16 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult HREvaluation(bool recommended, int evaluationID, int[] values, string comments)
+        public ActionResult HREvaluation(bool recommended, int evaluationID, int[] ids, int[] values, string comments)
         {
             if (evaluationID != 0)
             {
-                for (int i = 1; i < values.Length; i++)
+                for (int i = 0; i < values.Length; i++)
                 {
                     dbContext.tblScores.Add(new tblScore
                     {
                         EvaluationID = evaluationID,
-                        SkillID = i,
+                        SkillID = ids[i],
                         RateScaleID = values[i],
                         CreatedBy = Convert.ToInt32(Session["UserID"]),
                         CreatedDate = DateTime.Now
@@ -747,5 +921,67 @@ namespace InterviewEvaluationSystem.Controllers
         }
         #endregion
 
+        #region Total Candidates
+        [HttpGet]
+        public ActionResult ViewCandidates()
+        {
+            List<CandidateViewModel> candidates = services.GetCandidates();
+            return View(candidates);
+        }
+
+        [HttpPost]
+        public ActionResult ViewCandidates(string searchString)
+        {
+            List<CandidateViewModel> candidates = services.GetCandidates();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+        #endregion
+
+        #region Hired Candidates
+        [HttpGet]
+        public ActionResult ViewHiredCandidates()
+        {
+            List<CandidateViewModel> candidates = services.GetHiredCandidates();
+            return View(candidates);
+        }
+
+        [HttpPost]
+        public ActionResult ViewHiredCandidates(string searchString)
+        {
+            List<CandidateViewModel> candidates = services.GetHiredCandidates();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+        #endregion
+
+        #region InProgress Candidates
+        [HttpGet]
+        public ActionResult ViewInProgressCandidates()
+        {
+            List<CandidateViewModel> candidates = services.GetInProgressCandidates();
+            return View(candidates);
+        }
+
+        [HttpPost]
+        public ActionResult ViewInProgressCandidates(string searchString)
+        {
+            List<CandidateViewModel> candidates = services.GetInProgressCandidates();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+        #endregion
     }
 }

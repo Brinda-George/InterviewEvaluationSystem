@@ -9,9 +9,9 @@
             var UserName = tr.find("#lblInterviewerName").text();
             tr.find('#ddlInterviewerName').val(UserName);
             $('.delete-userCandidate').hide();
-            tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
             tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
         });
+
         $('.cancel-userCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
             tr.find('#lblCandidateNameValidation').html('');

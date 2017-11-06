@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="~/Scripts/Login.js"></script>
 <link href="~/Content/LoginTemplate.css" rel="stylesheet" />
 
 <h1 class="title">Suyati Technologies</h1>
@@ -29,10 +30,28 @@
                     }
                     <button class="btn btn-primary btn-lg btn-block login-button" type="submit">Login</button>
                 </form>
+                <br />
             </td>
         </tr>
         <tr>
-            <td>@Html.ActionLink("Forgot Password?", "PasswordReset", "Home")</td>
+            <td>
+                <a href="javascript:Forgot()">Forgot Password?</a>
+            </td>
         </tr>
     </table>
+</div>
+
+<div id='myModal' class='modal'>
+    <div class="modal-dialog" style="width:31%; height:50%; padding:5px; margin-left:35%;padding-top:170px!important">
+        <div class="modal-content" style="padding:5px; background-color:white">
+            <div class="modal-header" id="editCaption">
+                <h5>Forgot Password</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id='myModalContent' style="width:500px; height:300px; padding:5px;"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<InterviewEvaluationSystem.Models.CurrentStatusViewModel>
 
 @{
-    ViewBag.Title = "CandidateStatus";
+    ViewBag.Title = "TodaysInterviews";
     WebGrid webgridStatus = new WebGrid(source: Model, canSort: false, canPage: true, rowsPerPage: 30);
 }
 
@@ -9,8 +9,7 @@
     <li class="breadcrumb-item">
         <a href="~/HR/HRHomePage">Home Page</a>
     </li>
-    <li class="breadcrumb-item active">Interviews</li>
-    <li class="breadcrumb-item active">Interview Evaluation Status</li>
+    <li class="breadcrumb-item active">Todays Interviews</li>
 </ol>
 
 @using (Html.BeginForm(new { id = "form" }))
@@ -33,32 +32,17 @@
                 rowStyle: "webgrid-row-style",
                 mode: WebGridPagerModes.All,
                 columns: webgridStatus.Columns(
-                    webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "HREvaluation", new
-                    {
-                        Name = item.Name,
-                        CandidateID = item.CandidateID,
-                        RoundID = item.RoundID,
-                        EvaluationID = item.EvaluationID,
-                        recommended = item.Recommended
-                    })),
+                    webgridStatus.Column(columnName: "Name", header: "Name"),
                     webgridStatus.Column(columnName: "Email", header: "Email"),
                     webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) =>
                     {
-                        if (item.Recommended == true && item.CandidateStatus == true)
+                        if (item.Recommended == null)
                         {
-                            return Html.Raw(string.Format("Hired"));
-                        }
-                        else if (item.Recommended == true && item.CandidateStatus == null)
-                        {
-                            return Html.Raw(string.Format("HR Round Completed"));
-                        }
-                        else if (item.Recommended == false || (item.Recommended == true && item.CandidateStatus == false))
-                        {
-                            return Html.Raw(string.Format("Rejected"));
+                            return Html.Raw(string.Format("Proceeded to HR Round"));
                         }
                         else
                         {
-                            return Html.Raw(string.Format("Proceeded to HR Round"));
+                            return Html.Raw(string.Format(""));
                         }
                     })
                     )
@@ -68,7 +52,7 @@
     {
         <div class="alert alert-success">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <strong>No Candidates!!</strong>
+            <strong>No Candidates Today!!</strong>
         </div>
     }
 </div>

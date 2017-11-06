@@ -50,7 +50,7 @@
                      gridview.Column("RoundName",format:
                     @<text>
                         <span id="roundname" class="read">@item.RoundName</span>
-                        @Html.TextBox("RoundName", (string)item.RoundName, new { @class = "edit",@style="display:none"  })
+                        @Html.TextBox("RoundName", (string)item.RoundName, new { @class = "edit cat",@style="display:none"  })
                         <label class="text-danger" id="roundLbl"></label>
                     </text>),
                      gridview.Column("Action", style: "button",format:
@@ -61,6 +61,13 @@
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RoundID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                     </text>)
                  })
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <strong>No Rounds!!</strong>
+        </div>
     }
 </div>
 

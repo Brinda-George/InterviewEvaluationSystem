@@ -169,7 +169,7 @@ namespace InterviewEvaluationSystem.Controllers
                 int result = dbContext.spResetPassword(sessionValue.ToString(), updatePasswordViewModel.NewPassword);
                 if (result == 1)
                 {
-                    ViewBag.result = "Password Updated Successfully";
+                    ViewBag.result = "Password Updated Successfully!!!";
                     Session["Email"] = null;
                 }
             }

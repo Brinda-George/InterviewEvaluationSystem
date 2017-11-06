@@ -1,7 +1,7 @@
-﻿@model IEnumerable<InterviewEvaluationSystem.Models.CurrentStatusViewModel>
+﻿@model IEnumerable<InterviewEvaluationSystem.Models.CandidateViewModel>
 
 @{
-    ViewBag.Title = "CandidateStatus";
+    ViewBag.Title = "HiredCandidateView";
     WebGrid webgridStatus = new WebGrid(source: Model, canSort: false, canPage: true, rowsPerPage: 30);
 }
 
@@ -9,8 +9,7 @@
     <li class="breadcrumb-item">
         <a href="~/HR/HRHomePage">Home Page</a>
     </li>
-    <li class="breadcrumb-item active">Interviews</li>
-    <li class="breadcrumb-item active">Interview Evaluation Status</li>
+    <li class="breadcrumb-item active">In Progress Candidates</li>
 </ol>
 
 @using (Html.BeginForm(new { id = "form" }))
@@ -33,32 +32,33 @@
                 rowStyle: "webgrid-row-style",
                 mode: WebGridPagerModes.All,
                 columns: webgridStatus.Columns(
-                    webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "HREvaluation", new
-                    {
-                        Name = item.Name,
-                        CandidateID = item.CandidateID,
-                        RoundID = item.RoundID,
-                        EvaluationID = item.EvaluationID,
-                        recommended = item.Recommended
-                    })),
+                    webgridStatus.Column(columnName: "Name", header: "Name"),
                     webgridStatus.Column(columnName: "Email", header: "Email"),
-                    webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) =>
+                    webgridStatus.Column(columnName: "DateOfBirth", header: "Date Of Birth", format:
+                    @<text>
+                        <label>@item.DateOfBirth.ToString("dd/MM/yyyy")</label>
+                    </text>),
+                    webgridStatus.Column(columnName: "PAN", header: "PAN"),
+                    webgridStatus.Column(columnName: "DateOfInterview", header: "Date Of Interview", format:
+                    @<text>
+                        <label>@item.DateOfInterview.ToString("dd/MM/yyyy")</label>
+                    </text>),
+                    webgridStatus.Column(columnName: "Designation", header: "Post Applied For"),
+                    webgridStatus.Column(columnName: "TotalExperience", header: "Total Experience"),
+                    webgridStatus.Column(columnName: "Qualifications", header: "Qualifications"),
+                    webgridStatus.Column(columnName: "CandidateStatus", header: "Status", format: (item) =>
                     {
-                        if (item.Recommended == true && item.CandidateStatus == true)
+                        if (item.CandidateStatus == true)
                         {
                             return Html.Raw(string.Format("Hired"));
                         }
-                        else if (item.Recommended == true && item.CandidateStatus == null)
-                        {
-                            return Html.Raw(string.Format("HR Round Completed"));
-                        }
-                        else if (item.Recommended == false || (item.Recommended == true && item.CandidateStatus == false))
+                        else if (item.CandidateStatus == true)
                         {
                             return Html.Raw(string.Format("Rejected"));
                         }
                         else
                         {
-                            return Html.Raw(string.Format("Proceeded to HR Round"));
+                            return Html.Raw(string.Format("InProgress"));
                         }
                     })
                     )
@@ -68,7 +68,7 @@
     {
         <div class="alert alert-success">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <strong>No Candidates!!</strong>
+            <strong>No Candidates Rejected!!</strong>
         </div>
     }
 </div>
@@ -76,3 +76,4 @@
 <div>
     @Html.ActionLink("Back to Home", "HRHomePage", "HR")
 </div>
+

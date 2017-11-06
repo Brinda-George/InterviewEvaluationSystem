@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "AddCandidate";
-    var grid = new WebGrid(Model.users, canPage: true, rowsPerPage: 5, canSort: true, fieldNamePrefix: "f1", pageFieldName: "p1");
-    var gridCandidate = new WebGrid(source: Model.CandidateList, canPage: true, rowsPerPage: 5, canSort: true, fieldNamePrefix: "f2", pageFieldName: "p2");
+    var grid = new WebGrid(Model.users, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f1", pageFieldName: "p1");
+    var gridCandidate = new WebGrid(source: Model.CandidateList, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f2", pageFieldName: "p2");
 }
 
 <link href="~/Content/addcandidate.css" rel="stylesheet" />
@@ -136,6 +136,7 @@
         </div>
     </div>
 </form>
+
 @if (Model.users.Any())
 {
     @grid.GetHtml(tableStyle: "table table-bordered table-striped",
@@ -150,18 +151,27 @@
             grid.Column("Designation", "Designation"))
         )
 }
+else
+{
+    <div class="alert alert-success">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>No Interviewers!!</strong>
+    </div>
+}
 
 <div id="SearchCandidate">
     <table>
         <tr>
-            <td><input type="text" class="form-control" id="CandidateNameText" /></td>
-            <td><input type="button" id="searchCandidate" value="Search" class="btn btn-primary" /></td>
+            <td><input type="text" class="form-control" id="CandidateNameText" placeholder="Search Candidate"/></td>
+            <td><input type="button" id="searchCandidate" value="Search" class="btn btn-primary searchCandidate" /></td>
         </tr>
     </table>
 </div>
 <br />
 
-<div id="gridContentCandidate">
+<div id="gridContentCandidateResult"></div>
+
+<div id="gridContent">
     @if (Model.CandidateList.Any())
     {
         @gridCandidate.GetHtml(tableStyle: "table table-bordered",
@@ -193,7 +203,7 @@
                 <span class="display-modeCandidate">
                     <label id="lblInterviewerName">@item.InterviewerName</label>
                 </span>
-                @Html.DropDownList("user", null, string.Empty, new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
+                @Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
                 <div><label id="lblInterviewerNameValidation" class="text-danger"></label></div>
             </text>),
             gridCandidate.Column("Action", format: @<text>
@@ -203,6 +213,13 @@
                 <button class="delete-userCandidate btn btn-default" id="@item.CandidateID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </text>))
         )
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <strong>No Candidates!!</strong>
+        </div>
     }
 </div>
 

@@ -58,7 +58,7 @@
                  gridview.Column("SkillCategory", format:
                 @<text>
                     <span id="skillcategory" class="read">@item.SkillCategory</span>
-                    @Html.TextBox("SkillCategory", (string)item.SkillCategory, new { @class = "edit",@style="display:none"  })
+                    @Html.TextBox("SkillCategory", (string)item.SkillCategory, new { @class = "edit cat",@style="display:none"  })
                     <label class="text-danger" id="catLbl"></label>
                 </text>),
                 gridview.Column("Description", format:
@@ -75,6 +75,13 @@
                     <button class="cancel-case edit btn btn-default" style="display:none" id="@item.SkillCategoryID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                 </text>)
                 })
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <strong>No Skill Categories!!</strong>
+        </div>
     }
 </div>
 

@@ -7,13 +7,32 @@
         tr.find('.edit, .read').toggle();
     });
 
+    $(document).on('change', ".cat", function (e) {
+        var $current = $(this);
+        $current.addClass("thiss");
+        $('.cat').each(function () {
+            if ($(this).val() == $current.val() && $(this).attr('class') != $current.attr('class')) {
+                alert('duplicate found!');
+                $current.removeClass("thiss");
+                $('.update-case').prop('disabled', true);
+                location.reload(true);
+                return false;
+            }
+            else {
+                $('.update-case').prop('disabled', false);
+            }
+        });
+
+        $current.removeClass("thiss");
+    });
+
     $(document).on('click', ".update-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
         RoundID = $(this).prop('id');
         var RoundName = tr.find('#RoundName').val();
         if (RoundName == "") {
-            tr.find('#roundLbl').html("The Round Name field is required");
+            tr.find('#roundLbl').html("Please enter a valid Round Name");
             return false;
         }
         $.ajax({
@@ -27,7 +46,9 @@
                 tr.find('.edit, .read').toggle();
                 $('.edit').hide();
                 tr.find('#roundname').text(data.RoundName);
+                alert('Successfully updated');
                 window.location = data.Url;
+
             },
             error: function (err) {
                 alert("Error occured during update.");
@@ -41,12 +62,11 @@
         var id = $(this).prop('id');
         tr.find('.edit, .read').toggle();
         $('.edit').hide();
-        tr.find('#roundLbl').empty();
     });
 
     $(document).on('click', ".delete-case", function (e) {
         e.preventDefault();
-        if (confirm("Are you sure you want to delete?")) {
+        if (confirm("Are you sure you want to delete")) {
             var tr = $(this).parents('tr:first');
             RoundID = $(this).prop('id');
             $.ajax({
@@ -55,12 +75,7 @@
                 data: { "RoundID": RoundID },
                 dataType: "json",
                 success: function (data) {
-                    if (data.res == 1) {
-                        alert('Successfully Deleted!!');
-                    }
-                    else if (data.res == 0) {
-                        alert('Cannot Delete!!..Please Delete from bottom');
-                    }
+                    alert('Successfully deleted');
                     window.location.href = data.Url;
                 },
                 error: function () {

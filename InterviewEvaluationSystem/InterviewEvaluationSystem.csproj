@@ -237,6 +237,15 @@
     <Compile Include="Models\spGetCandidateInterviewers_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetCandidateRound_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetCandidatesByInterviewer_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetCandidates_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetCloumnChart_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -259,6 +268,9 @@
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetInterviewerPieChart_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetInterviewersOfCandidate_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetPieChart_Result.cs">
@@ -322,6 +334,7 @@
     <Content Include="Content\formstyle.css" />
     <Content Include="Content\layout.css" />
     <Content Include="Content\LoginTemplate.css" />
+    <Content Include="Content\resetpartial.css" />
     <Content Include="Content\sb-admin.css" />
     <Content Include="Content\sb-admin.min.css" />
     <Content Include="Content\dashboardstyle.css" />
@@ -366,6 +379,7 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\ChangeCandidateInterviewer.js" />
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\hrevaluation.js" />
     <Content Include="Scripts\interviewevaluation.js" />
@@ -381,6 +395,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Login.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Notification.js" />
     <Content Include="Scripts\passwordreset.js" />
@@ -453,6 +468,16 @@
     <Content Include="Views\Home\PasswordReset.cshtml" />
     <Content Include="Views\Shared\ResetPartial.cshtml" />
     <Content Include="Views\Home\UpdatePassword.cshtml" />
+    <Content Include="Views\HR\ChangeCandidateInterviewer.cshtml" />
+    <Content Include="Views\Shared\SearchInterviewerResult.cshtml" />
+    <Content Include="Views\HR\ViewCandidates.cshtml" />
+    <Content Include="Views\HR\ViewHiredCandidates.cshtml" />
+    <Content Include="Views\HR\ViewInProgressCandidates.cshtml" />
+    <Content Include="Views\HR\TodaysInterviews.cshtml" />
+    <Content Include="Views\HR\CandidatesinHRRound.cshtml" />
+    <Content Include="Views\Interviewer\ViewTodaysInterviews.cshtml" />
+    <Content Include="Views\Interviewer\ViewRecommendedCandidates.cshtml" />
+    <Content Include="Views\Interviewer\ViewCandidates.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

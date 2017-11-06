@@ -63,6 +63,7 @@ namespace InterviewEvaluationSystem.Models
 
     public class SkillViewModel
     {
+        public int ID { get; set; }
         public int SkillID { get; set; }
         [Required]
         [Remote("IsSkillExist", "HR", ErrorMessage = "Skill Name already exists")]
@@ -118,9 +119,10 @@ namespace InterviewEvaluationSystem.Models
         public decimal ExpectedSalary { get; set; }
         public Nullable<int> NoticePeriodInMonths { get; set; }
         public string PreviousCompany { get; set; }
-        public int TotalExperience { get; set; }
+        public decimal TotalExperience { get; set; }
         public string Qualifications { get; set; }
         public string Interviewer { get; set; }
+        public Nullable<bool> CandidateStatus { get; set; }
         public Nullable<decimal> OfferedSalary { get; set; }
         public Nullable<DateTime> DateOfJoining { get; set; }
         public List<CandidateGridViewModel> CandidateList { get; set; }
@@ -147,20 +149,8 @@ namespace InterviewEvaluationSystem.Models
         public List<StatusViewModel> Status { get; set; }
         public List<SkillViewModel> Skills { get; set; }
         public List<CommentViewModel> Comments { get; set; }
-        public List<List<SkillViewModel>> SkillsByCategory = new List<List<SkillViewModel>>{
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12),
-            new List<SkillViewModel>(12)
-        };
-        public List<List<ScoreEvaluationViewModel>> ScoresByRound = new List<List<ScoreEvaluationViewModel>>{
-            new List<ScoreEvaluationViewModel>(12),
-            new List<ScoreEvaluationViewModel>(12),
-            new List<ScoreEvaluationViewModel>(12),
-            new List<ScoreEvaluationViewModel>(12),
-            new List<ScoreEvaluationViewModel>(12)
-        };
+        public List<List<SkillViewModel>> SkillsByCategory = new List<List<SkillViewModel>>();
+        public List<List<ScoreEvaluationViewModel>> ScoresByRound = new List<List<ScoreEvaluationViewModel>>();
     }
 
     public class StatusViewModel
@@ -177,9 +167,10 @@ namespace InterviewEvaluationSystem.Models
     public class ScoreEvaluationViewModel
     {
         public int EvaluationID { get; set; }
-        public Nullable<int> RateScaleID { get; set; }
-        public Nullable<int> CandidateID { get; set; }
-        public Nullable<int> RoundID { get; set; }
+        public int RateScaleID { get; set; }
+        public int CandidateID { get; set; }
+        public int RoundID { get; set; }
+        public int SkillID { get; set; }
     }    
 
     public class CurrentStatusViewModel
@@ -191,6 +182,7 @@ namespace InterviewEvaluationSystem.Models
         public int CandidateID { get; set; }
         public Nullable<bool> Recommended { get; set; }
         public Nullable<bool> CandidateStatus { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
     }
 
     public class CommentViewModel
@@ -276,6 +268,15 @@ namespace InterviewEvaluationSystem.Models
         public int UserID { get; set; }
     }
 
+    public class InterviewersOfCandidateViewModel
+    {
+        public int CandidateID { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public int RoundID { get; set; }
+        public string UserName { get; set; }
+    }
+
     public class UpdatePasswordViewModel
     {
         [Required]
@@ -290,5 +291,9 @@ namespace InterviewEvaluationSystem.Models
         [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
-
+    public class CandidateRoundViewModel
+    {
+        public string RoundName { get; set; }
+        public int RoundID { get; set; }
+    }
 }

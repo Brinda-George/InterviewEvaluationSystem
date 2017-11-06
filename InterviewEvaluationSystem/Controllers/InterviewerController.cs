@@ -43,7 +43,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 Chart chart = new Chart(width: 550, height: 350, theme: ChartTheme.Vanilla)
                 .AddLegend("Summary")
-                .AddSeries("Default", chartType: "Pie", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Recoommended - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .AddSeries("Default", chartType: "doughnut", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Recoommended - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
                 .Write("bmp");
             }  
         }
@@ -55,7 +55,7 @@ namespace InterviewEvaluationSystem.Controllers
             .AddSeries("Default", chartType: "column",
                 xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
                 yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
-            .SetXAxis("2017")
+            .SetXAxis(year.ToString())
             .SetYAxis("No of Candidates")
             .Write("bmp");
         }
@@ -76,6 +76,84 @@ namespace InterviewEvaluationSystem.Controllers
         }
         #endregion
 
+        #region Today's Interviews
+        public ActionResult ViewTodaysInterviews()
+        {
+            try
+            {
+                List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
+                return View(TodaysInterviews);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Interviewer", "HomePage"));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ViewTodaysInterviews(string searchString)
+        {
+            List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                TodaysInterviews = TodaysInterviews.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(TodaysInterviews);
+        }
+        #endregion
+
+        #region Recommended Candidates
+        public ActionResult ViewRecommendedCandidates()
+        {
+            try
+            {
+                List<StatusViewModel> RecommendedCandidates = services.GetRecommendedCandidates(Convert.ToInt32(Session["UserID"]));
+                return View(RecommendedCandidates);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Interviewer", "HomePage"));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ViewRecommendedCandidates(string searchString)
+        {
+            List<StatusViewModel> RecommendedCandidates = services.GetRecommendedCandidates(Convert.ToInt32(Session["UserID"]));
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                RecommendedCandidates = RecommendedCandidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(RecommendedCandidates);
+        }
+        #endregion
+
+        #region Total Candidates
+        public ActionResult ViewCandidates()
+        {
+            try
+            {
+                List<StatusViewModel> candidates = services.GetCandidates(Convert.ToInt32(Session["UserID"]));
+                return View(candidates);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Interviewer", "HomePage"));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ViewCandidates(string searchString)
+        {
+            List<StatusViewModel> candidates = services.GetCandidates(Convert.ToInt32(Session["UserID"]));
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+        #endregion
+
         #region Interview Evaluation
         public ActionResult InterviewEvaluation(StatusViewModel statusViewModel, string Name)
         {
@@ -88,13 +166,14 @@ namespace InterviewEvaluationSystem.Controllers
                     interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
                     interviewEvaluationViewModel.Rounds = services.GetRounds();
                     interviewEvaluationViewModel.Skills = services.GetSkills();
-                    for (int i = 0; i < interviewEvaluationViewModel.SkillCategories.Count; i++)
+                    foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
                     {
-                        interviewEvaluationViewModel.SkillsByCategory[i] = services.GetSkillsByCategory(interviewEvaluationViewModel.SkillCategories[i].SkillCategoryID);
+                        interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
                     }
-                    for (int i = 0; i < interviewEvaluationViewModel.Rounds.Count; i++)
+
+                    foreach (var round in interviewEvaluationViewModel.Rounds)
                     {
-                        interviewEvaluationViewModel.ScoresByRound[i] = services.GetPreviousRoundScores(statusViewModel.CandidateID, interviewEvaluationViewModel.Rounds[i].RoundID);
+                        interviewEvaluationViewModel.ScoresByRound.Add(services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID));
                     }
                     interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
                     TempData["CandidateID"] = statusViewModel.CandidateID;
@@ -114,16 +193,16 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult InterviewEvaluation(bool recommended, int evaluationID, int[] values, string comments)
+        public ActionResult InterviewEvaluation(bool recommended, int evaluationID, int[] ids, int[] values, string comments)
         {
             try
             {
-                for (int i = 1; i < values.Length; i++)
+                for (int i = 0; i < values.Length; i++)
                 {
                     dbContext.tblScores.Add(new tblScore
                     {
                         EvaluationID = evaluationID,
-                        SkillID = i,
+                        SkillID = ids[i],
                         RateScaleID = values[i],
                         CreatedBy = Convert.ToInt32(Session["UserID"]),
                         CreatedDate = DateTime.Now

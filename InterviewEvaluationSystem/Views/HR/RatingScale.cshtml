@@ -65,13 +65,13 @@
                     gridview.Column("RateScale",format:
                     @<text>
                         <span id="ratescale" class="read">@item.RateScale</span>
-                        @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit",@style="display:none"  })
+                        @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit cat",@style="display:none"  })
                         <label class="text-danger" id="scaleLbl"></label>
                     </text>),
                      gridview.Column("Value",format:
                     @<text>
                         <span id="ratevalue" class="read">@item.RateValue</span>
-                        @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit",@style="display:none"  })
+                        @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit cat",@style="display:none"  })
                         <label class="text-danger" id="valueLbl"></label>
                     </text>),
                      gridview.Column("Description",format:
@@ -87,6 +87,13 @@
                         <button class="cancel-case edit btn btn-default" style="display:none" id="@item.RateScaleID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
                     </text>)
                      })
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <strong>No Rating Scales!!</strong>
+        </div>
     }
 </div>
 

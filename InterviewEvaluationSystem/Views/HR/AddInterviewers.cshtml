@@ -84,7 +84,6 @@
             @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
-                @*<div class="text-danger">@ViewBag.PasswordMismatchMessage</div>*@
                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -160,6 +159,13 @@
                 <button class="delete-user btn btn-default" id="@item.UserID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </text>))
             )
+    }
+    else
+    {
+        <div class="alert alert-success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <strong>No Interviewers!!</strong>
+        </div>
     }
 </div>
 

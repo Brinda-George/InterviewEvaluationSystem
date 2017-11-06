@@ -14,7 +14,7 @@
         url: "/Home/CheckOtp",
         data: { value: value },
         success: function (data) {
-            location.reload();
+            window.location = data.Url;
         },
         error: function (data) {
         }

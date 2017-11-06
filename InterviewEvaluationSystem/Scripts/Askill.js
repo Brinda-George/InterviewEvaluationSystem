@@ -10,6 +10,25 @@
         tr.find('.edit, .read').toggle();
     });
 
+    $(document).on('change', ".cat", function (e) {
+        var $current = $(this);
+        $current.addClass("thiss");
+        $('.cat').each(function () {
+            if ($(this).val() == $current.val() && $(this).attr('class') != $current.attr('class')) {
+                alert('duplicate found!');
+                $current.removeClass("thiss");
+                $('.update-case').prop('disabled', true);
+                location.reload(true);
+                return false;
+            }
+            else {
+                $('.update-case').prop('disabled', false);
+            }
+        });
+        $current.removeClass("thiss");
+    });
+
+
     $(document).on('click', ".update-case", function (e) {
         e.preventDefault();
         var tr = $(this).parents('tr:first');
@@ -17,7 +36,7 @@
         var SkillName = tr.find('#SkillName').val();
         var CategoryID = tr.find('#categories').val();
         if (SkillName == "") {
-            tr.find('#skillLbl').html("The Skill field is required");
+            tr.find('#skillLbl').html("Please enter a valid Skill");
             return false;
         }
         if (CategoryID == "") {
@@ -52,8 +71,6 @@
         var id = $(this).prop('id');
         tr.find('.edit, .read').toggle();
         $('.edit').hide();
-        tr.find('#catLbl').empty();
-        tr.find('#skillLbl').empty();
     });
 
     $(document).on('click', ".delete-case", function (e) {
@@ -67,12 +84,7 @@
                 data: { "SkillID": SkillID },
                 dataType: "json",
                 success: function (data) {
-                    if (data.res == 1) {
-                        alert('Successfully Deleted!!');
-                    }
-                    else if (data.res == 0) {
-                        alert('Cannot Delete!!..Please Delete from bottom');
-                    }
+                    alert('Successfully deleted');
                     window.location.href = data.Url;
                 },
                 error: function () {
@@ -81,16 +93,5 @@
             });
         }
     });
+
 });
-
-function CheckCategory() {
-    var cat = $("#categories").val();
-    if (cat == 0) {
-        $("#lblCategory").html("Please select a category");
-        return false;
-    }
-    else {
-        $("#lblCategory").empty();
-    }
-
-}

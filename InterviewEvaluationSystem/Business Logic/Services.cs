@@ -43,12 +43,13 @@ namespace InterviewEvaluationSystem.Business_Logic
             }).ToList();
             return Skills;
         }
-
+        public int i = 1;
         public List<SkillViewModel> GetSkillsByCategory(int skillCategoryID)
         {
             var skills = dbContext.tblSkills.Where(s => s.SkillCategoryID == skillCategoryID && s.IsDeleted == false).ToList();
             List<SkillViewModel> Skills = skills.Select(s => new SkillViewModel
             {
+                ID = i++,
                 SkillID = s.SkillID,
                 SkillName = s.SkillName,
                 SkillCategoryID = s.SkillCategoryID
@@ -83,15 +84,65 @@ namespace InterviewEvaluationSystem.Business_Logic
             return Statuses;
         }
 
+        public List<StatusViewModel> GetTodaysInterview(int UserId)
+        {
+            List<StatusViewModel> Statuses = dbContext.spGetStatus(UserId)
+                .Select(e => new StatusViewModel
+                {
+                    Name = e.Name,
+                    RoundName = e.RoundName,
+                    CandidateID = e.CandidateID,
+                    RoundID = e.RoundID,
+                    EvaluationID = e.EvaluationID,
+                    Recommended = e.Recommended,
+                    DateOfInterview = e.DateOfInterview
+                }).Where(s => s.DateOfInterview == DateTime.Now.Date).ToList();
+            return Statuses;
+        }
+
+        public List<StatusViewModel> GetRecommendedCandidates(int UserId)
+        {
+            List<StatusViewModel> Statuses = dbContext.spGetCandidatesByInterviewer(UserId)
+                .Select(e => new StatusViewModel
+                {
+                    Name = e.Name,
+                    RoundName = e.RoundName,
+                    CandidateID = e.CandidateID,
+                    RoundID = e.RoundID,
+                    EvaluationID = e.EvaluationID,
+                    Recommended = e.Recommended,
+                    DateOfInterview = e.DateOfInterview
+                }).Where(s => s.Recommended == true).ToList();
+            return Statuses;
+        }
+
+        public List<StatusViewModel> GetCandidates(int UserId)
+        {
+            List<StatusViewModel> Statuses = dbContext.spGetCandidatesByInterviewer(UserId)
+                .Select(e => new StatusViewModel
+                {
+                    Name = e.Name,
+                    RoundName = e.RoundName,
+                    CandidateID = e.CandidateID,
+                    RoundID = e.RoundID,
+                    EvaluationID = e.EvaluationID,
+                    Recommended = e.Recommended,
+                    DateOfInterview = e.DateOfInterview
+                }).ToList();
+            return Statuses;
+        }
+
         public List<ScoreEvaluationViewModel> GetPreviousRoundScores(Nullable<int> candidateID, int roundID)
         {
+            i = 0;
             List<ScoreEvaluationViewModel> Statuses = dbContext.spGetPreviousRoundScores(candidateID, roundID)
                 .Select(s => new ScoreEvaluationViewModel
                 {
                     CandidateID = s.CandidateID,
                     EvaluationID = s.EvaluationID,
                     RoundID = s.RoundID,
-                    RateScaleID = s.RateScaleID
+                    RateScaleID = s.RateScaleID,
+                    SkillID = s.SkillID
                 }).ToList();
             return Statuses;
         }
@@ -110,6 +161,39 @@ namespace InterviewEvaluationSystem.Business_Logic
                     CandidateStatus = c.CandidateStatus
                 }).ToList();
             return CurrentStatuses;
+        }
+
+        public List<CurrentStatusViewModel> GetTodaysInterview()
+        {
+            List<CurrentStatusViewModel> TodaysInterviews = dbContext.spGetCurrentStatus()
+                .Select(c => new CurrentStatusViewModel
+                {
+                    Name = c.Name,
+                    Email = c.Email,
+                    DateOfInterview = c.DateOfInterview,
+                    RoundID = c.RoundID,
+                    EvaluationID = c.EvaluationID,
+                    CandidateID = c.CandidateID,
+                    Recommended = c.Recommended,
+                    CandidateStatus = c.CandidateStatus
+                }).Where(s => s.Recommended == null && s.DateOfInterview == DateTime.Now.Date).ToList();
+            return TodaysInterviews;
+        }
+        public List<CurrentStatusViewModel> GetCandidatesinHR()
+        {
+            List<CurrentStatusViewModel> TodaysInterviews = dbContext.spGetCurrentStatus()
+                .Select(c => new CurrentStatusViewModel
+                {
+                    Name = c.Name,
+                    Email = c.Email,
+                    DateOfInterview = c.DateOfInterview,
+                    RoundID = c.RoundID,
+                    EvaluationID = c.EvaluationID,
+                    CandidateID = c.CandidateID,
+                    Recommended = c.Recommended,
+                    CandidateStatus = c.CandidateStatus
+                }).Where(s => s.Recommended == null).ToList();
+            return TodaysInterviews;
         }
 
         public List<CommentViewModel> GetComments(Nullable<int> CandidateID)
@@ -131,5 +215,58 @@ namespace InterviewEvaluationSystem.Business_Logic
             return res;
         }
 
+        public List<CandidateViewModel> GetCandidates()
+        {
+            List<CandidateViewModel> candidates = dbContext.spGetCandidates()
+                .Select(c => new CandidateViewModel
+                {
+                    Name = c.Name,
+                    Email = c.Email,
+                    DateOfBirth = c.DateOfBirth,
+                    PAN = c.PAN,
+                    DateOfInterview = c.DateOfInterview,
+                    Designation = c.Designation,
+                    TotalExperience = c.TotalExperience,
+                    Qualifications = c.Qualifications,
+                    CandidateStatus = c.CandidateStatus
+                }).ToList();
+            return candidates;
+        }
+
+        public List<CandidateViewModel> GetHiredCandidates()
+        {
+            List<CandidateViewModel> candidates = dbContext.spGetCandidates()
+                .Select(c => new CandidateViewModel
+                {
+                    Name = c.Name,
+                    Email = c.Email,
+                    DateOfBirth = c.DateOfBirth,
+                    PAN = c.PAN,
+                    DateOfInterview = c.DateOfInterview,
+                    Designation = c.Designation,
+                    TotalExperience = c.TotalExperience,
+                    Qualifications = c.Qualifications,
+                    CandidateStatus = c.CandidateStatus
+                }).Where(s => s.CandidateStatus == true).ToList();
+            return candidates;
+        }
+
+        public List<CandidateViewModel> GetInProgressCandidates()
+        {
+            List<CandidateViewModel> candidates = dbContext.spGetCandidates()
+                .Select(c => new CandidateViewModel
+                {
+                    Name = c.Name,
+                    Email = c.Email,
+                    DateOfBirth = c.DateOfBirth,
+                    PAN = c.PAN,
+                    DateOfInterview = c.DateOfInterview,
+                    Designation = c.Designation,
+                    TotalExperience = c.TotalExperience,
+                    Qualifications = c.Qualifications,
+                    CandidateStatus = c.CandidateStatus
+                }).Where(s => s.CandidateStatus == null).ToList();
+            return candidates;
+        }
     }
 }

@@ -155,19 +155,6 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart", yearParameter);
         }
     
-        public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)
-        {
-            var candidateIDParameter = candidateID.HasValue ?
-                new ObjectParameter("CandidateID", candidateID) :
-                new ObjectParameter("CandidateID", typeof(int));
-    
-            var roundIDParameter = roundID.HasValue ?
-                new ObjectParameter("RoundID", roundID) :
-                new ObjectParameter("RoundID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPreviousRoundScores_Result>("spGetPreviousRoundScores", candidateIDParameter, roundIDParameter);
-        }
-    
         public virtual ObjectResult<spGetSkillsBySkillCategory_Result> spGetSkillsBySkillCategory(Nullable<int> skillCategoryID)
         {
             var skillCategoryIDParameter = skillCategoryID.HasValue ?
@@ -386,6 +373,47 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("CreatedDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertSkill", skillNameParameter, skillCategoryIDParameter, createdByParameter, createdDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            var roundIDParameter = roundID.HasValue ?
+                new ObjectParameter("RoundID", roundID) :
+                new ObjectParameter("RoundID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPreviousRoundScores_Result>("spGetPreviousRoundScores", candidateIDParameter, roundIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetInterviewersOfCandidate_Result> spGetInterviewersOfCandidate()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewersOfCandidate_Result>("spGetInterviewersOfCandidate");
+        }
+    
+        public virtual ObjectResult<spGetCandidates_Result> spGetCandidates()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidates_Result>("spGetCandidates");
+        }
+    
+        public virtual ObjectResult<spGetCandidateRound_Result> spGetCandidateRound(Nullable<int> candidateID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetCandidatesByInterviewer_Result> spGetCandidatesByInterviewer(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidatesByInterviewer_Result>("spGetCandidatesByInterviewer", userIDParameter);
         }
     }
 }
