@@ -268,6 +268,9 @@
         <Function Name="spGetCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetCandidateRound" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CandidateID" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetComments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
         </Function>
@@ -716,6 +719,9 @@
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetInterviewersOfCandidate" ReturnType="Collection(InterviewEvaluationDbModel.spGetInterviewersOfCandidate_Result)" />
+          <FunctionImport Name="spGetCandidateRound" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidateRound_Result)">
+          <Parameter Name="CandidateID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -779,6 +785,10 @@
           <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="RoundID" Nullable="true" />
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="spGetCandidateRound_Result">
+          <Property Type="String" Name="roundName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="RoundID" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1050,6 +1060,14 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetCandidateRound" FunctionName="InterviewEvaluationDbModel.Store.spGetCandidateRound">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetCandidateRound_Result">
+                <ScalarProperty Name="roundName" ColumnName="roundName" />
+                <ScalarProperty Name="RoundID" ColumnName="RoundID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

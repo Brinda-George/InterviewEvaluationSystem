@@ -1,28 +1,23 @@
 ﻿@{
-    ViewBag.Title = "ChangeCandidateInterviewer";
+    ViewBag.Title = "SearchInterviewerResult";
 }
 
-<h2>ChangeCandidateInterviewer</h2>
+
 @{
     var grid = new WebGrid(ViewBag.CandidateInterviewersList, canPage: true, rowsPerPage: 5, canSort: true);
 }
 
-<div id="SearchInterviewer">
-    <table>
-        <tr>
-            <td><input type="text" class="form-control" id="InterviewerNameText" placeholder="Search Interviewer" /></td>
-            <td><input type="button" value="Search" class="btn btn-primary searchInterviewer" /></td>
-        </tr>
-        <tr>
-            <td><label id="lblSearchInterviewer" class="text-danger"</label></td>
-        </tr>
-    </table>
+@if(ViewBag.CandidateInterviewersList.Count==0)
+{
+<div class="alert alert-success">
+    <strong>No Interviewer With Such Name Exists. </strong>  
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 </div>
+}
+else
+{
 
-
-<div id="gridContentInterviewerResult">
-
-    @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+@grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
         headerStyle: "webgrid-header",
         footerStyle: "webgrid-footer",
         alternatingRowStyle: "webgrid-alternating-row",
@@ -47,27 +42,15 @@
                 @<text>
                     <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.UserName</label> </span>
                     @Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
-    @*@if(ViewBag.interviewers.Count!=0)
-    {
-                    @Html.DropDownList("interviewers", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
-    }*@
                 </text>),
-            grid.Column("Action", format: 
-                @<text>
+            grid.Column("Action", format: @<text>
 
                 <button class="edit-userCandidate display-modeCandidate btn btn-primary" id="@item.CandidateID">Edit</button>
                 <button class="save-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Save</button>
                 <button class="cancel-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Cancel</button>
 
-                </text>))
+            </text>))
             )
-
-
-
-</div>
-<div id="res">
-
-</div>
-
+}
 <script src="~/Scripts/ChangeCandidateInterviewer.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />

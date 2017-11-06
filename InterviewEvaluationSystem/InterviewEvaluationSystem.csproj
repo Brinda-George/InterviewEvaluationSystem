@@ -237,6 +237,9 @@
     <Compile Include="Models\spGetCandidateInterviewers_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetCandidateRound_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetComments_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -332,6 +335,7 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\ChangeCandidateInterviewer.js" />
     <Content Include="Scripts\hrevaluation.js" />
     <Content Include="Content\hrhomepage.css" />
     <Content Include="Scripts\interviewevaluation.js" />
@@ -409,6 +413,8 @@
     <Content Include="Views\HR\HRHomePage.cshtml" />
     <Content Include="Views\Interviewer\HomePage.cshtml" />
     <Content Include="Views\HR\ChangeCandidateInterviewer.cshtml" />
+    <Content Include="Views\Shared\SearchInterviewerResult.cshtml" />
+    <Content Include="Views\Shared\GetCandidateInterviewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

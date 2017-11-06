@@ -166,5 +166,14 @@ namespace InterviewEvaluationSystem.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewersOfCandidate_Result>("spGetInterviewersOfCandidate");
         }
+    
+        public virtual ObjectResult<spGetCandidateRound_Result> spGetCandidateRound(Nullable<int> candidateID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
+        }
     }
 }

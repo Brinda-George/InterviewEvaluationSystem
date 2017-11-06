@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "GetCandidateInterviewer";
+}
+
+@{
+    var grid = new WebGrid(ViewBag.CandidateInterviewersList1, canPage: true, rowsPerPage: 5, canSort: true);
+}
+
+
+
+    @grid.GetHtml(tableStyle: "table table-bordered table-striped table-condensed",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
+        columns: grid.Columns(
+            @*grid.Column("CandidateID", format:@<text><span><label id="lblCandidateID">@item.CandidateID</label></span></text>),*@
+            grid.Column("Name", format:
+            @<text>
+                <span><label id="lblCandidateName">@item.Name</label></span>
+            </text>),
+            grid.Column("Email", format:
+            @<text>
+                <span><label id="lblCandidateEmail">@item.Email</label></span>
+            </text>),
+            grid.Column("RoundID", "Upcoming Round", format:
+            @<text>
+                <span><label id="lblCandidateRound">@item.RoundID</label></span>
+            </text>),
+            grid.Column("UserName", "Assigned Interviewer", format:
+            @<text>
+                <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.UserName</label> </span>
+                @Html.DropDownList("interviewers", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
+            </text>),
+            grid.Column("Action", format: @<text>
+
+                @*<button class="edit-userCandidate display-modeCandidate btn btn-primary" id="@item.CandidateID">Edit</button>*@
+                <button class="save-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Save</button>
+                <button class="cancel-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Cancel</button>
+
+            </text>))
+            )
+<script src="~/Scripts/ChangeCandidateInterviewer.js"></script>
+<link href="~/Content/webgridstyle.css" rel="stylesheet" />
+

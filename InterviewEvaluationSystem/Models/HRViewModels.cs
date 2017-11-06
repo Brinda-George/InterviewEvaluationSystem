@@ -7,6 +7,14 @@ using System.Web.Mvc;
 
 namespace InterviewEvaluationSystem.Models
 {
+    public class InterviewersOfCandidateViewModel
+    {
+        public int CandidateID { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public int RoundID { get; set; }
+        public string UserName { get; set; }
+    }
     public class UserViewModel
     {
         [Required]
@@ -97,6 +105,12 @@ namespace InterviewEvaluationSystem.Models
         public string UserName { get; set; }
         public int UserID { get; set; }
 
+    }
+
+    public class CandidateRoundViewModel
+    {
+        public string RoundName { get; set; }
+        public int RoundID { get; set; }
     }
 
 }
