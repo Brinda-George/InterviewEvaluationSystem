@@ -22,16 +22,16 @@ $(document).ready(function () {
                 //$current.addClass("edit");
                 //$current.addClass("cat");
                 $('.update-case').prop('disabled', true);
-                return false;
             }
             else {
                 $('.update-case').prop('disabled', false);
-                $current.addClass("edit");
-                $current.addClass("cat");
                 //$('.edit').hide();
 
             }
         });
+        $current.removeClass("thiss");
+        $current.addClass("edit");
+        $current.addClass("cat");
     });
 
 
