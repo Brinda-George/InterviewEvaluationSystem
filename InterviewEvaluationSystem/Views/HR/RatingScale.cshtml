@@ -73,7 +73,7 @@
         format:
         @<text>
             <span id="ratescale" class="read">@item.RateScale</span>
-            @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit",@style="display:none"  })
+            @Html.TextBox("RateScale", (string)item.RateScale, new { @class = "edit cat",@style="display:none"  })
             <label class="text-danger" id="scaleLbl"></label>
         </text>),
 
@@ -81,7 +81,7 @@
         format:
         @<text>
             <span id="ratevalue" class="read">@item.RateValue</span>
-            @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit",@style="display:none"  })
+            @Html.TextBox("RateValue",(int)item.RateValue, new { @class = "edit cat",@style="display:none"  })
             <label class="text-danger" id="valueLbl"></label>
         </text>),
 

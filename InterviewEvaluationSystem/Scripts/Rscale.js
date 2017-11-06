@@ -14,6 +14,35 @@
                     tr.find('.edit, .read').toggle();
                 });
 
+
+                $('.cat').change(function () {
+
+                    var $current = $(this);
+                    $(this).attr('class', 'thiss');
+
+                    $('.cat').each(function () {
+                        if ($(this).val() == $current.val() && $(this).attr('class') != $current.attr('class')) {
+                            alert('duplicate found!');
+                            $current.removeClass("thiss");
+                            //$current.addClass("edit");
+                            //$current.addClass("cat");
+                            $('.update-case').prop('disabled', true);
+                            return false;
+                        }
+                        else {
+                            $('.update-case').prop('disabled', false);
+                            $current.addClass("edit");
+                            $current.addClass("cat");
+                            //$('.edit').hide();
+
+                        }
+                    });
+                });
+
+
+
+
+
                 $('.update-case').on('click', function (e) {
                     e.preventDefault();
                     var tr = $(this).parents('tr:first');
