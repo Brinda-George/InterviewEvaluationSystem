@@ -15,7 +15,7 @@
                 });
 
 
-                $('.cat').change(function () {
+                $(document).on('change',function (e) {
 
                     var $current = $(this);
                     $(this).attr('class', 'thiss');
