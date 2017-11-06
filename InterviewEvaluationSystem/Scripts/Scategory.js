@@ -10,10 +10,11 @@ $(document).ready(function () {
         tr.find('.edit, .read').toggle();
         });
 
-    $('.cat').change(function () {
+    $(document).on('change', ".cat", function (e) {
 
         var $current = $(this);
-        $(this).attr('class', 'thiss');
+        //$(this).attr('class', 'thiss');
+        $current.addClass("thiss");
 
         $('.cat').each(function () {
             if ($(this).val() == $current.val() && $(this).attr('class') != $current.attr('class')) {
@@ -22,6 +23,8 @@ $(document).ready(function () {
                 //$current.addClass("edit");
                 //$current.addClass("cat");
                 $('.update-case').prop('disabled', true);
+                location.reload(true);
+                return false;
             }
             else {
                 $('.update-case').prop('disabled', false);
@@ -29,9 +32,10 @@ $(document).ready(function () {
 
             }
         });
+       
         $current.removeClass("thiss");
-        $current.addClass("edit");
-        $current.addClass("cat");
+        //$current.addClass("edit");
+        //$current.addClass("cat");
     });
 
 
