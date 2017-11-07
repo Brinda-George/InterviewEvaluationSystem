@@ -67,7 +67,7 @@ namespace InterviewEvaluationSystem.Models
         public int SkillID { get; set; }
         [Required]
         [Remote("IsSkillExist", "HR", ErrorMessage = "Skill Name already exists")]
-        [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Use alphabets and spaces only please.")]
+        [RegularExpression("^[a-zA-Z ,.#+]*$", ErrorMessage = "Use alphabets,seperators and spaces only please.")]
         public string SkillName { get; set; }
         [Required]
         public int SkillCategoryID { get; set; }
@@ -182,7 +182,9 @@ namespace InterviewEvaluationSystem.Models
         public int CandidateID { get; set; }
         public Nullable<bool> Recommended { get; set; }
         public Nullable<bool> CandidateStatus { get; set; }
-        public System.DateTime DateOfInterview { get; set; }
+        public DateTime DateOfInterview { get; set; }
+        public Nullable<int> FinalRound { get; set; }
+        public string RoundName { get; set; }
     }
 
     public class CommentViewModel

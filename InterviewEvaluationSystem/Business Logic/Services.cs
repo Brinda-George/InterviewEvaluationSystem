@@ -158,7 +158,10 @@ namespace InterviewEvaluationSystem.Business_Logic
                     EvaluationID = c.EvaluationID,
                     CandidateID = c.CandidateID,
                     Recommended = c.Recommended,
-                    CandidateStatus = c.CandidateStatus
+                    CandidateStatus = c.CandidateStatus,
+                    DateOfInterview = c.DateOfInterview,
+                    FinalRound = c.FinalRound,
+                    RoundName = c.RoundName
                 }).ToList();
             return CurrentStatuses;
         }

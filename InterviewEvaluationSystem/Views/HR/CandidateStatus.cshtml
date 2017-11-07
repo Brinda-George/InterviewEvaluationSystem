@@ -33,39 +33,64 @@
                 rowStyle: "webgrid-row-style",
                 mode: WebGridPagerModes.All,
                 columns: webgridStatus.Columns(
-                    webgridStatus.Column(columnName: "Name", header: "Name", format: (item) => Html.ActionLink((string)item.Name, "HREvaluation", new
+                    webgridStatus.Column(columnName: "Name", header: "Name", format: (item) =>
                     {
-                        Name = item.Name,
-                        CandidateID = item.CandidateID,
-                        RoundID = item.RoundID,
-                        EvaluationID = item.EvaluationID,
-                        recommended = item.Recommended
-                    })),
+                        if (item.RoundID == item.FinalRound)
+                        {
+                            return Html.ActionLink((string)item.Name, "HREvaluation", new
+                            {
+                                Name = item.Name,
+                                CandidateID = item.CandidateID,
+                                RoundID = item.RoundID,
+                                EvaluationID = item.EvaluationID,
+                                recommended = item.Recommended
+                            });
+                        }
+                        else{
+                            return Html.Raw(string.Format(item.Name));
+                        }
+                    }),
                     webgridStatus.Column(columnName: "Email", header: "Email"),
+                    webgridStatus.Column(columnName: "DateOfInterview", header: "Date Of Interview", format:
+                    @<text>
+                        <label>@item.DateOfInterview.ToString("dd/MM/yyyy")</label>
+                    </text>),
                     webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) =>
                     {
                         if (item.Recommended == true && item.CandidateStatus == true)
                         {
                             return Html.Raw(string.Format("Hired"));
                         }
-                        else if (item.Recommended == true && item.CandidateStatus == null)
-                        {
-                            return Html.Raw(string.Format("HR Round Completed"));
-                        }
-                        else if (item.Recommended == false || (item.Recommended == true && item.CandidateStatus == false))
+                        else if (item.Recommended == false || item.CandidateStatus == false)
                         {
                             return Html.Raw(string.Format("Rejected"));
                         }
-                        else
+                        else if (item.RoundID == item.FinalRound && item.Recommended == true && item.CandidateStatus == null)
+                        {
+                            return Html.Raw(string.Format("HR Round Completed"));
+                        }
+                        else if (item.RoundID != item.FinalRound && item.Recommended == true && item.CandidateStatus == null)
+                        {
+                            return Html.Raw(string.Format(item.RoundName + " Completed"));
+                        }
+                        else if (item.RoundID == item.FinalRound && item.Recommended == null)
                         {
                             return Html.Raw(string.Format("Proceeded to HR Round"));
+                        }
+                        else if (item.RoundID != item.FinalRound && item.Recommended == null)
+                        {
+                            return Html.Raw(string.Format("Proceeded to " + item.RoundName ));
+                        }
+                        else
+                        {
+                            return Html.Raw(string.Format(""));
                         }
                     })
                     )
                 )
-    }
-    else
-    {
+}
+else
+{
         <div class="alert alert-success">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             <strong>No Candidates!!</strong>

@@ -6,7 +6,11 @@
     gridCandidate.Pager(WebGridPagerModes.All);
 }
 
-<script src="~/Scripts/Candidate.js"></script>
+@{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @*<script src="~/Scripts/Candidate.js"></script>*@
+}
+
 @if (Model.CandidateList.Count != 0)
 {
     @gridCandidate.GetHtml(tableStyle: "table table-bordered table-striped",
@@ -17,33 +21,33 @@
         columns: gridCandidate.Columns(
             gridCandidate.Column("CandidateName", "CandidateName", format:
             @<text>
-                <span class="display-modeCandidate">
+                <span class="display-modeCandidateResult">
                     <label id="lblCandidateName">@item.CandidateName</label>
                 </span>
-                <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate form-control" />
+                <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidateResult form-control" />
                 <div><label id="lblCandidateNameValidation" class="text-danger"></label></div>
             </text>),
             gridCandidate.Column("DateOfInterview", "Date Of Interview", format:
             @<text>
-                <span class="display-modeCandidate">
+                <span class="display-modeCandidateResult">
                     <label id="lblDateOfInterview">@item.DateOfInterview.ToString("dd/MM/yyyy")</label>
                 </span>
-                <input type="datetime" id="DateOfInterview" value="@item.DateOfInterview.ToString("dd/MM/yyyy")" class="edit-modeCandidate form-control" />
+                <input type="date" id="DateOfInterview" class="edit-modeCandidateResult form-control" />
                 <div><label id="lblDateOfInterviewValidation" class="text-danger"></label></div>
             </text>),
             gridCandidate.Column("InterviewerName", "InterviewerName", format:
             @<text>
-                <span class="display-modeCandidate">
+                <span class="display-modeCandidateResult">
                     <label id="lblInterviewerName">@item.InterviewerName</label>
                 </span>
-                <input type="text" id="InterviewerName" value="@item.InterviewerName" class="edit-modeCandidate form-control" />
+                @Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidateResult form-control" })
                 <div><label id="lblInterviewerNameValidation" class="text-danger"></label></div>
             </text>),
             gridCandidate.Column("Action", format: @<text>
-                <button class="edit-userCandidate display-modeCandidate" id="@item.CandidateID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                <button class="save-userCandidate edit-modeCandidate" id="@item.CandidateID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
-                <button class="cancel-userCandidate edit-modeCandidate" id="@item.CandidateID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
-                <button class="delete-userCandidate" id="@item.CandidateID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                <button class="edit-userCandidateResult display-modeCandidateResult btn-primary" id="@item.CandidateID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                <button class="save-userCandidateResult edit-modeCandidateResult btn-primary" id="@item.CandidateID"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button>
+                <button class="cancel-userCandidateResult edit-modeCandidateResult btn-primary" id="@item.CandidateID"><i class="fa fa-times" aria-hidden="true"></i> Cancel</button>
+                <button class="delete-userCandidateResult btn-primary" id="@item.CandidateID"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </text>))
         )
 }
@@ -54,3 +58,4 @@ else
         <strong>No Candidates!! </strong>
     </div>
 }
+

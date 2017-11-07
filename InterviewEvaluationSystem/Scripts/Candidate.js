@@ -97,7 +97,7 @@
                 data: { Name: $('#CandidateNameText').val() },
                 datatype: "json",
                 success: function (Name) {
-                    $('#gridContentCandidate').html(Name);
+                    $('#gridContent').html(Name);
                     $('.edit-modeCandidateResult').hide();
                 }
             });
@@ -105,13 +105,13 @@
 
         $(document).on("click", ".edit-userCandidateResult, .cancel-userCandidateResult", function () {
             var tr = $(this).parents('tr:first');
-            var UserName = tr.find("#lblInterviewerName").text();
             var date = tr.find('#lblDateOfInterview').text();
-            var newdate = date.split("-").reverse().join("-");
+            tr.find('.edit-modeCandidateResult, .display-modeCandidateResult').toggle();
+            var newdate = date.split("/").reverse().join("-");
             tr.find('#DateOfInterview').val(newdate);
+            var UserName = tr.find("#lblInterviewerName").text();
             tr.find('#ddlInterviewerName').val(UserName);
             $('.delete-userCandidateResult').hide();
-            tr.find('.edit-modeCandidateResult, .display-modeCandidateResult').toggle();
             tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
         });
 
@@ -275,18 +275,21 @@ function candidateValidation() {
         return false;
     }
     else {
-
+        $.ajax({
+            url: '/HR/AddCandidate',
+            type: 'Post',
+            data: $('#frmCreate').serialize(),
+            success: function (response) {
+                var str = response.roundErrorMessage;
+                if (str != "") {
+                    alert(str);
+                }
+                window.location.href = response.Url;
+            },
+            error: function (data) {
+            }
+        });
     }
-    $.ajax({
-        url: '/HR/AddCandidate',
-        type: 'Post',
-        data: $('#frmCreate').serialize(),
-        success: function (response) {
-            window.location.href = response.Url;
-        },
-        error: function (data) {
-        }
-    });
 }
 
 function GetExistingDynamicTextBoxes(value) {

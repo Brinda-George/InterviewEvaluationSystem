@@ -407,6 +407,15 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
         }
     
+        public virtual ObjectResult<spGetRecommendedCandidates_Result> spGetRecommendedCandidates(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRecommendedCandidates_Result>("spGetRecommendedCandidates", userIDParameter);
+        }
+    
         public virtual ObjectResult<spGetCandidatesByInterviewer_Result> spGetCandidatesByInterviewer(Nullable<int> userID)
         {
             var userIDParameter = userID.HasValue ?
@@ -414,6 +423,11 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("UserID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidatesByInterviewer_Result>("spGetCandidatesByInterviewer", userIDParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spGetMinimumRoundID()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetMinimumRoundID");
         }
     }
 }

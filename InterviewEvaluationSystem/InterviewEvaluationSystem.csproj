@@ -279,6 +279,12 @@
     <Compile Include="Models\spGetPreviousRoundScores_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetPreviousRoundScores_Result1.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetRecommendedCandidates_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetSkillsBySkillCategory_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
