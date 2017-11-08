@@ -175,5 +175,10 @@ namespace InterviewEvaluationSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
         }
+    
+        public virtual ObjectResult<Nullable<int>> spGetMinimumRoundID()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetMinimumRoundID");
+        }
     }
 }

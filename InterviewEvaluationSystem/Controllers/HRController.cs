@@ -353,17 +353,6 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
                 ViewBag.Users = users;
-                //List<SelectListItem> selectedlistInner = new List<SelectListItem>();
-                //foreach (tblUserType userType1 in dbContext.tblUserTypes)
-                //{
-                //    SelectListItem selectlistitem = new SelectListItem
-                //    {
-                //        Text = userType1.UserType,
-                //        Value = userType1.UserTypeID.ToString()
-                //    };
-                //    selectedlistInner.Add(selectlistitem);
-                //}
-                //ViewBag.userType = selectedlistInner;
                 return View();
             }
             catch (Exception ex)
@@ -372,15 +361,7 @@ namespace InterviewEvaluationSystem.Controllers
             }
 
         }
-
-        //[HttpGet]
-        //public JsonResult IsInterviewerExists(string UserName,string EmployeeId)
-        //{
-        //  //  bool IsExists = dbContext.tblUsers.Where(x => x.UserName.Equals(UserName)).FirstOrDefault() != null;
-        //    bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.EmployeeId.Equals(EmployeeId)).FirstOrDefault() != null;
-
-        //    return Json(!IsExists, JsonRequestBehavior.AllowGet);
-        //}
+  
         [HttpGet]
         public JsonResult IsInterviewerUserNameExists(string UserName)
         {
@@ -402,7 +383,6 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        //public ActionResult AddInterviewers(tblUser user, string userType)
         public ActionResult AddInterviewers(UserViewModel userViewModel)
         {
             try
@@ -449,33 +429,13 @@ namespace InterviewEvaluationSystem.Controllers
                         user.IsDeleted = false;
                         dbContext.tblUsers.Add(user);
                         dbContext.SaveChanges();
-
-
-
                     }
                     List<tblUser> usersInner = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
                     ViewBag.Users = usersInner;
-
                     return View();
-
                 }
-
                 else
                 {
-                    //List<SelectListItem> selectedlist = new List<SelectListItem>();
-                    //foreach (tblUserType userType1 in dbContext.tblUserTypes)
-                    //{
-                    //    SelectListItem selectlistitem = new SelectListItem
-                    //    {
-                    //        Text = userType1.UserType,
-                    //        Value = userType1.UserTypeID.ToString()
-                    //    };
-                    //    selectedlist.Add(selectlistitem);
-                    //}
-                    //ViewBag.userType = selectedlist;
-
-
-                    // ViewBag.EmployeeIdErrorMessage = "The Employee Id Should Have Minimum Length Of " + employeeIdLength;
                     List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
                     ViewBag.Users = users;
                 }
@@ -563,57 +523,65 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                if (user != null)
+                string roundErrorMessage = "";
+                int Round1ID = (int)dbContext.spGetMinimumRoundID().Single();
+                if (Round1ID == 0)
                 {
-                    tblCandidate candidate = new tblCandidate();
-                    candidate.Name = candidateView.Name;
-                    candidate.DateOfBirth = candidateView.DateOfBirth;
-                    candidate.DateOfInterview = candidateView.DateOfInterview;
-                    candidate.Designation = candidateView.Designation;
-                    candidate.Email = candidateView.Email;
-                    candidate.PAN = candidateView.PAN;
-                    candidate.ExpectedSalary = candidateView.ExpectedSalary;
-                    candidate.NoticePeriodInMonths = candidateView.NoticePeriodInMonths;
-                    candidate.TotalExperience = candidateView.TotalExperience;
-                    candidate.Qualifications = candidateView.Qualifications;
-                    candidate.IsLocked = true;
-                    candidate.CreatedBy = "hr";
-                    candidate.CreatedDate = System.DateTime.Now;
-                    candidate.IsDeleted = false;
-                    dbContext.tblCandidates.Add(candidate);
-                    dbContext.SaveChanges();
-
-                    if (candidateView.TotalExperience > 0)
+                    roundErrorMessage = "No Round Exists!!!!! Kindly Add Rounds";
+                }
+                else
+                {
+                    if (user != null)
                     {
-                        tblPreviousCompany previousCmpny = new tblPreviousCompany();
-                        previousCmpny.CandidateID = candidate.CandidateID;
-                        foreach (string textboxValue in txtBoxes)
+                        tblCandidate candidate = new tblCandidate();
+                        candidate.Name = candidateView.Name;
+                        candidate.DateOfBirth = candidateView.DateOfBirth;
+                        candidate.DateOfInterview = candidateView.DateOfInterview;
+                        candidate.Designation = candidateView.Designation;
+                        candidate.Email = candidateView.Email;
+                        candidate.PAN = candidateView.PAN;
+                        candidate.ExpectedSalary = candidateView.ExpectedSalary;
+                        candidate.NoticePeriodInMonths = candidateView.NoticePeriodInMonths;
+                        candidate.TotalExperience = candidateView.TotalExperience;
+                        candidate.Qualifications = candidateView.Qualifications;
+                        candidate.IsLocked = true;
+                        candidate.CreatedBy = "hr";
+                        candidate.CreatedDate = System.DateTime.Now;
+                        candidate.IsDeleted = false;
+                        dbContext.tblCandidates.Add(candidate);
+                        dbContext.SaveChanges();
+
+                        if (candidateView.TotalExperience > 0)
                         {
-                            previousCmpny.PreviousCompany = textboxValue;
-                            previousCmpny.CreatedBy = "hr";
-                            previousCmpny.CreatedDate = System.DateTime.Now;
-                            previousCmpny.IsDeleted = false;
-                            dbContext.tblPreviousCompanies.Add(previousCmpny);
-                            dbContext.SaveChanges();
+                            tblPreviousCompany previousCmpny = new tblPreviousCompany();
+                            previousCmpny.CandidateID = candidate.CandidateID;
+                            foreach (string textboxValue in txtBoxes)
+                            {
+                                previousCmpny.PreviousCompany = textboxValue;
+                                previousCmpny.CreatedBy = "hr";
+                                previousCmpny.CreatedDate = System.DateTime.Now;
+                                previousCmpny.IsDeleted = false;
+                                dbContext.tblPreviousCompanies.Add(previousCmpny);
+                                dbContext.SaveChanges();
+                            }
+
                         }
 
+                        tblEvaluation eval = new tblEvaluation();
+                        eval.CandidateID = candidate.CandidateID;
+                        eval.UserID = Convert.ToInt32(user);
+                        eval.RoundID = Round1ID;
+                        eval.CreatedBy = "hr";
+                        eval.CreatedDate = DateTime.Now;
+                        eval.IsDeleted = false;
+                        dbContext.tblEvaluations.Add(eval);
+
+                        dbContext.SaveChanges();
                     }
 
-                    tblEvaluation eval = new tblEvaluation();
-                    eval.CandidateID = candidate.CandidateID;
-                    eval.UserID = Convert.ToInt32(user);
-                    eval.RoundID = 1;
-                    eval.CreatedBy = "hr";
-                    eval.CreatedDate = DateTime.Now;
-                    eval.IsDeleted = false;
-                    dbContext.tblEvaluations.Add(eval);
-
-                    dbContext.SaveChanges();
                 }
-
-
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
-                return Json(new { Url = redirectUrl });
+                return Json(new { Url = redirectUrl, roundErrorMessage= roundErrorMessage });
             }
             catch (Exception ex)
             {
@@ -659,7 +627,8 @@ namespace InterviewEvaluationSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, int UserID)
+        //public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, int UserID)
+        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview)
         {
             try
             {
@@ -673,9 +642,10 @@ namespace InterviewEvaluationSystem.Controllers
                 //tblUser uid = dbContext.tblUsers.Where(x => x.UserName == UserName).FirstOrDefault();
                 //var userid = uid.UserID;
 
-                dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
-                dbContext.SaveChanges();
-                return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString(), UserID = UserID }, JsonRequestBehavior.AllowGet);
+                //dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
+                //dbContext.SaveChanges();
+                //return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString(), UserID = UserID }, JsonRequestBehavior.AllowGet);
+                return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString()}, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

@@ -279,6 +279,7 @@
           <Parameter Name="UserID" Type="int" Mode="In" />
         </Function>
         <Function Name="spGetInterviewersOfCandidate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetMinimumRoundID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPreviousRoundScores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
           <Parameter Name="RoundID" Type="int" Mode="In" />
@@ -722,6 +723,7 @@
           <FunctionImport Name="spGetCandidateRound" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidateRound_Result)">
           <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="spGetMinimumRoundID" ReturnType="Collection(Int32)" />
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -1071,6 +1073,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetMinimumRoundID" FunctionName="InterviewEvaluationDbModel.Store.spGetMinimumRoundID" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -142,7 +142,11 @@
             <div class="col-md-offset-2 col-md-10">
                 <input type="button" id="btnCreate" onclick="candidateValidation()" value="Add Candidate" class="btn btn-default" />
             </div>
+            
         </div>
+                        
+                        
+                        
     </div>
 </form>
 
@@ -211,10 +215,10 @@
 
             gridCandidate.Column("InterviewerName", "Interviewer Name", format: 
             @<text> 
-                 <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.InterviewerName</label> </span> 
+                 <span class="display-modeCandidate">@item.InterviewerName </span> 
                  @*@Html.DropDownList("user", null, string.Empty, new {id="ddlInterviewerName", @class = "edit-modeCandidate form-control" })*@ 
-                 @Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" }) 
-                 <div><label id="lblInterviewerNameValidation" class="text-danger"></label></div>
+                 @*@Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" }) 
+                 <div><label id="lblInterviewerNameValidation" class="text-danger"></label></div>*@
             </text>),
 
             gridCandidate.Column("Action", format: @<text>

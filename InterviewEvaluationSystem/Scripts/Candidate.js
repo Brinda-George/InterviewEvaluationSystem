@@ -42,7 +42,7 @@
             var tr = $(this).parents('tr:first');
             var CandidateName = tr.find("#CandidateName").val();
             var DateOfInterview = tr.find("#DateOfInterview").val();
-            var UserID = tr.find("#ddlInterviewerName").val();
+            //  var UserID = tr.find("#ddlInterviewerName").val();
             
             var flag = 0;
             if (CandidateName == "") {
@@ -61,13 +61,13 @@
                 tr.find('#lblDateOfInterviewValidation').empty();
             }
 
-            if (UserID == null) {
-                tr.find('#lblInterviewerNameValidation').html('Interviewer Is Required');
-                flag = 1;
-            }
-            else {
-                tr.find('#lblInterviewerNameValidation').empty();
-            }
+            //if (UserID == null) {
+            //    tr.find('#lblInterviewerNameValidation').html('Interviewer Is Required');
+            //    flag = 1;
+            //}
+            //else {
+            //    tr.find('#lblInterviewerNameValidation').empty();
+            //}
             if (flag == 1)
             {
                 return false;
@@ -76,7 +76,8 @@
             $.ajax({
                 url: '/HR/UpdateCandidate/', 
                 // data: JSON.stringify(tblNewUser),
-                data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserID": UserID }),
+                //data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview, "UserID": UserID }),
+                data: JSON.stringify({ "CandidateID": CandidateID, "CandidateName": CandidateName, "DateOfInterview": DateOfInterview }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
@@ -129,7 +130,7 @@
                 data: { Name: $('#CandidateNameText').val() },
                 datatype: "json",
                 success: function (Name) {
-                    $('#gridContentCandidate').html(Name);
+                    $('#gridContent').html(Name);
                     $('.edit-modeCandidateResult').hide();
                 }
             });
@@ -327,12 +328,17 @@ function candidateValidation() {
     {
         $('#lblInterviewer').empty();
     }
-    return false;
+    
     $.ajax({
         url: '/HR/AddCandidate',
         type: 'Post',
         data: $('#frmCreate').serialize(),
         success: function (response) {
+            var str = response.roundErrorMessage;
+            if (str != "")
+            {
+                alert(str);
+            }
             window.location.href = response.Url;
         },
         error: function (data) {
