@@ -167,7 +167,7 @@
         <div class="col-xl-6 col-sm-6">
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="fa fa-pie-chart"></i> Candidate  Status - Pie Chart
+                    <i class="fa fa-pie-chart"></i> Candidate  Status - Doughnut Chart
                 </div>
                 <div class="card-body">
                     @Html.DropDownList("pieChartYear", Enumerable.Range(2017, 50).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @onchange = "getHRChart(this)", @class = "year" })

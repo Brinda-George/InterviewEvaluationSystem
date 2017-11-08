@@ -60,7 +60,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewProfile()
         {
             var name = Convert.ToString(Session["UserName"]);
-            var user = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
+            var user = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
             return View(user);
         }
         #endregion
@@ -76,7 +76,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ProfileUpdate(UserViewModel user)
         {
             var name = Convert.ToString(Session["UserName"]);
-            var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
+            var item = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
             item.ModifiedBy = Convert.ToInt32(Session["UserID"]);
@@ -178,21 +178,32 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Change Password
+        /// <summary>
+        /// To display form to change password of user
+        /// </summary>
         [HttpGet]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
+        /// <summary>
+        /// To update old password with new password
+        /// </summary>
+        /// <param name="changePasswordViewModel"></param>
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel changePasswordViewModel)
         {
             try
             {
-                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
+                //Get minimum password length from web config
+                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"]; 
+                //Check whether model state is valid and new password is greater than minimum password
                 if (ModelState.IsValid && changePasswordViewModel.NewPassword.Length >= Convert.ToInt32(passwordLength))
                 {
+                    //Call UpdatePassword method to update old password with new password in database
                     int returnValue = services.UpdatePassword(Convert.ToInt32(Session["UserID"]), changePasswordViewModel);
+                    //Check if return value is 1
                     if (returnValue == 1)
                     {
                         ViewBag.result = "Password Updated Successfully!";

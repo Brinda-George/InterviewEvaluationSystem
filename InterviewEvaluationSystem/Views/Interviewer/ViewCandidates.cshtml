@@ -15,7 +15,7 @@
 @using (Html.BeginForm(new { id = "form" }))
 {
     <div class="input-group input-group-btn">
-        @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control control-label col-md-2", @placeholder = "Search by Name" })
+        @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control control-label col-md-2", @placeholder = "Search by Name or Email" })
         <span class="input-group-btn">
             <input type="submit" value="Search" class="btn btn-primary" />
         </span>
@@ -32,6 +32,7 @@
         mode: WebGridPagerModes.All,
         columns: webgridStatus.Columns(
             webgridStatus.Column(columnName: "Name", header: "Name"),
+            webgridStatus.Column(columnName: "Email", header: "Email"),
             webgridStatus.Column(columnName: "DateOfInterview", header: "Date Of Interview", format:
             @<text>
                 <label>@item.DateOfInterview.ToString("dd/MM/yyyy")</label>
@@ -46,6 +47,21 @@
                 else if (item.Recommended == false)
                 {
                     return Html.Raw(string.Format("No"));
+                }
+                else
+                {
+                    return Html.Raw(string.Format("In Progress"));
+                }
+            }),
+            webgridStatus.Column(columnName: "CandidateStatus", header: "Candidate Status", format: (item) =>
+            {
+                if (item.CandidateStatus == true)
+                {
+                    return Html.Raw(string.Format("Hired"));
+                }
+                else if (item.CandidateStatus == false)
+                {
+                    return Html.Raw(string.Format("Rejected"));
                 }
                 else
                 {
