@@ -123,7 +123,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         public ActionResult TodaysInterviews()
         {
-            List<CurrentStatusViewModel> TodaysInterviews = services.GetTodaysInterview();
+            List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
             return View(TodaysInterviews);
         }
 
@@ -134,7 +134,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult TodaysInterviews(string searchString)
         {
-            List<CurrentStatusViewModel> TodaysInterviews = services.GetTodaysInterview();
+            List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -143,38 +143,6 @@ namespace InterviewEvaluationSystem.Controllers
                                        || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
             }
             return View(TodaysInterviews);
-        }
-
-        #endregion
-
-        #region Hired Candidates
-
-        /// <summary>
-        /// To display details of all candidates who are hired
-        /// </summary>
-        [HttpGet]
-        public ActionResult ViewHiredCandidates()
-        {
-            List<CandidateViewModel> candidates = services.GetHiredCandidates();
-            return View(candidates);
-        }
-
-        /// <summary>
-        /// To do case insensitive search based on filters - Candidate Name and Email
-        /// </summary>
-        /// <param name="searchString"></param>
-        [HttpPost]
-        public ActionResult ViewHiredCandidates(string searchString)
-        {
-            List<CandidateViewModel> candidates = services.GetHiredCandidates();
-            //Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                //Get details of candidates whose name or email starts with search string given
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
         }
 
         #endregion
@@ -207,6 +175,38 @@ namespace InterviewEvaluationSystem.Controllers
             }
             return View(candidates);
         }
+        #endregion
+
+        #region Hired Candidates
+
+        /// <summary>
+        /// To display details of all candidates who are hired
+        /// </summary>
+        [HttpGet]
+        public ActionResult ViewHiredCandidates()
+        {
+            List<CandidateViewModel> candidates = services.GetHiredCandidates();
+            return View(candidates);
+        }
+
+        /// <summary>
+        /// To do case insensitive search based on filters - Candidate Name and Email
+        /// </summary>
+        /// <param name="searchString"></param>
+        [HttpPost]
+        public ActionResult ViewHiredCandidates(string searchString)
+        {
+            List<CandidateViewModel> candidates = services.GetHiredCandidates();
+            //Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //Get details of candidates whose name or email starts with search string given
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+
         #endregion
 
         #region Total Candidates
