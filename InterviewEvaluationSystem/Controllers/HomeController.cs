@@ -178,6 +178,10 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Change Password
+        /// <summary>
+        /// To change password of user
+        /// Old password is updated with new password
+        /// </summary>
         [HttpGet]
         public ActionResult ChangePassword()
         {
@@ -189,10 +193,14 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
+                //Get minimum password length from web config
+                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"]; 
+                //Check whether model state is valid and new password is greater than minimum password
                 if (ModelState.IsValid && changePasswordViewModel.NewPassword.Length >= Convert.ToInt32(passwordLength))
                 {
+                    //Call UpdatePassword to update old password with new password
                     int returnValue = services.UpdatePassword(Convert.ToInt32(Session["UserID"]), changePasswordViewModel);
+                    //Check if return value is 1
                     if (returnValue == 1)
                     {
                         ViewBag.result = "Password Updated Successfully!";

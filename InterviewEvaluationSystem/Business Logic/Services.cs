@@ -211,7 +211,12 @@ namespace InterviewEvaluationSystem.Business_Logic
                 }).ToList();
             return comments;
         }
-
+        /// <summary>
+        /// Get userID and ChangePasswordViewModel
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="changePasswordViewModel"></param>
+        /// <returns>res</returns>
         public int UpdatePassword(int userId, ChangePasswordViewModel changePasswordViewModel)
         {
             int res = dbContext.spUpdatePassword(userId, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
