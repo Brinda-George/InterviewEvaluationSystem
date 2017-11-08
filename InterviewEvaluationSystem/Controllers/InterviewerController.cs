@@ -37,11 +37,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 InterviewerDashboardViewModel interviewerDashBoardViewModel = new InterviewerDashboardViewModel();
-                var interviewerDashBoard = dbContext.spGetInterviewerDashBoard(Convert.ToInt32(Session["UserID"])).Single();
-                interviewerDashBoardViewModel.NewCandidateCount = interviewerDashBoard.NewCandidateCount;
-                interviewerDashBoardViewModel.TodaysInterviewCount = interviewerDashBoard.TodaysInterviewCount;
-                interviewerDashBoardViewModel.HiredCandidateCount = interviewerDashBoard.HiredCandidateCount;
-                interviewerDashBoardViewModel.TotalCandidateCount = interviewerDashBoard.TotalCandidateCount;
+                interviewerDashBoardViewModel = services.GetInterviewerDashBoard(Convert.ToInt32(Session["UserID"]));
                 return View(interviewerDashBoardViewModel);
             }
             catch (Exception ex)

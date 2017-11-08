@@ -29,20 +29,12 @@ namespace InterviewEvaluationSystem.Controllers
 
         /// <summary>
         /// To get Counts of New Candidates, Notifications, Today's interviews, Candidates in progress,
-        /// Skills, Hired candidates, Total candidates, Available interviewers from database to display in dash board
+        /// skills, Hired candidates, Total candidates, Available interviewers from database to display in dash board
         /// </summary>
         public ActionResult HRHomePage()
         {
             HRDashboardViewModel hrDashBoardViewModel = new HRDashboardViewModel();
-            var hrDashBoard = dbContext.spGetHRDashBoard().Single();
-            hrDashBoardViewModel.NewCandidateCount = hrDashBoard.NewCandidateCount;
-            hrDashBoardViewModel.NotificationCount = hrDashBoard.NotificationCount;
-            hrDashBoardViewModel.TodaysInterviewCount = hrDashBoard.TodaysInterviewCount;
-            hrDashBoardViewModel.CandidatesInProgress = hrDashBoard.CandidatesInProgress;
-            hrDashBoardViewModel.SkillCount = hrDashBoard.SkillCount;
-            hrDashBoardViewModel.HiredCandidateCount = hrDashBoard.HiredCandidateCount;
-            hrDashBoardViewModel.TotalCandidateCount = hrDashBoard.TotalCandidateCount;
-            hrDashBoardViewModel.AvailableInterviewerCount = hrDashBoard.AvailableInterviewerCount;
+            hrDashBoardViewModel = services.GetHRDashBoard();
             return View(hrDashBoardViewModel);
         }
 
