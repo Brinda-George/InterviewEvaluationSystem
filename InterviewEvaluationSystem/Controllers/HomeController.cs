@@ -39,21 +39,19 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                //To check if the user is valid by checking the username and password entered with those in the database 
-                //and storing the value returned.
-                var result = dbContext.spAuthenticate(loginUser.UserName, loginUser.Password).Single();
-                if (result == 0)
+                //To check if there exist any record in database
+                // where username and password matches with the values entered and storing the entire row in a variable.
+                var result = dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == loginUser.Password).FirstOrDefault();
+                if (result == null)
                 {
                     ViewBag.Message = "Invalid credentials"; //Displaying 'invalid credentials' when the user credentials 
                                                              //does not match.
                 }
                 else
                 {
-                    var values = dbContext.spLogin(loginUser.UserName, loginUser.Password).Single();//Retrieving the 
-                                                                                                    //required data from database that belongs to that specific user.
-                    loginUser.UserID = values.UserID;
-                    loginUser.UserName = values.UserName;
-                    loginUser.UserTypeID = values.UserTypeID;
+                    loginUser.UserID = result.UserID;
+                    loginUser.UserName = result.UserName;
+                    loginUser.UserTypeID = result.UserTypeID;
                     Session["UserTypeID"] = loginUser.UserTypeID;
                     Session["UserName"] = loginUser.UserName;
                     Session["UserID"] = loginUser.UserID;
