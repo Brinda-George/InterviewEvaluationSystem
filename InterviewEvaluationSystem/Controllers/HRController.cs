@@ -11,10 +11,26 @@ namespace InterviewEvaluationSystem.Controllers
 {
     public class HRController : Controller
     {
+        #region Fields
+
+        /// <summary>
+        /// Declare Db Entity to connect to database
+        /// </summary>
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
+
+        /// <summary>
+        /// Declare Service class that contains methods to implement business logic
+        /// </summary>
         Services services = new Services();
 
+        #endregion
+
         #region HR Home Page
+
+        /// <summary>
+        /// To get Counts of New Candidates, Notifications, Today's interviews, Candidates in progress,
+        /// Skills, Hired candidates, Total candidates, Available interviewers from database to display in dash board
+        /// </summary>
         public ActionResult HRHomePage()
         {
             HRDashboardViewModel hrDashBoardViewModel = new HRDashboardViewModel();
@@ -29,26 +45,42 @@ namespace InterviewEvaluationSystem.Controllers
             hrDashBoardViewModel.AvailableInterviewerCount = hrDashBoard.AvailableInterviewerCount;
             return View(hrDashBoardViewModel);
         }
+
         #endregion
 
         #region Chart
+
+        /// <summary>
+        /// To Create pie chart based on the data from db for a particular year
+        /// </summary>
+        /// <param name="year"></param>
         public void ChartPie(int year)
         {
+            //
             var result = dbContext.spGetPieChart(year).Single();
             if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
             {
+                // Use Chart class to create a pie chart image based on an array of values
                 Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
                 .AddLegend("Summary")
-                .AddSeries("Default", chartType: "doughnut", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .AddSeries("Default",
+                    chartType: "doughnut",
+                    xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" },
+                    yValues: new[] { result.InProgress, result.Hired, result.Rejected })
                 .Write("bmp");
             }
         }
 
+        /// <summary>
+        /// To Create column chart based on the data from db for a particular year
+        /// </summary>
+        /// <param name="year"></param>
         public void ChartColumn(int year)
         {
             var result = dbContext.spGetCloumnChart(year).Single();
             if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
             {
+                // Use Chart class to create a column chart image based on an array of values
                 Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
                 .AddSeries("Default", chartType: "column",
                     xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
@@ -57,7 +89,164 @@ namespace InterviewEvaluationSystem.Controllers
                 .SetYAxis("No of Candidates")
                 .Write("bmp");
             }
+
         }
+        #endregion
+
+        #region Candidates in HR Round
+
+        /// <summary>
+        /// To display details of all candidates in HR round
+        /// </summary>
+        public ActionResult CandidatesinHRRound()
+        {
+            List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
+            return View(candidates);
+        }
+
+        /// <summary>
+        /// To do case insensitive search based on filters - Candidate Name and Email
+        /// </summary>
+        /// <param name="searchString"></param>
+        [HttpPost]
+        public ActionResult CandidatesinHRRound(string searchString)
+        {
+            List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+
+        #endregion
+
+        #region Today's Interview
+
+        /// <summary>
+        /// To display details of all candidates having interview today
+        /// </summary>
+        public ActionResult TodaysInterviews()
+        {
+            List<CurrentStatusViewModel> TodaysInterviews = services.GetTodaysInterview();
+            return View(TodaysInterviews);
+        }
+
+        /// <summary>
+        /// To do case insensitive search based on filters - Candidate Name and Email
+        /// </summary>
+        /// <param name="searchString"></param>
+        [HttpPost]
+        public ActionResult TodaysInterviews(string searchString)
+        {
+            List<CurrentStatusViewModel> TodaysInterviews = services.GetTodaysInterview();
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                TodaysInterviews = TodaysInterviews.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(TodaysInterviews);
+        }
+
+        #endregion
+
+        #region Hired Candidates
+
+        /// <summary>
+        /// To display details of all candidates who are hired
+        /// </summary>
+        [HttpGet]
+        public ActionResult ViewHiredCandidates()
+        {
+            List<CandidateViewModel> candidates = services.GetHiredCandidates();
+            return View(candidates);
+        }
+
+        /// <summary>
+        /// To do case insensitive search based on filters - Candidate Name and Email
+        /// </summary>
+        /// <param name="searchString"></param>
+        [HttpPost]
+        public ActionResult ViewHiredCandidates(string searchString)
+        {
+            List<CandidateViewModel> candidates = services.GetHiredCandidates();
+            //Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //Get details of candidates whose name or email starts with search string given
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+
+        #endregion
+
+        #region InProgress Candidates
+        /// <summary>
+        /// To display details of all candidates whose interview is in progress
+        /// </summary>
+        [HttpGet]
+        public ActionResult ViewInProgressCandidates()
+        {
+            List<CandidateViewModel> candidates = services.GetInProgressCandidates();
+            return View(candidates);
+        }
+
+        /// <summary>
+        /// To do case insensitive search based on filters - Candidate Name and Email
+        /// </summary>
+        /// <param name="searchString"></param>
+        [HttpPost]
+        public ActionResult ViewInProgressCandidates(string searchString)
+        {
+            List<CandidateViewModel> candidates = services.GetInProgressCandidates();
+            //Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //Get details of candidates whose name or email starts with search string given
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+        #endregion
+
+        #region Total Candidates
+
+        /// <summary>
+        /// To display details of all candidates
+        /// </summary>
+        [HttpGet]
+        public ActionResult ViewCandidates()
+        {
+            List<CandidateViewModel> candidates = services.GetCandidates();
+            return View(candidates);
+        }
+
+        /// <summary>
+        /// To do case insensitive search based on filters - Candidate Name and Email
+        /// </summary>
+        /// <param name="searchString"></param>
+        [HttpPost]
+        public ActionResult ViewCandidates(string searchString)
+        {
+            List<CandidateViewModel> candidates = services.GetCandidates();
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(candidates);
+        }
+
         #endregion
 
         #region Round
@@ -637,7 +826,6 @@ namespace InterviewEvaluationSystem.Controllers
                 candidateProceed.Name = Name;
                 candidateProceed.Email = Email;
                 TempData["CandidateID"] = CandidateID;
-                Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
                 List<SelectListItem> selectedlistround = new List<SelectListItem>();
                 List<CandidateRoundViewModel> CandidateRound = dbContext.spGetCandidateRound(CandidateID)
                     .Select(i => new CandidateRoundViewModel
@@ -694,6 +882,7 @@ namespace InterviewEvaluationSystem.Controllers
                     IsDeleted = false
                 });
                 dbContext.SaveChanges();
+                Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
                 return RedirectToAction("Notification");
             }
             catch (Exception ex)
@@ -791,11 +980,19 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Join Details
+
+        /// <summary>
+        /// To get joining details of a candidate such as offered salary and date of joining
+        /// </summary>
         public ActionResult JoinDetails()
         {
             return View();
         }
 
+        /// <summary>
+        /// To insert joining details such as offered salary and date of joining to database
+        /// </summary>
+        /// <param name="joinViewModel"></param>
         [HttpPost]
         public ActionResult JoinDetails(JoinViewModel joinViewModel)
         {
@@ -806,88 +1003,66 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Candidate Status
+
+        /// <summary>
+        /// To get current status of all candidates
+        /// </summary>
         public ActionResult CandidateStatus()
         {
             List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
             return View(CurrentStatuses);
         }
 
+        /// <summary>
+        /// To do case insensitive search based on filters Candidate Name and Email
+        /// </summary>
         [HttpPost]
         public ActionResult CandidateStatus(string searchString)
         {
             List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
+            // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
+                // Get details of candidates whose name or email starts with search string given
                 CurrentStatuses = CurrentStatuses.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
                                        || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
             }
             return View(CurrentStatuses);
         }
-        #endregion
 
-        #region Candidates in HR Round
-        public ActionResult CandidatesinHRRound()
-        {
-            List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
-            return View(candidates);
-        }
-
-        [HttpPost]
-        public ActionResult CandidatesinHRRound(string searchString)
-        {
-            List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
-        }
-        #endregion
-
-        #region Today's Interview
-        public ActionResult TodaysInterviews()
-        {
-            List<CurrentStatusViewModel> TodaysInterviews = services.GetTodaysInterview();
-            return View(TodaysInterviews);
-        }
-
-        [HttpPost]
-        public ActionResult TodaysInterviews(string searchString)
-        {
-            List<CurrentStatusViewModel> TodaysInterviews = services.GetTodaysInterview();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                TodaysInterviews = TodaysInterviews.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(TodaysInterviews);
-        }
         #endregion
 
         #region HR Evaluation
+
+        /// <summary>
+        /// To get rating scales, rounds, skill categories and skills by skill category from database
+        /// To get scores by round and comments of previous rounds from database
+        /// </summary>
+        /// <param name="statusViewModel"></param>
         public ActionResult HREvaluation(StatusViewModel statusViewModel)
         {
             InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
             interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
-            interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
             interviewEvaluationViewModel.Rounds = services.GetRounds();
+            interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
             interviewEvaluationViewModel.Skills = services.GetSkills();
+            //Get List of skills by skill category and save in a List<List<Skills>>
             foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
             {
                 interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
             }
-
+            //Get List of scores by round and save in a List<List<Scores>>
             foreach (var round in interviewEvaluationViewModel.Rounds)
             {
                 interviewEvaluationViewModel.ScoresByRound.Add(services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID));
             }
-            interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
             interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
+            //Store CandidateID, RoundID, EvaluationID, Recommended in TempData
             TempData["candidateID"] = statusViewModel.CandidateID;
             TempData["roundID"] = statusViewModel.RoundID;
             TempData["evaluationID"] = statusViewModel.EvaluationID;
             TempData["recommended"] = statusViewModel.Recommended;
+            //checked if evaluation is completed
             if (TempData["recommended"] == null)
             {
                 TempData["recommended"] = TempData["recommended"] ?? "null";
@@ -896,10 +1071,22 @@ namespace InterviewEvaluationSystem.Controllers
             else
             {
                 TempData["evaluationCompleted"] = true;
+                //Get comments from database
+                interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
             }
             return View(interviewEvaluationViewModel);
         }
 
+        /// <summary>
+        /// To insert rate scale values for each skills to Score table in database
+        /// To update comments and recommended(yes/no) in Evaluation table in database
+        /// </summary>
+        /// <param name="recommended"></param>
+        /// <param name="evaluationID"></param>
+        /// <param name="ids">IDs of skills that are evaluated</param>
+        /// <param name="values">Rate scale values of each skills</param>
+        /// <param name="comments"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult HREvaluation(bool recommended, int evaluationID, int[] ids, int[] values, string comments)
         {
@@ -917,17 +1104,18 @@ namespace InterviewEvaluationSystem.Controllers
                     });
                     dbContext.SaveChanges();
                 }
-                int EvaluationID = Convert.ToInt16(evaluationID);
-                tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
+                tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == evaluationID).Single();
                 evaluation.Comment = comments;
                 evaluation.Recommended = recommended;
                 evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
+            //Get new Notification count from database and store in session variable
             var Notifications = dbContext.spHRNotificationGrid();
             Session["NotificationsCount"] = Notifications.Count();
             var redirectUrl = "";
+            //if recommended is true, redirect to JoinDetails else redirect to HRHomePage 
             if (recommended == true)
             {
                 redirectUrl = new UrlHelper(Request.RequestContext).Action("JoinDetails", "HR");
@@ -938,69 +1126,8 @@ namespace InterviewEvaluationSystem.Controllers
             }
             return Json(new { Url = redirectUrl });
         }
+
         #endregion
 
-        #region Total Candidates
-        [HttpGet]
-        public ActionResult ViewCandidates()
-        {
-            List<CandidateViewModel> candidates = services.GetCandidates();
-            return View(candidates);
-        }
-
-        [HttpPost]
-        public ActionResult ViewCandidates(string searchString)
-        {
-            List<CandidateViewModel> candidates = services.GetCandidates();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
-        }
-        #endregion
-
-        #region Hired Candidates
-        [HttpGet]
-        public ActionResult ViewHiredCandidates()
-        {
-            List<CandidateViewModel> candidates = services.GetHiredCandidates();
-            return View(candidates);
-        }
-
-        [HttpPost]
-        public ActionResult ViewHiredCandidates(string searchString)
-        {
-            List<CandidateViewModel> candidates = services.GetHiredCandidates();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
-        }
-        #endregion
-
-        #region InProgress Candidates
-        [HttpGet]
-        public ActionResult ViewInProgressCandidates()
-        {
-            List<CandidateViewModel> candidates = services.GetInProgressCandidates();
-            return View(candidates);
-        }
-
-        [HttpPost]
-        public ActionResult ViewInProgressCandidates(string searchString)
-        {
-            List<CandidateViewModel> candidates = services.GetInProgressCandidates();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
-        }
-        #endregion
     }
 }

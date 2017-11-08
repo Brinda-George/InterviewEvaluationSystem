@@ -156,12 +156,14 @@ namespace InterviewEvaluationSystem.Models
     public class StatusViewModel
     {
         public string Name { get; set; }
+        public DateTime DateOfInterview { get; set; }
         public string RoundName { get; set; }
-        public Nullable<int> CandidateID { get; set; }
-        public Nullable<int> RoundID { get; set; }
+        public int CandidateID { get; set; }
+        public int RoundID { get; set; }
         public int EvaluationID { get; set; }
         public Nullable<bool> Recommended { get; set; }
-        public System.DateTime DateOfInterview { get; set; }
+        public Nullable<bool> CandidateStatus { get; set; }
+        public string Email { get; set; }
     }
 
     public class ScoreEvaluationViewModel
@@ -222,9 +224,9 @@ namespace InterviewEvaluationSystem.Models
 
     public class MailViewModel
     {
-        public string From { get; set; }
-        public string To { get; set; }
-        public string Sender { get; set; }
+        public string InterviewerEmail { get; set; }
+        public string HREmail { get; set; }
+        public string Interviewer { get; set; }
         public string Candidate { get; set; }
         public string Subject { get; set; }
         public string Status { get; set; }
