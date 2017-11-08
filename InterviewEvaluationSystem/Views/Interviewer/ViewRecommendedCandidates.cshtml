@@ -37,15 +37,19 @@
                 <label>@item.DateOfInterview.ToString("dd/MM/yyyy")</label>
             </text>),
             webgridStatus.Column(columnName: "RoundName", header: "Round"),
-            webgridStatus.Column(columnName: "Recommended", header: "Recommended", format: (item) =>
+            webgridStatus.Column(columnName: "CandidateStatus", header: "Candidate Status", format: (item) =>
             {
-                if (item.Recommended == true)
+                if (item.CandidateStatus == true)
                 {
-                    return Html.Raw(string.Format("Yes"));
+                    return Html.Raw(string.Format("Hired"));
+                }
+                else if (item.CandidateStatus == false)
+                {
+                    return Html.Raw(string.Format("Rejected"));
                 }
                 else
                 {
-                    return Html.Raw(string.Format("No"));
+                    return Html.Raw(string.Format("In Progress"));
                 }
             })
     ))

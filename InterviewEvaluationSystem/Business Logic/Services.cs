@@ -111,7 +111,8 @@ namespace InterviewEvaluationSystem.Business_Logic
                     RoundID = e.RoundID,
                     EvaluationID = e.EvaluationID,
                     Recommended = e.Recommended,
-                    DateOfInterview = e.DateOfInterview
+                    DateOfInterview = e.DateOfInterview,
+                    CandidateStatus = e.CandidateStatus
                 }).Where(s => s.Recommended == true).ToList();
             return Statuses;
         }
@@ -122,12 +123,14 @@ namespace InterviewEvaluationSystem.Business_Logic
                 .Select(e => new StatusViewModel
                 {
                     Name = e.Name,
+                    Email = e.Email,
                     RoundName = e.RoundName,
                     CandidateID = e.CandidateID,
                     RoundID = e.RoundID,
                     EvaluationID = e.EvaluationID,
                     Recommended = e.Recommended,
-                    DateOfInterview = e.DateOfInterview
+                    DateOfInterview = e.DateOfInterview,
+                    CandidateStatus = e.CandidateStatus
                 }).ToList();
             return Statuses;
         }

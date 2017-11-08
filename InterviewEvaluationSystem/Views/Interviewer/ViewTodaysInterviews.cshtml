@@ -34,12 +34,12 @@
             webgridStatus.Column(columnName: "Name", header: "Name", format:
             @<text>
                 @Html.ActionLink((string)item.Name, "InterviewEvaluation", new
-           {
-               Name = item.Name,
-               CandidateID = item.CandidateID,
-               RoundID = item.RoundID,
-               EvaluationID = item.EvaluationID
-           })
+                {
+                    Name = item.Name,
+                    CandidateID = item.CandidateID,
+                    RoundID = item.RoundID,
+                    EvaluationID = item.EvaluationID
+                })
                 @if (item.DateOfInterview == DateTime.Today)
                 {
                     <span class="bg-warning blinking"> Today </span>

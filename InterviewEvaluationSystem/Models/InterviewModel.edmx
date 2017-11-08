@@ -1621,6 +1621,8 @@
           <Property Type="Int32" Name="RoundID" Nullable="false" />
           <Property Type="Int32" Name="EvaluationID" Nullable="false" />
           <Property Type="Boolean" Name="Recommended" Nullable="true" />
+          <Property Type="Boolean" Name="CandidateStatus" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2033,6 +2035,8 @@
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
                 <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
                 <ScalarProperty Name="Recommended" ColumnName="Recommended" />
+                <ScalarProperty Name="CandidateStatus" ColumnName="CandidateStatus" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
