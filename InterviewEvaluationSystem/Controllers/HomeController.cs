@@ -183,7 +183,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var name = Convert.ToString(Session["UserName"]);
-            var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+            var item = db.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
+         //   var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
             db.SaveChanges();
@@ -222,7 +223,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
             var name = Convert.ToString(Session["UserName"]);
-            var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+            //  var item = (from s in db.tblUsers where s.UserName == name select s).FirstOrDefault();
+            var item = db.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
             ViewBag.Details = item;
             return View();
         }

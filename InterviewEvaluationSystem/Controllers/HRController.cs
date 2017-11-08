@@ -58,7 +58,8 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var item = (from s in db.tblRatingScales where s.IsDeleted == false select s).ToList();
+            //   var item = (from s in db.tblRatingScales where s.IsDeleted == false select s).ToList();
+            var item = db.tblRatingScales.Where(s => s.IsDeleted == false).ToList();
             //List<tblRatingScale> rate = db.tblRatingScales.ToList();
             ViewBag.Roles = item;
             return View();
@@ -126,7 +127,8 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult SkillCategory()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var item = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
+            //  var item = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
+            var item = db.tblSkillCategories.Where(s => s.IsDeleted == false).ToList();
             //List<tblSkillCategory> category = db.tblSkillCategories.ToList();
             ViewBag.Roles = item;
             return View();
@@ -196,7 +198,8 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Skill()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var itemlist = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
+            // var itemlist = (from s in db.tblSkillCategories where s.IsDeleted == false select s).ToList();
+            var itemlist = db.tblSkillCategories.Where(s => s.IsDeleted == false).ToList();
             List<SelectListItem> selectedlist = new List<SelectListItem>();
 
             foreach (var skillitem in itemlist)
@@ -275,7 +278,8 @@ namespace InterviewEvaluationSystem.Controllers
             skill.ModifiedBy = "admin";
             skill.ModifiedDate = DateTime.Now;
             db.SaveChanges();
-            var SkillCategory = (from item in db.tblSkillCategories where item.SkillCategoryID == CategoryID select item.SkillCategory).FirstOrDefault();
+            var SkillCategory = db.tblSkillCategories.Where(s => s.SkillCategoryID == CategoryID).Select(k => k.SkillCategory).FirstOrDefault();
+           // var SkillCategory = (from item in db.tblSkillCategories where item.SkillCategoryID == CategoryID select item.SkillCategory).FirstOrDefault();
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
             return Json(new { Url = redirectUrl, SkillName = Skillname, SkillCategory = SkillCategory }, JsonRequestBehavior.AllowGet);
         }
@@ -366,7 +370,8 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult AddRound()
         {
             InterviewEvaluationDbEntities db = new InterviewEvaluationDbEntities();
-            var item = (from s in db.tblRounds where s.IsDeleted == false select s).ToList();
+            //  var item = (from s in db.tblRounds where s.IsDeleted == false select s).ToList();
+            var item = db.tblRounds.Where(s => s.IsDeleted == false).ToList();
             //List<tblRatingScale> rate = db.tblRatingScales.ToList();
             ViewBag.Rounds = item;
             return View();
