@@ -407,15 +407,6 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
         }
     
-        public virtual ObjectResult<spGetRecommendedCandidates_Result> spGetRecommendedCandidates(Nullable<int> userID)
-        {
-            var userIDParameter = userID.HasValue ?
-                new ObjectParameter("UserID", userID) :
-                new ObjectParameter("UserID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRecommendedCandidates_Result>("spGetRecommendedCandidates", userIDParameter);
-        }
-    
         public virtual ObjectResult<spGetCandidatesByInterviewer_Result> spGetCandidatesByInterviewer(Nullable<int> userID)
         {
             var userIDParameter = userID.HasValue ?
@@ -428,6 +419,25 @@ namespace InterviewEvaluationSystem.Models
         public virtual ObjectResult<Nullable<int>> spGetMinimumRoundID()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetMinimumRoundID");
+        }
+    
+        public virtual ObjectResult<spGetHiredCandidates_Result> spGetHiredCandidates()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiredCandidates_Result>("spGetHiredCandidates");
+        }
+    
+        public virtual ObjectResult<spGetInProgressCandidates_Result> spGetInProgressCandidates()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInProgressCandidates_Result>("spGetInProgressCandidates");
+        }
+    
+        public virtual ObjectResult<spGetRecommendedCandidates_Result> spGetRecommendedCandidates(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRecommendedCandidates_Result>("spGetRecommendedCandidates", userIDParameter);
         }
     }
 }

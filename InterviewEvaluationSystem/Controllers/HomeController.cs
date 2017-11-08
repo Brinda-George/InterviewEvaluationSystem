@@ -13,8 +13,19 @@ namespace InterviewEvaluationSystem.Controllers
 {
     public class HomeController : Controller
     {
+        #region Fields
+
+        /// <summary>
+        /// Declare Db Entity to connect to database
+        /// </summary>
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
+
+        /// <summary>
+        /// Declare Service class that contains methods to implement business logic
+        /// </summary>
         Services services = new Services();
+
+        #endregion
 
         #region Login
 

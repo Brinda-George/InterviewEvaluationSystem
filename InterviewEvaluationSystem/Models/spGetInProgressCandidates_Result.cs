@@ -11,16 +11,16 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spGetCandidatesByInterviewer_Result
+    public partial class spGetInProgressCandidates_Result
     {
         public string Name { get; set; }
-        public System.DateTime DateOfInterview { get; set; }
-        public string RoundName { get; set; }
-        public int CandidateID { get; set; }
-        public int RoundID { get; set; }
-        public int EvaluationID { get; set; }
-        public Nullable<bool> Recommended { get; set; }
-        public Nullable<bool> CandidateStatus { get; set; }
         public string Email { get; set; }
+        public System.DateTime DateOfBirth { get; set; }
+        public string PAN { get; set; }
+        public string Designation { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
+        public string Designation1 { get; set; }
+        public decimal TotalExperience { get; set; }
+        public string Qualifications { get; set; }
     }
 }
