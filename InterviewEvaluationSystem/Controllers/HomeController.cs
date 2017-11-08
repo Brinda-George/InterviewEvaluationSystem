@@ -60,7 +60,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewProfile()
         {
             var name = Convert.ToString(Session["UserName"]);
-            var user = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
+            var user = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
             return View(user);
         }
         #endregion
@@ -76,7 +76,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ProfileUpdate(UserViewModel user)
         {
             var name = Convert.ToString(Session["UserName"]);
-            var item = (from s in dbContext.tblUsers where s.UserName == name select s).FirstOrDefault();
+            var item = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
             item.Address = user.Address;
             item.Pincode = user.Pincode;
             item.ModifiedBy = Convert.ToInt32(Session["UserID"]);
