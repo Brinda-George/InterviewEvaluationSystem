@@ -250,10 +250,15 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Round
+        
+        /// <summary>
+        /// To display all the rounds in an Inteview.
+        /// </summary>
+       
         [HttpGet]
         public ActionResult AddRound()
         {
-            var item = (from s in dbContext.tblRounds where s.IsDeleted == false select s).ToList();
+            var item = dbContext.tblRounds.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Rounds = item;
             return View();
         }
@@ -307,7 +312,7 @@ namespace InterviewEvaluationSystem.Controllers
         #region Rating Scale
         public ActionResult RatingScale()
         {
-            var item = (from s in dbContext.tblRatingScales where s.IsDeleted == false select s).ToList();
+            var item = dbContext.tblRatingScales.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Roles = item;
             return View();
         }
@@ -380,7 +385,7 @@ namespace InterviewEvaluationSystem.Controllers
         #region Skill Category
         public ActionResult SkillCategory()
         {
-            var item = (from s in dbContext.tblSkillCategories where s.IsDeleted == false select s).ToList();
+            var item = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Roles = item;
             return View();
         }
@@ -438,7 +443,7 @@ namespace InterviewEvaluationSystem.Controllers
         #region Skill
         public ActionResult Skill()
         {
-            var itemlist = (from s in dbContext.tblSkillCategories where s.IsDeleted == false select s).ToList();
+            var itemlist = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false).ToList();
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             foreach (var skillitem in itemlist)
             {
