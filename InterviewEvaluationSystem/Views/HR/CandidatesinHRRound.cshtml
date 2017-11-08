@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<InterviewEvaluationSystem.Models.CurrentStatusViewModel>
 
 @{
-    ViewBag.Title = "CandidatesinHrRound";
+    ViewBag.Title = "CandidateStatus";
     WebGrid webgridStatus = new WebGrid(source: Model, canSort: false, canPage: true, rowsPerPage: 30);
 }
 
@@ -32,8 +32,22 @@
                 rowStyle: "webgrid-row-style",
                 mode: WebGridPagerModes.All,
                 columns: webgridStatus.Columns(
-                    webgridStatus.Column(columnName: "Name", header: "Name"),
+                    webgridStatus.Column(columnName: "Name", header: "Name", format: (item) =>
+                    {
+                        return Html.ActionLink((string)item.Name, "HREvaluation", new
+                        {
+                            Name = item.Name,
+                            CandidateID = item.CandidateID,
+                            RoundID = item.RoundID,
+                            EvaluationID = item.EvaluationID,
+                            recommended = item.Recommended
+                        });
+                    }),
                     webgridStatus.Column(columnName: "Email", header: "Email"),
+                    webgridStatus.Column(columnName: "DateOfInterview", header: "Date Of Interview", format:
+                    @<text>
+                        <label>@item.DateOfInterview.ToString("dd/MM/yyyy")</label>
+                    </text>),
                     webgridStatus.Column(columnName: "Recommended", header: "Status", format: (item) =>
                     {
                         if (item.Recommended == null)
@@ -52,7 +66,7 @@
     {
         <div class="alert alert-success">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <strong>No Candidates in HR Round!! </strong>
+            <strong>No Candidates in HR Round!!</strong>
         </div>
     }
 </div>
@@ -60,4 +74,3 @@
 <div>
     @Html.ActionLink("Back to Home", "HRHomePage", "HR")
 </div>
-

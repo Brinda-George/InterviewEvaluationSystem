@@ -17,12 +17,11 @@ namespace InterviewEvaluationSystem.Models
         public string Email { get; set; }
         public System.DateTime DateOfBirth { get; set; }
         public string PAN { get; set; }
-        public System.DateTime DateOfInterview { get; set; }
         public string Designation { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
+        public int NoticePeriodInMonths { get; set; }
         public decimal TotalExperience { get; set; }
         public string Qualifications { get; set; }
-        public string Designation1 { get; set; }
-        public int NoticePeriodInMonths { get; set; }
         public Nullable<decimal> OfferedSalary { get; set; }
         public Nullable<System.DateTime> DateOfJoining { get; set; }
     }

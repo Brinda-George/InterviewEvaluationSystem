@@ -19,7 +19,6 @@ namespace InterviewEvaluationSystem.Models
         public string PAN { get; set; }
         public string Designation { get; set; }
         public System.DateTime DateOfInterview { get; set; }
-        public string Designation1 { get; set; }
         public decimal TotalExperience { get; set; }
         public string Qualifications { get; set; }
     }

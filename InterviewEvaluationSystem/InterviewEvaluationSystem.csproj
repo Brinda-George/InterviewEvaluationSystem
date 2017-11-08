@@ -243,6 +243,9 @@
     <Compile Include="Models\spGetCandidatesByInterviewer_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetCandidatesinHR_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetCandidates_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
@@ -261,10 +264,16 @@
     <Compile Include="Models\spGetHiredCandidates_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetHiredCandidates_Result1.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetHRDashBoard_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetInProgressCandidates_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetInProgressCandidates_Result1.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetInterviewerCloumnChart_Result.cs">
@@ -283,9 +292,6 @@
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetPreviousRoundScores_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\spGetPreviousRoundScores_Result1.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetRecommendedCandidates_Result.cs">

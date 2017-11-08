@@ -65,6 +65,29 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateInterviewers_Result>("spGetCandidateInterviewers", candidateIDParameter);
         }
     
+        public virtual ObjectResult<spGetCandidateRound_Result> spGetCandidateRound(Nullable<int> candidateID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetCandidates_Result> spGetCandidates()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidates_Result>("spGetCandidates");
+        }
+    
+        public virtual ObjectResult<spGetCandidatesByInterviewer_Result> spGetCandidatesByInterviewer(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidatesByInterviewer_Result>("spGetCandidatesByInterviewer", userIDParameter);
+        }
+    
         public virtual ObjectResult<Nullable<int>> spGetCandidatesInProgress()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetCandidatesInProgress");
@@ -146,6 +169,16 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerPieChart_Result>("spGetInterviewerPieChart", userIDParameter, yearParameter);
         }
     
+        public virtual ObjectResult<spGetInterviewersOfCandidate_Result> spGetInterviewersOfCandidate()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewersOfCandidate_Result>("spGetInterviewersOfCandidate");
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spGetMinimumRoundID()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetMinimumRoundID");
+        }
+    
         public virtual ObjectResult<spGetPieChart_Result> spGetPieChart(Nullable<int> year)
         {
             var yearParameter = year.HasValue ?
@@ -153,6 +186,28 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("year", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart", yearParameter);
+        }
+    
+        public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            var roundIDParameter = roundID.HasValue ?
+                new ObjectParameter("RoundID", roundID) :
+                new ObjectParameter("RoundID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPreviousRoundScores_Result>("spGetPreviousRoundScores", candidateIDParameter, roundIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetRecommendedCandidates_Result> spGetRecommendedCandidates(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRecommendedCandidates_Result>("spGetRecommendedCandidates", userIDParameter);
         }
     
         public virtual ObjectResult<spGetSkillsBySkillCategory_Result> spGetSkillsBySkillCategory(Nullable<int> skillCategoryID)
@@ -255,170 +310,9 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
         }
     
-        public virtual int spInsertRound(string roundName, Nullable<int> createdBy, Nullable<System.DateTime> createdDate)
+        public virtual ObjectResult<spGetInProgressCandidates_Result> spGetInProgressCandidates()
         {
-            var roundNameParameter = roundName != null ?
-                new ObjectParameter("RoundName", roundName) :
-                new ObjectParameter("RoundName", typeof(string));
-    
-            var createdByParameter = createdBy.HasValue ?
-                new ObjectParameter("CreatedBy", createdBy) :
-                new ObjectParameter("CreatedBy", typeof(int));
-    
-            var createdDateParameter = createdDate.HasValue ?
-                new ObjectParameter("CreatedDate", createdDate) :
-                new ObjectParameter("CreatedDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertRound", roundNameParameter, createdByParameter, createdDateParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> spDeleteRound(Nullable<int> roundID)
-        {
-            var roundIDParameter = roundID.HasValue ?
-                new ObjectParameter("RoundID", roundID) :
-                new ObjectParameter("RoundID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spDeleteRound", roundIDParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> spDeleteRatingScale(Nullable<int> rateScaleID)
-        {
-            var rateScaleIDParameter = rateScaleID.HasValue ?
-                new ObjectParameter("RateScaleID", rateScaleID) :
-                new ObjectParameter("RateScaleID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spDeleteRatingScale", rateScaleIDParameter);
-        }
-    
-        public virtual int spInsertRatingScale(string rateScale, Nullable<int> rateValue, string description, Nullable<int> createdBy, Nullable<System.DateTime> createdDate)
-        {
-            var rateScaleParameter = rateScale != null ?
-                new ObjectParameter("RateScale", rateScale) :
-                new ObjectParameter("RateScale", typeof(string));
-    
-            var rateValueParameter = rateValue.HasValue ?
-                new ObjectParameter("RateValue", rateValue) :
-                new ObjectParameter("RateValue", typeof(int));
-    
-            var descriptionParameter = description != null ?
-                new ObjectParameter("Description", description) :
-                new ObjectParameter("Description", typeof(string));
-    
-            var createdByParameter = createdBy.HasValue ?
-                new ObjectParameter("CreatedBy", createdBy) :
-                new ObjectParameter("CreatedBy", typeof(int));
-    
-            var createdDateParameter = createdDate.HasValue ?
-                new ObjectParameter("CreatedDate", createdDate) :
-                new ObjectParameter("CreatedDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertRatingScale", rateScaleParameter, rateValueParameter, descriptionParameter, createdByParameter, createdDateParameter);
-        }
-    
-        public virtual int spInsertSkillCategory(string skillCategory, string description, Nullable<int> createdBy, Nullable<System.DateTime> createdDate)
-        {
-            var skillCategoryParameter = skillCategory != null ?
-                new ObjectParameter("SkillCategory", skillCategory) :
-                new ObjectParameter("SkillCategory", typeof(string));
-    
-            var descriptionParameter = description != null ?
-                new ObjectParameter("Description", description) :
-                new ObjectParameter("Description", typeof(string));
-    
-            var createdByParameter = createdBy.HasValue ?
-                new ObjectParameter("CreatedBy", createdBy) :
-                new ObjectParameter("CreatedBy", typeof(int));
-    
-            var createdDateParameter = createdDate.HasValue ?
-                new ObjectParameter("CreatedDate", createdDate) :
-                new ObjectParameter("CreatedDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertSkillCategory", skillCategoryParameter, descriptionParameter, createdByParameter, createdDateParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> spDeleteSkillCategory(Nullable<int> skillCategoryID)
-        {
-            var skillCategoryIDParameter = skillCategoryID.HasValue ?
-                new ObjectParameter("SkillCategoryID", skillCategoryID) :
-                new ObjectParameter("SkillCategoryID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spDeleteSkillCategory", skillCategoryIDParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> spDeleteSkill(Nullable<int> skillID)
-        {
-            var skillIDParameter = skillID.HasValue ?
-                new ObjectParameter("SkillID", skillID) :
-                new ObjectParameter("SkillID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spDeleteSkill", skillIDParameter);
-        }
-    
-        public virtual int spInsertSkill(string skillName, Nullable<int> skillCategoryID, Nullable<int> createdBy, Nullable<System.DateTime> createdDate)
-        {
-            var skillNameParameter = skillName != null ?
-                new ObjectParameter("SkillName", skillName) :
-                new ObjectParameter("SkillName", typeof(string));
-    
-            var skillCategoryIDParameter = skillCategoryID.HasValue ?
-                new ObjectParameter("SkillCategoryID", skillCategoryID) :
-                new ObjectParameter("SkillCategoryID", typeof(int));
-    
-            var createdByParameter = createdBy.HasValue ?
-                new ObjectParameter("CreatedBy", createdBy) :
-                new ObjectParameter("CreatedBy", typeof(int));
-    
-            var createdDateParameter = createdDate.HasValue ?
-                new ObjectParameter("CreatedDate", createdDate) :
-                new ObjectParameter("CreatedDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertSkill", skillNameParameter, skillCategoryIDParameter, createdByParameter, createdDateParameter);
-        }
-    
-        public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)
-        {
-            var candidateIDParameter = candidateID.HasValue ?
-                new ObjectParameter("CandidateID", candidateID) :
-                new ObjectParameter("CandidateID", typeof(int));
-    
-            var roundIDParameter = roundID.HasValue ?
-                new ObjectParameter("RoundID", roundID) :
-                new ObjectParameter("RoundID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPreviousRoundScores_Result>("spGetPreviousRoundScores", candidateIDParameter, roundIDParameter);
-        }
-    
-        public virtual ObjectResult<spGetInterviewersOfCandidate_Result> spGetInterviewersOfCandidate()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewersOfCandidate_Result>("spGetInterviewersOfCandidate");
-        }
-    
-        public virtual ObjectResult<spGetCandidates_Result> spGetCandidates()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidates_Result>("spGetCandidates");
-        }
-    
-        public virtual ObjectResult<spGetCandidateRound_Result> spGetCandidateRound(Nullable<int> candidateID)
-        {
-            var candidateIDParameter = candidateID.HasValue ?
-                new ObjectParameter("CandidateID", candidateID) :
-                new ObjectParameter("CandidateID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
-        }
-    
-        public virtual ObjectResult<spGetCandidatesByInterviewer_Result> spGetCandidatesByInterviewer(Nullable<int> userID)
-        {
-            var userIDParameter = userID.HasValue ?
-                new ObjectParameter("UserID", userID) :
-                new ObjectParameter("UserID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidatesByInterviewer_Result>("spGetCandidatesByInterviewer", userIDParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> spGetMinimumRoundID()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetMinimumRoundID");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInProgressCandidates_Result>("spGetInProgressCandidates");
         }
     
         public virtual ObjectResult<spGetHiredCandidates_Result> spGetHiredCandidates()
@@ -426,18 +320,9 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiredCandidates_Result>("spGetHiredCandidates");
         }
     
-        public virtual ObjectResult<spGetInProgressCandidates_Result> spGetInProgressCandidates()
+        public virtual ObjectResult<spGetCandidatesinHR_Result> spGetCandidatesinHR()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInProgressCandidates_Result>("spGetInProgressCandidates");
-        }
-    
-        public virtual ObjectResult<spGetRecommendedCandidates_Result> spGetRecommendedCandidates(Nullable<int> userID)
-        {
-            var userIDParameter = userID.HasValue ?
-                new ObjectParameter("UserID", userID) :
-                new ObjectParameter("UserID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRecommendedCandidates_Result>("spGetRecommendedCandidates", userIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidatesinHR_Result>("spGetCandidatesinHR");
         }
     }
 }

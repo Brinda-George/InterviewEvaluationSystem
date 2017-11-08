@@ -14,9 +14,9 @@ namespace InterviewEvaluationSystem.Models
     public partial class spGetRecommendedCandidates_Result
     {
         public string Name { get; set; }
-        public DateTime DateOfInterview { get; set; }
-        public string RoundName { get; set; }
         public string Email { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
+        public string RoundName { get; set; }
         public Nullable<bool> CandidateStatus { get; set; }
     }
 }

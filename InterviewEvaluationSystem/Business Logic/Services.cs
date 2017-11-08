@@ -177,18 +177,18 @@ namespace InterviewEvaluationSystem.Business_Logic
         /// </summary>
         public List<CurrentStatusViewModel> GetCandidatesinHR()
         {
-            List<CurrentStatusViewModel> candidates = dbContext.spGetCurrentStatus()
+            List<CurrentStatusViewModel> candidates = dbContext.spGetCandidatesinHR()
                 .Select(c => new CurrentStatusViewModel
                 {
                     Name = c.Name,
                     Email = c.Email,
-                    DateOfInterview = c.DateOfInterview,
                     RoundID = c.RoundID,
                     EvaluationID = c.EvaluationID,
                     CandidateID = c.CandidateID,
                     Recommended = c.Recommended,
-                    CandidateStatus = c.CandidateStatus
-                }).Where(s => s.Recommended == null && s.RoundID == s.FinalRound).ToList();
+                    DateOfInterview = c.DateOfInterview,
+                    RoundName = c.RoundName
+                }).ToList();
             return candidates;
         }
 
@@ -202,6 +202,7 @@ namespace InterviewEvaluationSystem.Business_Logic
                 .Select(e => new StatusViewModel
                 {
                     Name = e.Name,
+                    Email = e.Email,
                     RoundName = e.RoundName,
                     CandidateID = e.CandidateID,
                     RoundID = e.RoundID,
@@ -313,7 +314,7 @@ namespace InterviewEvaluationSystem.Business_Logic
                     RoundName = e.RoundName,
                     DateOfInterview = e.DateOfInterview,
                     CandidateStatus = e.CandidateStatus
-                }).Where(s => s.Recommended == true).ToList();
+                }).ToList();
             return Statuses;
         }
 

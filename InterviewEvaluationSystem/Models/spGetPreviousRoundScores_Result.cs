@@ -13,10 +13,10 @@ namespace InterviewEvaluationSystem.Models
     
     public partial class spGetPreviousRoundScores_Result
     {
+        public int RoundID { get; set; }
+        public int SkillID { get; set; }
         public int EvaluationID { get; set; }
         public int RateScaleID { get; set; }
         public int CandidateID { get; set; }
-        public int RoundID { get; set; }
-        public int SkillID { get; set; }
     }
 }
