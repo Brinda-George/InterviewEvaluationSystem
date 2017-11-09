@@ -1120,7 +1120,8 @@ namespace InterviewEvaluationSystem.Controllers
                         Name = n.Name,
                         Email = n.Email,
                         RoundID = Convert.ToInt32(n.RoundID),
-                        UserName = n.UserName
+                        UserName = n.UserName,
+                        Recommended = n.Recommended
                     }).ToList();
                 ViewBag.CandidateInterviewersList = CandidateInterviewersList;
 
