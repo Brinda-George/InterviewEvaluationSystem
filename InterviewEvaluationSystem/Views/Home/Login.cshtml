@@ -23,6 +23,7 @@
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                         <input id="in" type="password" class="form-control" name="Password" placeholder="Password" required="" />
+                        <input type="checkbox" id="PasswordValue" value="Show Password" />
                     </div>
                     @if (ViewBag.Message != null)
                     {
@@ -55,3 +56,17 @@
         </div>
     </div>
 </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+    $(function () {
+        $("#PasswordValue").click(function () {
+            if ($(this).is(':checked')) {
+                $("#in").show();
+            }
+            else {
+                $("#in").hide();
+            }
+        });
+    });
+</script>
