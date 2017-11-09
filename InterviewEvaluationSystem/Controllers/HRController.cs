@@ -880,30 +880,32 @@ namespace InterviewEvaluationSystem.Controllers
         /// Get method for adding candidate. 
         /// The page consists of two grid. One for interviewers and other for candidates
         /// </summary>
-        /// <returns></returns>
         public ActionResult AddCandidate()
         {
             try
             {
                 CandidateViewModel addCandidateViewModel = new CandidateViewModel();
-
-                //stored procedure that consists of list of candidates
-                addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid()
-                    .Select(s => new CandidateViewModel
+                addCandidateViewModel.CandidateList = dbContext.spCandidateInterviewers()
+                    .Select(s => new CandidateGridViewModel
                     {
                         CandidateID = s.CandidateID,
-                        Name = s.Name,
-                        Email = s.Email,
-                        PAN = s.PAN,
-                        DateOfBirth = s.DateOfBirth,
-                        Designation = s.Designation,
+                        CandidateName = s.Name,
                         DateOfInterview = s.DateOfInterview,
-                        TotalExperience = s.TotalExperience,
-                        Qualifications = s.Qualifications
+                        InterviewerName = s.UserName
                     }).ToList();
-
-                //To get data for candidate grid
                 addCandidateViewModel.users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = user.UserName,
+                        Value = user.UserID.ToString(),
+
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.user = selectedlist;
                 return View(addCandidateViewModel);
             }
             catch (Exception ex)
@@ -911,6 +913,7 @@ namespace InterviewEvaluationSystem.Controllers
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
             }
         }
+
         /// <summary>
         /// Post method for the Add Candidate page.
         /// </summary>
@@ -1001,7 +1004,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 CandidateViewModel candidateViewModel = new CandidateViewModel();
                 //stored procedure that contain the list of candidates. From that list, the candidate is searched
-                candidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
+                candidateViewModel.CandidateList = dbContext.spCandidateInterviewers().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
                     .Select(s => new CandidateGridViewModel
                     {
                         CandidateID = s.CandidateID,
