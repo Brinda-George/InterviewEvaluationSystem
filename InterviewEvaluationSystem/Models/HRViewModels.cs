@@ -73,8 +73,12 @@ namespace InterviewEvaluationSystem.Models
     {
         public int CandidateID { get; set; }
         public string CandidateName { get; set; }
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
         [DataType(DataType.DateTime)]
         public DateTime DateOfInterview { get; set; }
+        public decimal TotalExperience { get; set; }
         public string InterviewerName { get; set; }
     }
 

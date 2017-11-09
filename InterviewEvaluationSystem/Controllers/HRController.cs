@@ -3,6 +3,7 @@ using InterviewEvaluationSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -622,6 +623,14 @@ namespace InterviewEvaluationSystem.Controllers
             }
             catch (Exception ex)
             {
+                string filePath = @"E:\Error.txt";
+
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    writer.WriteLine("Message :" + ex.Message + "<br/>" + Environment.NewLine + "StackTrace :" + ex.StackTrace +
+                       "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
+                    writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
+                }
                 return View("Error", new HandleErrorInfo(ex, "HR", "SearchCandidateResult"));
             }
         }
@@ -649,6 +658,7 @@ namespace InterviewEvaluationSystem.Controllers
             }
             catch (Exception ex)
             {
+             
                 return View("Error", new HandleErrorInfo(ex, "HR", "UpdateCandidate"));
             }
         }
@@ -881,9 +891,9 @@ namespace InterviewEvaluationSystem.Controllers
             return PartialView("GetCandidateInterviewer", ViewBag.CandidateInterviewersList1);
         }
 
-
         public ActionResult EditCandidateInterviewer(int CandidateID, int UserID)
         {
+            
             dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
             dbContext.SaveChanges();
             return Json(new { CandidateID = CandidateID, UserID = UserID }, JsonRequestBehavior.AllowGet);

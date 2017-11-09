@@ -32,17 +32,21 @@
             </text>),
             grid.Column("UserName", "Assigned Interviewer", format:
             @<text>
-                <span class="display-modeCandidate"> <label id="lblInterviewerName">@item.UserName</label> </span>
-                @Html.DropDownList("interviewers", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
+                <span class="display-modeCandidateResult"> <label id="lblInterviewerName">@item.UserName</label> </span>
+                @Html.DropDownList("interviewers", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidateResult form-control" })
             </text>),
             grid.Column("Action", format: @<text>
 
-                @*<button class="edit-userCandidate display-modeCandidate btn btn-primary" id="@item.CandidateID">Edit</button>*@
-                <button class="save-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Save</button>
-                <button class="cancel-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Cancel</button>
+                <button class="edit-userCandidateResult display-modeCandidateResult btn btn-primary" id="@item.CandidateID">Edit</button>
+                <button class="save-userCandidateResult edit-modeCandidateResult btn btn-primary" id="@item.CandidateID">Save</button>
+                <button class="cancel-userCandidateResult edit-modeCandidateResult btn btn-primary" id="@item.CandidateID">Cancel</button>
 
             </text>))
             )
-<script src="~/Scripts/ChangeCandidateInterviewer.js"></script>
 <link href="~/Content/webgridstyle.css" rel="stylesheet" />
 
+@{
+    <script src="~/Scripts/ChangeCandidateInterviewer.js"></script>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+}

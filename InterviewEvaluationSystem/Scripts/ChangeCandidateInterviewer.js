@@ -16,10 +16,10 @@
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    $('#res').html(data.CandidateID);
-                    
-                    //tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
-                    //tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
+                    $('#gridContentInterviewerResult').html(data);
+                    var tr = $(this).parents('tr:first');
+                    tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
+                    tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
 
 
                 }
@@ -88,7 +88,20 @@
                 }
             });
         });
-      });
+        //$('.edit-userCandidateResult').hide();
+        //$('.edit-userCandidateResult, .cancel-userCandidateResult').on('click', function () {
+            $(document).on("click", ".edit-userCandidateResult, .cancel-userCandidateResult", function () {
+                var tr = $(this).parents('tr:first');
+                
+            var UserName = tr.find("#lblInterviewerName").text();
+            var CandidateID = $(this).prop('id');
+            $('.edit-modeCandidateResult').show();
+            $('.display-modeCandidateResult').hide();
+          //  tr.find('.edit-modeCandidateResult, .display-modeCandidateResult').toggle();
+          //  tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
+
+        });
+   });
 });
 
 

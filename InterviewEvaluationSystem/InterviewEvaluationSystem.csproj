@@ -414,7 +414,7 @@
     <Content Include="Views\Interviewer\HomePage.cshtml" />
     <Content Include="Views\HR\ChangeCandidateInterviewer.cshtml" />
     <Content Include="Views\Shared\SearchInterviewerResult.cshtml" />
-    <Content Include="Views\Shared\GetCandidateInterviewer.cshtml" />
+    <Content Include="Views\HR\GetCandidateInterviewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
