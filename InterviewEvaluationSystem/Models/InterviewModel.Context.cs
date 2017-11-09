@@ -324,5 +324,10 @@ namespace InterviewEvaluationSystem.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidatesinHR_Result>("spGetCandidatesinHR");
         }
+    
+        public virtual ObjectResult<spCandidateInterviewers_Result> spCandidateInterviewers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCandidateInterviewers_Result>("spCandidateInterviewers");
+        }
     }
 }

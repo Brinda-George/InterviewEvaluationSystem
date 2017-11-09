@@ -481,6 +481,7 @@
           <Parameter Name="Username" Type="varchar" Mode="In" />
           <Parameter Name="PassWord" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spCandidateWebGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
@@ -1414,6 +1415,7 @@
           <FunctionImport Name="spGetInProgressCandidates" ReturnType="Collection(InterviewEvaluationDbModel.spGetInProgressCandidates_Result)" />
           <FunctionImport Name="spGetHiredCandidates" ReturnType="Collection(InterviewEvaluationDbModel.spGetHiredCandidates_Result)" />
           <FunctionImport Name="spGetCandidatesinHR" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidatesinHR_Result)" />
+          <FunctionImport Name="spCandidateInterviewers" ReturnType="Collection(InterviewEvaluationDbModel.spCandidateInterviewers_Result)" />
         </EntityContainer>
         <ComplexType Name="spCandidateWebGrid_Result">
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
@@ -1626,6 +1628,12 @@
           <Property Type="String" Name="RoundName" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="EvaluationID" Nullable="false" />
           <Property Type="Int32" Name="CandidateID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spCandidateInterviewers_Result">
+          <Property Type="Int32" Name="CandidateID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="DateOfInterview" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2103,6 +2111,16 @@
                 <ScalarProperty Name="RoundName" ColumnName="RoundName" />
                 <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
                 <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spCandidateInterviewers" FunctionName="InterviewEvaluationDbModel.Store.spCandidateInterviewers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spCandidateInterviewers_Result">
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DateOfInterview" ColumnName="DateOfInterview" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
