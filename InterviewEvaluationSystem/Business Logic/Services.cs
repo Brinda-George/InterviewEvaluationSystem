@@ -135,9 +135,6 @@ namespace InterviewEvaluationSystem.Business_Logic
             List<ScoreEvaluationViewModel> Statuses = dbContext.spGetPreviousRoundScores(candidateID, roundID)
                 .Select(s => new ScoreEvaluationViewModel
                 {
-                    CandidateID = s.CandidateID,
-                    EvaluationID = s.EvaluationID,
-                    RoundID = s.RoundID,
                     RateScaleID = s.RateScaleID,
                     SkillID = s.SkillID
                 }).ToList();

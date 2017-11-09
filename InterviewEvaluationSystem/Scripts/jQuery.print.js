@@ -45,8 +45,7 @@ jQuery.fn.print = function () {
     //$("style").clone()
     //);
 
-    var jStyleDiv = $("<div>").append(
-        '<style type="text/css">.webgrid-header, .webgrid-header a {color: #000;text-align: left;text-decoration: none;}.webgrid-row-style, .webgrid-alternating-row {padding: 3px 7px 2px;}.ratingScale th:nth-child(1),.ratingScale td:nth-child(1){width:20%}.ratingScale th:nth-child(2),.ratingScale td:nth-child(2){width:10%}.ratingScale th:nth-child(3),.ratingScale td:nth-child(3){width:70%} .score td:first-child, .score th:first-child{width:30%;}.score td:not(:first-child), .score th:not(:first-child){width:15%;text-align:center;}.comment td:nth-child(3){width:40%px;text-align:left;}.comment td:nth-child(1),.comment td:nth-child(2),.comment td:nth-child(4){width:20%;text-align:left;}</style>');
+    var jStyleDiv = '<style type="text/css">.webgrid-header, .webgrid-header a {color: #000;text-align: left;text-decoration: none;}.webgrid-row-style, .webgrid-alternating-row {padding: 3px 7px 2px;}.ratingScale th:nth-child(1),.ratingScale td:nth-child(1){width:20%}.ratingScale th:nth-child(2),.ratingScale td:nth-child(2){width:10%}.ratingScale th:nth-child(3),.ratingScale td:nth-child(3){width:70%}.score td:first-child,.score th:first-child{width:30%;}.score td:not(:first-child),.score th:not(:first-child){width:15%;text-align:center;}.comment td:nth-child(3){width:40%px;text-align:left;}.comment td:nth-child(1),.comment td:nth-child(2),.comment td:nth-child(4){width:20%;text-align:left;}.table{border-collapse:collapse;width:100%;}.table td,.table th{border:1px solid #000;padding:8px;}.table th{padding-top:12px;padding-bottom:12px;text-align:left;}</style>';
 
     // Write the HTML for the document. In this, we will
     // write out the HTML of the current element.
@@ -58,7 +57,7 @@ jQuery.fn.print = function () {
     objDoc.write("<title>");
     objDoc.write(document.title);
     objDoc.write("</title>");
-    objDoc.write(jStyleDiv.html());
+    objDoc.write(jStyleDiv);
     objDoc.write("</head>");
     objDoc.write(this.html());
     objDoc.write("</body>");

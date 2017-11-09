@@ -246,7 +246,20 @@ namespace InterviewEvaluationSystem.Controllers
                     // Get List of scores by round and save in a List<List<Scores>>
                     foreach (var round in interviewEvaluationViewModel.Rounds)
                     {
-                        interviewEvaluationViewModel.ScoresByRound.Add(services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID));
+                        List<ScoreEvaluationViewModel> scores = services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID);
+                        bool exists;
+                        ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
+                        foreach (var skill in interviewEvaluationViewModel.Skills)
+                        {
+                            exists = scores.Exists(item => item.SkillID == skill.SkillID);
+                            if (exists == false)
+                            {
+                                scoreEvaluationViewModel.SkillID = skill.SkillID;
+                                scoreEvaluationViewModel.RateScaleID = 0;
+                                scores.Add(scoreEvaluationViewModel);
+                            }
+                        }
+                        interviewEvaluationViewModel.ScoresByRound.Add(scores);
                     }
                     interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
                     // Store CandidateID, RoundID, EvaluationID in TempData

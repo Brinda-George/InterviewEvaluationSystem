@@ -169,10 +169,7 @@ namespace InterviewEvaluationSystem.Models
 
     public class ScoreEvaluationViewModel
     {
-        public int EvaluationID { get; set; }
         public int RateScaleID { get; set; }
-        public int CandidateID { get; set; }
-        public int RoundID { get; set; }
         public int SkillID { get; set; }
     }    
 
