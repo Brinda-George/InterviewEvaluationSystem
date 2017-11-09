@@ -22,5 +22,6 @@ namespace InterviewEvaluationSystem.Models
         public decimal TotalExperience { get; set; }
         public string Qualifications { get; set; }
         public Nullable<bool> CandidateStatus { get; set; }
+        public int CandidateID { get; set; }
     }
 }

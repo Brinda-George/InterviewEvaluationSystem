@@ -482,7 +482,6 @@
           <Parameter Name="PassWord" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="spCandidateWebGrid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCandidateInterviewers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CandidateID" Type="int" Mode="In" />
         </Function>
@@ -1335,7 +1334,6 @@
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="PassWord" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spCandidateWebGrid" ReturnType="Collection(InterviewEvaluationDbModel.spCandidateWebGrid_Result)" />
           <FunctionImport Name="spGetCandidateInterviewers" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidateInterviewers_Result)">
           <Parameter Name="CandidateID" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1417,17 +1415,6 @@
           <FunctionImport Name="spGetCandidatesinHR" ReturnType="Collection(InterviewEvaluationDbModel.spGetCandidatesinHR_Result)" />
           <FunctionImport Name="spCandidateInterviewers" ReturnType="Collection(InterviewEvaluationDbModel.spCandidateInterviewers_Result)" />
         </EntityContainer>
-        <ComplexType Name="spCandidateWebGrid_Result">
-          <Property Type="Int32" Name="CandidateID" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
-          <Property Type="DateTime" Name="DateOfInterview" Nullable="false" />
-          <Property Type="String" Name="PAN" Nullable="false" MaxLength="50" />
-          <Property Type="DateTime" Name="DateOfBirth" Nullable="false" />
-          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
-          <Property Type="Decimal" Name="TotalExperience" Nullable="false" Precision="18" Scale="0" />
-          <Property Type="String" Name="Qualifications" Nullable="false" MaxLength="500" />
-        </ComplexType>
         <ComplexType Name="spGetCandidateInterviewers_Result">
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
           <Property Type="Int32" Name="UserID" Nullable="false" />
@@ -1446,6 +1433,7 @@
           <Property Type="Decimal" Name="TotalExperience" Nullable="false" Precision="18" Scale="0" />
           <Property Type="String" Name="Qualifications" Nullable="false" MaxLength="500" />
           <Property Type="Boolean" Name="CandidateStatus" Nullable="true" />
+          <Property Type="Int32" Name="CandidateID" Nullable="false" />
         </ComplexType>
         <ComplexType Name="spGetCandidatesByInterviewer_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
@@ -1800,21 +1788,6 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spAuthenticate" FunctionName="InterviewEvaluationDbModel.Store.spAuthenticate" />
-          <FunctionImportMapping FunctionImportName="spCandidateWebGrid" FunctionName="InterviewEvaluationDbModel.Store.spCandidateWebGrid">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spCandidateWebGrid_Result">
-                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DateOfInterview" ColumnName="DateOfInterview" />
-                <ScalarProperty Name="PAN" ColumnName="PAN" />
-                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="TotalExperience" ColumnName="TotalExperience" />
-                <ScalarProperty Name="Qualifications" ColumnName="Qualifications" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetCandidateInterviewers" FunctionName="InterviewEvaluationDbModel.Store.spGetCandidateInterviewers">
             <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetCandidateInterviewers_Result">
@@ -1843,6 +1816,7 @@
                 <ScalarProperty Name="TotalExperience" ColumnName="TotalExperience" />
                 <ScalarProperty Name="Qualifications" ColumnName="Qualifications" />
                 <ScalarProperty Name="CandidateStatus" ColumnName="CandidateStatus" />
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

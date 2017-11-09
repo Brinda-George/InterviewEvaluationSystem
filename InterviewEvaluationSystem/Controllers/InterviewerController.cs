@@ -75,7 +75,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public void ChartColumn(int year)
         {
-            var result = dbContext.spGetCloumnChart(year).Single();
+            var result = dbContext.spGetInterviewerCloumnChart(Convert.ToInt32(Session["UserID"]), year).Single();
             if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
             {
                 // Use Chart class to create a column chart image based on an array of values

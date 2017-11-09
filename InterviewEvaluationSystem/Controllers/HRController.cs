@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -725,6 +726,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
+                string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Password, "sha1");
                 var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
                 var userNameLength = ConfigurationManager.AppSettings["UserNameLength"];
                 var employeeIdLength = ConfigurationManager.AppSettings["EmployeeIdLength"];
@@ -758,7 +760,7 @@ namespace InterviewEvaluationSystem.Controllers
                             Address = user.Address,
                             Email = user.Email,
                             EmployeeId = user.EmployeeId,
-                            Password = user.Password,
+                            Password = hashedPwd,
                             Pincode = user.Pincode,
                             CreatedBy = Convert.ToInt32(Session["UserID"]),
                             CreatedDate = System.DateTime.Now,
@@ -885,7 +887,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 CandidateViewModel addCandidateViewModel = new CandidateViewModel();
-                addCandidateViewModel.CandidatesList = dbContext.spCandidateWebGrid()
+                addCandidateViewModel.CandidatesList = dbContext.spGetCandidates()
                     .Select(s => new CandidateViewModel
                     {
                         CandidateID = s.CandidateID,

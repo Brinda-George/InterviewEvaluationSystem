@@ -11,7 +11,7 @@ function getValues(element) {
     var roundID = $('#roundId').val();
     var evaluationID = $('#evaluationId').val();
     var buttonclicked = element.id;
-    if (buttonclicked == "hire") {
+    if (buttonclicked == "proceed") {
         var recommended = true;
     }
     else {

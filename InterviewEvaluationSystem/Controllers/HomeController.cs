@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
-
+using System.Web.Security;
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -50,19 +50,29 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
+                tblUser user = new tblUser();
+                string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(loginUser.Password, "sha1");
+                if (loginUser.UserName == "hr")
+                {
+                    user = dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == loginUser.Password).FirstOrDefault();
+                }
+                else
+                {
+                    user = dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == hashedPwd).FirstOrDefault();
+                }
+                
                 //To check if there exist any record in database
                 // where username and password matches with the values entered and storing the entire row in a variable.
-                var result = dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == loginUser.Password).FirstOrDefault();
-                if (result == null)
+                if (user == null)
                 {
                     ViewBag.Message = "Invalid credentials"; //Displaying 'invalid credentials' when the user credentials 
                                                              //does not match.
                 }
                 else
                 {
-                    loginUser.UserID = result.UserID;
-                    loginUser.UserName = result.UserName;
-                    loginUser.UserTypeID = result.UserTypeID;
+                    loginUser.UserID = user.UserID;
+                    loginUser.UserName = user.UserName;
+                    loginUser.UserTypeID = user.UserTypeID;
                     Session["UserTypeID"] = loginUser.UserTypeID;
                     Session["UserName"] = loginUser.UserName;
                     Session["UserID"] = loginUser.UserID;

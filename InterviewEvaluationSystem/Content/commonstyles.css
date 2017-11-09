@@ -130,3 +130,6 @@ delete-userCandidate {
     margin-left: 10px;
     width: 8%;
 }
+.btn:hover{
+    cursor: pointer;
+}
