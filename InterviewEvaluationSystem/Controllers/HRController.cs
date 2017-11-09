@@ -105,6 +105,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult CandidatesinHRRound(string searchString)
         {
             List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
+
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -136,6 +137,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult TodaysInterviews(string searchString)
         {
             List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
+
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -167,6 +169,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewInProgressCandidates(string searchString)
         {
             List<CandidateViewModel> candidates = services.GetInProgressCandidates();
+
             //Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -198,6 +201,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewHiredCandidates(string searchString)
         {
             List<CandidateViewModel> candidates = services.GetHiredCandidates();
+
             //Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -230,6 +234,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewCandidates(string searchString)
         {
             List<CandidateViewModel> candidates = services.GetCandidates();
+
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -1416,6 +1421,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult CandidateStatus(string searchString)
         {
             List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
+
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -1443,11 +1449,13 @@ namespace InterviewEvaluationSystem.Controllers
             interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
             interviewEvaluationViewModel.Skills = services.GetSkills();
             int skillCount = interviewEvaluationViewModel.Skills.Count;
+
             //Get List of skills by skill category and save in a List<List<Skills>>
             foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
             {
                 interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
             }
+
             //Get List of scores by round and save in a List<List<Scores>>
             foreach (var round in interviewEvaluationViewModel.Rounds)
             {
@@ -1467,11 +1475,13 @@ namespace InterviewEvaluationSystem.Controllers
                 interviewEvaluationViewModel.ScoresByRound.Add(scores);
             }
             interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
+
             //Store CandidateID, RoundID, EvaluationID, Recommended in TempData
             TempData["candidateID"] = statusViewModel.CandidateID;
             TempData["roundID"] = statusViewModel.RoundID;
             TempData["evaluationID"] = statusViewModel.EvaluationID;
             TempData["recommended"] = statusViewModel.Recommended;
+
             //checked if evaluation is completed
             if (TempData["recommended"] == null)
             {
@@ -1481,6 +1491,7 @@ namespace InterviewEvaluationSystem.Controllers
             else
             {
                 TempData["evaluationCompleted"] = true;
+
                 //Get comments from database
                 interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
             }
@@ -1521,10 +1532,12 @@ namespace InterviewEvaluationSystem.Controllers
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
             }
+
             //Get new Notification count from database and store in session variable
             var Notifications = dbContext.spHRNotificationGrid();
             Session["NotificationsCount"] = Notifications.Count();
             var redirectUrl = "";
+
             //if recommended is true, redirect to JoinDetails else redirect to HRHomePage 
             if (recommended == true)
             {
