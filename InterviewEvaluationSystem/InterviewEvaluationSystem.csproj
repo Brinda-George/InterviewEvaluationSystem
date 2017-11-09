@@ -234,9 +234,6 @@
     <Compile Include="Models\spCandidateInterviewers_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\spCandidateWebGrid_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\spGetCandidateInterviewers_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>

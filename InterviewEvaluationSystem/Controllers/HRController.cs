@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -725,6 +726,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
+                string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Password, "sha1");
                 var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
                 var userNameLength = ConfigurationManager.AppSettings["UserNameLength"];
                 var employeeIdLength = ConfigurationManager.AppSettings["EmployeeIdLength"];
@@ -758,7 +760,7 @@ namespace InterviewEvaluationSystem.Controllers
                             Address = user.Address,
                             Email = user.Email,
                             EmployeeId = user.EmployeeId,
-                            Password = user.Password,
+                            Password = hashedPwd,
                             Pincode = user.Pincode,
                             CreatedBy = Convert.ToInt32(Session["UserID"]),
                             CreatedDate = System.DateTime.Now,
@@ -880,30 +882,37 @@ namespace InterviewEvaluationSystem.Controllers
         /// Get method for adding candidate. 
         /// The page consists of two grid. One for interviewers and other for candidates
         /// </summary>
-        /// <returns></returns>
         public ActionResult AddCandidate()
         {
             try
             {
                 CandidateViewModel addCandidateViewModel = new CandidateViewModel();
-
-                //stored procedure that consists of list of candidates
-                addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid()
+                addCandidateViewModel.CandidatesList = dbContext.spGetCandidates()
                     .Select(s => new CandidateViewModel
                     {
                         CandidateID = s.CandidateID,
                         Name = s.Name,
                         Email = s.Email,
-                        PAN = s.PAN,
                         DateOfBirth = s.DateOfBirth,
+                        PAN = s.PAN,
                         Designation = s.Designation,
                         DateOfInterview = s.DateOfInterview,
                         TotalExperience = s.TotalExperience,
                         Qualifications = s.Qualifications
                     }).ToList();
-
-                //To get data for candidate grid
                 addCandidateViewModel.users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = user.UserName,
+                        Value = user.UserID.ToString(),
+
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.user = selectedlist;
                 return View(addCandidateViewModel);
             }
             catch (Exception ex)
@@ -911,6 +920,7 @@ namespace InterviewEvaluationSystem.Controllers
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
             }
         }
+
         /// <summary>
         /// Post method for the Add Candidate page.
         /// </summary>
@@ -1001,8 +1011,8 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 CandidateViewModel candidateViewModel = new CandidateViewModel();
                 //stored procedure that contain the list of candidates. From that list, the candidate is searched
-                candidateViewModel.CandidateList = dbContext.spCandidateWebGrid().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
-                    .Select(s => new CandidateGridViewModel
+                candidateViewModel.CandidateInterviewersList = dbContext.spCandidateInterviewers().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
+                    .Select(s => new CandidateInterviewerViewModel
                     {
                         CandidateID = s.CandidateID,
                         CandidateName = s.Name,
@@ -1038,19 +1048,23 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="UserID"></param>
 
         [HttpPost]
-        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, int UserID)
+        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications)
         {
             try
             {
                 tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
                 updateCandidate.Name = CandidateName;
+                updateCandidate.Email = email;
+                updateCandidate.DateOfBirth = dateofbirth;
+                updateCandidate.PAN = pan;
+                updateCandidate.Designation = designation;
+                updateCandidate.TotalExperience = experience;
+                updateCandidate.Qualifications = qualifications;
                 updateCandidate.DateOfInterview = DateOfInterview;
                 updateCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                updateCandidate.ModifiedDate = System.DateTime.Now;
+                updateCandidate.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
-                dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
-                dbContext.SaveChanges();
-                return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString(), UserID = UserID }, JsonRequestBehavior.AllowGet);
+                return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString() }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

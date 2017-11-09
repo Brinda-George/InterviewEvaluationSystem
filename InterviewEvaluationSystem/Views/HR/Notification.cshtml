@@ -42,15 +42,18 @@ else
             {
                 if (item.Recommended == true && item.RoundID < item.totalRound)
                 {
-                    return new HtmlString("<input type='button' value='Proceed To Next Round' class='ProceedNext' />");
+                    var buttons = "<input type='button' value='Proceed To Next Round' class='ProceedNext btn btn-default' />  " +
+                            "<input type='button' value='Reject The Candidate' class='RejectCandidate btn btn-default' />";
+                    return Html.Raw(buttons);
                 }
                 else if (item.Recommended == true && item.RoundID == item.totalRound)
                 {
-                    return new HtmlString("<input type='button' value='Hire The Candidate' class='HireCandidate' />");
+
+                    return new HtmlString("<input type='button' value='Hire The Candidate' class='HireCandidate btn btn-default' />");
                 }
                 else
                 {
-                    return new HtmlString("<input type='button' value='Reject The Candidate' class='RejectCandidate' />");
+                    return new HtmlString("<input type='button' value='Reject The Candidate' class='RejectCandidate btn btn-default' />");
                 }
             }))
             )

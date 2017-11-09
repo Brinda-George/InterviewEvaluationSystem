@@ -114,7 +114,7 @@
         if (Convert.ToBoolean(@TempData["evaluationCompleted"]) == false)
         {
             @Html.TextArea("Comments", "", new { @class = "form-control", @placeholder = "comments", rows = "5", cols = "20" })<br />
-            <input type="button" id="hire" value="Hire" class="btn btn-primary" onclick="getValues(this)" />
+            <input type="button" id="proceed" value="Proceed" class="btn btn-primary" onclick="getValues(this)" />
             <input type="button" id="reject" value="Reject" class="btn btn-primary" onclick="getValues(this)" />
         }
         else

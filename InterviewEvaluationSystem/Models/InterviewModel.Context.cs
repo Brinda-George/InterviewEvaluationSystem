@@ -51,11 +51,6 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spAuthenticate", usernameParameter, passWordParameter);
         }
     
-        public virtual ObjectResult<spCandidateWebGrid_Result> spCandidateWebGrid()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCandidateWebGrid_Result>("spCandidateWebGrid");
-        }
-    
         public virtual ObjectResult<spGetCandidateInterviewers_Result> spGetCandidateInterviewers(Nullable<int> candidateID)
         {
             var candidateIDParameter = candidateID.HasValue ?
