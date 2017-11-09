@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "AddCandidate";
     var grid = new WebGrid(Model.users, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f1", pageFieldName: "p1");
-    var gridCandidate = new WebGrid(source: Model.CandidateList, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f2", pageFieldName: "p2");
+    var gridCandidate = new WebGrid(source: Model.CandidatesList, canPage: true, rowsPerPage: 10, canSort: true, fieldNamePrefix: "f2", pageFieldName: "p2");
 }
 
 <link href="~/Content/addcandidate.css" rel="stylesheet" />
@@ -172,7 +172,7 @@ else
 <div id="gridContentCandidateResult"></div>
 
 <div id="gridContent">
-    @if (Model.CandidateList.Any())
+    @if (Model.CandidatesList.Any())
     {
         @gridCandidate.GetHtml(tableStyle: "table table-bordered",
         headerStyle: "webgrid-header",
@@ -181,13 +181,45 @@ else
         htmlAttributes: new { id = "WebGridCandidate" },
         mode: WebGridPagerModes.All,
         columns: gridCandidate.Columns(
-            gridCandidate.Column("CandidateName", "CandidateName", format:
+            gridCandidate.Column("Name", "Candidate Name", format:
             @<text>
                 <span class="display-modeCandidate">
-                    <label id="lblCandidateName">@item.CandidateName</label>
+                    <label id="lblCandidateName">@item.Name</label>
                 </span>
-                <input type="text" id="CandidateName" value="@item.CandidateName" class="edit-modeCandidate form-control" />
+                <input type="text" id="CandidateName" value="@item.Name" class="edit-modeCandidate form-control" />
                 <div><label id="lblCandidateNameValidation" class="text-danger"></label></div>
+            </text>),
+            gridCandidate.Column("Email", "Email", format:
+            @<text>
+                <span class="display-modeCandidate">
+                    <label id="lblEmail">@item.Email</label>
+                </span>
+                <input type="text" id="Email" value="@item.Email" class="edit-modeCandidate form-control" />
+                <div><label id="lblEmailValidation" class="text-danger"></label></div>
+            </text>),
+            gridCandidate.Column("DateOfBirth", "Date Of Birth", format:
+            @<text>
+                <span class="display-modeCandidate">
+                    <label id="lblDateOfBirth">@item.DateOfBirth.ToString("dd/MM/yyyy")</label>
+                </span>
+                <input type="date" id="DateOfBirth" class="edit-modeCandidate form-control" />
+                <div><label id="lblDateOfBirthValidation" class="text-danger"></label></div>
+            </text>),
+            gridCandidate.Column("PAN", "PAN", format:
+            @<text>
+                <span class="display-modeCandidate">
+                    <label id="lblPAN">@item.PAN</label>
+                </span>
+                <input type="text" id="PAN" value="@item.PAN" class="edit-modeCandidate form-control" />
+                <div><label id="lblPANValidation" class="text-danger"></label></div>
+            </text>),
+            gridCandidate.Column("Designation", "Designation", format:
+            @<text>
+                <span class="display-modeCandidate">
+                    <label id="lblDesignation">@item.Designation</label>
+                </span>
+                <input type="text" id="Designation" value="@item.Designation" class="edit-modeCandidate form-control" />
+                <div><label id="lblDesignationValidation" class="text-danger"></label></div>
             </text>),
             gridCandidate.Column("DateOfInterview", "Date Of Interview", format:
             @<text>
@@ -197,13 +229,21 @@ else
                 <input type="date" id="DateOfInterview" class="edit-modeCandidate form-control" />
                 <div><label id="lblDateOfInterviewValidation" class="text-danger"></label></div>
             </text>),
-            gridCandidate.Column("InterviewerName", "Interviewer Name", format:
+            gridCandidate.Column("TotalExperience", "TotalExperience", format:
             @<text>
                 <span class="display-modeCandidate">
-                    <label id="lblInterviewerName">@item.InterviewerName</label>
+                    <label id="lblTotalExperience">@item.TotalExperience</label>
                 </span>
-                @Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
-                <div><label id="lblInterviewerNameValidation" class="text-danger"></label></div>
+                <input type="text" id="TotalExperience" value="@item.TotalExperience" class="edit-modeCandidate form-control" />
+                <div><label id="lblTotalExperienceValidation" class="text-danger"></label></div>
+            </text>),
+            gridCandidate.Column("Qualifications", "Qualifications", format:
+            @<text>
+                <span class="display-modeCandidate">
+                    <label id="lblQualifications">@item.Qualifications</label>
+                </span>
+                <input type="text" id="Qualifications" value="@item.Qualifications" class="edit-modeCandidate form-control" />
+                <div><label id="lblQualificationsValidation" class="text-danger"></label></div>
             </text>),
             gridCandidate.Column("Action", format: @<text>
                 <button class="edit-userCandidate display-modeCandidate btn btn-default" id="@item.CandidateID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>

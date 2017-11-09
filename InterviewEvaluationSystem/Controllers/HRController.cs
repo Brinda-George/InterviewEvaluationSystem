@@ -885,13 +885,18 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 CandidateViewModel addCandidateViewModel = new CandidateViewModel();
-                addCandidateViewModel.CandidateList = dbContext.spCandidateInterviewers()
-                    .Select(s => new CandidateGridViewModel
+                addCandidateViewModel.CandidatesList = dbContext.spCandidateWebGrid()
+                    .Select(s => new CandidateViewModel
                     {
                         CandidateID = s.CandidateID,
-                        CandidateName = s.Name,
+                        Name = s.Name,
+                        Email = s.Email,
+                        DateOfBirth = s.DateOfBirth,
+                        PAN = s.PAN,
+                        Designation = s.Designation,
                         DateOfInterview = s.DateOfInterview,
-                        InterviewerName = s.UserName
+                        TotalExperience = s.TotalExperience,
+                        Qualifications = s.Qualifications
                     }).ToList();
                 addCandidateViewModel.users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
                 List<SelectListItem> selectedlist = new List<SelectListItem>();
@@ -1004,8 +1009,8 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 CandidateViewModel candidateViewModel = new CandidateViewModel();
                 //stored procedure that contain the list of candidates. From that list, the candidate is searched
-                candidateViewModel.CandidateList = dbContext.spCandidateInterviewers().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
-                    .Select(s => new CandidateGridViewModel
+                candidateViewModel.CandidateInterviewersList = dbContext.spCandidateInterviewers().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
+                    .Select(s => new CandidateInterviewerViewModel
                     {
                         CandidateID = s.CandidateID,
                         CandidateName = s.Name,
@@ -1041,19 +1046,23 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="UserID"></param>
 
         [HttpPost]
-        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, int UserID)
+        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications)
         {
             try
             {
                 tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
                 updateCandidate.Name = CandidateName;
+                updateCandidate.Email = email;
+                updateCandidate.DateOfBirth = dateofbirth;
+                updateCandidate.PAN = pan;
+                updateCandidate.Designation = designation;
+                updateCandidate.TotalExperience = experience;
+                updateCandidate.Qualifications = qualifications;
                 updateCandidate.DateOfInterview = DateOfInterview;
                 updateCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                updateCandidate.ModifiedDate = System.DateTime.Now;
+                updateCandidate.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
-                dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
-                dbContext.SaveChanges();
-                return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString(), UserID = UserID }, JsonRequestBehavior.AllowGet);
+                return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString() }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
