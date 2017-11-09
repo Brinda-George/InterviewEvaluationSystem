@@ -282,14 +282,13 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var sessionValue = Session["Email"];
-                    //To reset the password for the user whose EmailID matches with the EmailID stored in session.
-                    int result = dbContext.spResetPassword(sessionValue.ToString(), updatePasswordViewModel.NewPassword);
-                    if (result == 1)
-                    {
-                        ViewBag.result = "Password Updated Successfully!!!";
-                        Session["Email"] = null;
-                    }
+                       var sessionValue = Session["Email"].ToString();                                                           
+                       var result = dbContext.tblUsers.Where(s => s.Email == sessionValue).FirstOrDefault(); //To reset the password for the user
+                                                                                                             // whose EmailID matches with the EmailID stored in session.
+                       result.Password = updatePasswordViewModel.NewPassword;
+                       dbContext.SaveChanges();
+                       ViewBag.result = "Password Updated Successfully!!!";
+                       Session["Email"] = null;
                 }
                 return View();
             }
