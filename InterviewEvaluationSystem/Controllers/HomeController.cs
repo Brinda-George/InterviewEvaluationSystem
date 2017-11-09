@@ -52,7 +52,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 tblUser user = new tblUser();
                 string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(loginUser.Password, "sha1");
-                if (loginUser.UserName == "hr" || loginUser.UserName == "brinda" || loginUser.UserName == "parvathy" || loginUser.UserName == "jerrin")
+                if (loginUser.UserName == "hr")
                 {
                     user = dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == loginUser.Password).FirstOrDefault();
                 }
