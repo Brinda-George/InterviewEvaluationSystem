@@ -80,36 +80,4 @@
         </div>
     }
 
-
-    @*@< text >
-            < span class="display-modeCandidate"> <label id = "lblInterviewerName" > @item.UserName </ label > </ span >
-             @Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
-         </ text >),
-         grid.Column("Action", format: @<text>
-
-            <button class="edit-userCandidate display-modeCandidate btn btn-primary" id="@item.CandidateID">Edit</button>
-            <button class="save-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Save</button>
-            <button class="cancel-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Cancel</button>
-
-        </text>)*@
-
-
-
-    @*grid.Column("UserName", "Assigned Interviewer", format: @<text>
-            <span class="display-modeCandidate">
-                <label id="lblInterviewerName">
-                    @item.UserName
-                </label>
-            </span>
-            @Html.DropDownList("user", null, "", new { id = "ddlInterviewerName", @class = "edit-modeCandidate form-control" })
-        </text>),
-         grid.Column("Action", format: @<text>
-            <button class="edit-userCandidate display-modeCandidate btn btn-primary" id="@item.CandidateID">Edit</button>
-            <button class="save-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Save</button>
-            <button class="cancel-userCandidate edit-modeCandidate btn btn-primary" id="@item.CandidateID">Cancel</button>
-        </text>)*@
-
-
-
-
 </div>
