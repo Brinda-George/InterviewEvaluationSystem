@@ -117,6 +117,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewTodaysInterviews(string searchString)
         {
             List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
+            
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -154,6 +155,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewRecommendedCandidates(string searchString)
         {
             List<StatusViewModel> RecommendedCandidates = services.GetRecommendedCandidates(Convert.ToInt32(Session["UserID"]));
+            
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -191,6 +193,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewCandidates(string searchString)
         {
             List<StatusViewModel> candidates = services.GetCandidates(Convert.ToInt32(Session["UserID"]));
+            
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -238,17 +241,33 @@ namespace InterviewEvaluationSystem.Controllers
                     interviewEvaluationViewModel.Rounds = services.GetRounds();
                     interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
                     interviewEvaluationViewModel.Skills = services.GetSkills();
+
                     // Get List of skills by skill category and save in a List<List<Skills>>
                     foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
                     {
                         interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
                     }
+
                     // Get List of scores by round and save in a List<List<Scores>>
                     foreach (var round in interviewEvaluationViewModel.Rounds)
                     {
-                        interviewEvaluationViewModel.ScoresByRound.Add(services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID));
+                        List<ScoreEvaluationViewModel> scores = services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID);
+                        bool exists;
+                        ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
+                        foreach (var skill in interviewEvaluationViewModel.Skills)
+                        {
+                            exists = scores.Exists(item => item.SkillID == skill.SkillID);
+                            if (exists == false)
+                            {
+                                scoreEvaluationViewModel.SkillID = skill.SkillID;
+                                scoreEvaluationViewModel.RateScaleID = 0;
+                                scores.Add(scoreEvaluationViewModel);
+                            }
+                        }
+                        interviewEvaluationViewModel.ScoresByRound.Add(scores);
                     }
                     interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
+
                     // Store CandidateID, RoundID, EvaluationID in TempData
                     TempData["CandidateID"] = statusViewModel.CandidateID;
                     TempData["roundID"] = statusViewModel.RoundID;
@@ -301,6 +320,7 @@ namespace InterviewEvaluationSystem.Controllers
                 evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
+
                 // Get Interviewer name and email, candidate name, HR email from database  
                 MailViewModel mailViewModel = new MailViewModel();
                 var mailmodel = dbContext.spGetEmailByUserID(evaluation.CandidateID, Convert.ToInt32(Session["UserID"])).FirstOrDefault();
@@ -317,6 +337,7 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     status = "not recommended";
                 }
+
                 // Redirect to SentEmailNotification method and supply interviewer name and email, candidate name, HR email, Subject, status and comments
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("SentEmailNotification", "Interviewer", new
                 {

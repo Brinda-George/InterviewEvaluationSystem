@@ -32,7 +32,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// <summary>
         /// To display a form for user to log in to the application using valid username and password.
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public ActionResult Login()
         {
@@ -44,7 +43,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// to respective homepage(HR/Interviewer)based on UserType.
         /// </summary>
         /// <param name="loginUser"></param>
-        /// <returns></returns>
         [HttpPost]
         public ActionResult Login(UserViewModel loginUser)
         {
@@ -60,13 +58,13 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     user = dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == hashedPwd).FirstOrDefault();
                 }
-                
+
                 //To check if there exist any record in database
                 // where username and password matches with the values entered and storing the entire row in a variable.
                 if (user == null)
                 {
-                    ViewBag.Message = "Invalid credentials"; //Displaying 'invalid credentials' when the user credentials 
-                                                             //does not match.
+                    //Displaying 'invalid credentials' when the user credentials does not match.
+                    ViewBag.Message = "Invalid credentials";
                 }
                 else
                 {
@@ -76,16 +74,17 @@ namespace InterviewEvaluationSystem.Controllers
                     Session["UserTypeID"] = loginUser.UserTypeID;
                     Session["UserName"] = loginUser.UserName;
                     Session["UserID"] = loginUser.UserID;
-                    if (loginUser.UserTypeID == 1)  //Redirect the user to HRHomePage if the usertype is recognised as HR.
+
+                    //Redirect the user to HRHomePage if the usertype is recognised as HR.
+                    if (loginUser.UserTypeID == 1)
                     {
                         var Notifications = dbContext.spHRNotificationGrid();
                         Session["NotificationsCount"] = Notifications.Count();
                         return RedirectToAction("HRHomePage", "HR");
                     }
 
-
-                    else if (loginUser.UserTypeID == 2) //Redirect the user to Interviewer HomePage if the user type is
-                                                        //recognised as interviewer.
+                    //Redirect the user to Interviewer HomePage if the user type is recognised as interviewer.
+                    else if (loginUser.UserTypeID == 2)
                     {
                         return RedirectToAction("HomePage", "Interviewer");
 
@@ -105,12 +104,12 @@ namespace InterviewEvaluationSystem.Controllers
         /// <summary>
         /// To enable the user(HR/Interviewer)to view his/her personal details fetched from database.
         /// </summary>
-        /// <returns></returns>
         public ActionResult ViewProfile()
         {
             var name = Convert.ToString(Session["UserName"]);
-            var user = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault(); //Select the specific 
-            //users details.
+
+            //Select the specific users details.
+            var user = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault(); 
             return View(user);
         }
         #endregion
@@ -161,7 +160,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// <summary>
         /// To display a textbox for user to enter a registered Email in case he/she wishes to reset password.
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public ActionResult PasswordReset()
         {
@@ -172,8 +170,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// To generate an OTP which is sent to the Email entered in the textbox provided.
         /// </summary>
         /// <param name="email"></param>
-        /// <returns></returns>
-
         [HttpPost]
         public ActionResult PasswordReset(string email)
         {
@@ -181,38 +177,53 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 int result;
                 Random r = new Random();
-                var data = dbContext.tblUsers.Where(x => x.Email == email).FirstOrDefault(); //Fetch user's details 
-                                                                                             //whose Email matches with the Email entered. 
+
+                //Fetch user's details whose Email matches with the Email entered. 
+                var data = dbContext.tblUsers.Where(x => x.Email == email).FirstOrDefault();
                 if (data != null)
                 {
                     Session["Email"] = data.Email;
                     string otp;
-                    const string pool = "abcdefghijklmnopqrstuvwxyz0123456789"; //Set of values to be used in OTP.
+
+                    //Set of values to be used in OTP.
+                    const string pool = "abcdefghijklmnopqrstuvwxyz0123456789"; 
                     var builder = new StringBuilder();
-                    int length = 7; //Specify the length of OTP.
+
+                    //Specify the length of OTP.
+                    int length = 7;
                     for (var i = 0; i < length; i++)
                     {
-                        var c = pool[r.Next(0, pool.Length)];//Generate each character/number in OTP.
-                        builder.Append(c);//Append each character /number to OTP.
+                        //Generate each character/number in OTP.
+                        var c = pool[r.Next(0, pool.Length)];
+
+                        //Append each character /number to OTP.
+                        builder.Append(c);
                     }
                     otp = builder.ToString();
                     Session["OTP"] = otp;
                     MailMessage mailMessage = new MailMessage();
-                    mailMessage.To.Add(email); //Specify the 'To' address.
-                    mailMessage.Subject = "Password Reset"; //Specify the subject of Mail.
-                                                            //Specify the mail body.
+
+                    //Specify the 'To' address.
+                    mailMessage.To.Add(email);
+
+                    //Specify the subject of Mail.
+                    mailMessage.Subject = "Password Reset";
+
+                    //Specify the mail body.                                        
                     mailMessage.Body = "Please use the following OTP to change your password. " + "<br/>" + Session["OTP"] + "<br/>" + ".You may change your password after logging in to your account using the credential above";
                     mailMessage.IsBodyHtml = true;
                     SmtpClient smtpClient = new SmtpClient();
                     smtpClient.Send(mailMessage);
                     result = 1;
-                    return Json(new { Url = Url.Action("ResetPartial"), result = result }); //Pass the redirect URL 
-                                                                                            //and result value to ajax.
+
+                    //Pass the redirect URL and result value to ajax.
+                    return Json(new { Url = Url.Action("ResetPartial"), result = result });
                 }
                 else
                 {
                     result = 2;
-                    return Json(new { result = result }); //Pass the result value to ajax.
+                    //Pass the result value to ajax.
+                    return Json(new { result = result });
                 }
             }
             catch (Exception ex)
@@ -225,9 +236,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// To display a partial view that contains a textbox to enter the valid OTP sent to the Email entered.
         /// OTP entered is then passed to another method to check if it is valid.
         /// </summary>
-        /// <returns></returns>
-
-
         [HttpPost]
         public ActionResult ResetPartial()
         {
@@ -246,8 +254,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// Also,to redirect the user to another page inoreder to reset password.
         /// </summary>
         /// <param name="value"></param>
-        /// <returns></returns>
-
         [HttpPost]
         public ActionResult CheckOtp(string value)
         {
@@ -257,7 +263,9 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     Session["OTP"] = null;
                     var redirectUrl = new UrlHelper(Request.RequestContext).Action("UpdatePassword", "Home");
-                    return Json(new { Url = redirectUrl }, JsonRequestBehavior.AllowGet); //Pass the redirect URL to ajax.
+
+                    //Pass the redirect URL to ajax.
+                    return Json(new { Url = redirectUrl }, JsonRequestBehavior.AllowGet); 
                 }
                 return View();
             }
@@ -271,7 +279,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// <summary>
         /// To display a form to reset password by entering new password.
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public ActionResult UpdatePassword()
         {
@@ -284,7 +291,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// Password entered is then saved in database.
         /// </summary>
         /// <param name="updatePasswordViewModel"></param>
-        /// <returns></returns>
         [HttpPost]
         public ActionResult UpdatePassword(UpdatePasswordViewModel updatePasswordViewModel)
         {
@@ -292,13 +298,14 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                       var sessionValue = Session["Email"].ToString();                                                           
-                       var result = dbContext.tblUsers.Where(s => s.Email == sessionValue).FirstOrDefault(); //To reset the password for the user
-                                                                                                             // whose EmailID matches with the EmailID stored in session.
-                       result.Password = updatePasswordViewModel.NewPassword;
-                       dbContext.SaveChanges();
-                       ViewBag.result = "Password Updated Successfully!!!";
-                       Session["Email"] = null;
+                    var sessionValue = Session["Email"].ToString();
+
+                    //To reset the password for the user whose EmailID matches with the EmailID stored in session.
+                    var result = dbContext.tblUsers.Where(s => s.Email == sessionValue).FirstOrDefault();
+                    result.Password = updatePasswordViewModel.NewPassword;
+                    dbContext.SaveChanges();
+                    ViewBag.result = "Password Updated Successfully!!!";
+                    Session["Email"] = null;
                 }
                 return View();
             }
@@ -329,12 +336,14 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 //Get minimum password length from web config
-                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"]; 
+                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
+
                 //Check whether model state is valid and new password is greater than minimum password
                 if (ModelState.IsValid && changePasswordViewModel.NewPassword.Length >= Convert.ToInt32(passwordLength))
                 {
                     //Call UpdatePassword method to update old password with new password in database
                     int returnValue = services.UpdatePassword(Convert.ToInt32(Session["UserID"]), changePasswordViewModel);
+                    
                     //Check if return value is 1
                     if (returnValue == 1)
                     {
@@ -369,7 +378,9 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 Session["UserName"] = null;
-                Session.Abandon();  //Clear the session.
+
+                //Clear the session.
+                Session.Abandon();  
                 return RedirectToAction("Login", "Home");
             }
             catch (Exception ex)
