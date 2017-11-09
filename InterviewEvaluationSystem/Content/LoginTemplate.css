@@ -31,7 +31,10 @@ h1 {
     text-align: center;
 }
 
-#in {
+#inputPassword {
+    width: 280px;
+}
+#inputUserName {
     width: 280px;
 }
 

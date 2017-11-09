@@ -17,12 +17,12 @@
                     <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" /><br />
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                        <input id="in" type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" />
+                        <input id="inputUserName" type="text" class="form-control" name="Username" placeholder="User Name" required="" autofocus="" />
                     </div>
                     <br />
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                        <input id="in" type="password" class="form-control" name="Password" placeholder="Password" required="" />
+                        <input id="inputPassword" type="password" class="form-control" name="Password" placeholder="Password" required="" />
                         <input type="checkbox" id="PasswordValue" value="Show Password" />
                     </div>
                     @if (ViewBag.Message != null)
@@ -30,6 +30,9 @@
                         <p>@ViewBag.Message</p>
                     }
                     <button class="btn btn-primary btn-lg btn-block login-button" type="submit">Login</button>
+                    <br />
+                    <label id="lblPassword">Show Password</label>
+                    <input type="checkbox" id="PasswordValue" />
                 </form>
                 <br />
             </td>
@@ -57,16 +60,3 @@
     </div>
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>
-    $(function () {
-        $("#PasswordValue").click(function () {
-            if ($(this).is(':checked')) {
-                $("#in").show();
-            }
-            else {
-                $("#in").hide();
-            }
-        });
-    });
-</script>

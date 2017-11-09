@@ -15,3 +15,16 @@
 
     });
 }
+
+$(function () {
+    $("#PasswordValue").click(function () {
+        if ($(this).is(':checked')) {
+            $("#inputPassword").prop("type", "text");
+            $("label[id*=lblPassword]").text("Hide Password");
+        }
+        else {
+            $("#inputPassword").prop("type", "password");
+            $("label[id*=lblPassword]").text("Show Password");
+        }
+    });
+});
