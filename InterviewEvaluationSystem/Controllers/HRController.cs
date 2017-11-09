@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Web.Helpers; 
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace InterviewEvaluationSystem.Controllers
@@ -242,7 +242,7 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Round
-        
+
         /// <summary>
         /// To display all the rounds in database.
         /// </summary>
@@ -680,7 +680,7 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
         }
 
-      
+
         #endregion
 
         #region Interviewer
@@ -688,7 +688,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// Get method of Add Interviewers page.
         /// ViewBag.Users is used to pass the list of Interviewers to the view page.
         /// </summary>
-       
+
         public ActionResult AddInterviewers()
         {
             try
@@ -719,7 +719,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// The length of password,username and employeeid are initialized in web.config
         /// </summary>
         /// <param name="user"></param>
-        
+
         [HttpPost]
         public ActionResult AddInterviewers(UserViewModel user)
         {
@@ -786,7 +786,7 @@ namespace InterviewEvaluationSystem.Controllers
                 }
                 return View(user);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
             }
@@ -799,7 +799,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="UserName"></param>
         /// <param name="Email"></param>
         /// <param name="Designation"></param>
-        
+
         [HttpPost]
         public ActionResult UpdateInterviewer(int UserID, string UserName, string Email, string Designation)
         {
@@ -814,7 +814,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
                 return Json(new { UserName = UserName, Email = Email, Designation = Designation }, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
             }
@@ -823,7 +823,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// The method for deleting the interviewer. The deletion is based on the UserID
         /// </summary>
         /// <param name="UserID"></param>
-        
+
         public ActionResult DeleteInterviewer(int UserID)
         {
             try
@@ -835,7 +835,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
                 return RedirectToAction("AddInterviewers");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
             }
@@ -844,7 +844,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// The method for remote validation to check whether Interviewer Name already exists or not.
         /// </summary>
         /// <param name="UserName"></param>
-        
+
         [HttpGet]
         public JsonResult IsInterviewerUserNameExists(string UserName)
         {
@@ -855,7 +855,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// The method for remote validation to check whether EmployeeId exists or not.
         /// </summary>
         /// <param name="EmployeeId"></param>
-        
+
         [HttpGet]
         public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
         {
@@ -866,7 +866,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// The method for remote validation to check whether Interviewer Email exists or not.
         /// </summary>
         /// <param name="Email"></param>
-        
+
         [HttpGet]
         public JsonResult IsInterviewerEmailExists(string Email)
         {
@@ -874,7 +874,7 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
         #endregion
-        
+
         #region Candidate
         /// <summary>
         /// Get method for adding candidate. 
@@ -885,37 +885,28 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                //To get data for candidate grid
                 CandidateViewModel addCandidateViewModel = new CandidateViewModel();
 
                 //stored procedure that consists of list of candidates
                 addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid()
-                    .Select(s => new CandidateGridViewModel
+                    .Select(s => new CandidateViewModel
                     {
                         CandidateID = s.CandidateID,
-                        CandidateName = s.Name,
+                        Name = s.Name,
+                        Email = s.Email,
+                        PAN = s.PAN,
+                        DateOfBirth = s.DateOfBirth,
+                        Designation = s.Designation,
                         DateOfInterview = s.DateOfInterview,
-                        InterviewerName = s.UserName
+                        TotalExperience = s.TotalExperience,
+                        Qualifications = s.Qualifications
                     }).ToList();
 
                 //To get data for candidate grid
                 addCandidateViewModel.users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
-
-                //To fill the drop down that contain the interviewers.
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = user.UserName,
-                        Value = user.UserID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.user = selectedlist;
                 return View(addCandidateViewModel);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
             }
@@ -927,7 +918,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="user"></param>
         /// <param name="Name"></param>
         /// <param name="txtBoxes"></param>
-        
+
         [HttpPost]
         public ActionResult AddCandidate(CandidateViewModel candidateView, string user, string Name, string[] txtBoxes)
         {
@@ -993,7 +984,7 @@ namespace InterviewEvaluationSystem.Controllers
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
                 return Json(new { Url = redirectUrl, roundErrorMessage = roundErrorMessage });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
             }
@@ -1002,7 +993,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// Method for searching candidate.
         /// </summary>
         /// <param name="Name"></param>
-        
+
         [HttpPost]
         public ActionResult SearchCandidateResult(string Name)
         {
@@ -1033,7 +1024,7 @@ namespace InterviewEvaluationSystem.Controllers
                 ViewBag.user = selectedlist;
                 return PartialView("SearchCandidateResult", candidateViewModel);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
             }
@@ -1061,7 +1052,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
                 return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString(), UserID = UserID }, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
             }
@@ -1070,7 +1061,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// Method to delete the candidate
         /// </summary>
         /// <param name="CandidateID"></param>
-        
+
         [HttpPost]
         public ActionResult DeleteCandidate(int CandidateID)
         {
@@ -1084,7 +1075,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
                 return RedirectToAction("AddCandidate");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
             }
@@ -1092,13 +1083,13 @@ namespace InterviewEvaluationSystem.Controllers
         #endregion
 
         #region Notification
-      /// <summary>
-      /// This section is available for HR only. It consists of a grid that lists the
-      /// candidate after completion of each round. HR can assign the next round/hire candidate/
-      /// reject candidate based on the status of the candidate.
-      /// </summary>
-      
-       
+        /// <summary>
+        /// This section is available for HR only. It consists of a grid that lists the
+        /// candidate after completion of each round. HR can assign the next round/hire candidate/
+        /// reject candidate based on the status of the candidate.
+        /// </summary>
+
+
         public ActionResult Notification()
         {
             try
@@ -1118,7 +1109,7 @@ namespace InterviewEvaluationSystem.Controllers
                 ViewBag.notificationList = notificationList;
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
             }
@@ -1126,7 +1117,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// <summary>
         /// Partial view that appears when the HR assign candidate to the next round.
         /// </summary>
-        
+
         public ActionResult NotificationProceed()
         {
             return View();
@@ -1199,7 +1190,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         /// <param name="interviewers"></param>
         /// <param name="round"></param>
-        
+
         public ActionResult ProceedCandidateData(string interviewers, int round)
         {
             try
@@ -1229,7 +1220,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// of Notification grid
         /// </summary>
         /// <param name="CandidateID"></param>
-        
+
         public ActionResult RejectCandidate(int CandidateID)
         {
             try
@@ -1240,7 +1231,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
                 return RedirectToAction("Notification");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
             }
@@ -1261,7 +1252,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
                 return RedirectToAction("Notification");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
             }
@@ -1273,7 +1264,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// The method for displaying the grid that consists of Candidate Name,
         /// Email,RoundID, and assigned interviewer for that round.
         /// </summary>
-        
+
         public ActionResult ChangeCandidateInterviewer()
         {
             try
@@ -1305,7 +1296,7 @@ namespace InterviewEvaluationSystem.Controllers
 
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
             }
@@ -1315,7 +1306,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         /// <param name="CandidateID"></param>
         /// <param name="UserID"></param>
-        
+
         public ActionResult EditCandidateInterviewer(int CandidateID, int UserID)
         {
             try
@@ -1324,7 +1315,7 @@ namespace InterviewEvaluationSystem.Controllers
                 dbContext.SaveChanges();
                 return Json(new { CandidateID = CandidateID, UserID = UserID }, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
             }
@@ -1333,7 +1324,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// Method for searching interviewer
         /// </summary>
         /// <param name="UserName"></param>
-        
+
         public ActionResult SearchInterviewerResult(string UserName)
         {
             try
@@ -1363,7 +1354,7 @@ namespace InterviewEvaluationSystem.Controllers
                 ViewBag.user = selectedlist;
                 return PartialView("SearchInterviewerResult", ViewBag.CandidateInterviewersList);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
             }

@@ -264,16 +264,10 @@
     <Compile Include="Models\spGetHiredCandidates_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\spGetHiredCandidates_Result1.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\spGetHRDashBoard_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetInProgressCandidates_Result.cs">
-      <DependentUpon>InterviewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\spGetInProgressCandidates_Result1.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetInterviewerCloumnChart_Result.cs">

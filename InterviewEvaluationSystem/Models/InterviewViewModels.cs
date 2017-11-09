@@ -125,7 +125,7 @@ namespace InterviewEvaluationSystem.Models
         public Nullable<bool> CandidateStatus { get; set; }
         public Nullable<decimal> OfferedSalary { get; set; }
         public Nullable<DateTime> DateOfJoining { get; set; }
-        public List<CandidateGridViewModel> CandidateList { get; set; }
+        public List<CandidateViewModel> CandidateList { get; set; }
         public List<tblUser> users { get; set; }
         public IEnumerable<PreviousCompanyViewModel> previousCompanyList { get; set; }
     }
@@ -236,15 +236,6 @@ namespace InterviewEvaluationSystem.Models
     public class PreviousCompanyViewModel
     {
         public string PreviousCompany { get; set; }
-    }
-
-    public class CandidateGridViewModel
-    {
-        public int CandidateID { get; set; }
-        public string CandidateName { get; set; }
-        [DataType(DataType.DateTime)]
-        public DateTime DateOfInterview { get; set; }
-        public string InterviewerName { get; set; }
     }
 
     public class NotificationViewModel
