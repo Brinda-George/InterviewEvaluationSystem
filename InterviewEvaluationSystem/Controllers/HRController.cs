@@ -766,7 +766,7 @@ namespace InterviewEvaluationSystem.Controllers
             }
         } 
 
-        public ActionResult ProceedCandidateData(NotificationProceedViewModel proceedCandidateData, string interviewers,int round)
+        public ActionResult ProceedCandidateData(NotificationProceedViewModel proceedCandidateData, int interviewers,int round)
         {
             try
             {
