@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace InterviewEvaluationSystem.Business_Logic
+﻿namespace InterviewEvaluationSystem.Business_Logic
 {
     public static class Constants
     {
@@ -18,5 +13,6 @@ namespace InterviewEvaluationSystem.Business_Logic
         public const string passwordValidation = "The password field is required and should contain minimum {0} characters";
         public const string userNameValidation = "The User Name field is required and should contain minimum {0} characters";
         public const string employeeIDValidation = "The Employee Id Should Have Maximum Of {0}";
+        public const string UserID = "UserID";
     }
 }

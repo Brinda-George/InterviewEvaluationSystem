@@ -1,7 +1,6 @@
 ﻿using InterviewEvaluationSystem.Business_Logic;
 using InterviewEvaluationSystem.Models;
 using System;
-using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Net.Mail;
