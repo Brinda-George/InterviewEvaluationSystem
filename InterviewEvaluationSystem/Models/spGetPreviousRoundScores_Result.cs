@@ -14,6 +14,6 @@ namespace InterviewEvaluationSystem.Models
     public partial class spGetPreviousRoundScores_Result
     {
         public int SkillID { get; set; }
-        public int RateScaleID { get; set; }
+        public int RateValue { get; set; }
     }
 }

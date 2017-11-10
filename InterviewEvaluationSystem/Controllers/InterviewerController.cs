@@ -257,10 +257,13 @@ namespace InterviewEvaluationSystem.Controllers
                         foreach (var skill in interviewEvaluationViewModel.Skills)
                         {
                             exists = scores.Exists(item => item.SkillID == skill.SkillID);
+
+                            // Check if score exists for corresponding skill
                             if (exists == false)
                             {
                                 scoreEvaluationViewModel.SkillID = skill.SkillID;
-                                scoreEvaluationViewModel.RateScaleID = 0;
+                                // If skill is not evaluated in previous round, display score as 0
+                                scoreEvaluationViewModel.RateValue = 0;
                                 scores.Add(scoreEvaluationViewModel);
                             }
                         }

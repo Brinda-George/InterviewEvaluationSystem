@@ -169,8 +169,8 @@ namespace InterviewEvaluationSystem.Models
 
     public class ScoreEvaluationViewModel
     {
-        public int RateScaleID { get; set; }
         public int SkillID { get; set; }
+        public int RateValue { get; set; }
     }    
 
     public class CurrentStatusViewModel

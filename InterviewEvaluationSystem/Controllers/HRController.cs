@@ -346,8 +346,8 @@ namespace InterviewEvaluationSystem.Controllers
         /// <returns></returns>
         public ActionResult RatingScale()
         {
-            var item = dbContext.tblRatingScales.Where(s => s.IsDeleted == false).ToList(); //Select all the rating scales 
-            // which are not deleted.
+            //Select all the rating scales which are not deleted.
+            var item = dbContext.tblRatingScales.Where(s => s.IsDeleted == false).ToList(); 
             ViewBag.Roles = item;
             return View();
         }
@@ -1464,11 +1464,16 @@ namespace InterviewEvaluationSystem.Controllers
                 ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
                 foreach (var skill in interviewEvaluationViewModel.Skills)
                 {
+                    
                     exists = scores.Exists(item => item.SkillID == skill.SkillID);
-                    if(exists == false)
+
+                    // Check if score exists for corresponding skill
+                    if (exists == false)
                     {
                         scoreEvaluationViewModel.SkillID = skill.SkillID;
-                        scoreEvaluationViewModel.RateScaleID = 0;
+
+                        // If skill is not evaluated in previous round, display score as 0
+                        scoreEvaluationViewModel.RateValue = 0;
                         scores.Add(scoreEvaluationViewModel);
                     }
                 }

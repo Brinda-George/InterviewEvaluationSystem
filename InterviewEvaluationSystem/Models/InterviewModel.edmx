@@ -1557,7 +1557,7 @@
         </ComplexType>
         <ComplexType Name="spGetPreviousRoundScores_Result">
           <Property Type="Int32" Name="SkillID" Nullable="false" />
-          <Property Type="Int32" Name="RateScaleID" Nullable="false" />
+          <Property Type="Int32" Name="RateValue" Nullable="false" />
         </ComplexType>
         <ComplexType Name="spGetRecommendedCandidates_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
@@ -1964,7 +1964,7 @@
             <ResultMapping>
               <ComplexTypeMapping TypeName="InterviewEvaluationDbModel.spGetPreviousRoundScores_Result">
                 <ScalarProperty Name="SkillID" ColumnName="SkillID" />
-                <ScalarProperty Name="RateScaleID" ColumnName="RateScaleID" />
+                <ScalarProperty Name="RateValue" ColumnName="RateValue" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
