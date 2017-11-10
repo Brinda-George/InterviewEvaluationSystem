@@ -324,5 +324,18 @@ namespace InterviewEvaluationSystem.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCandidateInterviewers_Result>("spCandidateInterviewers");
         }
+    
+        public virtual ObjectResult<spGetEmailNotification_Result> spGetEmailNotification(Nullable<int> candidateID, Nullable<int> userID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmailNotification_Result>("spGetEmailNotification", candidateIDParameter, userIDParameter);
+        }
     }
 }

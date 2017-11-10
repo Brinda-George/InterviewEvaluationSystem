@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Mail;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -343,11 +344,10 @@ namespace InterviewEvaluationSystem.Controllers
         /// <summary>
         /// To display all the Rating Scales in database.
         /// </summary>
-        /// <returns></returns>
         public ActionResult RatingScale()
         {
             //Select all the rating scales which are not deleted.
-            var item = dbContext.tblRatingScales.Where(s => s.IsDeleted == false).ToList(); 
+            var item = dbContext.tblRatingScales.Where(s => s.IsDeleted == false).ToList();
             ViewBag.Roles = item;
             return View();
         }
@@ -356,18 +356,25 @@ namespace InterviewEvaluationSystem.Controllers
         /// To display a form to enter new Rating Scales to database.
         /// </summary>
         /// <param name="rate"></param>
-        /// <returns></returns>
-
         [HttpPost]
         public ActionResult RatingScale(tblRatingScale rate)
         {
             try
             {
-                rate.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                rate.CreatedDate = DateTime.Now;
-                rate.IsDeleted = false;
-                dbContext.tblRatingScales.Add(rate);
-                dbContext.SaveChanges();
+                bool exists = dbContext.tblRatingScales.Where(r => r.RateValue == rate.RateValue).Count() > 0;
+                if (exists == true)
+                {
+                    ViewBag.result = "Rate Value already exists in db. Do you want to reactivate it?";
+                    return RedirectToAction("RatingScale");
+                }
+                else
+                {
+                    rate.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                    rate.CreatedDate = DateTime.Now;
+                    rate.IsDeleted = false;
+                    dbContext.tblRatingScales.Add(rate);
+                    dbContext.SaveChanges();
+                }
                 return RedirectToAction("RatingScale");
             }
             catch (Exception ex)
@@ -453,8 +460,6 @@ namespace InterviewEvaluationSystem.Controllers
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
             return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
-
-
 
         #endregion
 
@@ -1210,7 +1215,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="interviewers"></param>
         /// <param name="round"></param>
 
-        public ActionResult ProceedCandidateData(string interviewers, int round)
+        public ActionResult ProceedCandidateData(int interviewers, int round)
         {
             try
             {
@@ -1219,14 +1224,17 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     CandidateID = Convert.ToInt16(TempData["CandidateID"]),
                     RoundID = Convert.ToInt32(round),
-                    UserID = Convert.ToInt32(interviewers),
+                    UserID = interviewers,
                     CreatedBy = Convert.ToInt32(Session["UserID"]),
                     CreatedDate = System.DateTime.Now,
                     IsDeleted = false
                 });
                 dbContext.SaveChanges();
                 Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
-                return RedirectToAction("Notification");
+
+                // Call SentEmailNotification method to sent mail to notify Interviewer
+                services.SentEmailNotification(Convert.ToInt16(TempData["CandidateID"]), interviewers);
+                return RedirectToAction("Notification", "HR");
             }
             catch (Exception ex)
             {
@@ -1464,7 +1472,7 @@ namespace InterviewEvaluationSystem.Controllers
                 ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
                 foreach (var skill in interviewEvaluationViewModel.Skills)
                 {
-                    
+
                     exists = scores.Exists(item => item.SkillID == skill.SkillID);
 
                     // Check if score exists for corresponding skill

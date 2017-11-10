@@ -5,8 +5,6 @@ using System.Linq;
 using System.Web.Mvc;
 using InterviewEvaluationSystem.Business_Logic;
 using System.Web.Helpers;
-using System.Net.Mail;
-using System.Configuration;
 
 namespace InterviewEvaluationSystem.Controllers
 {
@@ -117,7 +115,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewTodaysInterviews(string searchString)
         {
             List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
-            
+
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -155,7 +153,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewRecommendedCandidates(string searchString)
         {
             List<StatusViewModel> RecommendedCandidates = services.GetRecommendedCandidates(Convert.ToInt32(Session["UserID"]));
-            
+
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -193,7 +191,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult ViewCandidates(string searchString)
         {
             List<StatusViewModel> candidates = services.GetCandidates(Convert.ToInt32(Session["UserID"]));
-            
+
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -324,85 +322,13 @@ namespace InterviewEvaluationSystem.Controllers
                 evaluation.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
 
-                // Get Interviewer name and email, candidate name, HR email from database  
-                MailViewModel mailViewModel = new MailViewModel();
-                var mailmodel = dbContext.spGetEmailByUserID(evaluation.CandidateID, Convert.ToInt32(Session["UserID"])).FirstOrDefault();
-                mailViewModel.Interviewer = mailmodel.UserName;
-                mailViewModel.Candidate = mailmodel.Name;
-                mailViewModel.InterviewerEmail = mailmodel.Email;
-                mailViewModel.HREmail = mailmodel.HREmail;
-                string status;
-                if (recommended == true)
-                {
-                    status = "recommended";
-                }
-                else
-                {
-                    status = "not recommended";
-                }
+                // Call SentEmailAfterFeedBack method to sent mail to HR
+                services.SentEmailAfterFeedBack(evaluation.CandidateID, Convert.ToInt32(Session["UserID"]), comments, recommended);
+                TempData["Success"] = "Review submitted Successfully!";
 
-                // Redirect to SentEmailNotification method and supply interviewer name and email, candidate name, HR email, Subject, status and comments
-                var redirectUrl = new UrlHelper(Request.RequestContext).Action("SentEmailNotification", "Interviewer", new
-                {
-                    InterviewerEmail = mailViewModel.InterviewerEmail,
-                    HREmail = mailViewModel.HREmail,
-                    Interviewer = mailViewModel.Interviewer,
-                    Candidate = mailViewModel.Candidate,
-                    Subject = "Notification",
-                    Status = status,
-                    Comments = comments,
-                });
+                // Redirect to Interviewer Home Page
+                var redirectUrl = new UrlHelper(Request.RequestContext).Action("HomePage", "Interviewer");
                 return Json(new { Url = redirectUrl });
-            }
-            catch (Exception ex)
-            {
-                return View("Error", new HandleErrorInfo(ex, "Interviewer", "InterviewEvaluation"));
-            }
-        }
-
-        #endregion
-
-        #region Email Notification
-
-        /// <summary>
-        /// To sent mail from mail address specified in web.config to HR mail address using smtp
-        /// </summary>
-        /// <param name="mailViewModel"></param>
-        public ActionResult SentEmailNotification(MailViewModel mailViewModel)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    // Get sender mail address and password from web.config
-                    var sender = ConfigurationManager.AppSettings["EmailSender"];
-                    var emailPassword = ConfigurationManager.AppSettings["EmailPassword"];
-                    // Specify subject, body, sender and receiver mail address 
-                    MailMessage mailMessage = new MailMessage(sender, mailViewModel.HREmail);
-                    mailMessage.Subject = mailViewModel.Subject;
-                    mailMessage.Body = "<b>Interviewer: </b>" + mailViewModel.Interviewer + "<br/>"
-                      + "<b>Interviewer Email : </b>" + mailViewModel.InterviewerEmail + "<br/>"
-                      + "<b>Candidate : </b>" + mailViewModel.Candidate + "<br/>"
-                      + "<b>Status : </b>" + mailViewModel.Status + "<br/>"
-                      + "<b>Comments : </b>" + mailViewModel.Comments;
-                    mailMessage.IsBodyHtml = true;
-                    // Specify the SMTP server name and post number
-                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-                    // Specify sender mail address and password
-                    smtpClient.Credentials = new System.Net.NetworkCredential()
-                    {
-                        UserName = sender,
-                        Password = emailPassword
-                    };
-                    smtpClient.EnableSsl = true;
-                    smtpClient.Send(mailMessage);
-                    TempData["Success"] = "Review submitted Successfully!";
-                    return RedirectToAction("HomePage", "Interviewer");
-                }
-                else
-                {
-                    return RedirectToAction("HomePage", "Interviewer");
-                }
             }
             catch (Exception ex)
             {

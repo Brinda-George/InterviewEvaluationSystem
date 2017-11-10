@@ -220,17 +220,6 @@ namespace InterviewEvaluationSystem.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class MailViewModel
-    {
-        public string InterviewerEmail { get; set; }
-        public string HREmail { get; set; }
-        public string Interviewer { get; set; }
-        public string Candidate { get; set; }
-        public string Subject { get; set; }
-        public string Status { get; set; }
-        public string Comments { get; set; }
-    }
-
     public class PreviousCompanyViewModel
     {
         public string PreviousCompany { get; set; }

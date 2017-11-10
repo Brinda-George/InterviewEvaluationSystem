@@ -19,6 +19,14 @@
 
 <input type="hidden" id="notificationCount" value="@Session["NotificationsCount"]" />
 
+@if (ViewBag.Success != null)
+{
+    <div class="alert alert-success">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>ViewBag.Success</strong>
+    </div>
+}
+
 @if (ViewBag.notificationList.Count == 0)
 {
     <div class="alert alert-success">

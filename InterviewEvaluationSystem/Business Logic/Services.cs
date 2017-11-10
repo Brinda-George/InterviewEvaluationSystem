@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 
 namespace InterviewEvaluationSystem.Business_Logic
@@ -356,6 +357,67 @@ namespace InterviewEvaluationSystem.Business_Logic
                     DateOfInterview = e.DateOfInterview
                 }).ToList();
             return Statuses;
+        }
+
+        /// <summary>
+        /// To sent mail from mail address specified in web.config to HR mail address using smtp
+        /// </summary>
+        /// <param name="CandidateID"></param>
+        /// <param name="UserID"></param>
+        /// <param name="comments"></param>
+        /// <param name="recommended"></param>
+        public void SentEmailAfterFeedBack(int CandidateID, int UserID, string comments, bool recommended)
+        {
+            // Get Interviewer name and email, candidate name, HR email from database  
+            var mailmodel = dbContext.spGetEmailByUserID(CandidateID, UserID).FirstOrDefault();
+            string status;
+            if (recommended == true)
+            {
+                status = "recommended";
+            }
+            else
+            {
+                status = "not recommended";
+            }
+            // Specify subject, body and receiver mail address 
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.To.Add(mailmodel.HREmail);
+            mailMessage.Subject = "Notification";
+            mailMessage.Body = "<b>Interviewer: </b>" + mailmodel.UserName + "<br/>"
+              + "<b>Interviewer Email : </b>" + mailmodel.Email + "<br/>"
+              + "<b>Candidate : </b>" + mailmodel.Name + "<br/>"
+              + "<b>Status : </b>" + status + "<br/>"
+              + "<b>Comments : </b>" + comments;
+            mailMessage.IsBodyHtml = true;
+
+            // Sent mail using smtpClient
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Send(mailMessage);
+        }
+
+        /// <summary>
+        /// To sent mail from mail address specified in web.config to Interviewer mail address using smtp
+        /// </summary>
+        /// <param name="CandidateID"></param>
+        public void SentEmailNotification(int CandidateID, int UserID)
+        {
+            // Get Interviewer email, candidate name, round, date of interview from database  
+            var mailmodel = dbContext.spGetEmailNotification(CandidateID, UserID).FirstOrDefault();
+
+            // Specify subject, body, sender and receiver mail address 
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.To.Add(mailmodel.InterviewerEmail);
+            mailMessage.Subject = "Notification";
+            mailMessage.Body = "Hi, <br/>"
+                + "You have Interview on " + mailmodel.DateOfInterview.ToShortDateString() + "<br/>"
+                + "Details of interview is as follows" + "<br/>"
+                + "<b>Candidate : </b>" + mailmodel.Name + "<br/>"
+                + "<b>Round : </b>" + mailmodel.RoundName;
+            mailMessage.IsBodyHtml = true;
+
+            // Sent mail using smtpClient
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Send(mailMessage);
         }
 
     }

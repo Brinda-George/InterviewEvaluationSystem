@@ -261,6 +261,9 @@
     <Compile Include="Models\spGetEmailByUserID_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetEmailNotification_Result.cs">
+      <DependentUpon>InterviewModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetHiredCandidates_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
     </Compile>

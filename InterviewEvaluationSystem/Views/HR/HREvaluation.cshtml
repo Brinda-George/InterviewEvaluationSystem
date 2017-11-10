@@ -74,7 +74,7 @@
                     {
                         ColumnName = round.RoundName,
                         Header = round.RoundName,
-                        Format = (item) => Html.LabelFor(m => m.RatingScale[i].RateScaleID, new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.ID - 1].RateScaleID.ToString()).ToString(), new { style = "font-weight: normal;" })
+                        Format = (item) => Html.LabelFor(m => m.RatingScale[i].RateScaleID, new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.ID - 1].RateValue.ToString()).ToString(), new { style = "font-weight: normal;" })
                     });
                 }
                 else
@@ -85,7 +85,7 @@
                         {
                             ColumnName = round.RoundName,
                             Header = round.RoundName,
-                            Format = (item) => Html.DropDownListFor(m => m.RatingScale, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.ID - 1].RateScaleID.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @style = "colWidth" })
+                            Format = (item) => Html.DropDownListFor(m => m.RatingScale, new SelectList(Model.RatingScale, "RateScaleID", "RateValue"), new HtmlString(Model.ScoresByRound[round.RoundID - 1][@item.ID - 1].RateValue.ToString()).ToString(), new { @id = "id" + round.RoundID + item.SkillID, @class = "class" + round.RoundID, @style = "colWidth" })
                         });
                         @Html.ValidationMessageFor(x => x.RatingScale[i].RateScaleID);
                     }
