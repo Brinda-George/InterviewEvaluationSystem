@@ -696,7 +696,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         #region Interviewer
         /// <summary>
-        /// Get method of Add Interviewers page.
+        /// Get method of Add Interviewers page. 
         /// ViewBag.Users is used to pass the list of Interviewers to the view page.
         /// </summary>
 
