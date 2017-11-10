@@ -324,7 +324,7 @@ namespace InterviewEvaluationSystem.Controllers
 
                 // Call SentEmailAfterFeedBack method to sent mail to HR
                 services.SentEmailAfterFeedBack(evaluation.CandidateID, Convert.ToInt32(Session["UserID"]), comments, recommended);
-                TempData["Success"] = "Review submitted Successfully!";
+                TempData["Success"] = Constants.reviewSuccess;
 
                 // Redirect to Interviewer Home Page
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("HomePage", "Interviewer");

@@ -1,9 +1,10 @@
 ﻿using InterviewEvaluationSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
-using System.Web;
+
 
 namespace InterviewEvaluationSystem.Business_Logic
 {
@@ -54,7 +55,7 @@ namespace InterviewEvaluationSystem.Business_Logic
         /// </summary>
         public List<RatingScaleViewModel> GetRatingScale()
         {
-            List<RatingScaleViewModel> RatingScales = dbContext.tblRatingScales.Where(r => r.IsDeleted == false)
+            List<RatingScaleViewModel> RatingScales = dbContext.tblRatingScales.Where(r => r.IsDeleted == false).OrderBy(r => r.RateValue)
                 .Select(r => new RatingScaleViewModel
                 {
                     RateScaleID = r.RateScaleID,
@@ -275,7 +276,7 @@ namespace InterviewEvaluationSystem.Business_Logic
                 }).ToList();
             return candidates;
         }
-        
+
         /// <summary>
         /// To get current status of all candidates
         /// </summary>
@@ -420,5 +421,14 @@ namespace InterviewEvaluationSystem.Business_Logic
             smtpClient.Send(mailMessage);
         }
 
+        public string GetAppSettingsValue(string AppKey)
+        {
+            string appValue = string.Empty;
+            if (ConfigurationManager.AppSettings[AppKey] != null)
+            {
+                appValue = Convert.ToString(ConfigurationManager.AppSettings[AppKey]);
+            }
+            return appValue;
+        }
     }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Net.Mail;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -737,9 +736,9 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Password, "sha1");
-                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
-                var userNameLength = ConfigurationManager.AppSettings["UserNameLength"];
-                var employeeIdLength = ConfigurationManager.AppSettings["EmployeeIdLength"];
+                var passwordLength = services.GetAppSettingsValue("UserPasswordLength");
+                var userNameLength = services.GetAppSettingsValue("UserNameLength");
+                var employeeIdLength = services.GetAppSettingsValue("EmployeeIdLength");
                 user.UserTypeID = 2;
                 bool flag = false;
                 if (ModelState.IsValid)
@@ -747,16 +746,16 @@ namespace InterviewEvaluationSystem.Controllers
                     if (user.Password.Length < Convert.ToInt32(passwordLength))
                     {
                         flag = true;
-                        ViewBag.PasswordErrorMessage = "The password field is required and should contain minimum " + passwordLength + " characters";
+                        ViewBag.PasswordErrorMessage = string.Format(Constants.passwordValidation, passwordLength);
                     }
                     if (user.UserName.Length < Convert.ToInt32(userNameLength))
                     {
                         flag = true;
-                        ViewBag.UserNameErrorMessage = "The User Name field is required and should contain minimum " + userNameLength + " characters";
+                        ViewBag.UserNameErrorMessage = string.Format(Constants.userNameValidation, userNameLength);
                     }
                     if (user.EmployeeId.Length > Convert.ToInt32(employeeIdLength))
                     {
-                        ViewBag.employeeIdLengthErrorMessage = "The Employee Id Should Have Maximum Of " + employeeIdLength;
+                        ViewBag.employeeIdLengthErrorMessage = string.Format(Constants.employeeIDValidation, employeeIdLength);
                         flag = true;
                     }
                     if (flag == false)
@@ -778,7 +777,7 @@ namespace InterviewEvaluationSystem.Controllers
                         });
                         dbContext.SaveChanges();
                         ModelState.Clear();
-                        ViewBag.result = "Interviewer Added Successfully !!";
+                        ViewBag.result = Constants.interviewerAdded;
                     }
                     List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
                     .Select(u => new UserViewModel
@@ -949,7 +948,7 @@ namespace InterviewEvaluationSystem.Controllers
                 string roundErrorMessage = "";
                 if (Round1ID == 0)
                 {
-                    roundErrorMessage = "No Round Exists!!!!! Kindly Add Rounds";
+                    roundErrorMessage = Constants.roundError;
                 }
                 else
                 {
@@ -998,7 +997,9 @@ namespace InterviewEvaluationSystem.Controllers
                         eval.IsDeleted = false;
                         dbContext.tblEvaluations.Add(eval);
                         dbContext.SaveChanges();
-                        ViewBag.result = "Interviewer Added Successfully !!";
+
+                        // Call SentEmailNotification method to sent mail to notify Interviewer
+                        services.SentEmailNotification(candidate.CandidateID, Convert.ToInt32(user));
                     }
                 }
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");

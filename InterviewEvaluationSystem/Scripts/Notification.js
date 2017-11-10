@@ -47,7 +47,4 @@
             });
         });
     });
-    if($('#successMessage').val() ){
-
-    }
 });

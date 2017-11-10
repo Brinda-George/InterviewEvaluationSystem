@@ -366,6 +366,7 @@ function candidateValidation() {
                 if (str != "") {
                     alert(str);
                 }
+                alert("Candidate Added and Mail sent to interviewer Successfully!!");
                 window.location.href = response.Url;
             },
             error: function (data) {

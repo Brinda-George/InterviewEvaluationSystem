@@ -64,7 +64,7 @@ namespace InterviewEvaluationSystem.Controllers
                 if (user == null)
                 {
                     //Displaying 'invalid credentials' when the user credentials does not match.
-                    ViewBag.Message = "Invalid credentials";
+                    ViewBag.Message = Constants.invalidLogin;
                 }
                 else
                 {
@@ -138,14 +138,15 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 var name = Convert.ToString(Session["UserName"]);
-                var item = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault();//Select the specific user
-                                                                                              //and edit his/her details.
+
+                //Select the specific user and edit his/her details.
+                var item = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
                 item.Address = user.Address;
                 item.Pincode = user.Pincode;
                 item.ModifiedBy = Convert.ToInt32(Session["UserID"]);
                 item.ModifiedDate = DateTime.Now;
                 dbContext.SaveChanges();
-                ViewBag.result = "Successfully Updated!!";
+                ViewBag.result = Constants.profileUpdate;
                 return View();
             }
             catch (Exception ex)
@@ -186,7 +187,7 @@ namespace InterviewEvaluationSystem.Controllers
                     string otp;
 
                     //Set of values to be used in OTP.
-                    const string pool = "abcdefghijklmnopqrstuvwxyz0123456789"; 
+                    const string pool = Constants.otpPool;
                     var builder = new StringBuilder();
 
                     //Specify the length of OTP.
@@ -251,7 +252,7 @@ namespace InterviewEvaluationSystem.Controllers
 
         /// <summary>
         /// To check if the OTP passed to this method is valid by checking it with the OTP originally generated.
-        /// Also,to redirect the user to another page inoreder to reset password.
+        /// To redirect the user to another page inoreder to reset password.
         /// </summary>
         /// <param name="value"></param>
         [HttpPost]
@@ -304,7 +305,7 @@ namespace InterviewEvaluationSystem.Controllers
                     var result = dbContext.tblUsers.Where(s => s.Email == sessionValue).FirstOrDefault();
                     result.Password = updatePasswordViewModel.NewPassword;
                     dbContext.SaveChanges();
-                    ViewBag.result = "Password Updated Successfully!!!";
+                    ViewBag.result = Constants.passwordUpdate;
                     Session["Email"] = null;
                 }
                 return View();
@@ -336,7 +337,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 //Get minimum password length from web config
-                var passwordLength = ConfigurationManager.AppSettings["UserPasswordLength"];
+                var passwordLength = services.GetAppSettingsValue("UserPasswordLength");
 
                 //Check whether model state is valid and new password is greater than minimum password
                 if (ModelState.IsValid && changePasswordViewModel.NewPassword.Length >= Convert.ToInt32(passwordLength))
@@ -347,11 +348,11 @@ namespace InterviewEvaluationSystem.Controllers
                     //Check if return value is 1
                     if (returnValue == 1)
                     {
-                        ViewBag.result = "Password Updated Successfully!";
+                        ViewBag.result = Constants.passwordUpdate;
                     }
                     else
                     {
-                        ViewBag.result = "Wrong Password!!";
+                        ViewBag.result = Constants.passwordError;
                     }
                 }
                 else
