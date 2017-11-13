@@ -766,6 +766,14 @@ namespace InterviewEvaluationSystem.Controllers
             }
         } 
 
+        public ActionResult GetMaxRoundValue()
+        {
+            var maxRound=(from c in dbContext.tblRounds where c.IsDeleted == false select c).Max(c => c.RoundID);
+            
+            return Json(new { maxRound = maxRound }, JsonRequestBehavior.AllowGet);
+
+        }
+
         public ActionResult ProceedCandidateData(NotificationProceedViewModel proceedCandidateData, int interviewers,int round)
         {
             try

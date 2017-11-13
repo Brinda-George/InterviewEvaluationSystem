@@ -34,7 +34,7 @@
             @Html.LabelFor(model => model.ProceedTo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @*@Html.EditorFor(model => model.ProceedTo, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.DropDownList("round", null, "--Select--", new { @class = "form-control" })
+                @Html.DropDownList("round", null, "--Select--", new { @class = "form-control", @id = "ddlinterviewers" })
                 @Html.ValidationMessageFor(model => model.ProceedTo, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -43,6 +43,10 @@
             @Html.LabelFor(model => model.Interviewer, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("interviewers", null, string.Empty, new { @class = "form-control" })
+                <select id="ddlHR" class="form-control">
+                    <option value="HR">HR</option>
+                    
+                </select>
                 @Html.ValidationMessageFor(model => model.Interviewer, "", new { @class = "text-danger" })
             </div>
         </div>

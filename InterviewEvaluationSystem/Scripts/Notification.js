@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     $(function () {
-  
+        var length = $('#ddlinterviewers').children('option').length;
+
         $('.HireCandidate').on('click', function () {
             var tr = $(this).parents('tr:first');
             var CandidateID = tr.find("#lblCandidateID").text();
@@ -53,6 +54,27 @@
             });
 
         });
+        $('#ddlinterviewers').change(function () {
+            var value = $("#ddlinterviewers").val();
+            $.ajax({
+                url: '/HR/GetMaxRoundValue',
+                type: 'get',
+                success: function (result) {
+                    if (result.maxRound == value) {
+                        
+                        $("#DoctorList").append($('<option></option>').val(0).html("--select--"))
+                        $.each(result, function (i, doc) {
+                            $("#DoctorList").append($('<option></option>').val(doc.Id).html(doc.Name))
+                        })
+                    }
+                }
+            });
+        });
 
     });
 });
+
+
+    
+    
+ 
