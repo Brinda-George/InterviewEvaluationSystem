@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
-
+using System.Text;
 
 namespace InterviewEvaluationSystem.Business_Logic
 {
@@ -421,6 +421,10 @@ namespace InterviewEvaluationSystem.Business_Logic
             smtpClient.Send(mailMessage);
         }
 
+        /// <summary>
+        /// T get appValue from web.config for corresponding appKey
+        /// </summary>
+        /// <param name="AppKey"></param>
         public string GetAppSettingsValue(string AppKey)
         {
             string appValue = string.Empty;
@@ -429,6 +433,32 @@ namespace InterviewEvaluationSystem.Business_Logic
                 appValue = Convert.ToString(ConfigurationManager.AppSettings[AppKey]);
             }
             return appValue;
+        }
+
+
+        /// <summary>
+        /// To generate otp
+        /// </summary>
+        public string GetOtp()
+        {
+            string otp;
+
+            //Set of values to be used in OTP.
+            const string pool = Constants.otpPool;
+            var builder = new StringBuilder();
+
+            //Specify the length of OTP.
+            int length = 7;
+            for (var i = 0; i < length; i++)
+            {
+                //Generate each character/number in OTP.
+                var c = pool[r.Next(0, pool.Length)];
+
+                //Append each character /number to OTP.
+                builder.Append(c);
+            }
+            otp = builder.ToString();
+            return otp;
         }
     }
 }

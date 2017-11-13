@@ -183,23 +183,9 @@ namespace InterviewEvaluationSystem.Controllers
                 if (data != null)
                 {
                     Session["Email"] = data.Email;
-                    string otp;
 
-                    //Set of values to be used in OTP.
-                    const string pool = Constants.otpPool;
-                    var builder = new StringBuilder();
-
-                    //Specify the length of OTP.
-                    int length = 7;
-                    for (var i = 0; i < length; i++)
-                    {
-                        //Generate each character/number in OTP.
-                        var c = pool[r.Next(0, pool.Length)];
-
-                        //Append each character /number to OTP.
-                        builder.Append(c);
-                    }
-                    otp = builder.ToString();
+                    // Call GetOtp() method to generate otp
+                    string otp = services.GetOtp();
                     Session["OTP"] = otp;
                     MailMessage mailMessage = new MailMessage();
 
