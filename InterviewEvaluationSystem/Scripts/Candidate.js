@@ -148,9 +148,12 @@
 
         $(document).on("click", ".edit-userCandidateResult, .cancel-userCandidateResult", function () {
             var tr = $(this).parents('tr:first');
+            var dateofbirth = tr.find('#lblDateOfBirth').text();
             var date = tr.find('#lblDateOfInterview').text();
             tr.find('.edit-modeCandidateResult, .display-modeCandidateResult').toggle();
+            var newdob = dateofbirth.split("/").reverse().join("-");
             var newdate = date.split("/").reverse().join("-");
+            tr.find('#DateOfBirth').val(newdob);
             tr.find('#DateOfInterview').val(newdate);
             $('.delete-userCandidateResult').hide();
         });

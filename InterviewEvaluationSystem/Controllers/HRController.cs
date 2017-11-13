@@ -1010,15 +1010,20 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                CandidateViewModel candidateViewModel = new CandidateViewModel();
-                //stored procedure that contain the list of candidates. From that list, the candidate is searched
-                candidateViewModel.CandidateInterviewersList = dbContext.spCandidateInterviewers().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
-                    .Select(s => new CandidateInterviewerViewModel
+                CandidateViewModel CandidateSearchViewModel = new CandidateViewModel();
+                CandidateSearchViewModel.CandidatesList = dbContext.spGetCandidates().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
+                                                          
+                    .Select(s => new CandidateViewModel
                     {
                         CandidateID = s.CandidateID,
-                        CandidateName = s.Name,
+                        Name = s.Name,
+                        Email = s.Email,
+                        DateOfBirth = s.DateOfBirth,
+                        PAN = s.PAN,
+                        Designation = s.Designation,
                         DateOfInterview = s.DateOfInterview,
-                        InterviewerName = s.UserName
+                        TotalExperience = s.TotalExperience,
+                        Qualifications = s.Qualifications
                     }).ToList();
 
                 //To fill the drop down that contain the interviewers
@@ -1033,7 +1038,7 @@ namespace InterviewEvaluationSystem.Controllers
                     selectedlist.Add(selectlistitem);
                 }
                 ViewBag.user = selectedlist;
-                return PartialView("SearchCandidateResultPartial", candidateViewModel);
+                return PartialView("SearchCandidateResultPartial", CandidateSearchViewModel);
             }
             catch (Exception ex)
             {
