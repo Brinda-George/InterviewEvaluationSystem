@@ -176,7 +176,6 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 int result;
-                Random r = new Random();
 
                 //Fetch user's details whose Email matches with the Email entered. 
                 var data = dbContext.tblUsers.Where(x => x.Email == email).FirstOrDefault();

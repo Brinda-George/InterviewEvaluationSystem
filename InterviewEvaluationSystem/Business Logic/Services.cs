@@ -442,7 +442,7 @@ namespace InterviewEvaluationSystem.Business_Logic
         public string GetOtp()
         {
             string otp;
-
+            Random r = new Random();
             //Set of values to be used in OTP.
             const string pool = Constants.otpPool;
             var builder = new StringBuilder();

@@ -473,7 +473,7 @@
     <Content Include="Views\Home\ChangePassword.cshtml" />
     <Content Include="Views\HR\AddInterviewers.cshtml" />
     <Content Include="Views\HR\AddCandidate.cshtml" />
-    <Content Include="Views\HR\SearchCandidateResult.cshtml" />
+    <Content Include="Views\HR\SearchCandidateResultPartial.cshtml" />
     <Content Include="Views\HR\Notification.cshtml" />
     <Content Include="Views\HR\NotificationProceed.cshtml" />
     <Content Include="Views\HR\HRHomePage.cshtml" />

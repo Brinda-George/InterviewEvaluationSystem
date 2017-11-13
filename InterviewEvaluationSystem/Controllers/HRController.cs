@@ -1033,7 +1033,7 @@ namespace InterviewEvaluationSystem.Controllers
                     selectedlist.Add(selectlistitem);
                 }
                 ViewBag.user = selectedlist;
-                return PartialView("SearchCandidateResult", candidateViewModel);
+                return PartialView("SearchCandidateResultPartial", candidateViewModel);
             }
             catch (Exception ex)
             {

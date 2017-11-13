@@ -137,7 +137,7 @@
             $.ajax({
                 type: "post",
                 url: "/HR/SearchCandidateResult",
-                data: { Name: $('#CandidateNameText').val() },
+                data: { Name: CandidateName },
                 datatype: "json",
                 success: function (Name) {
                     $('#gridContent').html(Name);

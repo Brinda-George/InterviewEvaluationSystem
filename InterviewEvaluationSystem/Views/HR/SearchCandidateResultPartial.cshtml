@@ -1,8 +1,8 @@
 ﻿@model InterviewEvaluationSystem.Models.CandidateViewModel
 
 @{
-    ViewBag.Title = "SearchCandidateResult";
-    var gridCandidate = new WebGrid(Model.CandidateList, canSort: false, canPage: true, rowsPerPage: 5, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
+    ViewBag.Title = "SearchCandidateResultPartial";
+    var gridCandidate = new WebGrid(Model.CandidateInterviewersList, canSort: false, canPage: true, rowsPerPage: 5, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
     gridCandidate.Pager(WebGridPagerModes.All);
 }
 
@@ -11,7 +11,7 @@
     @*<script src="~/Scripts/Candidate.js"></script>*@
 }
 
-@if (Model.CandidateList.Count != 0)
+@if (Model.CandidateInterviewersList.Count != 0)
 {
     @gridCandidate.GetHtml(tableStyle: "table table-bordered table-striped",
         headerStyle: "webgrid-header",
