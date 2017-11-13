@@ -370,1189 +370,1189 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
             }
-}
+        }
 
-/// <summary>
-/// To check if RateScale entered in form already exist in database.
-/// </summary>
-/// <param name="RateScale"></param>
-/// <returns></returns>
-public JsonResult IsScaleExist(string RateScale)
-{
-    //Check if RateScale already exist in database and store the returned value to a variable.
-    var validateScale = dbContext.tblRatingScales.FirstOrDefault(x => x.RateScale == RateScale && x.IsDeleted == false);
-    if (validateScale != null)
-    {
-        return Json(false, JsonRequestBehavior.AllowGet);
-    }
-    else
-    {
-        return Json(true, JsonRequestBehavior.AllowGet);
-    }
-}
-
-/// <summary>
-/// To check if RateValue entered in form already exist in database.
-/// </summary>
-/// <param name="RateValue"></param>
-/// <returns></returns>
-public JsonResult IsValueExist(int RateValue)
-{
-    //Check if RateValue already exist in database and store the returned value to a variable.
-    var validateScale = dbContext.tblRatingScales.FirstOrDefault
-                        (x => x.RateValue == RateValue && x.IsDeleted == false);
-    if (validateScale != null)
-    {
-        return Json(false, JsonRequestBehavior.AllowGet);
-    }
-    else
-    {
-        return Json(true, JsonRequestBehavior.AllowGet);
-    }
-}
-
-/// <summary>
-/// To edit a RatingScale in database using a button in gridview based on RateScaleId.
-/// </summary>
-/// <param name="RateScaleId"></param>
-/// <param name="Ratescale"></param>
-/// <param name="Ratevalue"></param>
-/// <param name="description"></param>
-/// <returns></returns>
-
-[HttpPost]
-public JsonResult RateEdit(int RateScaleId, string Ratescale, int Ratevalue, string description)
-{
-    tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleId);
-    rate.RateScale = Ratescale;
-    rate.RateValue = Ratevalue;
-    rate.Description = description;
-    dbContext.SaveChanges();
-    var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
-    return Json(new { Url = redirectUrl, RateScale = Ratescale, RateValue = Ratevalue, Description = description }, JsonRequestBehavior.AllowGet);
-}
-
-/// <summary>
-/// To delete a RatingScale in database using a button in gridview based on RateScaleId.
-/// </summary>
-/// <param name="RateScaleID"></param>
-/// <returns></returns>
-[HttpPost]
-public JsonResult RateDelete(int RateScaleID)
-{
-    tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleID);
-    rate.IsDeleted = true;
-    rate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-    rate.ModifiedDate = DateTime.Now;
-    dbContext.SaveChanges();
-    bool result = true;
-    var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
-    return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
-}
-
-#endregion
-
-#region Skill Category
-/// <summary>
-/// To display all the SkillCategories in database.
-/// </summary>
-/// <returns></returns>
-public ActionResult SkillCategory()
-{
-    var item = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false).ToList(); //Select all 
-                                                                                       // skill categories which are not deleted.
-    ViewBag.Roles = item;
-    return View();
-}
-
-/// <summary>
-/// To display a form to enter new SkillCategories to database.
-/// </summary>
-/// <param name="category"></param>
-/// <returns></returns>
-
-[HttpPost]
-public ActionResult SkillCategory(tblSkillCategory category)
-{
-    try
-    {
-        category.CreatedBy = Convert.ToInt32(Session["UserID"]);
-        category.CreatedDate = DateTime.Now;
-        category.IsDeleted = false;
-        dbContext.tblSkillCategories.Add(category);
-        dbContext.SaveChanges();
-        return RedirectToAction("SkillCategory");
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
-    }
-
-}
-
-/// <summary>
-/// To check if SkillCategory entered in form already exist in database.
-/// </summary>
-/// <param name="SkillCategory"></param>
-/// <returns></returns>
-
-public JsonResult IsCategoryExist(string SkillCategory)
-{
-    // Check if Skill category alreday exist in database and store the returned value to a variable.
-    var validateScale = dbContext.tblSkillCategories.FirstOrDefault(x => x.SkillCategory == SkillCategory && x.IsDeleted == false);
-    if (validateScale != null)
-    {
-        return Json(false, JsonRequestBehavior.AllowGet);
-    }
-    else
-    {
-        return Json(true, JsonRequestBehavior.AllowGet);
-    }
-}
-
-/// <summary>
-/// To edit a SkillCategory in database using a button in gridview based on SkillCategoryID.
-/// </summary>
-/// <param name="SkillCategoryID"></param>
-/// <param name="SkillCategory"></param>
-/// <param name="description"></param>
-/// <returns></returns>
-[HttpPost]
-public JsonResult CategoryEdit(int SkillCategoryID, string SkillCategory, string description)
-{
-    tblSkillCategory category = dbContext.tblSkillCategories.Find(SkillCategoryID);
-    category.SkillCategory = SkillCategory;
-    category.Description = description;
-    dbContext.SaveChanges();
-    var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
-    return Json(new { Url = redirectUrl, SkillCategory = SkillCategory, Description = description }, JsonRequestBehavior.AllowGet);
-}
-
-/// <summary>
-/// To delete a SkillCategory in database using a button in gridview basd on SkillCategoryID.
-/// </summary>
-/// <param name="SkillCategoryID"></param>
-/// <returns></returns>
-
-[HttpPost]
-public JsonResult CategoryDelete(int SkillCategoryID)
-{
-    tblSkillCategory skill = dbContext.tblSkillCategories.Find(SkillCategoryID);
-    skill.IsDeleted = true;
-    skill.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-    skill.ModifiedDate = DateTime.Now;
-    dbContext.SaveChanges();
-    bool result = true;
-    var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
-    return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
-}
-
-#endregion
-
-#region Skill
-
-/// <summary>
-/// To display all the skills in database.
-/// </summary>
-/// <returns></returns>
-public ActionResult Skill()
-{
-    // Select all the skill categories which are not deleted.
-    var itemlist = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false).ToList();
-    List<SelectListItem> selectedlist = new List<SelectListItem>();
-    // Store the skill categories and corresponding ID's in a list.
-    foreach (var skillitem in itemlist)
-    {
-        SelectListItem selectlistitem = new SelectListItem
+        /// <summary>
+        /// To check if RateScale entered in form already exist in database.
+        /// </summary>
+        /// <param name="RateScale"></param>
+        /// <returns></returns>
+        public JsonResult IsScaleExist(string RateScale)
         {
-            Text = skillitem.SkillCategory,
-            Value = skillitem.SkillCategoryID.ToString()
-        };
-        selectedlist.Add(selectlistitem);
-    }
-    ViewBag.category = selectedlist;
-    // Join both the tables and select all the fields which are required in the gridview.
-    var result = from a in dbContext.tblSkillCategories
-                 join b in dbContext.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
-                 where b.IsDeleted == false
-                 select new
-                 {
-                     skillno = b.SkillID,
-                     skillcat = a.SkillCategory,
-                     skillname = b.SkillName
-                 };
-    if (!result.Any()) //If no values exist based on the condition pass 'null'.
-    {
-        ViewBag.Skillcategories = null;
-    }
-
-    else // Pass result.
-    {
-        ViewBag.Skillcategories = result;
-
-    }
-    return View();
-}
-
-/// <summary>
-/// To display a form to enter new skills to database.
-/// </summary>
-/// <param name="skill"></param>
-/// <param name="category"></param>
-/// <returns></returns>
-
-[HttpPost]
-public ActionResult Skill(tblSkill skill, string category)
-{
-    try
-    {
-        skill.CreatedBy = Convert.ToInt32(Session["UserID"]);
-        skill.CreatedDate = DateTime.Now;
-        skill.IsDeleted = false;
-        skill.SkillCategoryID = Convert.ToInt32(category);
-        dbContext.tblSkills.Add(skill);
-        dbContext.SaveChanges();
-        return RedirectToAction("Skill");
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
-    }
-}
-
-/// <summary>
-/// To check if skill entered in form already exist in database.
-/// </summary>
-/// <param name="SkillName"></param>
-/// <returns></returns>
-public JsonResult IsSkillExist(string SkillName)
-{
-    // Check if the skill entered already exist in dataabse and store the value returned to a variable.
-    var validateScale = dbContext.tblSkills.FirstOrDefault(x => x.SkillName == SkillName && x.IsDeleted == false);
-    if (validateScale != null)
-    {
-        return Json(false, JsonRequestBehavior.AllowGet);
-    }
-    else
-    {
-        return Json(true, JsonRequestBehavior.AllowGet);
-    }
-}
-
-/// <summary>
-/// To edit a skill in database using a button in gridview based on SkillCategoryID.
-/// </summary>
-/// <param name="SkillID"></param>
-/// <param name="Skillname"></param>
-/// <param name="CategoryID"></param>
-/// <returns></returns>
-[HttpPost]
-public JsonResult SkillEdit(int SkillID, string Skillname, int CategoryID)
-{
-    tblSkill skill = dbContext.tblSkills.Find(SkillID);
-    skill.SkillCategoryID = CategoryID;
-    skill.SkillName = Skillname;
-    skill.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-    skill.ModifiedDate = DateTime.Now;
-    dbContext.SaveChanges();
-    // Set skillcategory based on the value selected from dropdown and update skillcategry in databse for that skill.
-    var SkillCategory = (from item in dbContext.tblSkillCategories where item.SkillCategoryID == CategoryID select item.SkillCategory).FirstOrDefault();
-    var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-    return Json(new { Url = redirectUrl, SkillName = Skillname, SkillCategory = SkillCategory }, JsonRequestBehavior.AllowGet);
-}
-
-/// <summary>
-/// To delete a skill in database using a button in gridview based on SkillCategoryID.
-/// </summary>
-/// <param name="SkillID"></param>
-/// <returns></returns>
-
-[HttpPost]
-public JsonResult SkillDelete(int SkillID)
-{
-    tblSkill skills = dbContext.tblSkills.Find(SkillID);
-    skills.IsDeleted = true;
-    skills.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-    skills.ModifiedDate = DateTime.Now;
-    dbContext.SaveChanges();
-    bool result = true;
-    var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-    return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
-}
-
-
-#endregion
-
-#region Interviewer
-/// <summary>
-/// Get method of Add Interviewers page. 
-/// ViewBag.Users is used to pass the list of Interviewers to the view page.
-/// </summary>
-
-public ActionResult AddInterviewers()
-{
-    try
-    {
-        List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
-            .Select(u => new UserViewModel
+            //Check if RateScale already exist in database and store the returned value to a variable.
+            var validateScale = dbContext.tblRatingScales.FirstOrDefault(x => x.RateScale == RateScale && x.IsDeleted == false);
+            if (validateScale != null)
             {
-                UserID = u.UserID,
-                UserName = u.UserName,
-                Designation = u.Designation,
-                UserTypeID = u.UserTypeID,
-                Address = u.Address,
-                Email = u.Email,
-                EmployeeId = u.EmployeeId,
-                Password = u.Password,
-                Pincode = u.Pincode,
-            }).ToList();
-        ViewBag.Users = users;
-        return View();
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
-    }
-}
-/// <summary>
-/// Post method of AddInterviewers page. 
-/// The length of password,username and employeeid are initialized in web.config
-/// </summary>
-/// <param name="user"></param>
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
 
-[HttpPost]
-public ActionResult AddInterviewers(UserViewModel user)
-{
-    try
-    {
-        string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Password, "sha1");
-        var passwordLength = services.GetAppSettingsValue("UserPasswordLength");
-        var userNameLength = services.GetAppSettingsValue("UserNameLength");
-        var employeeIdLength = services.GetAppSettingsValue("EmployeeIdLength");
-        user.UserTypeID = 2;
-        bool flag = false;
-        if (ModelState.IsValid)
+        /// <summary>
+        /// To check if RateValue entered in form already exist in database.
+        /// </summary>
+        /// <param name="RateValue"></param>
+        /// <returns></returns>
+        public JsonResult IsValueExist(int RateValue)
         {
-            if (user.Password.Length < Convert.ToInt32(passwordLength))
+            //Check if RateValue already exist in database and store the returned value to a variable.
+            var validateScale = dbContext.tblRatingScales.FirstOrDefault
+                                (x => x.RateValue == RateValue && x.IsDeleted == false);
+            if (validateScale != null)
             {
-                flag = true;
-                ViewBag.PasswordErrorMessage = string.Format(Constants.passwordValidation, passwordLength);
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
-            if (user.UserName.Length < Convert.ToInt32(userNameLength))
+            else
             {
-                flag = true;
-                ViewBag.UserNameErrorMessage = string.Format(Constants.userNameValidation, userNameLength);
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
-            if (user.EmployeeId.Length > Convert.ToInt32(employeeIdLength))
+        }
+
+        /// <summary>
+        /// To edit a RatingScale in database using a button in gridview based on RateScaleId.
+        /// </summary>
+        /// <param name="RateScaleId"></param>
+        /// <param name="Ratescale"></param>
+        /// <param name="Ratevalue"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        public JsonResult RateEdit(int RateScaleId, string Ratescale, int Ratevalue, string description)
+        {
+            tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleId);
+            rate.RateScale = Ratescale;
+            rate.RateValue = Ratevalue;
+            rate.Description = description;
+            dbContext.SaveChanges();
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
+            return Json(new { Url = redirectUrl, RateScale = Ratescale, RateValue = Ratevalue, Description = description }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// To delete a RatingScale in database using a button in gridview based on RateScaleId.
+        /// </summary>
+        /// <param name="RateScaleID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult RateDelete(int RateScaleID)
+        {
+            tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleID);
+            rate.IsDeleted = true;
+            rate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            rate.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+            bool result = true;
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region Skill Category
+        /// <summary>
+        /// To display all the SkillCategories in database.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SkillCategory()
+        {
+            var item = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false).ToList(); //Select all 
+                                                                                               // skill categories which are not deleted.
+            ViewBag.Roles = item;
+            return View();
+        }
+
+        /// <summary>
+        /// To display a form to enter new SkillCategories to database.
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        public ActionResult SkillCategory(tblSkillCategory category)
+        {
+            try
             {
-                ViewBag.employeeIdLengthErrorMessage = string.Format(Constants.employeeIDValidation, employeeIdLength);
-                flag = true;
+                category.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                category.CreatedDate = DateTime.Now;
+                category.IsDeleted = false;
+                dbContext.tblSkillCategories.Add(category);
+                dbContext.SaveChanges();
+                return RedirectToAction("SkillCategory");
             }
-            if (flag == false)
+            catch (Exception ex)
             {
-                dbContext.tblUsers.Add(new tblUser
+                return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
+            }
+
+        }
+
+        /// <summary>
+        /// To check if SkillCategory entered in form already exist in database.
+        /// </summary>
+        /// <param name="SkillCategory"></param>
+        /// <returns></returns>
+
+        public JsonResult IsCategoryExist(string SkillCategory)
+        {
+            // Check if Skill category alreday exist in database and store the returned value to a variable.
+            var validateScale = dbContext.tblSkillCategories.FirstOrDefault(x => x.SkillCategory == SkillCategory && x.IsDeleted == false);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// To edit a SkillCategory in database using a button in gridview based on SkillCategoryID.
+        /// </summary>
+        /// <param name="SkillCategoryID"></param>
+        /// <param name="SkillCategory"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult CategoryEdit(int SkillCategoryID, string SkillCategory, string description)
+        {
+            tblSkillCategory category = dbContext.tblSkillCategories.Find(SkillCategoryID);
+            category.SkillCategory = SkillCategory;
+            category.Description = description;
+            dbContext.SaveChanges();
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
+            return Json(new { Url = redirectUrl, SkillCategory = SkillCategory, Description = description }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// To delete a SkillCategory in database using a button in gridview basd on SkillCategoryID.
+        /// </summary>
+        /// <param name="SkillCategoryID"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        public JsonResult CategoryDelete(int SkillCategoryID)
+        {
+            tblSkillCategory skill = dbContext.tblSkillCategories.Find(SkillCategoryID);
+            skill.IsDeleted = true;
+            skill.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            skill.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+            bool result = true;
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
+            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region Skill
+
+        /// <summary>
+        /// To display all the skills in database.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Skill()
+        {
+            // Select all the skill categories which are not deleted.
+            var itemlist = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false).ToList();
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            // Store the skill categories and corresponding ID's in a list.
+            foreach (var skillitem in itemlist)
+            {
+                SelectListItem selectlistitem = new SelectListItem
                 {
-                    UserID = user.UserID,
-                    UserName = user.UserName,
-                    Designation = user.Designation,
-                    UserTypeID = Convert.ToInt32(user.UserTypeID),
-                    Address = user.Address,
-                    Email = user.Email,
-                    EmployeeId = user.EmployeeId,
-                    Password = hashedPwd,
-                    Pincode = user.Pincode,
+                    Text = skillitem.SkillCategory,
+                    Value = skillitem.SkillCategoryID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            ViewBag.category = selectedlist;
+            // Join both the tables and select all the fields which are required in the gridview.
+            var result = from a in dbContext.tblSkillCategories
+                         join b in dbContext.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
+                         where b.IsDeleted == false
+                         select new
+                         {
+                             skillno = b.SkillID,
+                             skillcat = a.SkillCategory,
+                             skillname = b.SkillName
+                         };
+            if (!result.Any()) //If no values exist based on the condition pass 'null'.
+            {
+                ViewBag.Skillcategories = null;
+            }
+
+            else // Pass result.
+            {
+                ViewBag.Skillcategories = result;
+
+            }
+            return View();
+        }
+
+        /// <summary>
+        /// To display a form to enter new skills to database.
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <param name="category"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        public ActionResult Skill(tblSkill skill, string category)
+        {
+            try
+            {
+                skill.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                skill.CreatedDate = DateTime.Now;
+                skill.IsDeleted = false;
+                skill.SkillCategoryID = Convert.ToInt32(category);
+                dbContext.tblSkills.Add(skill);
+                dbContext.SaveChanges();
+                return RedirectToAction("Skill");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Home", "Login"));
+            }
+        }
+
+        /// <summary>
+        /// To check if skill entered in form already exist in database.
+        /// </summary>
+        /// <param name="SkillName"></param>
+        /// <returns></returns>
+        public JsonResult IsSkillExist(string SkillName)
+        {
+            // Check if the skill entered already exist in dataabse and store the value returned to a variable.
+            var validateScale = dbContext.tblSkills.FirstOrDefault(x => x.SkillName == SkillName && x.IsDeleted == false);
+            if (validateScale != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// To edit a skill in database using a button in gridview based on SkillCategoryID.
+        /// </summary>
+        /// <param name="SkillID"></param>
+        /// <param name="Skillname"></param>
+        /// <param name="CategoryID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult SkillEdit(int SkillID, string Skillname, int CategoryID)
+        {
+            tblSkill skill = dbContext.tblSkills.Find(SkillID);
+            skill.SkillCategoryID = CategoryID;
+            skill.SkillName = Skillname;
+            skill.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            skill.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+            // Set skillcategory based on the value selected from dropdown and update skillcategry in databse for that skill.
+            var SkillCategory = (from item in dbContext.tblSkillCategories where item.SkillCategoryID == CategoryID select item.SkillCategory).FirstOrDefault();
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
+            return Json(new { Url = redirectUrl, SkillName = Skillname, SkillCategory = SkillCategory }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// To delete a skill in database using a button in gridview based on SkillCategoryID.
+        /// </summary>
+        /// <param name="SkillID"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        public JsonResult SkillDelete(int SkillID)
+        {
+            tblSkill skills = dbContext.tblSkills.Find(SkillID);
+            skills.IsDeleted = true;
+            skills.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+            skills.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+            bool result = true;
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
+            return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        #endregion
+
+        #region Interviewer
+        /// <summary>
+        /// Get method of Add Interviewers page. 
+        /// ViewBag.Users is used to pass the list of Interviewers to the view page.
+        /// </summary>
+
+        public ActionResult AddInterviewers()
+        {
+            try
+            {
+                List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
+                    .Select(u => new UserViewModel
+                    {
+                        UserID = u.UserID,
+                        UserName = u.UserName,
+                        Designation = u.Designation,
+                        UserTypeID = u.UserTypeID,
+                        Address = u.Address,
+                        Email = u.Email,
+                        EmployeeId = u.EmployeeId,
+                        Password = u.Password,
+                        Pincode = u.Pincode,
+                    }).ToList();
+                ViewBag.Users = users;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
+            }
+        }
+        /// <summary>
+        /// Post method of AddInterviewers page. 
+        /// The length of password,username and employeeid are initialized in web.config
+        /// </summary>
+        /// <param name="user"></param>
+
+        [HttpPost]
+        public ActionResult AddInterviewers(UserViewModel user)
+        {
+            try
+            {
+                string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Password, "sha1");
+                var passwordLength = services.GetAppSettingsValue("UserPasswordLength");
+                var userNameLength = services.GetAppSettingsValue("UserNameLength");
+                var employeeIdLength = services.GetAppSettingsValue("EmployeeIdLength");
+                user.UserTypeID = 2;
+                bool flag = false;
+                if (ModelState.IsValid)
+                {
+                    if (user.Password.Length < Convert.ToInt32(passwordLength))
+                    {
+                        flag = true;
+                        ViewBag.PasswordErrorMessage = string.Format(Constants.passwordValidation, passwordLength);
+                    }
+                    if (user.UserName.Length < Convert.ToInt32(userNameLength))
+                    {
+                        flag = true;
+                        ViewBag.UserNameErrorMessage = string.Format(Constants.userNameValidation, userNameLength);
+                    }
+                    if (user.EmployeeId.Length > Convert.ToInt32(employeeIdLength))
+                    {
+                        ViewBag.employeeIdLengthErrorMessage = string.Format(Constants.employeeIDValidation, employeeIdLength);
+                        flag = true;
+                    }
+                    if (flag == false)
+                    {
+                        dbContext.tblUsers.Add(new tblUser
+                        {
+                            UserID = user.UserID,
+                            UserName = user.UserName,
+                            Designation = user.Designation,
+                            UserTypeID = Convert.ToInt32(user.UserTypeID),
+                            Address = user.Address,
+                            Email = user.Email,
+                            EmployeeId = user.EmployeeId,
+                            Password = hashedPwd,
+                            Pincode = user.Pincode,
+                            CreatedBy = Convert.ToInt32(Session["UserID"]),
+                            CreatedDate = System.DateTime.Now,
+                            IsDeleted = false
+                        });
+                        dbContext.SaveChanges();
+                        ModelState.Clear();
+                        ViewBag.result = Constants.interviewerAdded;
+                    }
+                    List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
+                    .Select(u => new UserViewModel
+                    {
+                        UserID = u.UserID,
+                        UserName = u.UserName,
+                        Designation = u.Designation,
+                        UserTypeID = u.UserTypeID,
+                        Address = u.Address,
+                        Email = u.Email,
+                        EmployeeId = u.EmployeeId,
+                        Password = u.Password,
+                        Pincode = u.Pincode,
+                    }).ToList();
+                    ViewBag.Users = users;
+                    return View();
+                }
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
+            }
+
+        }
+        /// <summary>
+        /// The method For Updating Interviewer. The updation is based on UserID
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="UserName"></param>
+        /// <param name="Email"></param>
+        /// <param name="Designation"></param>
+
+        [HttpPost]
+        public ActionResult UpdateInterviewer(int UserID, string UserName, string Email, string Designation)
+        {
+            try
+            {
+                tblUser updateInterviewer = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
+                updateInterviewer.UserName = UserName;
+                updateInterviewer.Email = Email;
+                updateInterviewer.Designation = Designation;
+                updateInterviewer.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                updateInterviewer.ModifiedDate = System.DateTime.Now;
+                dbContext.SaveChanges();
+                return Json(new { UserName = UserName, Email = Email, Designation = Designation }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
+            }
+        }
+        /// <summary>
+        /// The method for deleting the interviewer. The deletion is based on the UserID
+        /// </summary>
+        /// <param name="UserID"></param>
+
+        public ActionResult DeleteInterviewer(int UserID)
+        {
+            try
+            {
+                tblUser user = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
+                user.IsDeleted = true;
+                user.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                user.ModifiedDate = System.DateTime.Now;
+                dbContext.SaveChanges();
+                return RedirectToAction("AddInterviewers");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
+            }
+        }
+        /// <summary>
+        /// The method for remote validation to check whether Interviewer Name already exists or not.
+        /// </summary>
+        /// <param name="UserName"></param>
+
+        [HttpGet]
+        public JsonResult IsInterviewerUserNameExists(string UserName)
+        {
+            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.IsDeleted == false).FirstOrDefault() != null;
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// The method for remote validation to check whether EmployeeId exists or not.
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+
+        [HttpGet]
+        public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
+        {
+            bool IsExists = dbContext.tblUsers.Where(u => u.EmployeeId.Equals(EmployeeId) && u.IsDeleted == false).FirstOrDefault() != null;
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// The method for remote validation to check whether Interviewer Email exists or not.
+        /// </summary>
+        /// <param name="Email"></param>
+
+        [HttpGet]
+        public JsonResult IsInterviewerEmailExists(string Email)
+        {
+            bool IsExists = dbContext.tblUsers.Where(u => u.Email.Equals(Email) && u.IsDeleted == false).FirstOrDefault() != null;
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Candidate
+        /// <summary>
+        /// Get method for adding candidate. 
+        /// The page consists of two grid. One for interviewers and other for candidates
+        /// </summary>
+        public ActionResult AddCandidate()
+        {
+            try
+            {
+                CandidateViewModel addCandidateViewModel = new CandidateViewModel();
+                addCandidateViewModel.CandidatesList = dbContext.spGetCandidates()
+                    .Select(s => new CandidateViewModel
+                    {
+                        CandidateID = s.CandidateID,
+                        Name = s.Name,
+                        Email = s.Email,
+                        DateOfBirth = s.DateOfBirth,
+                        PAN = s.PAN,
+                        Designation = s.Designation,
+                        DateOfInterview = s.DateOfInterview,
+                        TotalExperience = s.TotalExperience,
+                        Qualifications = s.Qualifications
+                    }).ToList();
+                addCandidateViewModel.users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = user.UserName,
+                        Value = user.UserID.ToString(),
+
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.user = selectedlist;
+                return View(addCandidateViewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
+            }
+        }
+
+        /// <summary>
+        /// Post method for the Add Candidate page.
+        /// </summary>
+        /// <param name="candidateView"></param>
+        /// <param name="user"></param>
+        /// <param name="Name"></param>
+        /// <param name="txtBoxes"></param>
+
+        [HttpPost]
+        public ActionResult AddCandidate(CandidateViewModel candidateView, string user, string Name, string[] txtBoxes)
+        {
+            try
+            {
+                //Stored procedure to get the minimum round id.
+                int Round1ID = (int)dbContext.spGetMinimumRoundID().Single();
+                string roundErrorMessage = "";
+                if (Round1ID == 0)
+                {
+                    roundErrorMessage = Constants.roundError;
+                }
+                else
+                {
+                    if (user != null)
+                    {
+                        //Insertion into candidate table
+                        tblCandidate candidate = new tblCandidate();
+                        candidate.Name = candidateView.Name;
+                        candidate.DateOfBirth = candidateView.DateOfBirth;
+                        candidate.DateOfInterview = candidateView.DateOfInterview;
+                        candidate.Designation = candidateView.Designation;
+                        candidate.Email = candidateView.Email;
+                        candidate.PAN = candidateView.PAN;
+                        candidate.ExpectedSalary = candidateView.ExpectedSalary;
+                        candidate.NoticePeriodInMonths = (int)candidateView.NoticePeriodInMonths;
+                        candidate.TotalExperience = candidateView.TotalExperience;
+                        candidate.Qualifications = candidateView.Qualifications;
+                        candidate.IsLocked = true;
+                        candidate.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                        candidate.CreatedDate = System.DateTime.Now;
+                        candidate.IsDeleted = false;
+                        dbContext.tblCandidates.Add(candidate);
+                        dbContext.SaveChanges();
+                        if (candidateView.TotalExperience > 0)
+                        {
+                            //Insertion into previous company table
+                            tblPreviousCompany previousCmpny = new tblPreviousCompany();
+                            previousCmpny.CandidateID = candidate.CandidateID;
+                            foreach (string textboxValue in txtBoxes)
+                            {
+                                previousCmpny.PreviousCompany = textboxValue;
+                                previousCmpny.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                                previousCmpny.CreatedDate = System.DateTime.Now;
+                                previousCmpny.IsDeleted = false;
+                                dbContext.tblPreviousCompanies.Add(previousCmpny);
+                                dbContext.SaveChanges();
+                            }
+                        }
+                        //Insertion into evaluation table
+                        tblEvaluation eval = new tblEvaluation();
+                        eval.CandidateID = candidate.CandidateID;
+                        eval.UserID = Convert.ToInt32(user);
+                        eval.RoundID = Round1ID;
+                        eval.CreatedBy = Convert.ToInt32(Session["UserID"]);
+                        eval.CreatedDate = DateTime.Now;
+                        eval.IsDeleted = false;
+                        dbContext.tblEvaluations.Add(eval);
+                        dbContext.SaveChanges();
+
+                        // Call SentEmailNotification method to sent mail to notify Interviewer
+                        services.SentEmailNotification(candidate.CandidateID, Convert.ToInt32(user));
+                    }
+                }
+                var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
+                return Json(new { Url = redirectUrl, roundErrorMessage = roundErrorMessage });
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
+            }
+        }
+        /// <summary>
+        /// Method for searching candidate.
+        /// </summary>
+        /// <param name="Name"></param>
+
+        [HttpPost]
+        public ActionResult SearchCandidateResult(string Name)
+        {
+            try
+            {
+                CandidateViewModel candidateViewModel = new CandidateViewModel();
+                //stored procedure that contain the list of candidates. From that list, the candidate is searched
+                candidateViewModel.CandidateInterviewersList = dbContext.spCandidateInterviewers().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
+                    .Select(s => new CandidateInterviewerViewModel
+                    {
+                        CandidateID = s.CandidateID,
+                        CandidateName = s.Name,
+                        DateOfInterview = s.DateOfInterview,
+                        InterviewerName = s.UserName
+                    }).ToList();
+
+                //To fill the drop down that contain the interviewers
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = user.UserName,
+                        Value = user.UserID.ToString()
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.user = selectedlist;
+                return PartialView("SearchCandidateResult", candidateViewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
+            }
+        }
+        /// <summary>
+        /// Method to update the candidate
+        /// </summary>
+        /// <param name="CandidateID"></param>
+        /// <param name="CandidateName"></param>
+        /// <param name="DateOfInterview"></param>
+        /// <param name="UserID"></param>
+
+        [HttpPost]
+        public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications)
+        {
+            try
+            {
+                tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+                updateCandidate.Name = CandidateName;
+                updateCandidate.Email = email;
+                updateCandidate.DateOfBirth = dateofbirth;
+                updateCandidate.PAN = pan;
+                updateCandidate.Designation = designation;
+                updateCandidate.TotalExperience = experience;
+                updateCandidate.Qualifications = qualifications;
+                updateCandidate.DateOfInterview = DateOfInterview;
+                updateCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                updateCandidate.ModifiedDate = DateTime.Now;
+                dbContext.SaveChanges();
+                return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString() }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
+            }
+        }
+        /// <summary>
+        /// Method to delete the candidate
+        /// </summary>
+        /// <param name="CandidateID"></param>
+
+        [HttpPost]
+        public ActionResult DeleteCandidate(int CandidateID)
+        {
+            try
+            {
+
+                tblCandidate deleteCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+                deleteCandidate.IsDeleted = true;
+                deleteCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                deleteCandidate.ModifiedDate = System.DateTime.Now;
+                dbContext.SaveChanges();
+                return RedirectToAction("AddCandidate");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
+            }
+        }
+        #endregion
+
+        #region Notification
+        /// <summary>
+        /// This section is available for HR only. It consists of a grid that lists the
+        /// candidate after completion of each round. HR can assign the next round/hire candidate/
+        /// reject candidate based on the status of the candidate.
+        /// </summary>
+
+
+        public ActionResult Notification()
+        {
+            try
+            {
+                List<NotificationViewModel> notificationList = new List<NotificationViewModel>();
+                //stored procedure to fill the data in notification grid.
+                notificationList = dbContext.spHRNotificationGrid()
+                    .Select(n => new NotificationViewModel
+                    {
+                        CandidateID = n.CandidateID,
+                        Name = n.Name,
+                        RoundID = n.RoundID,
+                        Recommended = n.Recommended,
+                        Email = n.Email,
+                        totalRound = n.totalRound
+                    }).ToList();
+                ViewBag.notificationList = notificationList;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
+            }
+        }
+        /// <summary>
+        /// Partial view that appears when the HR assign candidate to the next round.
+        /// </summary>
+
+        public ActionResult NotificationProceed()
+        {
+            return View();
+        }
+        /// <summary>
+        /// Method for passing the data from Notification to NotificationProceed(ie partial view)
+        /// </summary>
+        /// <param name="CandidateID"></param>
+        /// <param name="Name"></param>
+        /// <param name="Email"></param>
+        /// <param name="RoundID"></param>
+
+        public ActionResult ProceedCandidate(int CandidateID, string Name, string Email, int RoundID)
+        {
+            try
+            {
+                NotificationProceedViewModel candidateProceed = new NotificationProceedViewModel();
+                candidateProceed.CandidateID = CandidateID;
+                candidateProceed.Name = Name;
+                candidateProceed.Email = Email;
+                TempData["CandidateID"] = CandidateID;
+                List<SelectListItem> selectedlistround = new List<SelectListItem>();
+
+                //stored procedure to list all the rounds that the candidates have not attended yet.
+                //This is assigned to ViewBag.round
+                List<CandidateRoundViewModel> CandidateRound = dbContext.spGetCandidateRound(CandidateID)
+                    .Select(i => new CandidateRoundViewModel
+                    {
+                        RoundID = i.RoundID,
+                        RoundName = i.roundName
+                    }).ToList();
+                foreach (CandidateRoundViewModel round1 in CandidateRound)
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = round1.RoundName,
+                        Value = round1.RoundID.ToString()
+                    };
+                    selectedlistround.Add(selectlistitem);
+                }
+                ViewBag.round = selectedlistround;
+
+                //Used to fill the drop down with interviewers that have not taken interview for particular candidate.
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                List<CandidateInterviewersViewModel> interviewers = dbContext.spGetCandidateInterviewers(CandidateID)
+                    .Select(i => new CandidateInterviewersViewModel
+                    {
+                        UserID = i.UserID,
+                        UserName = i.UserName
+                    }).ToList();
+                foreach (CandidateInterviewersViewModel interviewer in interviewers)
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = interviewer.UserName,
+                        Value = interviewer.UserID.ToString()
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.interviewers = selectedlist;
+                return PartialView("NotificationProceed", candidateProceed);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
+            }
+        }
+        /// <summary>
+        /// Post method of the partial view - NotificationProceed
+        /// </summary>
+        /// <param name="interviewers"></param>
+        /// <param name="round"></param>
+
+        public ActionResult ProceedCandidateData(int interviewers, int round)
+        {
+            try
+            {
+                //New round and assigned interviewer data are inserted into evaluation table.
+                dbContext.tblEvaluations.Add(new tblEvaluation
+                {
+                    CandidateID = Convert.ToInt16(TempData["CandidateID"]),
+                    RoundID = Convert.ToInt32(round),
+                    UserID = interviewers,
                     CreatedBy = Convert.ToInt32(Session["UserID"]),
                     CreatedDate = System.DateTime.Now,
                     IsDeleted = false
                 });
                 dbContext.SaveChanges();
-                ModelState.Clear();
-                ViewBag.result = Constants.interviewerAdded;
-            }
-            List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
-            .Select(u => new UserViewModel
-            {
-                UserID = u.UserID,
-                UserName = u.UserName,
-                Designation = u.Designation,
-                UserTypeID = u.UserTypeID,
-                Address = u.Address,
-                Email = u.Email,
-                EmployeeId = u.EmployeeId,
-                Password = u.Password,
-                Pincode = u.Pincode,
-            }).ToList();
-            ViewBag.Users = users;
-            return View();
-        }
-        return View(user);
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
-    }
-
-}
-/// <summary>
-/// The method For Updating Interviewer. The updation is based on UserID
-/// </summary>
-/// <param name="UserID"></param>
-/// <param name="UserName"></param>
-/// <param name="Email"></param>
-/// <param name="Designation"></param>
-
-[HttpPost]
-public ActionResult UpdateInterviewer(int UserID, string UserName, string Email, string Designation)
-{
-    try
-    {
-        tblUser updateInterviewer = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
-        updateInterviewer.UserName = UserName;
-        updateInterviewer.Email = Email;
-        updateInterviewer.Designation = Designation;
-        updateInterviewer.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-        updateInterviewer.ModifiedDate = System.DateTime.Now;
-        dbContext.SaveChanges();
-        return Json(new { UserName = UserName, Email = Email, Designation = Designation }, JsonRequestBehavior.AllowGet);
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
-    }
-}
-/// <summary>
-/// The method for deleting the interviewer. The deletion is based on the UserID
-/// </summary>
-/// <param name="UserID"></param>
-
-public ActionResult DeleteInterviewer(int UserID)
-{
-    try
-    {
-        tblUser user = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
-        user.IsDeleted = true;
-        user.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-        user.ModifiedDate = System.DateTime.Now;
-        dbContext.SaveChanges();
-        return RedirectToAction("AddInterviewers");
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
-    }
-}
-/// <summary>
-/// The method for remote validation to check whether Interviewer Name already exists or not.
-/// </summary>
-/// <param name="UserName"></param>
-
-[HttpGet]
-public JsonResult IsInterviewerUserNameExists(string UserName)
-{
-    bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.IsDeleted == false).FirstOrDefault() != null;
-    return Json(!IsExists, JsonRequestBehavior.AllowGet);
-}
-/// <summary>
-/// The method for remote validation to check whether EmployeeId exists or not.
-/// </summary>
-/// <param name="EmployeeId"></param>
-
-[HttpGet]
-public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
-{
-    bool IsExists = dbContext.tblUsers.Where(u => u.EmployeeId.Equals(EmployeeId) && u.IsDeleted == false).FirstOrDefault() != null;
-    return Json(!IsExists, JsonRequestBehavior.AllowGet);
-}
-/// <summary>
-/// The method for remote validation to check whether Interviewer Email exists or not.
-/// </summary>
-/// <param name="Email"></param>
-
-[HttpGet]
-public JsonResult IsInterviewerEmailExists(string Email)
-{
-    bool IsExists = dbContext.tblUsers.Where(u => u.Email.Equals(Email) && u.IsDeleted == false).FirstOrDefault() != null;
-    return Json(!IsExists, JsonRequestBehavior.AllowGet);
-}
-#endregion
-
-#region Candidate
-/// <summary>
-/// Get method for adding candidate. 
-/// The page consists of two grid. One for interviewers and other for candidates
-/// </summary>
-public ActionResult AddCandidate()
-{
-    try
-    {
-        CandidateViewModel addCandidateViewModel = new CandidateViewModel();
-        addCandidateViewModel.CandidatesList = dbContext.spGetCandidates()
-            .Select(s => new CandidateViewModel
-            {
-                CandidateID = s.CandidateID,
-                Name = s.Name,
-                Email = s.Email,
-                DateOfBirth = s.DateOfBirth,
-                PAN = s.PAN,
-                Designation = s.Designation,
-                DateOfInterview = s.DateOfInterview,
-                TotalExperience = s.TotalExperience,
-                Qualifications = s.Qualifications
-            }).ToList();
-        addCandidateViewModel.users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
-        List<SelectListItem> selectedlist = new List<SelectListItem>();
-        foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
-        {
-            SelectListItem selectlistitem = new SelectListItem
-            {
-                Text = user.UserName,
-                Value = user.UserID.ToString(),
-
-            };
-            selectedlist.Add(selectlistitem);
-        }
-        ViewBag.user = selectedlist;
-        return View(addCandidateViewModel);
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
-    }
-}
-
-/// <summary>
-/// Post method for the Add Candidate page.
-/// </summary>
-/// <param name="candidateView"></param>
-/// <param name="user"></param>
-/// <param name="Name"></param>
-/// <param name="txtBoxes"></param>
-
-[HttpPost]
-public ActionResult AddCandidate(CandidateViewModel candidateView, string user, string Name, string[] txtBoxes)
-{
-    try
-    {
-        //Stored procedure to get the minimum round id.
-        int Round1ID = (int)dbContext.spGetMinimumRoundID().Single();
-        string roundErrorMessage = "";
-        if (Round1ID == 0)
-        {
-            roundErrorMessage = Constants.roundError;
-        }
-        else
-        {
-            if (user != null)
-            {
-                //Insertion into candidate table
-                tblCandidate candidate = new tblCandidate();
-                candidate.Name = candidateView.Name;
-                candidate.DateOfBirth = candidateView.DateOfBirth;
-                candidate.DateOfInterview = candidateView.DateOfInterview;
-                candidate.Designation = candidateView.Designation;
-                candidate.Email = candidateView.Email;
-                candidate.PAN = candidateView.PAN;
-                candidate.ExpectedSalary = candidateView.ExpectedSalary;
-                candidate.NoticePeriodInMonths = (int)candidateView.NoticePeriodInMonths;
-                candidate.TotalExperience = candidateView.TotalExperience;
-                candidate.Qualifications = candidateView.Qualifications;
-                candidate.IsLocked = true;
-                candidate.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                candidate.CreatedDate = System.DateTime.Now;
-                candidate.IsDeleted = false;
-                dbContext.tblCandidates.Add(candidate);
-                dbContext.SaveChanges();
-                if (candidateView.TotalExperience > 0)
-                {
-                    //Insertion into previous company table
-                    tblPreviousCompany previousCmpny = new tblPreviousCompany();
-                    previousCmpny.CandidateID = candidate.CandidateID;
-                    foreach (string textboxValue in txtBoxes)
-                    {
-                        previousCmpny.PreviousCompany = textboxValue;
-                        previousCmpny.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                        previousCmpny.CreatedDate = System.DateTime.Now;
-                        previousCmpny.IsDeleted = false;
-                        dbContext.tblPreviousCompanies.Add(previousCmpny);
-                        dbContext.SaveChanges();
-                    }
-                }
-                //Insertion into evaluation table
-                tblEvaluation eval = new tblEvaluation();
-                eval.CandidateID = candidate.CandidateID;
-                eval.UserID = Convert.ToInt32(user);
-                eval.RoundID = Round1ID;
-                eval.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                eval.CreatedDate = DateTime.Now;
-                eval.IsDeleted = false;
-                dbContext.tblEvaluations.Add(eval);
-                dbContext.SaveChanges();
+                Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
 
                 // Call SentEmailNotification method to sent mail to notify Interviewer
-                services.SentEmailNotification(candidate.CandidateID, Convert.ToInt32(user));
+                services.SentEmailNotification(Convert.ToInt16(TempData["CandidateID"]), interviewers);
+                return RedirectToAction("Notification", "HR");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
             }
         }
-        var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
-        return Json(new { Url = redirectUrl, roundErrorMessage = roundErrorMessage });
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
-    }
-}
-/// <summary>
-/// Method for searching candidate.
-/// </summary>
-/// <param name="Name"></param>
 
-[HttpPost]
-public ActionResult SearchCandidateResult(string Name)
-{
-    try
-    {
-        CandidateViewModel candidateViewModel = new CandidateViewModel();
-        //stored procedure that contain the list of candidates. From that list, the candidate is searched
-        candidateViewModel.CandidateInterviewersList = dbContext.spCandidateInterviewers().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
-            .Select(s => new CandidateInterviewerViewModel
-            {
-                CandidateID = s.CandidateID,
-                CandidateName = s.Name,
-                DateOfInterview = s.DateOfInterview,
-                InterviewerName = s.UserName
-            }).ToList();
+        /// <summary>
+        /// Method to reject candidate. Control is passed to this method on clicking the Reject button 
+        /// of Notification grid
+        /// </summary>
+        /// <param name="CandidateID"></param>
 
-        //To fill the drop down that contain the interviewers
-        List<SelectListItem> selectedlist = new List<SelectListItem>();
-        foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+        public ActionResult RejectCandidate(int CandidateID)
         {
-            SelectListItem selectlistitem = new SelectListItem
+            try
             {
-                Text = user.UserName,
-                Value = user.UserID.ToString()
-            };
-            selectedlist.Add(selectlistitem);
-        }
-        ViewBag.user = selectedlist;
-        return PartialView("SearchCandidateResult", candidateViewModel);
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
-    }
-}
-/// <summary>
-/// Method to update the candidate
-/// </summary>
-/// <param name="CandidateID"></param>
-/// <param name="CandidateName"></param>
-/// <param name="DateOfInterview"></param>
-/// <param name="UserID"></param>
-
-[HttpPost]
-public ActionResult UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications)
-{
-    try
-    {
-        tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
-        updateCandidate.Name = CandidateName;
-        updateCandidate.Email = email;
-        updateCandidate.DateOfBirth = dateofbirth;
-        updateCandidate.PAN = pan;
-        updateCandidate.Designation = designation;
-        updateCandidate.TotalExperience = experience;
-        updateCandidate.Qualifications = qualifications;
-        updateCandidate.DateOfInterview = DateOfInterview;
-        updateCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-        updateCandidate.ModifiedDate = DateTime.Now;
-        dbContext.SaveChanges();
-        return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString() }, JsonRequestBehavior.AllowGet);
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
-    }
-}
-/// <summary>
-/// Method to delete the candidate
-/// </summary>
-/// <param name="CandidateID"></param>
-
-[HttpPost]
-public ActionResult DeleteCandidate(int CandidateID)
-{
-    try
-    {
-
-        tblCandidate deleteCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
-        deleteCandidate.IsDeleted = true;
-        deleteCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-        deleteCandidate.ModifiedDate = System.DateTime.Now;
-        dbContext.SaveChanges();
-        return RedirectToAction("AddCandidate");
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "AddCandidate"));
-    }
-}
-#endregion
-
-#region Notification
-/// <summary>
-/// This section is available for HR only. It consists of a grid that lists the
-/// candidate after completion of each round. HR can assign the next round/hire candidate/
-/// reject candidate based on the status of the candidate.
-/// </summary>
-
-
-public ActionResult Notification()
-{
-    try
-    {
-        List<NotificationViewModel> notificationList = new List<NotificationViewModel>();
-        //stored procedure to fill the data in notification grid.
-        notificationList = dbContext.spHRNotificationGrid()
-            .Select(n => new NotificationViewModel
+                Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
+                tblCandidate rejectCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+                rejectCandidate.CandidateStatus = false;
+                dbContext.SaveChanges();
+                return RedirectToAction("Notification");
+            }
+            catch (Exception ex)
             {
-                CandidateID = n.CandidateID,
-                Name = n.Name,
-                RoundID = n.RoundID,
-                Recommended = n.Recommended,
-                Email = n.Email,
-                totalRound = n.totalRound
-            }).ToList();
-        ViewBag.notificationList = notificationList;
-        return View();
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
-    }
-}
-/// <summary>
-/// Partial view that appears when the HR assign candidate to the next round.
-/// </summary>
-
-public ActionResult NotificationProceed()
-{
-    return View();
-}
-/// <summary>
-/// Method for passing the data from Notification to NotificationProceed(ie partial view)
-/// </summary>
-/// <param name="CandidateID"></param>
-/// <param name="Name"></param>
-/// <param name="Email"></param>
-/// <param name="RoundID"></param>
-
-public ActionResult ProceedCandidate(int CandidateID, string Name, string Email, int RoundID)
-{
-    try
-    {
-        NotificationProceedViewModel candidateProceed = new NotificationProceedViewModel();
-        candidateProceed.CandidateID = CandidateID;
-        candidateProceed.Name = Name;
-        candidateProceed.Email = Email;
-        TempData["CandidateID"] = CandidateID;
-        List<SelectListItem> selectedlistround = new List<SelectListItem>();
-
-        //stored procedure to list all the rounds that the candidates have not attended yet.
-        //This is assigned to ViewBag.round
-        List<CandidateRoundViewModel> CandidateRound = dbContext.spGetCandidateRound(CandidateID)
-            .Select(i => new CandidateRoundViewModel
-            {
-                RoundID = i.RoundID,
-                RoundName = i.roundName
-            }).ToList();
-        foreach (CandidateRoundViewModel round1 in CandidateRound)
-        {
-            SelectListItem selectlistitem = new SelectListItem
-            {
-                Text = round1.RoundName,
-                Value = round1.RoundID.ToString()
-            };
-            selectedlistround.Add(selectlistitem);
-        }
-        ViewBag.round = selectedlistround;
-
-        //Used to fill the drop down with interviewers that have not taken interview for particular candidate.
-        List<SelectListItem> selectedlist = new List<SelectListItem>();
-        List<CandidateInterviewersViewModel> interviewers = dbContext.spGetCandidateInterviewers(CandidateID)
-            .Select(i => new CandidateInterviewersViewModel
-            {
-                UserID = i.UserID,
-                UserName = i.UserName
-            }).ToList();
-        foreach (CandidateInterviewersViewModel interviewer in interviewers)
-        {
-            SelectListItem selectlistitem = new SelectListItem
-            {
-                Text = interviewer.UserName,
-                Value = interviewer.UserID.ToString()
-            };
-            selectedlist.Add(selectlistitem);
-        }
-        ViewBag.interviewers = selectedlist;
-        return PartialView("NotificationProceed", candidateProceed);
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
-    }
-}
-/// <summary>
-/// Post method of the partial view - NotificationProceed
-/// </summary>
-/// <param name="interviewers"></param>
-/// <param name="round"></param>
-
-public ActionResult ProceedCandidateData(int interviewers, int round)
-{
-    try
-    {
-        //New round and assigned interviewer data are inserted into evaluation table.
-        dbContext.tblEvaluations.Add(new tblEvaluation
-        {
-            CandidateID = Convert.ToInt16(TempData["CandidateID"]),
-            RoundID = Convert.ToInt32(round),
-            UserID = interviewers,
-            CreatedBy = Convert.ToInt32(Session["UserID"]),
-            CreatedDate = System.DateTime.Now,
-            IsDeleted = false
-        });
-        dbContext.SaveChanges();
-        Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
-
-        // Call SentEmailNotification method to sent mail to notify Interviewer
-        services.SentEmailNotification(Convert.ToInt16(TempData["CandidateID"]), interviewers);
-        return RedirectToAction("Notification", "HR");
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
-    }
-}
-
-/// <summary>
-/// Method to reject candidate. Control is passed to this method on clicking the Reject button 
-/// of Notification grid
-/// </summary>
-/// <param name="CandidateID"></param>
-
-public ActionResult RejectCandidate(int CandidateID)
-{
-    try
-    {
-        Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
-        tblCandidate rejectCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
-        rejectCandidate.CandidateStatus = false;
-        dbContext.SaveChanges();
-        return RedirectToAction("Notification");
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
-    }
-}
-/// <summary>
-/// Method to hire candidate. Control is passed to this method on clicking the hire button 
-/// of Notification grid 
-/// </summary>
-/// <param name="CandidateID"></param>
-
-public ActionResult HireCandidate(int CandidateID)
-{
-    try
-    {
-        Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
-        tblCandidate hireCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
-        hireCandidate.CandidateStatus = true;
-        dbContext.SaveChanges();
-        return RedirectToAction("Notification");
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
-    }
-}
-#endregion
-
-#region View Interviewers
-/// <summary>
-/// The method for displaying the grid that consists of Candidate Name,
-/// Email,RoundID, and assigned interviewer for that round.
-/// </summary>
-
-public ActionResult ChangeCandidateInterviewer()
-{
-    try
-    {
-        List<InterviewersOfCandidateViewModel> CandidateInterviewersList = new List<InterviewersOfCandidateViewModel>();
-        CandidateInterviewersList = dbContext.spGetInterviewersOfCandidate()
-            .Select(n => new InterviewersOfCandidateViewModel
-            {
-                CandidateID = n.CandidateID,
-                Name = n.Name,
-                Email = n.Email,
-                RoundID = Convert.ToInt32(n.RoundID),
-                UserName = n.UserName,
-                Recommended = n.Recommended
-            }).ToList();
-        ViewBag.CandidateInterviewersList = CandidateInterviewersList;
-
-        List<SelectListItem> selectedlist = new List<SelectListItem>();
-        foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
-        {
-            SelectListItem selectlistitem = new SelectListItem
-            {
-                Text = user.UserName,
-                Value = user.UserID.ToString()
-            };
-            selectedlist.Add(selectlistitem);
-        }
-        ViewBag.user = selectedlist;
-
-        return View();
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
-    }
-}
-/// <summary>
-/// Method for editing the interviewer
-/// </summary>
-/// <param name="CandidateID"></param>
-/// <param name="UserID"></param>
-
-public ActionResult EditCandidateInterviewer(int CandidateID, int UserID)
-{
-    try
-    {
-        dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
-        dbContext.SaveChanges();
-        return Json(new { CandidateID = CandidateID, UserID = UserID }, JsonRequestBehavior.AllowGet);
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
-    }
-}
-/// <summary>
-/// Method for searching interviewer
-/// </summary>
-/// <param name="UserName"></param>
-
-public ActionResult SearchInterviewerResult(string UserName)
-{
-    try
-    {
-        List<InterviewersOfCandidateViewModel> CandidateInterviewersList = new List<InterviewersOfCandidateViewModel>();
-        CandidateInterviewersList = dbContext.spGetInterviewersOfCandidate().Where(s => s.UserName.ToLower().StartsWith(UserName.ToLower()))
-            .Select(n => new InterviewersOfCandidateViewModel
-            {
-                CandidateID = n.CandidateID,
-                Name = n.Name,
-                Email = n.Email,
-                RoundID = Convert.ToInt32(n.RoundID),
-                UserName = n.UserName
-            }).ToList();
-        ViewBag.CandidateInterviewersList = CandidateInterviewersList;
-
-        List<SelectListItem> selectedlist = new List<SelectListItem>();
-        foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
-        {
-            SelectListItem selectlistitem = new SelectListItem
-            {
-                Text = user.UserName,
-                Value = user.UserID.ToString()
-            };
-            selectedlist.Add(selectlistitem);
-        }
-        ViewBag.user = selectedlist;
-        return PartialView("SearchInterviewerResult", ViewBag.CandidateInterviewersList);
-    }
-    catch (Exception ex)
-    {
-        return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
-    }
-}
-#endregion
-
-#region Join Details
-
-/// <summary>
-/// To get joining details of a candidate such as offered salary and date of joining
-/// </summary>
-public ActionResult JoinDetails()
-{
-    return View();
-}
-
-/// <summary>
-/// To insert joining details such as offered salary and date of joining to database
-/// </summary>
-/// <param name="joinViewModel"></param>
-[HttpPost]
-public ActionResult JoinDetails(JoinViewModel joinViewModel)
-{
-    int res = dbContext.spInsertJoinDetails(Convert.ToInt32(Session["UserID"]), Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
-    return RedirectToAction("HRHomePage");
-}
-
-#endregion
-
-#region Candidate Status
-
-/// <summary>
-/// To get current status of all candidates
-/// </summary>
-public ActionResult CandidateStatus()
-{
-    List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
-    return View(CurrentStatuses);
-}
-
-/// <summary>
-/// To do case insensitive search based on filters Candidate Name and Email
-/// </summary>
-[HttpPost]
-public ActionResult CandidateStatus(string searchString)
-{
-    List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
-
-    // Check if search string is not empty or null
-    if (!String.IsNullOrEmpty(searchString))
-    {
-        // Get details of candidates whose name or email starts with search string given
-        CurrentStatuses = CurrentStatuses.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                               || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-    }
-    return View(CurrentStatuses);
-}
-
-#endregion
-
-#region HR Evaluation
-
-/// <summary>
-/// To get rating scales, rounds, skill categories and skills by skill category from database
-/// To get scores by round and comments of previous rounds from database
-/// </summary>
-/// <param name="statusViewModel"></param>
-public ActionResult HREvaluation(StatusViewModel statusViewModel)
-{
-    InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
-    interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
-    interviewEvaluationViewModel.Rounds = services.GetRounds();
-    interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
-    interviewEvaluationViewModel.Skills = services.GetSkills();
-    int skillCount = interviewEvaluationViewModel.Skills.Count;
-
-    //Get List of skills by skill category and save in a List<List<Skills>>
-    foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
-    {
-        interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
-    }
-
-    //Get List of scores by round and save in a List<List<Scores>>
-    foreach (var round in interviewEvaluationViewModel.Rounds)
-    {
-        List<ScoreEvaluationViewModel> scores = services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID);
-        bool exists;
-        ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
-        foreach (var skill in interviewEvaluationViewModel.Skills)
-        {
-
-            exists = scores.Exists(item => item.SkillID == skill.SkillID);
-
-            // Check if score exists for corresponding skill
-            if (exists == false)
-            {
-                scoreEvaluationViewModel.SkillID = skill.SkillID;
-
-                // If skill is not evaluated in previous round, display score as 0
-                scoreEvaluationViewModel.RateValue = 0;
-                scores.Add(scoreEvaluationViewModel);
+                return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
             }
         }
-        interviewEvaluationViewModel.ScoresByRound.Add(scores);
-    }
-    interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
+        /// <summary>
+        /// Method to hire candidate. Control is passed to this method on clicking the hire button 
+        /// of Notification grid 
+        /// </summary>
+        /// <param name="CandidateID"></param>
 
-    //Store CandidateID, RoundID, EvaluationID, Recommended in TempData
-    TempData["candidateID"] = statusViewModel.CandidateID;
-    TempData["roundID"] = statusViewModel.RoundID;
-    TempData["evaluationID"] = statusViewModel.EvaluationID;
-    TempData["recommended"] = statusViewModel.Recommended;
-
-    //checked if evaluation is completed
-    if (TempData["recommended"] == null)
-    {
-        TempData["recommended"] = TempData["recommended"] ?? "null";
-        TempData["evaluationCompleted"] = false;
-    }
-    else
-    {
-        TempData["evaluationCompleted"] = true;
-
-        //Get comments from database
-        interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
-    }
-    return View(interviewEvaluationViewModel);
-}
-
-/// <summary>
-/// To insert rate scale values for each skills to Score table in database
-/// To update comments and recommended(yes/no) in Evaluation table in database
-/// </summary>
-/// <param name="recommended"></param>
-/// <param name="evaluationID"></param>
-/// <param name="ids">IDs of skills that are evaluated</param>
-/// <param name="values">Rate scale values of each skills</param>
-/// <param name="comments"></param>
-/// <returns></returns>
-[HttpPost]
-public ActionResult HREvaluation(bool recommended, int evaluationID, int[] ids, int[] values, string comments)
-{
-    if (evaluationID != 0)
-    {
-        for (int i = 0; i < values.Length; i++)
+        public ActionResult HireCandidate(int CandidateID)
         {
-            dbContext.tblScores.Add(new tblScore
+            try
             {
-                EvaluationID = evaluationID,
-                SkillID = ids[i],
-                RateScaleID = values[i],
-                CreatedBy = Convert.ToInt32(Session["UserID"]),
-                CreatedDate = DateTime.Now
-            });
-            dbContext.SaveChanges();
+                Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
+                tblCandidate hireCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+                hireCandidate.CandidateStatus = true;
+                dbContext.SaveChanges();
+                return RedirectToAction("Notification");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
+            }
         }
-        tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == evaluationID).Single();
-        evaluation.Comment = comments;
-        evaluation.Recommended = recommended;
-        evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-        evaluation.ModifiedDate = DateTime.Now;
-        dbContext.SaveChanges();
-    }
+        #endregion
 
-    //Get new Notification count from database and store in session variable
-    var Notifications = dbContext.spHRNotificationGrid();
-    Session["NotificationsCount"] = Notifications.Count();
-    var redirectUrl = "";
+        #region View Interviewers
+        /// <summary>
+        /// The method for displaying the grid that consists of Candidate Name,
+        /// Email,RoundID, and assigned interviewer for that round.
+        /// </summary>
 
-    //if recommended is true, redirect to JoinDetails else redirect to HRHomePage 
-    if (recommended == true)
-    {
-        redirectUrl = new UrlHelper(Request.RequestContext).Action("JoinDetails", "HR");
-    }
-    else
-    {
-        redirectUrl = new UrlHelper(Request.RequestContext).Action("HRHomePage", "HR");
-    }
-    return Json(new { Url = redirectUrl });
-}
+        public ActionResult ChangeCandidateInterviewer()
+        {
+            try
+            {
+                List<InterviewersOfCandidateViewModel> CandidateInterviewersList = new List<InterviewersOfCandidateViewModel>();
+                CandidateInterviewersList = dbContext.spGetInterviewersOfCandidate()
+                    .Select(n => new InterviewersOfCandidateViewModel
+                    {
+                        CandidateID = n.CandidateID,
+                        Name = n.Name,
+                        Email = n.Email,
+                        RoundID = Convert.ToInt32(n.RoundID),
+                        UserName = n.UserName,
+                        Recommended = n.Recommended
+                    }).ToList();
+                ViewBag.CandidateInterviewersList = CandidateInterviewersList;
+
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = user.UserName,
+                        Value = user.UserID.ToString()
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.user = selectedlist;
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
+            }
+        }
+        /// <summary>
+        /// Method for editing the interviewer
+        /// </summary>
+        /// <param name="CandidateID"></param>
+        /// <param name="UserID"></param>
+
+        public ActionResult EditCandidateInterviewer(int CandidateID, int UserID)
+        {
+            try
+            {
+                dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
+                dbContext.SaveChanges();
+                return Json(new { CandidateID = CandidateID, UserID = UserID }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
+            }
+        }
+        /// <summary>
+        /// Method for searching interviewer
+        /// </summary>
+        /// <param name="UserName"></param>
+
+        public ActionResult SearchInterviewerResult(string UserName)
+        {
+            try
+            {
+                List<InterviewersOfCandidateViewModel> CandidateInterviewersList = new List<InterviewersOfCandidateViewModel>();
+                CandidateInterviewersList = dbContext.spGetInterviewersOfCandidate().Where(s => s.UserName.ToLower().StartsWith(UserName.ToLower()))
+                    .Select(n => new InterviewersOfCandidateViewModel
+                    {
+                        CandidateID = n.CandidateID,
+                        Name = n.Name,
+                        Email = n.Email,
+                        RoundID = Convert.ToInt32(n.RoundID),
+                        UserName = n.UserName
+                    }).ToList();
+                ViewBag.CandidateInterviewersList = CandidateInterviewersList;
+
+                List<SelectListItem> selectedlist = new List<SelectListItem>();
+                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
+                {
+                    SelectListItem selectlistitem = new SelectListItem
+                    {
+                        Text = user.UserName,
+                        Value = user.UserID.ToString()
+                    };
+                    selectedlist.Add(selectlistitem);
+                }
+                ViewBag.user = selectedlist;
+                return PartialView("SearchInterviewerResult", ViewBag.CandidateInterviewersList);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "HR", "ChangeCandidateInterviewer"));
+            }
+        }
+        #endregion
+
+        #region Join Details
+
+        /// <summary>
+        /// To get joining details of a candidate such as offered salary and date of joining
+        /// </summary>
+        public ActionResult JoinDetails()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// To insert joining details such as offered salary and date of joining to database
+        /// </summary>
+        /// <param name="joinViewModel"></param>
+        [HttpPost]
+        public ActionResult JoinDetails(JoinViewModel joinViewModel)
+        {
+            int res = dbContext.spInsertJoinDetails(Convert.ToInt32(Session["UserID"]), Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
+            return RedirectToAction("HRHomePage");
+        }
+
+        #endregion
+
+        #region Candidate Status
+
+        /// <summary>
+        /// To get current status of all candidates
+        /// </summary>
+        public ActionResult CandidateStatus()
+        {
+            List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
+            return View(CurrentStatuses);
+        }
+
+        /// <summary>
+        /// To do case insensitive search based on filters Candidate Name and Email
+        /// </summary>
+        [HttpPost]
+        public ActionResult CandidateStatus(string searchString)
+        {
+            List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
+
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                CurrentStatuses = CurrentStatuses.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return View(CurrentStatuses);
+        }
+
+        #endregion
+
+        #region HR Evaluation
+
+        /// <summary>
+        /// To get rating scales, rounds, skill categories and skills by skill category from database
+        /// To get scores by round and comments of previous rounds from database
+        /// </summary>
+        /// <param name="statusViewModel"></param>
+        public ActionResult HREvaluation(StatusViewModel statusViewModel)
+        {
+            InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
+            interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
+            interviewEvaluationViewModel.Rounds = services.GetRounds();
+            interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
+            interviewEvaluationViewModel.Skills = services.GetSkills();
+            int skillCount = interviewEvaluationViewModel.Skills.Count;
+
+            //Get List of skills by skill category and save in a List<List<Skills>>
+            foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
+            {
+                interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
+            }
+
+            //Get List of scores by round and save in a List<List<Scores>>
+            foreach (var round in interviewEvaluationViewModel.Rounds)
+            {
+                List<ScoreEvaluationViewModel> scores = services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID);
+                bool exists;
+                ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
+                foreach (var skill in interviewEvaluationViewModel.Skills)
+                {
+
+                    exists = scores.Exists(item => item.SkillID == skill.SkillID);
+
+                    // Check if score exists for corresponding skill
+                    if (exists == false)
+                    {
+                        scoreEvaluationViewModel.SkillID = skill.SkillID;
+
+                        // If skill is not evaluated in previous round, display score as 0
+                        scoreEvaluationViewModel.RateValue = 0;
+                        scores.Add(scoreEvaluationViewModel);
+                    }
+                }
+                interviewEvaluationViewModel.ScoresByRound.Add(scores);
+            }
+            interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
+
+            //Store CandidateID, RoundID, EvaluationID, Recommended in TempData
+            TempData["candidateID"] = statusViewModel.CandidateID;
+            TempData["roundID"] = statusViewModel.RoundID;
+            TempData["evaluationID"] = statusViewModel.EvaluationID;
+            TempData["recommended"] = statusViewModel.Recommended;
+
+            //checked if evaluation is completed
+            if (TempData["recommended"] == null)
+            {
+                TempData["recommended"] = TempData["recommended"] ?? "null";
+                TempData["evaluationCompleted"] = false;
+            }
+            else
+            {
+                TempData["evaluationCompleted"] = true;
+
+                //Get comments from database
+                interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
+            }
+            return View(interviewEvaluationViewModel);
+        }
+
+        /// <summary>
+        /// To insert rate scale values for each skills to Score table in database
+        /// To update comments and recommended(yes/no) in Evaluation table in database
+        /// </summary>
+        /// <param name="recommended"></param>
+        /// <param name="evaluationID"></param>
+        /// <param name="ids">IDs of skills that are evaluated</param>
+        /// <param name="values">Rate scale values of each skills</param>
+        /// <param name="comments"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult HREvaluation(bool recommended, int evaluationID, int[] ids, int[] values, string comments)
+        {
+            if (evaluationID != 0)
+            {
+                for (int i = 0; i < values.Length; i++)
+                {
+                    dbContext.tblScores.Add(new tblScore
+                    {
+                        EvaluationID = evaluationID,
+                        SkillID = ids[i],
+                        RateScaleID = values[i],
+                        CreatedBy = Convert.ToInt32(Session["UserID"]),
+                        CreatedDate = DateTime.Now
+                    });
+                    dbContext.SaveChanges();
+                }
+                tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == evaluationID).Single();
+                evaluation.Comment = comments;
+                evaluation.Recommended = recommended;
+                evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
+                evaluation.ModifiedDate = DateTime.Now;
+                dbContext.SaveChanges();
+            }
+
+            //Get new Notification count from database and store in session variable
+            var Notifications = dbContext.spHRNotificationGrid();
+            Session["NotificationsCount"] = Notifications.Count();
+            var redirectUrl = "";
+
+            //if recommended is true, redirect to JoinDetails else redirect to HRHomePage 
+            if (recommended == true)
+            {
+                redirectUrl = new UrlHelper(Request.RequestContext).Action("JoinDetails", "HR");
+            }
+            else
+            {
+                redirectUrl = new UrlHelper(Request.RequestContext).Action("HRHomePage", "HR");
+            }
+            return Json(new { Url = redirectUrl });
+        }
 
         #endregion
 
