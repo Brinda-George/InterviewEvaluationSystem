@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InterviewEvaluationSystem.CustomAttributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -107,9 +108,11 @@ namespace InterviewEvaluationSystem.Models
     {
         public int CandidateID { get; set; }
         public string Name { get; set; }
+        [DOBValidation]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
         public string Designation { get; set; }
+        [InterviewDateValidation(ErrorMessage = "Date should be greater than today's date")]
         [DataType(DataType.Date)]
         public DateTime DateOfInterview { get; set; }
         [DataType(DataType.EmailAddress)]

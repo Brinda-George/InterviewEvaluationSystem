@@ -6,21 +6,32 @@ using System.Web;
 
 namespace InterviewEvaluationSystem.CustomAttributes
 {
-    public class DateValidationAttribute : ValidationAttribute
+    public class DOBValidationAttribute : ValidationAttribute
     {
+        public DOBValidationAttribute()
+        {
+            this.ErrorMessage = "Candidate should be atleast 18 years old.";
+        }
+
         public override bool IsValid(object value)
         {
-            DateTime todayDate = Convert.ToDateTime(value);
-            return todayDate <= DateTime.Now;
+            DateTime DOB = Convert.ToDateTime(value);
+            return DOB.Year <= DateTime.Now.Year - 18;
+
         }
     }
 
     public class InterviewDateValidationAttribute : ValidationAttribute
     {
+        public InterviewDateValidationAttribute()
+        {
+            this.ErrorMessage = "Date should be greater than or equal to today's date.";
+        }
+
         public override bool IsValid(object value)
         {
-            DateTime todayDate = Convert.ToDateTime(value);
-            return todayDate > DateTime.Now;
+            DateTime interviewDate = Convert.ToDateTime(value);
+            return interviewDate >= DateTime.Now;
         }
     }
 }
