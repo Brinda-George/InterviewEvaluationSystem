@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using System.Web.Helpers;
 namespace InterviewEvaluationSystem.Controllers
 {
     public class HRController : Controller
@@ -348,11 +348,21 @@ namespace InterviewEvaluationSystem.Controllers
             return Json(new { Url = redirectUrl });
         } 
 
-        public ActionResult AddInterviewers()
+        public ActionResult AddInterviewers(int? page)
         {
             try
             {
-                List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
+                int skip;
+                if (page == null)
+                {
+                    skip = 0;
+                }
+                else
+                {
+                    skip = page.Value - 1;
+                }
+                List<tblUser> users = dbContext.tblUsers.OrderBy(s => s.IsDeleted == false && s.UserTypeID == 2).Skip(skip * 5).Take(5).ToList();
+                //List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
                 ViewBag.Users = users;
                 return View();
             }
@@ -360,6 +370,11 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "AddInterviewers"));
             }
+
+        }
+         
+        public JsonResult EfficentPaging(int? page)
+        {
 
         }
   
@@ -485,10 +500,11 @@ namespace InterviewEvaluationSystem.Controllers
             }
         }
 
-        public ActionResult AddCandidate()
+        public ActionResult AddCandidate(int? page)
         {
             try
             {
+                //int skip=page.HasValue?page.Value-1:0;
                 AddCandidateViewModels addCandidateViewModel = new AddCandidateViewModels();
                 addCandidateViewModel.CandidateList = dbContext.spCandidateWebGrid()
                     .Select(s => new CandidateGridViewModel
