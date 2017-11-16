@@ -94,39 +94,14 @@
                 return false;
             }
         });
+        $.getJSON("HR/AddInterviewers", null, function (d) {
+            $("body").append(d.Data);
+            var footer = createFooter(d.Count);
+            })
     });
 });
 
 
 
 
-    //$("#InterviewerForm").validate({
-
-    //    submitHandler: function (form) {
-    //        //submit once validation rules are met
-    //        form.submit();           
-    //    },
-    //    rules: {
-    //        //other validation statements
-
-    //        UserName: {
-    //            required: true,
-                
-    //            remote: {
-    //                url: "/HR/IsInterviewerUserNameExists",
-    //                type: "post",
-    //                data: {
-    //                    UserName: function () {
-    //                        return $('#UserName').val();
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    },
-    //    messages: {
-    //        UserName: {
-    //            remote: "UserName already in use!"
-    //        }
-    //    }
-    //    //other validation statements
-    //});
+    

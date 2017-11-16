@@ -362,9 +362,22 @@ namespace InterviewEvaluationSystem.Controllers
                     skip = page.Value - 1;
                 }
                 List<tblUser> users = dbContext.tblUsers.OrderBy(s => s.IsDeleted == false && s.UserTypeID == 2).Skip(skip * 5).Take(5).ToList();
+                var gridCandidate = new WebGrid(users);
+                var htmlString = gridCandidate.GetHtml(tableStyle: "webGrid",
+                                                     headerStyle: "header",
+                                                     alternatingRowStyle: "alt",
+                                                     htmlAttributes: new { id = "DataTable" });
+                return Json(new
+                {
+                    Data = htmlString.ToHtmlString(),
+                    Count = dbContext.tblUsers.Count() / 5
+                }, JsonRequestBehavior.AllowGet);
+                 
+
+
                 //List<tblUser> users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
-                ViewBag.Users = users;
-                return View();
+                //ViewBag.Users = users;
+                //return View();
             }
             catch (Exception ex)
             {
