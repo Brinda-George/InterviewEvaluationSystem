@@ -1,28 +1,16 @@
-﻿using InterviewEvaluationSystem.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using InterviewEvaluationSystem.Business_Logic;
 using System.Web.Helpers;
+using static DataAccessLayer.InterviewViewModels;
+using BusinessLogicLayer;
 
 namespace InterviewEvaluationSystem.Controllers
 {
     public class InterviewerController : Controller
     {
-        #region Fields
-
-        /// <summary>
-        /// Declare Db Entity to connect to database
-        /// </summary>
-        InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-
-        /// <summary>
-        /// Declare Service class that contains methods to implement business logic
-        /// </summary>
         Services services = new Services();
-
-        #endregion
 
         #region Home Page 
 
@@ -55,7 +43,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public void ChartPie(int year)
         {
-            var result = dbContext.spGetInterviewerPieChart(Convert.ToInt32(Session["UserID"]), year).Single();
+            var result = services.GetPieChartData(Convert.ToInt32(Session["UserID"]), year);
             if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
             {
                 // Use Chart class to create a pie chart image based on an array of values
@@ -73,7 +61,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public void ChartColumn(int year)
         {
-            var result = dbContext.spGetInterviewerCloumnChart(Convert.ToInt32(Session["UserID"]), year).Single();
+            var result = services.GetColumnChartData(Convert.ToInt32(Session["UserID"]), year);
             if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
             {
                 // Use Chart class to create a column chart image based on an array of values
@@ -302,28 +290,11 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                for (int i = 0; i < values.Length; i++)
-                {
-                    dbContext.tblScores.Add(new tblScore
-                    {
-                        EvaluationID = evaluationID,
-                        SkillID = ids[i],
-                        RateScaleID = values[i],
-                        CreatedBy = Convert.ToInt32(Session["UserID"]),
-                        CreatedDate = DateTime.Now
-                    });
-                    dbContext.SaveChanges();
-                }
-                int EvaluationID = Convert.ToInt16(evaluationID);
-                tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == EvaluationID).Single();
-                evaluation.Comment = comments;
-                evaluation.Recommended = recommended;
-                evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                evaluation.ModifiedDate = DateTime.Now;
-                dbContext.SaveChanges();
-
+                services.InsertScores(evaluationID, ids, values, Convert.ToInt32(Session["UserID"]));
+                int CandidateID = services.UpdateEvaluation(evaluationID, comments, recommended, Convert.ToInt32(Session["UserID"]));
+                
                 // Call SentEmailAfterFeedBack method to sent mail to HR
-                services.SentEmailAfterFeedBack(evaluation.CandidateID, Convert.ToInt32(Session["UserID"]), comments, recommended);
+                services.SentEmailAfterFeedBack(CandidateID, Convert.ToInt32(Session["UserID"]), comments, recommended);
                 TempData["Success"] = Constants.reviewSuccess;
 
                 // Redirect to Interviewer Home Page

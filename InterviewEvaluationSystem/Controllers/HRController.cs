@@ -1,28 +1,21 @@
-﻿using InterviewEvaluationSystem.Business_Logic;
-using InterviewEvaluationSystem.Models;
+﻿using BusinessLogicLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
+using static DataAccessLayer.InterviewViewModels;
 
 namespace InterviewEvaluationSystem.Controllers
 {
     public class HRController : Controller
     {
         #region Fields
-
-        /// <summary>
-        /// Declare Db Entity to connect to database
-        /// </summary>
-        InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
-
         /// <summary>
         /// Declare Service class that contains methods to implement business logic
         /// </summary>
         Services services = new Services();
-
         #endregion
 
         #region HR Home Page
@@ -48,8 +41,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="year"></param>
         public void ChartPie(int year)
         {
-            //
-            var result = dbContext.spGetPieChart(year).Single();
+            var result = services.GetHRPieChartData(year);
             if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
             {
                 // Use Chart class to create a pie chart image based on an array of values
@@ -69,7 +61,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="year"></param>
         public void ChartColumn(int year)
         {
-            var result = dbContext.spGetCloumnChart(year).Single();
+            var result = services.GetHRColumnChartData(year);
             if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
             {
                 // Use Chart class to create a column chart image based on an array of values
@@ -253,9 +245,9 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         public ActionResult AddRound()
         {
-            var item = dbContext.tblRounds.Where(s => s.IsDeleted == false).ToList(); //Select all the rounds 
-            //which are not deleted.
-            ViewBag.Rounds = item;
+            //Get all the rounds
+            var rounds = services.GetRounds();
+            ViewBag.Rounds = rounds;
             return View();
         }
 
@@ -265,15 +257,11 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="round"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddRound(tblRound round)
+        public ActionResult AddRound(RoundViewModel round)
         {
             try
             {
-                round.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                round.CreatedDate = DateTime.Now;
-                round.IsDeleted = false;
-                dbContext.tblRounds.Add(round);
-                dbContext.SaveChanges();
+                services.InsertRound(round, Convert.ToInt32(Session["UserID"]));
                 return RedirectToAction("AddRound");
             }
             catch (Exception ex)
@@ -290,7 +278,7 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsRoundExist(string RoundName)
         {
             // Check if there exist a round with same name in database and store the returned value to a variable.
-            var validateScale = dbContext.tblRounds.FirstOrDefault(x => x.RoundName == RoundName && x.IsDeleted == false);
+            var validateScale = services.ValidateRound(RoundName);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -311,9 +299,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RoundEdit(int RoundID, string RoundName)
         {
-            tblRound round = dbContext.tblRounds.Find(RoundID);
-            round.RoundName = RoundName;
-            dbContext.SaveChanges();
+            services.EditRound(RoundID, RoundName);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
             return Json(new { Url = redirectUrl, RoundName = RoundName }, JsonRequestBehavior.AllowGet);
         }
@@ -327,9 +313,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RoundDelete(int RoundID)
         {
-            tblRound round = dbContext.tblRounds.Find(RoundID);
-            round.IsDeleted = true;
-            dbContext.SaveChanges();
+            services.DeleteRound(RoundID);
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
             return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
@@ -345,8 +329,8 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale()
         {
             //Select all the rating scales which are not deleted.
-            var item = dbContext.tblRatingScales.Where(s => s.IsDeleted == false).ToList();
-            ViewBag.Roles = item;
+            var rateScales = services.GetRatingScale();
+            ViewBag.Roles = rateScales;
             return View();
         }
 
@@ -355,15 +339,11 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         /// <param name="rate"></param>
         [HttpPost]
-        public ActionResult RatingScale(tblRatingScale rate)
+        public ActionResult RatingScale(RatingScaleViewModel rate)
         {
             try
             {
-                rate.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                rate.CreatedDate = DateTime.Now;
-                rate.IsDeleted = false;
-                dbContext.tblRatingScales.Add(rate);
-                dbContext.SaveChanges();
+                services.InsertRatingScale(rate, Convert.ToInt32(Session["UserID"]));
                 return RedirectToAction("RatingScale");
             }
             catch (Exception ex)
@@ -380,7 +360,7 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsScaleExist(string RateScale)
         {
             //Check if RateScale already exist in database and store the returned value to a variable.
-            var validateScale = dbContext.tblRatingScales.FirstOrDefault(x => x.RateScale == RateScale && x.IsDeleted == false);
+            var validateScale = services.ValidateRateScale(RateScale);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -399,8 +379,7 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsValueExist(int RateValue)
         {
             //Check if RateValue already exist in database and store the returned value to a variable.
-            var validateScale = dbContext.tblRatingScales.FirstOrDefault
-                                (x => x.RateValue == RateValue && x.IsDeleted == false);
+            var validateScale = services.ValidateRateValue(RateValue);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -423,11 +402,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RateEdit(int RateScaleId, string Ratescale, int Ratevalue, string description)
         {
-            tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleId);
-            rate.RateScale = Ratescale;
-            rate.RateValue = Ratevalue;
-            rate.Description = description;
-            dbContext.SaveChanges();
+            services.EditRatingScale(RateScaleId, Ratescale, Ratevalue, description);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
             return Json(new { Url = redirectUrl, RateScale = Ratescale, RateValue = Ratevalue, Description = description }, JsonRequestBehavior.AllowGet);
         }
@@ -440,11 +415,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RateDelete(int RateScaleID)
         {
-            tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleID);
-            rate.IsDeleted = true;
-            rate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-            rate.ModifiedDate = DateTime.Now;
-            dbContext.SaveChanges();
+            services.DeleteRatingScale(RateScaleID, Convert.ToInt32(Session["UserID"]));
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
             return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
@@ -459,9 +430,9 @@ namespace InterviewEvaluationSystem.Controllers
         /// <returns></returns>
         public ActionResult SkillCategory()
         {
-            var item = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false).ToList(); //Select all 
-                                                                                               // skill categories which are not deleted.
-            ViewBag.Roles = item;
+            //Select all skill categories which are not deleted.
+            var skillCategories = services.GetSkillCategories();
+            ViewBag.Roles = skillCategories;
             return View();
         }
 
@@ -472,15 +443,11 @@ namespace InterviewEvaluationSystem.Controllers
         /// <returns></returns>
 
         [HttpPost]
-        public ActionResult SkillCategory(tblSkillCategory category)
+        public ActionResult SkillCategory(SkillCategoryViewModel category)
         {
             try
             {
-                category.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                category.CreatedDate = DateTime.Now;
-                category.IsDeleted = false;
-                dbContext.tblSkillCategories.Add(category);
-                dbContext.SaveChanges();
+                services.InsertSkillCategory(category, Convert.ToInt32(Session["UserID"]));
                 return RedirectToAction("SkillCategory");
             }
             catch (Exception ex)
@@ -499,7 +466,7 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsCategoryExist(string SkillCategory)
         {
             // Check if Skill category alreday exist in database and store the returned value to a variable.
-            var validateScale = dbContext.tblSkillCategories.FirstOrDefault(x => x.SkillCategory == SkillCategory && x.IsDeleted == false);
+            var validateScale = services.ValidateSkillCategory(SkillCategory);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -520,10 +487,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult CategoryEdit(int SkillCategoryID, string SkillCategory, string description)
         {
-            tblSkillCategory category = dbContext.tblSkillCategories.Find(SkillCategoryID);
-            category.SkillCategory = SkillCategory;
-            category.Description = description;
-            dbContext.SaveChanges();
+            services.EditSkillCategory(SkillCategoryID, SkillCategory, description);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
             return Json(new { Url = redirectUrl, SkillCategory = SkillCategory, Description = description }, JsonRequestBehavior.AllowGet);
         }
@@ -537,11 +501,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult CategoryDelete(int SkillCategoryID)
         {
-            tblSkillCategory skill = dbContext.tblSkillCategories.Find(SkillCategoryID);
-            skill.IsDeleted = true;
-            skill.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-            skill.ModifiedDate = DateTime.Now;
-            dbContext.SaveChanges();
+            services.DeleteSkillCategory(SkillCategoryID, Convert.ToInt32(Session["UserID"]));
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
             return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
@@ -558,7 +518,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult Skill()
         {
             // Select all the skill categories which are not deleted.
-            var itemlist = dbContext.tblSkillCategories.Where(s => s.IsDeleted == false).ToList();
+            var itemlist = services.GetSkillCategories();
             List<SelectListItem> selectedlist = new List<SelectListItem>();
             // Store the skill categories and corresponding ID's in a list.
             foreach (var skillitem in itemlist)
@@ -572,15 +532,7 @@ namespace InterviewEvaluationSystem.Controllers
             }
             ViewBag.category = selectedlist;
             // Join both the tables and select all the fields which are required in the gridview.
-            var result = from a in dbContext.tblSkillCategories
-                         join b in dbContext.tblSkills on a.SkillCategoryID equals b.SkillCategoryID
-                         where b.IsDeleted == false
-                         select new
-                         {
-                             skillno = b.SkillID,
-                             skillcat = a.SkillCategory,
-                             skillname = b.SkillName
-                         };
+            var result = services.GetSkillsWithCategory();
             if (!result.Any()) //If no values exist based on the condition pass 'null'.
             {
                 ViewBag.Skillcategories = null;
@@ -602,16 +554,11 @@ namespace InterviewEvaluationSystem.Controllers
         /// <returns></returns>
 
         [HttpPost]
-        public ActionResult Skill(tblSkill skill, string category)
+        public ActionResult Skill(SkillViewModel skill, string category)
         {
             try
             {
-                skill.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                skill.CreatedDate = DateTime.Now;
-                skill.IsDeleted = false;
-                skill.SkillCategoryID = Convert.ToInt32(category);
-                dbContext.tblSkills.Add(skill);
-                dbContext.SaveChanges();
+                services.InsertSkill(skill, category, Convert.ToInt32(Session["UserID"]));
                 return RedirectToAction("Skill");
             }
             catch (Exception ex)
@@ -628,7 +575,7 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsSkillExist(string SkillName)
         {
             // Check if the skill entered already exist in dataabse and store the value returned to a variable.
-            var validateScale = dbContext.tblSkills.FirstOrDefault(x => x.SkillName == SkillName && x.IsDeleted == false);
+            var validateScale = services.ValidateSkill(SkillName);
             if (validateScale != null)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
@@ -649,14 +596,9 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult SkillEdit(int SkillID, string Skillname, int CategoryID)
         {
-            tblSkill skill = dbContext.tblSkills.Find(SkillID);
-            skill.SkillCategoryID = CategoryID;
-            skill.SkillName = Skillname;
-            skill.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-            skill.ModifiedDate = DateTime.Now;
-            dbContext.SaveChanges();
+            services.EditSkill(SkillID, CategoryID, Skillname, Convert.ToInt32(Session["UserID"]));
             // Set skillcategory based on the value selected from dropdown and update skillcategry in databse for that skill.
-            var SkillCategory = (from item in dbContext.tblSkillCategories where item.SkillCategoryID == CategoryID select item.SkillCategory).FirstOrDefault();
+            string SkillCategory = services.GetSkillCategoryByID(CategoryID);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
             return Json(new { Url = redirectUrl, SkillName = Skillname, SkillCategory = SkillCategory }, JsonRequestBehavior.AllowGet);
         }
@@ -670,11 +612,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult SkillDelete(int SkillID)
         {
-            tblSkill skills = dbContext.tblSkills.Find(SkillID);
-            skills.IsDeleted = true;
-            skills.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-            skills.ModifiedDate = DateTime.Now;
-            dbContext.SaveChanges();
+            services.DeleteSkill(SkillID, Convert.ToInt32(Session["UserID"]));
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
             return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
@@ -693,20 +631,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
-                    .Select(u => new UserViewModel
-                    {
-                        UserID = u.UserID,
-                        UserName = u.UserName,
-                        Designation = u.Designation,
-                        UserTypeID = u.UserTypeID,
-                        Address = u.Address,
-                        Email = u.Email,
-                        EmployeeId = u.EmployeeId,
-                        Password = u.Password,
-                        Pincode = u.Pincode,
-                    }).ToList();
-                ViewBag.Users = users;
+                ViewBag.Users = services.GetInterviewers();
                 return View();
             }
             catch (Exception ex)
@@ -750,39 +675,11 @@ namespace InterviewEvaluationSystem.Controllers
                     }
                     if (flag == false)
                     {
-                        dbContext.tblUsers.Add(new tblUser
-                        {
-                            UserID = user.UserID,
-                            UserName = user.UserName,
-                            Designation = user.Designation,
-                            UserTypeID = Convert.ToInt32(user.UserTypeID),
-                            Address = user.Address,
-                            Email = user.Email,
-                            EmployeeId = user.EmployeeId,
-                            Password = hashedPwd,
-                            Pincode = user.Pincode,
-                            CreatedBy = Convert.ToInt32(Session["UserID"]),
-                            CreatedDate = System.DateTime.Now,
-                            IsDeleted = false
-                        });
-                        dbContext.SaveChanges();
+                        services.InsertInterviewer(user, hashedPwd, Convert.ToInt32(Session["UserID"]));
                         ModelState.Clear();
                         ViewBag.result = Constants.interviewerAdded;
                     }
-                    List<UserViewModel> users = dbContext.tblUsers.Where(u => u.IsDeleted == false && u.UserTypeID == 2)
-                    .Select(u => new UserViewModel
-                    {
-                        UserID = u.UserID,
-                        UserName = u.UserName,
-                        Designation = u.Designation,
-                        UserTypeID = u.UserTypeID,
-                        Address = u.Address,
-                        Email = u.Email,
-                        EmployeeId = u.EmployeeId,
-                        Password = u.Password,
-                        Pincode = u.Pincode,
-                    }).ToList();
-                    ViewBag.Users = users;
+                    ViewBag.Users = services.GetInterviewers();
                     return View();
                 }
                 return View(user);
@@ -806,13 +703,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                tblUser updateInterviewer = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
-                updateInterviewer.UserName = UserName;
-                updateInterviewer.Email = Email;
-                updateInterviewer.Designation = Designation;
-                updateInterviewer.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                updateInterviewer.ModifiedDate = System.DateTime.Now;
-                dbContext.SaveChanges();
+                services.UpdateInterviewer(UserID, UserName, Email, Designation, Convert.ToInt32(Session["UserID"]));
                 return Json(new { UserName = UserName, Email = Email, Designation = Designation }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -829,11 +720,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                tblUser user = dbContext.tblUsers.Where(x => x.UserID == UserID).FirstOrDefault();
-                user.IsDeleted = true;
-                user.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                user.ModifiedDate = System.DateTime.Now;
-                dbContext.SaveChanges();
+                services.DeleteInterviewer(UserID, Convert.ToInt32(Session["UserID"]));
                 return RedirectToAction("AddInterviewers");
             }
             catch (Exception ex)
@@ -849,7 +736,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public JsonResult IsInterviewerUserNameExists(string UserName)
         {
-            bool IsExists = dbContext.tblUsers.Where(u => u.UserName.Equals(UserName) && u.IsDeleted == false).FirstOrDefault() != null;
+            bool IsExists = services.ValidateInterviewerName(UserName);
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -860,7 +747,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public JsonResult IsInterviewerEmployeeIdExists(string EmployeeId)
         {
-            bool IsExists = dbContext.tblUsers.Where(u => u.EmployeeId.Equals(EmployeeId) && u.IsDeleted == false).FirstOrDefault() != null;
+            bool IsExists = services.ValidateEmployeeID(EmployeeId);
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -871,7 +758,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public JsonResult IsInterviewerEmailExists(string Email)
         {
-            bool IsExists = dbContext.tblUsers.Where(u => u.Email.Equals(Email) && u.IsDeleted == false).FirstOrDefault() != null;
+            bool IsExists = services.ValidateEmail(Email);
             return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -886,32 +773,9 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 CandidateViewModel addCandidateViewModel = new CandidateViewModel();
-                addCandidateViewModel.CandidatesList = dbContext.spGetCandidates()
-                    .Select(s => new CandidateViewModel
-                    {
-                        CandidateID = s.CandidateID,
-                        Name = s.Name,
-                        Email = s.Email,
-                        DateOfBirth = s.DateOfBirth,
-                        PAN = s.PAN,
-                        Designation = s.Designation,
-                        DateOfInterview = s.DateOfInterview,
-                        TotalExperience = s.TotalExperience,
-                        Qualifications = s.Qualifications
-                    }).ToList();
-                addCandidateViewModel.users = dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2).ToList();
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = user.UserName,
-                        Value = user.UserID.ToString(),
-
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.user = selectedlist;
+                addCandidateViewModel.CandidatesList = services.GetCandidates();
+                addCandidateViewModel.users = services.GetInterviewers();
+                ViewBag.user = services.GetInterviewerDropdown();
                 return View(addCandidateViewModel);
             }
             catch (Exception ex)
@@ -934,7 +798,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 //Stored procedure to get the minimum round id.
-                int Round1ID = (int)dbContext.spGetMinimumRoundID().Single();
+                int Round1ID = services.GetMinimumRoundID();
                 string roundErrorMessage = "";
                 if (Round1ID == 0)
                 {
@@ -945,51 +809,17 @@ namespace InterviewEvaluationSystem.Controllers
                     if (user != null)
                     {
                         //Insertion into candidate table
-                        tblCandidate candidate = new tblCandidate();
-                        candidate.Name = candidateView.Name;
-                        candidate.DateOfBirth = candidateView.DateOfBirth;
-                        candidate.DateOfInterview = candidateView.DateOfInterview;
-                        candidate.Designation = candidateView.Designation;
-                        candidate.Email = candidateView.Email;
-                        candidate.PAN = candidateView.PAN;
-                        candidate.ExpectedSalary = candidateView.ExpectedSalary;
-                        candidate.NoticePeriodInMonths = (int)candidateView.NoticePeriodInMonths;
-                        candidate.TotalExperience = candidateView.TotalExperience;
-                        candidate.Qualifications = candidateView.Qualifications;
-                        candidate.IsLocked = true;
-                        candidate.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                        candidate.CreatedDate = System.DateTime.Now;
-                        candidate.IsDeleted = false;
-                        dbContext.tblCandidates.Add(candidate);
-                        dbContext.SaveChanges();
+                        int candidateID = services.InsertCandidate(candidateView, Convert.ToInt32(Session["UserID"]));
                         if (candidateView.TotalExperience > 0)
                         {
                             //Insertion into previous company table
-                            tblPreviousCompany previousCmpny = new tblPreviousCompany();
-                            previousCmpny.CandidateID = candidate.CandidateID;
-                            foreach (string textboxValue in txtBoxes)
-                            {
-                                previousCmpny.PreviousCompany = textboxValue;
-                                previousCmpny.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                                previousCmpny.CreatedDate = System.DateTime.Now;
-                                previousCmpny.IsDeleted = false;
-                                dbContext.tblPreviousCompanies.Add(previousCmpny);
-                                dbContext.SaveChanges();
-                            }
+                            services.InsertPreviousCompanies(candidateID, txtBoxes, Convert.ToInt32(Session["UserID"]));
                         }
                         //Insertion into evaluation table
-                        tblEvaluation eval = new tblEvaluation();
-                        eval.CandidateID = candidate.CandidateID;
-                        eval.UserID = Convert.ToInt32(user);
-                        eval.RoundID = Round1ID;
-                        eval.CreatedBy = Convert.ToInt32(Session["UserID"]);
-                        eval.CreatedDate = DateTime.Now;
-                        eval.IsDeleted = false;
-                        dbContext.tblEvaluations.Add(eval);
-                        dbContext.SaveChanges();
+                        services.InsertEvaluation(user, candidateID, Round1ID, Convert.ToInt32(Session["UserID"]));
 
                         // Call SentEmailNotification method to sent mail to notify Interviewer
-                        services.SentEmailNotification(candidate.CandidateID, Convert.ToInt32(user));
+                        services.SentEmailNotification(candidateID, Convert.ToInt32(user));
                     }
                 }
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
@@ -1011,8 +841,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 CandidateViewModel CandidateSearchViewModel = new CandidateViewModel();
-                CandidateSearchViewModel.CandidatesList = dbContext.spGetCandidates().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))
-                                                          
+                CandidateSearchViewModel.CandidatesList = dbContext.spGetCandidates().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))                                      
                     .Select(s => new CandidateViewModel
                     {
                         CandidateID = s.CandidateID,
