@@ -406,22 +406,6 @@ namespace DataAccessLayer
                     }).ToList();
         }
 
-        public List<SelectListItem> GetInterviewerDropdown()
-        {
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            foreach (var user in GetInterviewers())
-            {
-                SelectListItem selectlistitem = new SelectListItem
-                {
-                    Text = user.UserName,
-                    Value = user.UserID.ToString(),
-
-                };
-                selectedlist.Add(selectlistitem);
-            }
-            return selectedlist;
-        }
-
         public int GetMinimumRoundID()
         {
             return (int)dbContext.spGetMinimumRoundID().Single();
@@ -464,40 +448,124 @@ namespace DataAccessLayer
             }
         }
 
-        public void InsertEvaluation(string user, int CandidateID, int Round1ID, int UserID)
+        public void InsertEvaluation(int UserID, int CandidateID, int RoundID, int hrID)
         {
-            tblEvaluation eval = new tblEvaluation();
-            eval.CandidateID = CandidateID;
-            eval.UserID = Convert.ToInt32(user);
-            eval.RoundID = Round1ID;
-            eval.CreatedBy = UserID;
-            eval.CreatedDate = DateTime.Now;
-            eval.IsDeleted = false;
-            dbContext.tblEvaluations.Add(eval);
+            dbContext.tblEvaluations.Add(new tblEvaluation
+            {
+                CandidateID = CandidateID,
+                RoundID = RoundID,
+                UserID = UserID,
+                CreatedBy = hrID,
+                CreatedDate = DateTime.Now,
+                IsDeleted = false
+            });
             dbContext.SaveChanges();
         }
 
-        public List<CandidateViewModel> SearchCandidate()
+        public List<CandidateViewModel> SearchCandidate(string Name)
         {
-            return null;
-             
+            return GetCandidates().Where(s => s.Name.ToLower().StartsWith(Name.ToLower())).ToList();
         }
 
+        public void UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications, int UserID)
+        {
+            tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+            updateCandidate.Name = CandidateName;
+            updateCandidate.Email = email;
+            updateCandidate.DateOfBirth = dateofbirth;
+            updateCandidate.PAN = pan;
+            updateCandidate.Designation = designation;
+            updateCandidate.TotalExperience = experience;
+            updateCandidate.Qualifications = qualifications;
+            updateCandidate.DateOfInterview = DateOfInterview;
+            updateCandidate.ModifiedBy = UserID;
+            updateCandidate.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+        }
 
+        public void DeleteCandidate(int CandidateID, int UserID)
+        {
+            tblCandidate deleteCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+            deleteCandidate.IsDeleted = true;
+            deleteCandidate.ModifiedBy = UserID;
+            deleteCandidate.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+        }
 
+        public List<NotificationViewModel> GetNotifications()
+        {
+            return dbContext.spHRNotificationGrid()
+                    .Select(n => new NotificationViewModel
+                    {
+                        CandidateID = n.CandidateID,
+                        Name = n.Name,
+                        RoundID = n.RoundID,
+                        Recommended = n.Recommended,
+                        Email = n.Email,
+                        totalRound = n.totalRound
+                    }).ToList();
+        }
 
+        public List<CandidateRoundViewModel> GetCandidateRound(int CandidateID)
+        {
+            return dbContext.spGetCandidateRound(CandidateID)
+                    .Select(i => new CandidateRoundViewModel
+                    {
+                        RoundID = i.RoundID,
+                        RoundName = i.roundName
+                    }).ToList();
+        }
 
+        public List<CandidateInterviewersViewModel> GetCandidateInterviewers(int CandidateID)
+        {
+            return dbContext.spGetCandidateInterviewers(CandidateID)
+                    .Select(i => new CandidateInterviewersViewModel
+                    {
+                        UserID = i.UserID,
+                        UserName = i.UserName
+                    }).ToList();
+        }
 
+        public void UpdateCandidateStatus(int CandidateID, bool status)
+        {
+            tblCandidate rejectCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
+            rejectCandidate.CandidateStatus = status;
+            dbContext.SaveChanges();
+        }
 
+        public List<InterviewersOfCandidateViewModel> GetUpdatableInterviews()
+        {
+            return dbContext.spGetInterviewersOfCandidate()
+                    .Select(n => new InterviewersOfCandidateViewModel
+                    {
+                        CandidateID = n.CandidateID,
+                        Name = n.Name,
+                        Email = n.Email,
+                        RoundID = Convert.ToInt32(n.RoundID),
+                        UserName = n.UserName,
+                        Recommended = n.Recommended
+                    }).ToList();
+        }
 
+        public void UpdateCandidateInterviewer(int UserID, int CandidateID)
+        {
+            dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
+        }
 
+        public List<InterviewersOfCandidateViewModel> SearchUpdatableInterviews(string UserName)
+        {
+            return GetUpdatableInterviews().Where(s => s.UserName.ToLower().StartsWith(UserName.ToLower())).ToList();
+        }
 
+        public void InsertJoinDetails(JoinViewModel joinViewModel)
+        {
+            dbContext.spInsertJoinDetails(joinViewModel.UserID, joinViewModel.CandidateID, joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
+        }
 
-
-
-
-
-
+        public int GetHRNotificationsCount()
+        {
+            return GetNotifications().Count();
+        }
 
 
 

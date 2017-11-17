@@ -194,7 +194,18 @@ namespace BusinessLogicLayer
 
         public List<SelectListItem> GetInterviewerDropdown()
         {
-            return dataAccess.GetInterviewerDropdown();
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            foreach (var user in GetInterviewers())
+            {
+                SelectListItem selectlistitem = new SelectListItem
+                {
+                    Text = user.UserName,
+                    Value = user.UserID.ToString(),
+
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            return selectedlist;
         }
 
         public int GetMinimumRoundID()
@@ -212,26 +223,80 @@ namespace BusinessLogicLayer
             dataAccess.InsertPreviousCompanies(CandidateID, txtBoxes, UserID);
         }
 
-        public void InsertEvaluation(string user, int CandidateID, int Round1ID, int UserID)
+        public void InsertEvaluation(int UserID, int CandidateID, int RoundID, int hrID)
         {
-            dataAccess.InsertEvaluation(user, CandidateID, Round1ID, UserID);
+            dataAccess.InsertEvaluation(UserID, CandidateID, RoundID, UserID);
         }
 
+        public List<CandidateViewModel> SearchCandidate(string Name)
+        {
+            return dataAccess.SearchCandidate(Name);
+        }
 
+        public void UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications, int UserID)
+        {
+            dataAccess.UpdateCandidate(CandidateID, CandidateName, DateOfInterview, email, dateofbirth, pan, designation, experience, qualifications, UserID);
+        }
 
+        public void DeleteCandidate(int CandidateID, int UserID)
+        {
+            dataAccess.DeleteCandidate(CandidateID, UserID);
+        }
 
+        public List<NotificationViewModel> GetNotifications()
+        {
+            return dataAccess.GetNotifications();
+        }
 
+        public List<CandidateRoundViewModel> GetCandidateRound(int CandidateID)
+        {
+            return dataAccess.GetCandidateRound(CandidateID);
+        }
 
+        public List<CandidateInterviewersViewModel> GetCandidateInterviewers(int CandidateID)
+        {
+            return dataAccess.GetCandidateInterviewers(CandidateID);
+        }
 
+        public void UpdateCandidateStatus(int CandidateID, bool status)
+        {
+            dataAccess.UpdateCandidateStatus(CandidateID, status);
+        }
 
+        public List<InterviewersOfCandidateViewModel> GetUpdatableInterviews()
+        {
+            return dataAccess.GetUpdatableInterviews();
+        }
 
+        public void UpdateCandidateInterviewer(int UserID, int CandidateID)
+        {
+            dataAccess.UpdateCandidateInterviewer(UserID, CandidateID);
+        }
 
+        public List<InterviewersOfCandidateViewModel> SearchUpdatableInterviews(string UserName)
+        {
+            return dataAccess.SearchUpdatableInterviews(UserName);
+        }
 
+        public void InsertJoinDetails(JoinViewModel joinViewModel)
+        {
+            dataAccess.InsertJoinDetails(joinViewModel);
+        }
 
+        public List<CurrentStatusViewModel> GetCurrentStatus()
+        {
+            return dataAccess.GetCurrentStatus();
+        }
 
+        public List<CommentViewModel> GetComments(Nullable<int> CandidateID)
+        {
+            return dataAccess.GetComments(CandidateID);
+        }
 
-
-
+        public int GetHRNotificationsCount()
+        {
+            return dataAccess.GetHRNotificationsCount();
+        }
 
 
 

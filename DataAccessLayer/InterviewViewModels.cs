@@ -309,6 +309,7 @@ namespace DataAccessLayer
             public Nullable<decimal> OfferedSalary { get; set; }
             [DataType(DataType.Date)]
             public Nullable<DateTime> DateOfJoining { get; set; }
+            public Nullable<int> UserID { get; set; }
         }
 
         public class ChangePasswordViewModel

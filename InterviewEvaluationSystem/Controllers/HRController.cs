@@ -313,7 +313,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RoundDelete(int RoundID)
         {
-            services.DeleteRound(RoundID);
+            services.DeleteRound(RoundID, Convert.ToInt32(Session["UserID"]));
             bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
             return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
@@ -816,7 +816,7 @@ namespace InterviewEvaluationSystem.Controllers
                             services.InsertPreviousCompanies(candidateID, txtBoxes, Convert.ToInt32(Session["UserID"]));
                         }
                         //Insertion into evaluation table
-                        services.InsertEvaluation(user, candidateID, Round1ID, Convert.ToInt32(Session["UserID"]));
+                        services.InsertEvaluation(Convert.ToInt32(user), candidateID, Round1ID, Convert.ToInt32(Session["UserID"]));
 
                         // Call SentEmailNotification method to sent mail to notify Interviewer
                         services.SentEmailNotification(candidateID, Convert.ToInt32(user));
@@ -841,32 +841,10 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 CandidateViewModel CandidateSearchViewModel = new CandidateViewModel();
-                CandidateSearchViewModel.CandidatesList = dbContext.spGetCandidates().Where(s => s.Name.ToLower().StartsWith(Name.ToLower()))                                      
-                    .Select(s => new CandidateViewModel
-                    {
-                        CandidateID = s.CandidateID,
-                        Name = s.Name,
-                        Email = s.Email,
-                        DateOfBirth = s.DateOfBirth,
-                        PAN = s.PAN,
-                        Designation = s.Designation,
-                        DateOfInterview = s.DateOfInterview,
-                        TotalExperience = s.TotalExperience,
-                        Qualifications = s.Qualifications
-                    }).ToList();
+                CandidateSearchViewModel.CandidatesList = services.SearchCandidate(Name);
 
                 //To fill the drop down that contain the interviewers
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = user.UserName,
-                        Value = user.UserID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.user = selectedlist;
+                ViewBag.user = services.GetInterviewerDropdown();
                 return PartialView("SearchCandidateResultPartial", CandidateSearchViewModel);
             }
             catch (Exception ex)
@@ -887,18 +865,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                tblCandidate updateCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
-                updateCandidate.Name = CandidateName;
-                updateCandidate.Email = email;
-                updateCandidate.DateOfBirth = dateofbirth;
-                updateCandidate.PAN = pan;
-                updateCandidate.Designation = designation;
-                updateCandidate.TotalExperience = experience;
-                updateCandidate.Qualifications = qualifications;
-                updateCandidate.DateOfInterview = DateOfInterview;
-                updateCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                updateCandidate.ModifiedDate = DateTime.Now;
-                dbContext.SaveChanges();
+                services.UpdateCandidate(CandidateID, CandidateName, DateOfInterview, email, dateofbirth, pan, designation, experience, qualifications, Convert.ToInt32(Session["UserID"]));
                 return Json(new { Name = CandidateName, DateOfInterview = DateOfInterview.ToShortDateString() }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -916,12 +883,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-
-                tblCandidate deleteCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
-                deleteCandidate.IsDeleted = true;
-                deleteCandidate.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                deleteCandidate.ModifiedDate = System.DateTime.Now;
-                dbContext.SaveChanges();
+                services.DeleteCandidate(CandidateID, Convert.ToInt32(Session["UserID"]));
                 return RedirectToAction("AddCandidate");
             }
             catch (Exception ex)
@@ -943,19 +905,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<NotificationViewModel> notificationList = new List<NotificationViewModel>();
-                //stored procedure to fill the data in notification grid.
-                notificationList = dbContext.spHRNotificationGrid()
-                    .Select(n => new NotificationViewModel
-                    {
-                        CandidateID = n.CandidateID,
-                        Name = n.Name,
-                        RoundID = n.RoundID,
-                        Recommended = n.Recommended,
-                        Email = n.Email,
-                        totalRound = n.totalRound
-                    }).ToList();
-                ViewBag.notificationList = notificationList;
+                ViewBag.notificationList = services.GetNotifications();
                 return View();
             }
             catch (Exception ex)
@@ -992,12 +942,7 @@ namespace InterviewEvaluationSystem.Controllers
 
                 //stored procedure to list all the rounds that the candidates have not attended yet.
                 //This is assigned to ViewBag.round
-                List<CandidateRoundViewModel> CandidateRound = dbContext.spGetCandidateRound(CandidateID)
-                    .Select(i => new CandidateRoundViewModel
-                    {
-                        RoundID = i.RoundID,
-                        RoundName = i.roundName
-                    }).ToList();
+                List<CandidateRoundViewModel> CandidateRound = services.GetCandidateRound(CandidateID);
                 foreach (CandidateRoundViewModel round1 in CandidateRound)
                 {
                     SelectListItem selectlistitem = new SelectListItem
@@ -1011,12 +956,7 @@ namespace InterviewEvaluationSystem.Controllers
 
                 //Used to fill the drop down with interviewers that have not taken interview for particular candidate.
                 List<SelectListItem> selectedlist = new List<SelectListItem>();
-                List<CandidateInterviewersViewModel> interviewers = dbContext.spGetCandidateInterviewers(CandidateID)
-                    .Select(i => new CandidateInterviewersViewModel
-                    {
-                        UserID = i.UserID,
-                        UserName = i.UserName
-                    }).ToList();
+                List<CandidateInterviewersViewModel> interviewers = services.GetCandidateInterviewers(CandidateID);
                 foreach (CandidateInterviewersViewModel interviewer in interviewers)
                 {
                     SelectListItem selectlistitem = new SelectListItem
@@ -1045,16 +985,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 //New round and assigned interviewer data are inserted into evaluation table.
-                dbContext.tblEvaluations.Add(new tblEvaluation
-                {
-                    CandidateID = Convert.ToInt16(TempData["CandidateID"]),
-                    RoundID = Convert.ToInt32(round),
-                    UserID = interviewers,
-                    CreatedBy = Convert.ToInt32(Session["UserID"]),
-                    CreatedDate = System.DateTime.Now,
-                    IsDeleted = false
-                });
-                dbContext.SaveChanges();
+                services.InsertEvaluation(interviewers, Convert.ToInt16(TempData["CandidateID"]), Convert.ToInt32(round), Convert.ToInt32(Session["UserID"]));
                 Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
 
                 // Call SentEmailNotification method to sent mail to notify Interviewer
@@ -1078,9 +1009,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
-                tblCandidate rejectCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
-                rejectCandidate.CandidateStatus = false;
-                dbContext.SaveChanges();
+                services.UpdateCandidateStatus(CandidateID, false);
                 return RedirectToAction("Notification");
             }
             catch (Exception ex)
@@ -1099,9 +1028,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 Session["NotificationsCount"] = Convert.ToInt32(Session["NotificationsCount"]) - 1;
-                tblCandidate hireCandidate = dbContext.tblCandidates.Where(x => x.CandidateID == CandidateID).FirstOrDefault();
-                hireCandidate.CandidateStatus = true;
-                dbContext.SaveChanges();
+                services.UpdateCandidateStatus(CandidateID, true);
                 return RedirectToAction("Notification");
             }
             catch (Exception ex)
@@ -1121,30 +1048,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<InterviewersOfCandidateViewModel> CandidateInterviewersList = new List<InterviewersOfCandidateViewModel>();
-                CandidateInterviewersList = dbContext.spGetInterviewersOfCandidate()
-                    .Select(n => new InterviewersOfCandidateViewModel
-                    {
-                        CandidateID = n.CandidateID,
-                        Name = n.Name,
-                        Email = n.Email,
-                        RoundID = Convert.ToInt32(n.RoundID),
-                        UserName = n.UserName,
-                        Recommended = n.Recommended
-                    }).ToList();
-                ViewBag.CandidateInterviewersList = CandidateInterviewersList;
-
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = user.UserName,
-                        Value = user.UserID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.user = selectedlist;
+                ViewBag.CandidateInterviewersList = services.GetUpdatableInterviews();
+                ViewBag.user = services.GetInterviewerDropdown();
 
                 return View();
             }
@@ -1163,8 +1068,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
-                dbContext.SaveChanges();
+                services.UpdateCandidateInterviewer(UserID, CandidateID);
                 return Json(new { CandidateID = CandidateID, UserID = UserID }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -1181,29 +1085,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<InterviewersOfCandidateViewModel> CandidateInterviewersList = new List<InterviewersOfCandidateViewModel>();
-                CandidateInterviewersList = dbContext.spGetInterviewersOfCandidate().Where(s => s.UserName.ToLower().StartsWith(UserName.ToLower()))
-                    .Select(n => new InterviewersOfCandidateViewModel
-                    {
-                        CandidateID = n.CandidateID,
-                        Name = n.Name,
-                        Email = n.Email,
-                        RoundID = Convert.ToInt32(n.RoundID),
-                        UserName = n.UserName
-                    }).ToList();
-                ViewBag.CandidateInterviewersList = CandidateInterviewersList;
-
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                foreach (tblUser user in dbContext.tblUsers.Where(s => s.IsDeleted == false && s.UserTypeID == 2))
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = user.UserName,
-                        Value = user.UserID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.user = selectedlist;
+                ViewBag.CandidateInterviewersList = services.SearchUpdatableInterviews(UserName);
+                ViewBag.user = services.GetInterviewerDropdown();
                 return PartialView("SearchInterviewerResult", ViewBag.CandidateInterviewersList);
             }
             catch (Exception ex)
@@ -1230,7 +1113,9 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult JoinDetails(JoinViewModel joinViewModel)
         {
-            int res = dbContext.spInsertJoinDetails(Convert.ToInt32(Session["UserID"]), Convert.ToInt32(TempData["candidateID"]), joinViewModel.OfferedSalary, joinViewModel.DateOfJoining);
+            joinViewModel.CandidateID = Convert.ToInt32(TempData["candidateID"]);
+            joinViewModel.UserID = Convert.ToInt32(Session["UserID"]);
+            services.InsertJoinDetails(joinViewModel);
             return RedirectToAction("HRHomePage");
         }
 
@@ -1351,29 +1236,12 @@ namespace InterviewEvaluationSystem.Controllers
         {
             if (evaluationID != 0)
             {
-                for (int i = 0; i < values.Length; i++)
-                {
-                    dbContext.tblScores.Add(new tblScore
-                    {
-                        EvaluationID = evaluationID,
-                        SkillID = ids[i],
-                        RateScaleID = values[i],
-                        CreatedBy = Convert.ToInt32(Session["UserID"]),
-                        CreatedDate = DateTime.Now
-                    });
-                    dbContext.SaveChanges();
-                }
-                tblEvaluation evaluation = dbContext.tblEvaluations.Where(e => e.EvaluationID == evaluationID).Single();
-                evaluation.Comment = comments;
-                evaluation.Recommended = recommended;
-                evaluation.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                evaluation.ModifiedDate = DateTime.Now;
-                dbContext.SaveChanges();
+                services.InsertScores(evaluationID, ids, values,Convert.ToInt32(Session["UserID"]));
+                services.UpdateEvaluation(evaluationID, comments, recommended, Convert.ToInt32(Session["UserID"]));
             }
 
             //Get new Notification count from database and store in session variable
-            var Notifications = dbContext.spHRNotificationGrid();
-            Session["NotificationsCount"] = Notifications.Count();
+            Session["NotificationsCount"] = services.GetHRNotificationsCount();
             var redirectUrl = "";
 
             //if recommended is true, redirect to JoinDetails else redirect to HRHomePage 
