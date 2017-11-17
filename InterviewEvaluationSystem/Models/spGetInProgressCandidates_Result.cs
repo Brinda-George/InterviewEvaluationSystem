@@ -11,12 +11,15 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spCandidateWebGrid_Result
+    public partial class spGetInProgressCandidates_Result
     {
-        public int CandidateID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public System.DateTime DateOfBirth { get; set; }
+        public string PAN { get; set; }
+        public string Designation { get; set; }
         public System.DateTime DateOfInterview { get; set; }
-        public string UserName { get; set; }
+        public decimal TotalExperience { get; set; }
+        public string Qualifications { get; set; }
     }
 }

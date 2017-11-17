@@ -18,14 +18,14 @@ namespace InterviewEvaluationSystem.Models
         public string EmployeeId { get; set; }
         public string Designation { get; set; }
         public string Address { get; set; }
-        public string Pincode { get; set; }
+        public int Pincode { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public Nullable<int> UserTypeID { get; set; }
-        public string CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public string ModifiedBy { get; set; }
+        public int UserTypeID { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

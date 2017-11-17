@@ -11,9 +11,10 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spGetPreviousRoundScores_Result
+    public partial class spGetPieChart_Result
     {
-        public int SkillID { get; set; }
-        public int RateValue { get; set; }
+        public Nullable<int> InProgress { get; set; }
+        public Nullable<int> Hired { get; set; }
+        public Nullable<int> Rejected { get; set; }
     }
 }

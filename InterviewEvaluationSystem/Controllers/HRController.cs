@@ -751,7 +751,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "Notification"));
             }
-        }
+        } 
 
         public ActionResult NotificationProceed()
         {
@@ -812,7 +812,7 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "HR", "ProceedCandidate"));
             }
-        } 
+        }  
 
         public ActionResult GetMaxRoundValue()
         {

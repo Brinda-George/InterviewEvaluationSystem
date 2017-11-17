@@ -11,9 +11,11 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spGetPreviousRoundScores_Result
+    public partial class spGetEmailNotification_Result
     {
-        public int SkillID { get; set; }
-        public int RateValue { get; set; }
+        public string Name { get; set; }
+        public string RoundName { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
+        public string InterviewerEmail { get; set; }
     }
 }

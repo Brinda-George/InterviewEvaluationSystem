@@ -1,6 +1,7 @@
 ﻿@model InterviewEvaluationSystem.Models.UserViewModel
 @{
     var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 5, canSort: true);
+    grid.Pager(WebGridPagerModes.NextPrevious);
   //  var grid = new WebGrid(ViewBag.Users, canPage: true, rowsPerPage: 15, canSort: true, fieldNamePrefix: "f1", pageFieldName: "p1");
     int rowVal = 0;
 }
@@ -114,7 +115,7 @@
             selectedRowStyle: "webgrid-selected-row",
             rowStyle: "webgrid-row-style",
             htmlAttributes:new { id="DataTable"},
-            mode: WebGridPagerModes.All,
+            ////mode: WebGridPagerModes.All,
 
             columns:
             grid.Columns(

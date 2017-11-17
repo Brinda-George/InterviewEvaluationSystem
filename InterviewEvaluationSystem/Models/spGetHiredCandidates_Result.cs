@@ -11,13 +11,18 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spGetInterviewersOfCandidate_Result
+    public partial class spGetHiredCandidates_Result
     {
-        public int CandidateID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public int RoundID { get; set; }
-        public string UserName { get; set; }
-        public Nullable<bool> Recommended { get; set; }
+        public System.DateTime DateOfBirth { get; set; }
+        public string PAN { get; set; }
+        public string Designation { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
+        public int NoticePeriodInMonths { get; set; }
+        public decimal TotalExperience { get; set; }
+        public string Qualifications { get; set; }
+        public Nullable<decimal> OfferedSalary { get; set; }
+        public Nullable<System.DateTime> DateOfJoining { get; set; }
     }
 }

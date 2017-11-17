@@ -11,9 +11,11 @@ namespace InterviewEvaluationSystem.Models
 {
     using System;
     
-    public partial class spGetPreviousRoundScores_Result
+    public partial class spGetInterviewerDashBoard_Result
     {
-        public int SkillID { get; set; }
-        public int RateValue { get; set; }
+        public Nullable<int> NewCandidateCount { get; set; }
+        public Nullable<int> TodaysInterviewCount { get; set; }
+        public Nullable<int> HiredCandidateCount { get; set; }
+        public Nullable<int> TotalCandidateCount { get; set; }
     }
 }

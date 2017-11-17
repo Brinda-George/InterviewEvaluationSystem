@@ -15,9 +15,13 @@ namespace InterviewEvaluationSystem.Models
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public Nullable<int> RoundID { get; set; }
+        public System.DateTime DateOfInterview { get; set; }
+        public int RoundID { get; set; }
+        public string RoundName { get; set; }
         public int EvaluationID { get; set; }
-        public Nullable<int> CandidateID { get; set; }
+        public int CandidateID { get; set; }
         public Nullable<bool> Recommended { get; set; }
+        public Nullable<bool> CandidateStatus { get; set; }
+        public Nullable<int> FinalRound { get; set; }
     }
 }

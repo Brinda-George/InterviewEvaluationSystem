@@ -38,9 +38,22 @@ namespace InterviewEvaluationSystem.Models
         public virtual DbSet<tblUser> tblUsers { get; set; }
         public virtual DbSet<tblUserType> tblUserTypes { get; set; }
     
-        public virtual ObjectResult<spCandidateWebGrid_Result> spCandidateWebGrid()
+        public virtual ObjectResult<Nullable<int>> spAuthenticate(string username, string passWord)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCandidateWebGrid_Result>("spCandidateWebGrid");
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spAuthenticate", usernameParameter, passWordParameter);
+        }
+    
+        public virtual ObjectResult<spCandidateInterviewers_Result> spCandidateInterviewers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCandidateInterviewers_Result>("spCandidateInterviewers");
         }
     
         public virtual ObjectResult<spGetCandidateInterviewers_Result> spGetCandidateInterviewers(Nullable<int> candidateID)
@@ -50,6 +63,48 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("CandidateID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateInterviewers_Result>("spGetCandidateInterviewers", candidateIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetCandidateRound_Result> spGetCandidateRound(Nullable<int> candidateID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetCandidates_Result> spGetCandidates()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidates_Result>("spGetCandidates");
+        }
+    
+        public virtual ObjectResult<spGetCandidatesByInterviewer_Result> spGetCandidatesByInterviewer(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidatesByInterviewer_Result>("spGetCandidatesByInterviewer", userIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetCandidatesinHR_Result> spGetCandidatesinHR()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidatesinHR_Result>("spGetCandidatesinHR");
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spGetCandidatesInProgress()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetCandidatesInProgress");
+        }
+    
+        public virtual ObjectResult<spGetCloumnChart_Result> spGetCloumnChart(Nullable<int> year)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCloumnChart_Result>("spGetCloumnChart", yearParameter);
         }
     
         public virtual ObjectResult<spGetComments_Result> spGetComments(Nullable<int> candidateID)
@@ -66,13 +121,99 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentStatus_Result>("spGetCurrentStatus");
         }
     
-        public virtual ObjectResult<spGetEmailByUserID_Result> spGetEmailByUserID(Nullable<int> userID)
+        public virtual ObjectResult<spGetEmailByUserID_Result> spGetEmailByUserID(Nullable<int> candidateID, Nullable<int> userID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmailByUserID_Result>("spGetEmailByUserID", candidateIDParameter, userIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetEmailNotification_Result> spGetEmailNotification(Nullable<int> candidateID, Nullable<int> userID)
+        {
+            var candidateIDParameter = candidateID.HasValue ?
+                new ObjectParameter("CandidateID", candidateID) :
+                new ObjectParameter("CandidateID", typeof(int));
+    
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmailNotification_Result>("spGetEmailNotification", candidateIDParameter, userIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetHiredCandidates_Result> spGetHiredCandidates()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiredCandidates_Result>("spGetHiredCandidates");
+        }
+    
+        public virtual ObjectResult<spGetHRDashBoard_Result> spGetHRDashBoard()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHRDashBoard_Result>("spGetHRDashBoard");
+        }
+    
+        public virtual ObjectResult<spGetInProgressCandidates_Result> spGetInProgressCandidates()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInProgressCandidates_Result>("spGetInProgressCandidates");
+        }
+    
+        public virtual ObjectResult<spGetInterviewerCloumnChart_Result> spGetInterviewerCloumnChart(Nullable<int> userID, Nullable<int> year)
         {
             var userIDParameter = userID.HasValue ?
                 new ObjectParameter("UserID", userID) :
                 new ObjectParameter("UserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmailByUserID_Result>("spGetEmailByUserID", userIDParameter);
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerCloumnChart_Result>("spGetInterviewerCloumnChart", userIDParameter, yearParameter);
+        }
+    
+        public virtual ObjectResult<spGetInterviewerDashBoard_Result> spGetInterviewerDashBoard(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerDashBoard_Result>("spGetInterviewerDashBoard", userIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetInterviewerPieChart_Result> spGetInterviewerPieChart(Nullable<int> userID, Nullable<int> year)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerPieChart_Result>("spGetInterviewerPieChart", userIDParameter, yearParameter);
+        }
+    
+        public virtual ObjectResult<spGetInterviewersOfCandidate_Result> spGetInterviewersOfCandidate()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewersOfCandidate_Result>("spGetInterviewersOfCandidate");
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spGetMinimumRoundID()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetMinimumRoundID");
+        }
+    
+        public virtual ObjectResult<spGetPieChart_Result> spGetPieChart(Nullable<int> year)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPieChart_Result>("spGetPieChart", yearParameter);
         }
     
         public virtual ObjectResult<spGetPreviousRoundScores_Result> spGetPreviousRoundScores(Nullable<int> candidateID, Nullable<int> roundID)
@@ -86,6 +227,15 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("RoundID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPreviousRoundScores_Result>("spGetPreviousRoundScores", candidateIDParameter, roundIDParameter);
+        }
+    
+        public virtual ObjectResult<spGetRecommendedCandidates_Result> spGetRecommendedCandidates(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRecommendedCandidates_Result>("spGetRecommendedCandidates", userIDParameter);
         }
     
         public virtual ObjectResult<spGetSkillsBySkillCategory_Result> spGetSkillsBySkillCategory(Nullable<int> skillCategoryID)
@@ -132,6 +282,32 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertJoinDetails", userIDParameter, candidateIDParameter, offeredSalaryParameter, dateOfJoiningParameter);
         }
     
+        public virtual ObjectResult<spLogin_Result> spLogin(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
+        }
+    
+        public virtual int spResetPassword(string email, string newPassword)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var newPasswordParameter = newPassword != null ?
+                new ObjectParameter("NewPassword", newPassword) :
+                new ObjectParameter("NewPassword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spResetPassword", emailParameter, newPasswordParameter);
+        }
+    
         public virtual int spUpdateCandidateInterviewer(Nullable<int> userid, Nullable<int> candidateid, Nullable<int> roundID)
         {
             var useridParameter = userid.HasValue ?
@@ -164,38 +340,6 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("NewPassword", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePassword", userIdParameter, oldPasswordParameter, newPasswordParameter);
-        }
-    
-        public virtual ObjectResult<spGetInterviewersOfCandidate_Result> spGetInterviewersOfCandidate()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewersOfCandidate_Result>("spGetInterviewersOfCandidate");
-        }
-    
-        public virtual ObjectResult<spGetCandidateRound_Result> spGetCandidateRound(Nullable<int> candidateID)
-        {
-            var candidateIDParameter = candidateID.HasValue ?
-                new ObjectParameter("CandidateID", candidateID) :
-                new ObjectParameter("CandidateID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCandidateRound_Result>("spGetCandidateRound", candidateIDParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> spGetMinimumRoundID()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetMinimumRoundID");
-        }
-    
-        public virtual ObjectResult<spLogin_Result> spLogin(string username, string passWord)
-        {
-            var usernameParameter = username != null ?
-                new ObjectParameter("Username", username) :
-                new ObjectParameter("Username", typeof(string));
-    
-            var passWordParameter = passWord != null ?
-                new ObjectParameter("PassWord", passWord) :
-                new ObjectParameter("PassWord", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
         }
     }
 }
