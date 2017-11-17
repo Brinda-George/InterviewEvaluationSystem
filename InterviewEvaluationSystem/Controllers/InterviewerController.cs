@@ -22,9 +22,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                InterviewerDashboardViewModel interviewerDashBoardViewModel = new InterviewerDashboardViewModel();
-                interviewerDashBoardViewModel = services.GetInterviewerDashBoard(Convert.ToInt32(Session["UserID"]));
-                return View(interviewerDashBoardViewModel);
+                return View(services.GetInterviewerDashBoard(Convert.ToInt32(Session["UserID"])));
             }
             catch (Exception ex)
             {
@@ -43,15 +41,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public void ChartPie(int year)
         {
-            var result = services.GetPieChartData(Convert.ToInt32(Session["UserID"]), year);
-            if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
-            {
-                // Use Chart class to create a pie chart image based on an array of values
-                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
-                .AddLegend("Summary")
-                .AddSeries("Default", chartType: "doughnut", xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Recoommended - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" }, yValues: new[] { result.InProgress, result.Hired, result.Rejected })
-                .Write("bmp");
-            }
+            services.GetInterviewerPieChart(Convert.ToInt32(Session["UserID"]), year);
         }
 
         /// <summary>
@@ -61,18 +51,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public void ChartColumn(int year)
         {
-            var result = services.GetColumnChartData(Convert.ToInt32(Session["UserID"]), year);
-            if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
-            {
-                // Use Chart class to create a column chart image based on an array of values
-                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
-                    .AddSeries("Default", chartType: "column",
-                        xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
-                        yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
-                    .SetXAxis(year.ToString())
-                    .SetYAxis("No of Candidates")
-                    .Write("bmp");
-            }
+            services.GetInterviewerColumnChart(Convert.ToInt32(Session["UserID"]), year);
         }
 
         #endregion
@@ -86,8 +65,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
-                return View(TodaysInterviews);
+                return View(services.GetTodaysInterview(Convert.ToInt32(Session["UserID"])));
             }
             catch (Exception ex)
             {
@@ -102,15 +80,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ViewTodaysInterviews(string searchString)
         {
-            List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
-
-            // Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                // Get details of candidates whose name starts with search string given
-                TodaysInterviews = TodaysInterviews.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(TodaysInterviews);
+            return View(services.SearchTodaysInterview(Convert.ToInt32(Session["UserID"]), searchString));
         }
 
         #endregion
@@ -124,8 +94,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<StatusViewModel> RecommendedCandidates = services.GetRecommendedCandidates(Convert.ToInt32(Session["UserID"]));
-                return View(RecommendedCandidates);
+                return View(services.GetRecommendedCandidates(Convert.ToInt32(Session["UserID"])));
             }
             catch (Exception ex)
             {
@@ -140,15 +109,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ViewRecommendedCandidates(string searchString)
         {
-            List<StatusViewModel> RecommendedCandidates = services.GetRecommendedCandidates(Convert.ToInt32(Session["UserID"]));
-
-            // Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                // Get details of candidates whose name starts with search string given
-                RecommendedCandidates = RecommendedCandidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(RecommendedCandidates);
+            return View(services.SearchRecommendedCandidates(Convert.ToInt32(Session["UserID"]), searchString));
         }
 
         #endregion
@@ -162,8 +123,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<StatusViewModel> candidates = services.GetCandidatesByInterviewer(Convert.ToInt32(Session["UserID"]));
-                return View(candidates);
+                return View(services.GetCandidatesByInterviewer(Convert.ToInt32(Session["UserID"])));
             }
             catch (Exception ex)
             {
@@ -178,15 +138,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ViewCandidates(string searchString)
         {
-            List<StatusViewModel> candidates = services.GetCandidatesByInterviewer(Convert.ToInt32(Session["UserID"]));
-
-            // Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                // Get details of candidates whose name or email starts with search string given
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
+            return View(services.SearchCandidatesByInterviewer(Convert.ToInt32(Session["UserID"]), searchString));
         }
         #endregion
 
@@ -199,8 +151,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<StatusViewModel> Statuses = services.GetStatus(Convert.ToInt32(Session["UserID"]));
-                return View(Statuses);
+                return View(services.GetStatus(Convert.ToInt32(Session["UserID"])));
             }
             catch (Exception ex)
             {
@@ -216,52 +167,18 @@ namespace InterviewEvaluationSystem.Controllers
         /// To get rating scales, rounds, skill categories and skills by skill category from database
         /// To get scores by round and comments of previous rounds from database
         /// </summary>
-        public ActionResult InterviewEvaluation(StatusViewModel statusViewModel, string Name)
+        public ActionResult InterviewEvaluation(StatusViewModel statusViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
-                    interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
-                    interviewEvaluationViewModel.Rounds = services.GetRounds();
-                    interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
-                    interviewEvaluationViewModel.Skills = services.GetSkills();
-
-                    // Get List of skills by skill category and save in a List<List<Skills>>
-                    foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
-                    {
-                        interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
-                    }
-
-                    // Get List of scores by round and save in a List<List<Scores>>
-                    foreach (var round in interviewEvaluationViewModel.Rounds)
-                    {
-                        List<ScoreEvaluationViewModel> scores = services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID);
-                        bool exists;
-                        ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
-                        foreach (var skill in interviewEvaluationViewModel.Skills)
-                        {
-                            exists = scores.Exists(item => item.SkillID == skill.SkillID);
-
-                            // Check if score exists for corresponding skill
-                            if (exists == false)
-                            {
-                                scoreEvaluationViewModel.SkillID = skill.SkillID;
-                                // If skill is not evaluated in previous round, display score as 0
-                                scoreEvaluationViewModel.RateValue = 0;
-                                scores.Add(scoreEvaluationViewModel);
-                            }
-                        }
-                        interviewEvaluationViewModel.ScoresByRound.Add(scores);
-                    }
-                    interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
-
                     // Store CandidateID, RoundID, EvaluationID in TempData
                     TempData["CandidateID"] = statusViewModel.CandidateID;
                     TempData["roundID"] = statusViewModel.RoundID;
                     TempData["evaluationID"] = statusViewModel.EvaluationID;
-                    return View(interviewEvaluationViewModel);
+
+                    return View(services.GetInterviewEvaluationViewModel(statusViewModel));
                 }
                 else
                 {

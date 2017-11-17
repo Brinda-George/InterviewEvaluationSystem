@@ -54,9 +54,8 @@ namespace BusinessLogicLayer
             return dataAccess.GetHRDashBoard();
         }
 
-        public void GetHRPieChart(int year)
+        public void GetPieChart(PieChartViewModel result)
         {
-            var result = dataAccess.GetHRPieChartData(year);
             if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
             {
                 // Use Chart class to create a pie chart image based on an array of values
@@ -70,9 +69,18 @@ namespace BusinessLogicLayer
             }
         }
 
-        public void GetHRColumnChart(int year)
+        public void GetHRPieChart(int year)
         {
-            var result = dataAccess.GetHRColumnChartData(year);
+            GetPieChart(dataAccess.GetHRPieChartData(year));
+        }
+
+        public void GetInterviewerPieChart(int UserID, int year)
+        {
+            GetPieChart(dataAccess.GetPieChartData(UserID, year));
+        }
+
+        public void GetColumnChart(ColumnChartViewModel result, int year)
+        {
             if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
             {
                 // Use Chart class to create a column chart image based on an array of values
@@ -84,6 +92,16 @@ namespace BusinessLogicLayer
                 .SetYAxis("No of Candidates")
                 .Write("bmp");
             }
+        }
+
+        public void GetHRColumnChart(int year)
+        {
+            GetColumnChart(dataAccess.GetHRColumnChartData(year), year);
+        }
+
+        public void GetInterviewerColumnChart(int UserID, int year)
+        {
+            GetColumnChart(dataAccess.GetColumnChartData(UserID, year), year);
         }
 
         public List<CurrentStatusViewModel> GetCandidatesinHR()
@@ -397,16 +415,6 @@ namespace BusinessLogicLayer
             return dataAccess.GetInterviewerDashBoard(userID);
         }
 
-        public PieChartViewModel GetPieChartData(int UserID, int year)
-        {
-            return dataAccess.GetPieChartData(UserID, year);
-        }
-
-        public ColumnChartViewModel GetColumnChartData(int UserID, int year)
-        {
-            return dataAccess.GetColumnChartData(UserID, year);
-        }
-
         public List<StatusViewModel> GetTodaysInterview(int UserID)
         {
             return dataAccess.GetTodaysInterview(UserID);
@@ -422,9 +430,19 @@ namespace BusinessLogicLayer
             return dataAccess.GetRecommendedCandidates(UserID);
         }
 
+        public List<StatusViewModel> SearchRecommendedCandidates(int UserID, string searchString)
+        {
+            return dataAccess.SearchRecommendedCandidates(UserID, searchString);
+        }
+
         public List<StatusViewModel> GetCandidatesByInterviewer(int UserID)
         {
             return dataAccess.GetCandidatesByInterviewer(UserID);
+        }
+
+        public List<StatusViewModel> SearchCandidatesByInterviewer(int UserID, string searchString)
+        {
+            return dataAccess.SearchCandidatesByInterviewer(UserID, searchString);
         }
 
         public List<StatusViewModel> GetStatus(int UserID)

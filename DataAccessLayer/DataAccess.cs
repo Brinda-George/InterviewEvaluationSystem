@@ -887,6 +887,21 @@ namespace DataAccessLayer
             return Statuses;
         }
 
+        public List<StatusViewModel> SearchRecommendedCandidates(int UserID, string searchString)
+        {
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                return GetRecommendedCandidates(UserID).Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            else
+            {
+                return GetRecommendedCandidates(UserID);
+            }
+        }
+
         /// <summary>
         /// To get details of candidates interviewed by a particular interviewer
         /// </summary>
@@ -907,6 +922,21 @@ namespace DataAccessLayer
                     CandidateStatus = e.CandidateStatus
                 }).ToList();
             return Statuses;
+        }
+
+        public List<StatusViewModel> SearchCandidatesByInterviewer(int UserID, string searchString)
+        {
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                return GetCandidatesByInterviewer(UserID).Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            else
+            {
+                return GetCandidatesByInterviewer(UserID);
+            }
         }
 
         /// <summary>
