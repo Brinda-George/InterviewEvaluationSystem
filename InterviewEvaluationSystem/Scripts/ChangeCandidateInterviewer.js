@@ -9,6 +9,7 @@
             var tr = $(this).parents('tr:first');
             var UserName = tr.find("#lblInterviewerName").text();
             var CandidateID = $(this).prop('id');
+            tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
             $.ajax({
                 url: '/HR/GetCandidateInterviewer/',
                 // data: JSON.stringify(tblNewUser),
@@ -18,7 +19,7 @@
                 success: function (data) {
                     $('#gridContentInterviewerResult').html(data);
                     var tr = $(this).parents('tr:first');
-                    tr.find('.edit-modeCandidate, .display-modeCandidate').toggle();
+                    
                     tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
 
 
@@ -38,10 +39,11 @@
             var tr = $(this).parents('tr:first');
             var UserID = tr.find("#ddlInterviewerName").val();
             var CandidateID = $(this).prop('id');
+            var RoundID = tr.find("#lblCandidateRound").text();
             $.ajax({
                 url: '/HR/EditCandidateInterviewer/',
                 // data: JSON.stringify(tblNewUser),
-                data: JSON.stringify({ "CandidateID": CandidateID, "UserID": UserID }),
+                data: JSON.stringify({ "CandidateID": CandidateID, "UserID": UserID, "RoundID": RoundID }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
@@ -95,10 +97,10 @@
                 
             var UserName = tr.find("#lblInterviewerName").text();
             var CandidateID = $(this).prop('id');
-            $('.edit-modeCandidateResult').show();
-            $('.display-modeCandidateResult').hide();
-          //  tr.find('.edit-modeCandidateResult, .display-modeCandidateResult').toggle();
-          //  tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
+            //$('.edit-modeCandidateResult').show();
+            //$('.display-modeCandidateResult').hide();
+            tr.find('.edit-modeCandidateResult, .display-modeCandidateResult').toggle();
+            tr.find('#ddlInterviewerName option:contains(' + UserName + ')').attr('selected', 'selected');
 
         });
    });

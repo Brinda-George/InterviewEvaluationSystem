@@ -132,7 +132,7 @@ namespace InterviewEvaluationSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spInsertJoinDetails", userIDParameter, candidateIDParameter, offeredSalaryParameter, dateOfJoiningParameter);
         }
     
-        public virtual int spUpdateCandidateInterviewer(Nullable<int> userid, Nullable<int> candidateid)
+        public virtual int spUpdateCandidateInterviewer(Nullable<int> userid, Nullable<int> candidateid, Nullable<int> roundID)
         {
             var useridParameter = userid.HasValue ?
                 new ObjectParameter("userid", userid) :
@@ -142,7 +142,11 @@ namespace InterviewEvaluationSystem.Models
                 new ObjectParameter("candidateid", candidateid) :
                 new ObjectParameter("candidateid", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateCandidateInterviewer", useridParameter, candidateidParameter);
+            var roundIDParameter = roundID.HasValue ?
+                new ObjectParameter("RoundID", roundID) :
+                new ObjectParameter("RoundID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateCandidateInterviewer", useridParameter, candidateidParameter, roundIDParameter);
         }
     
         public virtual int spUpdatePassword(Nullable<int> userId, string oldPassword, string newPassword)
@@ -179,6 +183,19 @@ namespace InterviewEvaluationSystem.Models
         public virtual ObjectResult<Nullable<int>> spGetMinimumRoundID()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetMinimumRoundID");
+        }
+    
+        public virtual ObjectResult<spLogin_Result> spLogin(string username, string passWord)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passWordParameter = passWord != null ?
+                new ObjectParameter("PassWord", passWord) :
+                new ObjectParameter("PassWord", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLogin_Result>("spLogin", usernameParameter, passWordParameter);
         }
     }
 }

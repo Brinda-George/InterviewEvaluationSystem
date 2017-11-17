@@ -947,11 +947,12 @@ namespace InterviewEvaluationSystem.Controllers
             return PartialView("GetCandidateInterviewer", ViewBag.CandidateInterviewersList1);
         }
 
-        public ActionResult EditCandidateInterviewer(int CandidateID, int UserID)
+        public ActionResult EditCandidateInterviewer(int CandidateID, int UserID,int RoundID)
         {
             
-            dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
-            dbContext.SaveChanges();
+            dbContext.spUpdateCandidateInterviewer(UserID, CandidateID, RoundID);
+            var xyz = "";
+            //dbContext.SaveChanges();
             return Json(new { CandidateID = CandidateID, UserID = UserID }, JsonRequestBehavior.AllowGet);
         }
 
