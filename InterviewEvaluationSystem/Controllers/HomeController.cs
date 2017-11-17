@@ -73,8 +73,7 @@ namespace InterviewEvaluationSystem.Controllers
                     //Redirect the user to HRHomePage if the usertype is recognised as HR.
                     if (loginUser.UserTypeID == 1)
                     {
-                        var Notifications = dbContext.spHRNotificationGrid();
-                        Session["NotificationsCount"] = Notifications.Count();
+                        Session["NotificationsCount"] = services.GetHRNotificationsCount();
                         return RedirectToAction("HRHomePage", "HR");
                     }
 
@@ -101,11 +100,8 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         public ActionResult ViewProfile()
         {
-            var name = Convert.ToString(Session["UserName"]);
-
             //Select the specific users details.
-            var user = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault(); 
-            return View(user);
+            return View(services.GetProfile(Convert.ToString(Session["UserName"])));
         }
         #endregion
 
@@ -132,15 +128,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                var name = Convert.ToString(Session["UserName"]);
-
                 //Select the specific user and edit his/her details.
-                var item = dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
-                item.Address = user.Address;
-                item.Pincode = user.Pincode;
-                item.ModifiedBy = Convert.ToInt32(Session["UserID"]);
-                item.ModifiedDate = DateTime.Now;
-                dbContext.SaveChanges();
+                services.UpdateProfile(Convert.ToString(Session["UserName"]), user, Convert.ToInt32(Session["UserID"]));
                 ViewBag.result = Constants.profileUpdate;
                 return View();
             }
@@ -174,10 +163,10 @@ namespace InterviewEvaluationSystem.Controllers
                 int result;
 
                 //Fetch user's details whose Email matches with the Email entered. 
-                var data = dbContext.tblUsers.Where(x => x.Email == email).FirstOrDefault();
-                if (data != null)
+                bool exists = services.ValidateEmail(email);
+                if (exists != false)
                 {
-                    Session["Email"] = data.Email;
+                    Session["Email"] = email;
 
                     // Call GetOtp() method to generate otp
                     string otp = services.GetOtp();

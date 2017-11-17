@@ -20,11 +20,34 @@ namespace DataAccessLayer
             return dbContext.tblUsers.Where(s => s.UserName == UserName && s.Password == Password).FirstOrDefault();
         }
 
+        public UserViewModel GetProfile(string name)
+        {
+            return dbContext.tblUsers.Where(s => s.UserName == name).FirstOrDefault();
+        }
+
+        public void UpdateProfile(string name, UserViewModel userViewModel, int UserID)
+        {
+            var item = GetProfile(name);
+            tblUser user = new tblUser();
+            user = item;
+            user.UserID = item.UserID;
+            user.Address = userViewModel.Address;
+            user.Pincode = userViewModel.Pincode;
+            user.ModifiedBy = UserID;
+            user.ModifiedDate = DateTime.Now;
+            dbContext.SaveChanges();
+        }
+
         public void UpdatePasswordByEmail(string Email, string newPassword)
         {
             var result = dbContext.tblUsers.Where(s => s.Email == Email).FirstOrDefault();
             result.Password = newPassword;
             dbContext.SaveChanges();
+        }
+
+        public bool ValidateEmail(string Email, string newPassword)
+        {
+            return dbContext.tblUsers.Where(s => s.Email == Email).Any();
         }
 
 

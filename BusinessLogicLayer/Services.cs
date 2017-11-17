@@ -24,6 +24,16 @@ namespace BusinessLogicLayer
             return dataAccess.GetLoginUserDetails(UserName, Password);
         }
 
+        public UserViewModel GetProfile(string name)
+        {
+            return dataAccess.GetProfile(name);
+        }
+
+        public void UpdateProfile(string name, UserViewModel userViewModel, int UserID)
+        {
+            dataAccess.UpdateProfile(name, userViewModel, UserID);
+        }
+
         public int UpdatePassword(int userId, ChangePasswordViewModel changePasswordViewModel)
         {
             return dataAccess.UpdatePassword(userId, changePasswordViewModel);
@@ -32,6 +42,11 @@ namespace BusinessLogicLayer
         public void UpdatePasswordByEmail(string Email, string newPassword)
         {
             dataAccess.UpdatePasswordByEmail(Email, newPassword);
+        }
+
+        public bool ValidateEmail(string Email)
+        {
+            return dataAccess.ValidateEmail(Email);
         }
 
         public HRDashboardViewModel GetHRDashBoard()
@@ -217,11 +232,6 @@ namespace BusinessLogicLayer
         public bool ValidateEmployeeID(string EmployeeId)
         {
             return dataAccess.ValidateEmployeeID(EmployeeId);
-        }
-
-        public bool ValidateEmail(string Email)
-        {
-            return dataAccess.ValidateEmail(Email);
         }
 
         public List<CandidateViewModel> GetCandidates()

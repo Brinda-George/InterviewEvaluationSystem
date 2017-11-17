@@ -162,7 +162,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                List<StatusViewModel> candidates = services.GetCandidates(Convert.ToInt32(Session["UserID"]));
+                List<StatusViewModel> candidates = services.GetCandidatesByInterviewer(Convert.ToInt32(Session["UserID"]));
                 return View(candidates);
             }
             catch (Exception ex)
@@ -178,7 +178,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ViewCandidates(string searchString)
         {
-            List<StatusViewModel> candidates = services.GetCandidates(Convert.ToInt32(Session["UserID"]));
+            List<StatusViewModel> candidates = services.GetCandidatesByInterviewer(Convert.ToInt32(Session["UserID"]));
 
             // Check if search string is not empty or null
             if (!String.IsNullOrEmpty(searchString))
