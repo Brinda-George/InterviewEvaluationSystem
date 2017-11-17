@@ -26,9 +26,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         public ActionResult HRHomePage()
         {
-            HRDashboardViewModel hrDashBoardViewModel = new HRDashboardViewModel();
-            hrDashBoardViewModel = services.GetHRDashBoard();
-            return View(hrDashBoardViewModel);
+            return View(services.GetHRDashBoard());
         }
 
         #endregion
@@ -41,18 +39,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="year"></param>
         public void ChartPie(int year)
         {
-            var result = services.GetHRPieChartData(year);
-            if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
-            {
-                // Use Chart class to create a pie chart image based on an array of values
-                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
-                .AddLegend("Summary")
-                .AddSeries("Default",
-                    chartType: "doughnut",
-                    xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" },
-                    yValues: new[] { result.InProgress, result.Hired, result.Rejected })
-                .Write("bmp");
-            }
+            services.GetHRPieChart(year);
         }
 
         /// <summary>
@@ -61,18 +48,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="year"></param>
         public void ChartColumn(int year)
         {
-            var result = services.GetHRColumnChartData(year);
-            if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
-            {
-                // Use Chart class to create a column chart image based on an array of values
-                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
-                .AddSeries("Default", chartType: "column",
-                    xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
-                    yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
-                .SetXAxis(year.ToString())
-                .SetYAxis("No of Candidates")
-                .Write("bmp");
-            }
+            services.GetHRColumnChart(year);
 
         }
         #endregion
@@ -84,8 +60,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         public ActionResult CandidatesinHRRound()
         {
-            List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
-            return View(candidates);
+            return View(services.GetCandidatesinHR());
         }
 
         /// <summary>
@@ -95,16 +70,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult CandidatesinHRRound(string searchString)
         {
-            List<CurrentStatusViewModel> candidates = services.GetCandidatesinHR();
-
-            // Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                // Get details of candidates whose name or email starts with search string given
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
+            return View(services.SearchCandidatesinHR(searchString));
         }
 
         #endregion
@@ -116,8 +82,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         public ActionResult TodaysInterviews()
         {
-            List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
-            return View(TodaysInterviews);
+            return View(services.GetTodaysInterview(Convert.ToInt32(Session["UserID"])));
         }
 
         /// <summary>
@@ -1064,11 +1029,11 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="CandidateID"></param>
         /// <param name="UserID"></param>
 
-        public ActionResult EditCandidateInterviewer(int CandidateID, int UserID)
+        public ActionResult EditCandidateInterviewer(int CandidateID, int UserID, int RoundID)
         {
             try
             {
-                services.UpdateCandidateInterviewer(UserID, CandidateID);
+                services.UpdateCandidateInterviewer(UserID, CandidateID, RoundID);
                 return Json(new { CandidateID = CandidateID, UserID = UserID }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -1128,8 +1093,7 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         public ActionResult CandidateStatus()
         {
-            List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
-            return View(CurrentStatuses);
+            return View(services.GetCurrentStatus());
         }
 
         /// <summary>

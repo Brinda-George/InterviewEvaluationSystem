@@ -308,7 +308,7 @@ namespace DataAccessLayer
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spResetPassword", emailParameter, newPasswordParameter);
         }
     
-        public virtual int spUpdateCandidateInterviewer(Nullable<int> userid, Nullable<int> candidateid)
+        public virtual int spUpdateCandidateInterviewer(Nullable<int> userid, Nullable<int> candidateid, Nullable<int> roundID)
         {
             var useridParameter = userid.HasValue ?
                 new ObjectParameter("userid", userid) :
@@ -318,7 +318,11 @@ namespace DataAccessLayer
                 new ObjectParameter("candidateid", candidateid) :
                 new ObjectParameter("candidateid", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateCandidateInterviewer", useridParameter, candidateidParameter);
+            var roundIDParameter = roundID.HasValue ?
+                new ObjectParameter("RoundID", roundID) :
+                new ObjectParameter("RoundID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateCandidateInterviewer", useridParameter, candidateidParameter, roundIDParameter);
         }
     
         public virtual int spUpdatePassword(Nullable<int> userId, string oldPassword, string newPassword)

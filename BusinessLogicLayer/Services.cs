@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Mail;
 using System.Text;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using static DataAccessLayer.InterviewViewModels;
 
@@ -13,46 +14,85 @@ namespace BusinessLogicLayer
     {
         DataAccess dataAccess = new DataAccess();
 
+        public bool ValidateLoginCredentials(UserViewModel loginUser)
+        {
+            return dataAccess.ValidateLoginCredentials(loginUser);
+        }
+
+        public UserViewModel GetLoginUserDetails(string UserName, string Password)
+        {
+            return dataAccess.GetLoginUserDetails(UserName, Password);
+        }
+
+        public int UpdatePassword(int userId, ChangePasswordViewModel changePasswordViewModel)
+        {
+            return dataAccess.UpdatePassword(userId, changePasswordViewModel);
+        }
+
+        public void UpdatePasswordByEmail(string Email, string newPassword)
+        {
+            dataAccess.UpdatePasswordByEmail(Email, newPassword);
+        }
+
         public HRDashboardViewModel GetHRDashBoard()
         {
-            var hrDashboard = dataAccess.GetHRDashBoard();
-            return hrDashboard;
+            return dataAccess.GetHRDashBoard();
         }
 
-        public PieChartViewModel GetHRPieChartData(int year)
+        public void GetHRPieChart(int year)
         {
-            var pieChartData = dataAccess.GetHRPieChartData(year);
-            return pieChartData;
+            var result = dataAccess.GetHRPieChartData(year);
+            if (result.Hired != 0 || result.InProgress != 0 || result.Rejected != 0)
+            {
+                // Use Chart class to create a pie chart image based on an array of values
+                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+                .AddLegend("Summary")
+                .AddSeries("Default",
+                    chartType: "doughnut",
+                    xValue: new[] { (result.InProgress != 0) ? "Inprogress - #PERCENT{P0}" : "", (result.Hired != 0) ? "Hired - #PERCENT{P0}" : "", (result.Rejected != 0) ? "Rejected - #PERCENT{P0}" : "" },
+                    yValues: new[] { result.InProgress, result.Hired, result.Rejected })
+                .Write("bmp");
+            }
         }
 
-        public ColumnChartViewModel GetHRColumnChartData(int year)
+        public void GetHRColumnChart(int year)
         {
             var result = dataAccess.GetHRColumnChartData(year);
-            return result;
+            if (result.January != 0 || result.February != 0 || result.March != 0 || result.April != 0 || result.May != 0 || result.June != 0 || result.July != 0 || result.August != 0 || result.September != 0 || result.October != 0 || result.November != 0 || result.December != 0)
+            {
+                // Use Chart class to create a column chart image based on an array of values
+                Chart chart = new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
+                .AddSeries("Default", chartType: "column",
+                    xValue: new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" },
+                    yValues: new[] { result.January, result.February, result.March, result.April, result.May, result.June, result.July, result.August, result.September, result.October, result.November, result.December })
+                .SetXAxis(year.ToString())
+                .SetYAxis("No of Candidates")
+                .Write("bmp");
+            }
         }
 
         public List<CurrentStatusViewModel> GetCandidatesinHR()
         {
-            List<CurrentStatusViewModel> candidates = dataAccess.GetCandidatesinHR();
-            return candidates;
+            return dataAccess.GetCandidatesinHR();
+        }
+        public List<CurrentStatusViewModel> SearchCandidatesinHR(string searchString)
+        {
+            return dataAccess.SearchCandidatesinHR(searchString);
         }
 
         public List<CandidateViewModel> GetInProgressCandidates()
         {
-            List<CandidateViewModel> candidates = dataAccess.GetInProgressCandidates();
-            return candidates;
+            return dataAccess.GetInProgressCandidates();
         }
 
         public List<CandidateViewModel> GetHiredCandidates()
         {
-            List<CandidateViewModel> candidates = dataAccess.GetHiredCandidates();
-            return candidates;
+            return dataAccess.GetHiredCandidates();
         }
 
         public List<CandidateViewModel> GetCandidateStatuses()
         {
-            List<CandidateViewModel> candidates = dataAccess.GetCandidateStatuses();
-            return candidates;
+            return dataAccess.GetCandidateStatuses();
         }
 
         public void InsertRound(RoundViewModel roundViewModel, int UserID)
@@ -62,8 +102,7 @@ namespace BusinessLogicLayer
 
         public RoundViewModel ValidateRound(string RoundName)
         {
-            var round = dataAccess.ValidateRound(RoundName);
-            return round;
+            return dataAccess.ValidateRound(RoundName);;
         }
 
         public void EditRound(int RoundID, string RoundName)
@@ -83,14 +122,12 @@ namespace BusinessLogicLayer
 
         public RatingScaleViewModel ValidateRateScale(string RateScale)
         {
-            var ratingScale = dataAccess.ValidateRateScale(RateScale);
-            return ratingScale;
+            return dataAccess.ValidateRateScale(RateScale);
         }
 
         public RatingScaleViewModel ValidateRateValue(int RateValue)
         {
-            var ratingScale = dataAccess.ValidateRateValue(RateValue);
-            return ratingScale;
+            return dataAccess.ValidateRateValue(RateValue);
         }
 
         public void EditRatingScale(int RateScaleID, string Ratescale, int Ratevalue, string description)
@@ -268,9 +305,9 @@ namespace BusinessLogicLayer
             return dataAccess.GetUpdatableInterviews();
         }
 
-        public void UpdateCandidateInterviewer(int UserID, int CandidateID)
+        public void UpdateCandidateInterviewer(int UserID, int CandidateID, int RoundID)
         {
-            dataAccess.UpdateCandidateInterviewer(UserID, CandidateID);
+            dataAccess.UpdateCandidateInterviewer(UserID, CandidateID, RoundID);
         }
 
         public List<InterviewersOfCandidateViewModel> SearchUpdatableInterviews(string UserName)
@@ -298,15 +335,6 @@ namespace BusinessLogicLayer
             return dataAccess.GetHRNotificationsCount();
         }
 
-
-
-
-
-
-
-
-
-
         public InterviewerDashboardViewModel GetInterviewerDashBoard(int userID)
         {
             return dataAccess.GetInterviewerDashBoard(userID);
@@ -325,6 +353,11 @@ namespace BusinessLogicLayer
         public List<StatusViewModel> GetTodaysInterview(int UserID)
         {
             return dataAccess.GetTodaysInterview(UserID);
+        }
+
+        public List<StatusViewModel> SearchTodaysInterview(int UserID, string searchString)
+        {
+            return dataAccess.SearchTodaysInterview(UserID, searchString);
         }
 
         public List<StatusViewModel> GetRecommendedCandidates(int UserID)
@@ -381,23 +414,6 @@ namespace BusinessLogicLayer
         {
             return dataAccess.GetPreviousRoundScores(candidateID, roundID);
         }
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         /// <summary>
         /// To sent mail from mail address specified in web.config to HR mail address using smtp

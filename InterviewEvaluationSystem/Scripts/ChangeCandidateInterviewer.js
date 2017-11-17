@@ -19,9 +19,10 @@
             var tr = $(this).parents('tr:first');
             var UserID = tr.find("#ddlInterviewerName").val();
             var CandidateID = $(this).prop('id');
+            var RoundID = tr.find("#lblCandidateRound").text();
             $.ajax({
                 url: '/HR/EditCandidateInterviewer/',
-                data: JSON.stringify({ "CandidateID": CandidateID, "UserID": UserID }),
+                data: JSON.stringify({ "CandidateID": CandidateID, "UserID": UserID, "RoundID": RoundID }),
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {

@@ -10,6 +10,24 @@ namespace DataAccessLayer
     {
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
 
+        public bool ValidateLoginCredentials(UserViewModel loginUser)
+        {
+            return dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == loginUser.Password).Any();
+        }
+
+        public UserViewModel GetLoginUserDetails(string UserName, string Password)
+        {
+            return dbContext.tblUsers.Where(s => s.UserName == UserName && s.Password == Password).FirstOrDefault();
+        }
+
+        public void UpdatePasswordByEmail(string Email, string newPassword)
+        {
+            var result = dbContext.tblUsers.Where(s => s.Email == Email).FirstOrDefault();
+            result.Password = newPassword;
+            dbContext.SaveChanges();
+        }
+
+
         /// <summary>
         /// To get Counts of New Candidates, Notifications, Today's interviews, Candidates in progress,
         /// skills, Hired candidates, Total candidates, Available interviewers from database
@@ -78,6 +96,18 @@ namespace DataAccessLayer
                     DateOfInterview = c.DateOfInterview,
                     RoundName = c.RoundName
                 }).ToList();
+        }
+
+        public List<CurrentStatusViewModel> SearchCandidatesinHR(string searchString)
+        {
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                return GetCandidatesinHR().Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            return GetCandidatesinHR();
         }
 
         /// <summary>
@@ -547,9 +577,9 @@ namespace DataAccessLayer
                     }).ToList();
         }
 
-        public void UpdateCandidateInterviewer(int UserID, int CandidateID)
+        public void UpdateCandidateInterviewer(int UserID, int CandidateID, int RoundID)
         {
-            dbContext.spUpdateCandidateInterviewer(UserID, CandidateID);
+            dbContext.spUpdateCandidateInterviewer(UserID, CandidateID, RoundID);
         }
 
         public List<InterviewersOfCandidateViewModel> SearchUpdatableInterviews(string UserName)
@@ -566,16 +596,6 @@ namespace DataAccessLayer
         {
             return GetNotifications().Count();
         }
-
-
-
-
-
-
-
-
-
-
 
         /// <summary>
         /// To get Counts of New Candidates, Today's interviews, Hired candidates, Total candidates from database
@@ -711,17 +731,16 @@ namespace DataAccessLayer
         /// <param name="changePasswordViewModel"></param>
         public int UpdatePassword(int userId, ChangePasswordViewModel changePasswordViewModel)
         {
-            int res = dbContext.spUpdatePassword(userId, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
-            return res;
+            return dbContext.spUpdatePassword(userId, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
         }
 
         /// <summary>
         /// To get details of candidates having interview today from database
         /// </summary>
         /// <param name="UserId"></param>
-        public List<StatusViewModel> GetTodaysInterview(int UserId)
+        public List<StatusViewModel> GetTodaysInterview(int UserID)
         {
-            List<StatusViewModel> candidates = dbContext.spGetStatus(UserId)
+            List<StatusViewModel> candidates = dbContext.spGetStatus(UserID)
                 .Select(e => new StatusViewModel
                 {
                     Name = e.Name,
@@ -734,6 +753,21 @@ namespace DataAccessLayer
                     DateOfInterview = e.DateOfInterview
                 }).Where(s => s.DateOfInterview == DateTime.Now.Date).ToList();
             return candidates;
+        }
+
+        public List<StatusViewModel> SearchTodaysInterview(int UserID, string searchString)
+        {
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                return GetTodaysInterview(UserID).Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            else
+            {
+                return GetTodaysInterview(UserID);
+            }
         }
 
         /// <summary>

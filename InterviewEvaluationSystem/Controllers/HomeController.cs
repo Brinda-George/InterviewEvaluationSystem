@@ -1,23 +1,17 @@
-﻿using InterviewEvaluationSystem.Business_Logic;
-using InterviewEvaluationSystem.Models;
+﻿using BusinessLogicLayer;
 using System;
 using System.Data;
 using System.Linq;
 using System.Net.Mail;
-using System.Text;
 using System.Web.Mvc;
 using System.Web.Security;
+using static DataAccessLayer.InterviewViewModels;
 
 namespace InterviewEvaluationSystem.Controllers
 {
     public class HomeController : Controller
     {
         #region Fields
-
-        /// <summary>
-        /// Declare Db Entity to connect to database
-        /// </summary>
-        InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
 
         /// <summary>
         /// Declare Service class that contains methods to implement business logic
@@ -47,20 +41,22 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                tblUser user = new tblUser();
+                bool exists = services.ValidateLoginCredentials(loginUser);
+
+                UserViewModel user = new UserViewModel();
                 string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(loginUser.Password, "sha1");
                 if (loginUser.UserName == "hr")
                 {
-                    user = dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == loginUser.Password).FirstOrDefault();
+                    user = services.GetLoginUserDetails(loginUser.UserName, loginUser.Password);
                 }
                 else
                 {
-                    user = dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == hashedPwd).FirstOrDefault();
+                    user = services.GetLoginUserDetails(loginUser.UserName, hashedPwd);
                 }
 
                 //To check if there exist any record in database
                 // where username and password matches with the values entered and storing the entire row in a variable.
-                if (user == null)
+                if (exists == false)
                 {
                     //Displaying 'invalid credentials' when the user credentials does not match.
                     ViewBag.Message = Constants.invalidLogin;
@@ -286,9 +282,7 @@ namespace InterviewEvaluationSystem.Controllers
                     var sessionValue = Session["Email"].ToString();
 
                     //To reset the password for the user whose EmailID matches with the EmailID stored in session.
-                    var result = dbContext.tblUsers.Where(s => s.Email == sessionValue).FirstOrDefault();
-                    result.Password = updatePasswordViewModel.NewPassword;
-                    dbContext.SaveChanges();
+                    services.UpdatePasswordByEmail(sessionValue, updatePasswordViewModel.NewPassword);
                     ViewBag.result = Constants.passwordUpdate;
                     Session["Email"] = null;
                 }
