@@ -100,9 +100,19 @@ namespace BusinessLogicLayer
             return dataAccess.GetInProgressCandidates();
         }
 
+        public List<CandidateViewModel> SearchInProgressCandidates(string searchString)
+        {
+            return dataAccess.SearchInProgressCandidates(searchString);
+        }
+
         public List<CandidateViewModel> GetHiredCandidates()
         {
             return dataAccess.GetHiredCandidates();
+        }
+
+        public List<CandidateViewModel> SearchHiredCandidates(string searchString)
+        {
+            return dataAccess.SearchHiredCandidates(searchString);
         }
 
         public List<CandidateViewModel> GetCandidateStatuses()
@@ -115,14 +125,14 @@ namespace BusinessLogicLayer
             dataAccess.InsertRound(roundViewModel, UserID);
         }
 
-        public RoundViewModel ValidateRound(string RoundName)
+        public bool ValidateRound(string RoundName)
         {
             return dataAccess.ValidateRound(RoundName);;
         }
 
-        public void EditRound(int RoundID, string RoundName)
+        public void UpdateRound(int RoundID, string RoundName)
         {
-            dataAccess.EditRound(RoundID, RoundName);
+            dataAccess.UpdateRound(RoundID, RoundName);
         }
 
         public void DeleteRound(int RoundID, int UserID)
@@ -135,19 +145,19 @@ namespace BusinessLogicLayer
             dataAccess.InsertRatingScale(ratingScaleViewModel, UserID);
         }
 
-        public RatingScaleViewModel ValidateRateScale(string RateScale)
+        public bool ValidateRateScale(string RateScale)
         {
             return dataAccess.ValidateRateScale(RateScale);
         }
 
-        public RatingScaleViewModel ValidateRateValue(int RateValue)
+        public bool ValidateRateValue(int RateValue)
         {
             return dataAccess.ValidateRateValue(RateValue);
         }
 
-        public void EditRatingScale(int RateScaleID, string Ratescale, int Ratevalue, string description)
+        public void UpdateRatingScale(int RateScaleID, string Ratescale, int Ratevalue, string description)
         {
-            dataAccess.EditRatingScale(RateScaleID, Ratescale, Ratevalue, description);
+            dataAccess.UpdateRatingScale(RateScaleID, Ratescale, Ratevalue, description);
         }
 
         public void DeleteRatingScale(int RateScaleID, int UserID)
@@ -159,14 +169,14 @@ namespace BusinessLogicLayer
             dataAccess.InsertSkillCategory(skillCategoryViewModel, UserID);
         }
 
-        public SkillCategoryViewModel ValidateSkillCategory(string SkillCategory)
+        public bool ValidateSkillCategory(string SkillCategory)
         {
             return dataAccess.ValidateSkillCategory(SkillCategory);
         }
 
-        public void EditSkillCategory(int SkillCategoryID, string SkillCategory, string description)
+        public void UpdateSkillCategory(int SkillCategoryID, string SkillCategory, string description)
         {
-            dataAccess.EditSkillCategory(SkillCategoryID, SkillCategory, description);
+            dataAccess.UpdateSkillCategory(SkillCategoryID, SkillCategory, description);
         }
 
         public void DeleteSkillCategory(int SkillCategoryID, int UserID)
@@ -184,14 +194,14 @@ namespace BusinessLogicLayer
             dataAccess.InsertSkill(skillViewModel, category, UserID);
         }
 
-        public SkillViewModel ValidateSkill(string SkillName)
+        public bool ValidateSkill(string SkillName)
         {
             return dataAccess.ValidateSkill(SkillName);
         }
 
-        public void EditSkill(int SkillID, int CategoryID, string Skillname, int UserID)
+        public void UpdateSkill(int SkillID, int CategoryID, string Skillname, int UserID)
         {
-            dataAccess.EditSkill(SkillID, CategoryID, Skillname, UserID);
+            dataAccess.UpdateSkill(SkillID, CategoryID, Skillname, UserID);
         }
 
         public string GetSkillCategoryByID(int CategoryID)
@@ -239,6 +249,28 @@ namespace BusinessLogicLayer
             return dataAccess.GetCandidates();
         }
 
+        public List<CandidateViewModel> SearchCandidate(string searchString)
+        {
+            return dataAccess.SearchCandidate(searchString);
+        }
+
+        public List<SelectListItem> GetCandidateInterviewersDropdown(int CandidateID)
+        {
+            //Used to fill the drop down with interviewers that have not taken interview for particular candidate.
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            List<CandidateInterviewersViewModel> interviewers = GetCandidateInterviewers(CandidateID);
+            foreach (CandidateInterviewersViewModel interviewer in interviewers)
+            {
+                SelectListItem selectlistitem = new SelectListItem
+                {
+                    Text = interviewer.UserName,
+                    Value = interviewer.UserID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            return selectedlist;
+        }
+
         public List<SelectListItem> GetInterviewerDropdown()
         {
             List<SelectListItem> selectedlist = new List<SelectListItem>();
@@ -275,11 +307,6 @@ namespace BusinessLogicLayer
             dataAccess.InsertEvaluation(UserID, CandidateID, RoundID, UserID);
         }
 
-        public List<CandidateViewModel> SearchCandidate(string Name)
-        {
-            return dataAccess.SearchCandidate(Name);
-        }
-
         public void UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications, int UserID)
         {
             dataAccess.UpdateCandidate(CandidateID, CandidateName, DateOfInterview, email, dateofbirth, pan, designation, experience, qualifications, UserID);
@@ -295,10 +322,25 @@ namespace BusinessLogicLayer
             return dataAccess.GetNotifications();
         }
 
-        public List<CandidateRoundViewModel> GetCandidateRound(int CandidateID)
+        public List<SelectListItem> GetRoundDropdown(int CandidateID)
         {
-            return dataAccess.GetCandidateRound(CandidateID);
+            List<SelectListItem> selectedlistround = new List<SelectListItem>();
+            //stored procedure to list all the rounds that the candidates have not attended yet.
+            //This is assigned to ViewBag.round
+            List<CandidateRoundViewModel> CandidateRound = dataAccess.GetCandidateRound(CandidateID);
+            foreach (CandidateRoundViewModel round1 in CandidateRound)
+            {
+                SelectListItem selectlistitem = new SelectListItem
+                {
+                    Text = round1.RoundName,
+                    Value = round1.RoundID.ToString()
+                };
+                selectedlistround.Add(selectlistitem);
+            }
+            return selectedlistround;
         }
+
+
 
         public List<CandidateInterviewersViewModel> GetCandidateInterviewers(int CandidateID)
         {
@@ -333,6 +375,11 @@ namespace BusinessLogicLayer
         public List<CurrentStatusViewModel> GetCurrentStatus()
         {
             return dataAccess.GetCurrentStatus();
+        }
+
+        public List<CurrentStatusViewModel> SearchCurrentStatus(string searchString)
+        {
+            return dataAccess.SearchCurrentStatus(searchString);
         }
 
         public List<CommentViewModel> GetComments(Nullable<int> CandidateID)
@@ -410,6 +457,24 @@ namespace BusinessLogicLayer
             return dataAccess.GetSkillCategories();
         }
 
+        public List<SelectListItem> GetSkillCategoryDropdown()
+        {
+            // Select all the skill categories which are not deleted.
+            var itemlist = GetSkillCategories();
+            List<SelectListItem> selectedlist = new List<SelectListItem>();
+            // Store the skill categories and corresponding ID's in a list.
+            foreach (var skillitem in itemlist)
+            {
+                SelectListItem selectlistitem = new SelectListItem
+                {
+                    Text = skillitem.SkillCategory,
+                    Value = skillitem.SkillCategoryID.ToString()
+                };
+                selectedlist.Add(selectlistitem);
+            }
+            return selectedlist;
+        }
+
         public List<SkillViewModel> GetSkills()
         {
             return dataAccess.GetSkills();
@@ -424,6 +489,52 @@ namespace BusinessLogicLayer
         {
             return dataAccess.GetPreviousRoundScores(candidateID, roundID);
         }
+
+        public InterviewEvaluationViewModel GetInterviewEvaluationViewModel(StatusViewModel statusViewModel)
+        {
+            InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
+            interviewEvaluationViewModel.RatingScale = GetRatingScale();
+            interviewEvaluationViewModel.Rounds = GetRounds();
+            interviewEvaluationViewModel.SkillCategories = GetSkillCategories();
+            interviewEvaluationViewModel.Skills = GetSkills();
+
+            //Get List of skills by skill category and save in a List<List<Skills>>
+            foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
+            {
+                interviewEvaluationViewModel.SkillsByCategory.Add(GetSkillsByCategory(skillCategory.SkillCategoryID));
+            }
+
+            //Get List of scores by round and save in a List<List<Scores>>
+            foreach (var round in interviewEvaluationViewModel.Rounds)
+            {
+                List<ScoreEvaluationViewModel> scores = GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID);
+                bool exists = false;
+                ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
+                foreach (var skill in interviewEvaluationViewModel.Skills)
+                {
+                    exists = scores.Exists(item => item.SkillID == skill.SkillID);
+
+                    // Check if score exists for corresponding skill
+                    if (!exists)
+                    {
+                        scoreEvaluationViewModel.SkillID = skill.SkillID;
+
+                        // If skill is not evaluated in previous round, display score as 0
+                        scoreEvaluationViewModel.RateValue = 0;
+                        scores.Add(scoreEvaluationViewModel);
+                    }
+                }
+                interviewEvaluationViewModel.ScoresByRound.Add(scores);
+            }
+            interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
+            if(statusViewModel.Recommended != null)
+            {
+                //Get comments from database
+                interviewEvaluationViewModel.Comments = GetComments(statusViewModel.CandidateID);
+            }
+            return interviewEvaluationViewModel;
+        }
+
 
         /// <summary>
         /// To sent mail from mail address specified in web.config to HR mail address using smtp

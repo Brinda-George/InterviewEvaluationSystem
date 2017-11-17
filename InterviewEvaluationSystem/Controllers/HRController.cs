@@ -92,16 +92,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult TodaysInterviews(string searchString)
         {
-            List<StatusViewModel> TodaysInterviews = services.GetTodaysInterview(Convert.ToInt32(Session["UserID"]));
-
-            // Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                // Get details of candidates whose name or email starts with search string given
-                TodaysInterviews = TodaysInterviews.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(TodaysInterviews);
+            return View(services.SearchTodaysInterview(Convert.ToInt32(Session["UserID"]), searchString));
         }
 
         #endregion
@@ -113,8 +104,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public ActionResult ViewInProgressCandidates()
         {
-            List<CandidateViewModel> candidates = services.GetInProgressCandidates();
-            return View(candidates);
+            return View(services.GetInProgressCandidates());
         }
 
         /// <summary>
@@ -124,16 +114,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ViewInProgressCandidates(string searchString)
         {
-            List<CandidateViewModel> candidates = services.GetInProgressCandidates();
-
-            //Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                //Get details of candidates whose name or email starts with search string given
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
+            return View(services.SearchInProgressCandidates(searchString));
         }
         #endregion
 
@@ -145,8 +126,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public ActionResult ViewHiredCandidates()
         {
-            List<CandidateViewModel> candidates = services.GetHiredCandidates();
-            return View(candidates);
+            return View(services.GetHiredCandidates());
         }
 
         /// <summary>
@@ -156,16 +136,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ViewHiredCandidates(string searchString)
         {
-            List<CandidateViewModel> candidates = services.GetHiredCandidates();
-
-            //Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                //Get details of candidates whose name or email starts with search string given
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
+            return View(services.SearchHiredCandidates(searchString));
         }
 
         #endregion
@@ -178,8 +149,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpGet]
         public ActionResult ViewCandidates()
         {
-            List<CandidateViewModel> candidates = services.GetCandidates();
-            return View(candidates);
+            return View(services.GetCandidates());
         }
 
         /// <summary>
@@ -189,16 +159,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult ViewCandidates(string searchString)
         {
-            List<CandidateViewModel> candidates = services.GetCandidates();
-
-            // Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                // Get details of candidates whose name or email starts with search string given
-                candidates = candidates.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(candidates);
+            return View(services.SearchCandidate(searchString));
         }
 
         #endregion
@@ -211,8 +172,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult AddRound()
         {
             //Get all the rounds
-            var rounds = services.GetRounds();
-            ViewBag.Rounds = rounds;
+            ViewBag.Rounds = services.GetRounds();
             return View();
         }
 
@@ -243,15 +203,9 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsRoundExist(string RoundName)
         {
             // Check if there exist a round with same name in database and store the returned value to a variable.
-            var validateScale = services.ValidateRound(RoundName);
-            if (validateScale != null)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
+            bool IsExists = services.ValidateRound(RoundName);
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
+
         }
 
         /// <summary>
@@ -264,7 +218,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RoundEdit(int RoundID, string RoundName)
         {
-            services.EditRound(RoundID, RoundName);
+            services.UpdateRound(RoundID, RoundName);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
             return Json(new { Url = redirectUrl, RoundName = RoundName }, JsonRequestBehavior.AllowGet);
         }
@@ -294,8 +248,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult RatingScale()
         {
             //Select all the rating scales which are not deleted.
-            var rateScales = services.GetRatingScale();
-            ViewBag.Roles = rateScales;
+            ViewBag.Roles = services.GetRatingScale();
             return View();
         }
 
@@ -325,15 +278,8 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsScaleExist(string RateScale)
         {
             //Check if RateScale already exist in database and store the returned value to a variable.
-            var validateScale = services.ValidateRateScale(RateScale);
-            if (validateScale != null)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
+            bool IsExists = services.ValidateRateScale(RateScale);
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -344,15 +290,8 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsValueExist(int RateValue)
         {
             //Check if RateValue already exist in database and store the returned value to a variable.
-            var validateScale = services.ValidateRateValue(RateValue);
-            if (validateScale != null)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
+            bool IsExists = services.ValidateRateValue(RateValue);
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -367,7 +306,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult RateEdit(int RateScaleId, string Ratescale, int Ratevalue, string description)
         {
-            services.EditRatingScale(RateScaleId, Ratescale, Ratevalue, description);
+            services.UpdateRatingScale(RateScaleId, Ratescale, Ratevalue, description);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
             return Json(new { Url = redirectUrl, RateScale = Ratescale, RateValue = Ratevalue, Description = description }, JsonRequestBehavior.AllowGet);
         }
@@ -396,8 +335,7 @@ namespace InterviewEvaluationSystem.Controllers
         public ActionResult SkillCategory()
         {
             //Select all skill categories which are not deleted.
-            var skillCategories = services.GetSkillCategories();
-            ViewBag.Roles = skillCategories;
+            ViewBag.Roles = services.GetSkillCategories();
             return View();
         }
 
@@ -431,15 +369,8 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsCategoryExist(string SkillCategory)
         {
             // Check if Skill category alreday exist in database and store the returned value to a variable.
-            var validateScale = services.ValidateSkillCategory(SkillCategory);
-            if (validateScale != null)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
+            bool IsExists = services.ValidateSkillCategory(SkillCategory);
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -452,7 +383,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult CategoryEdit(int SkillCategoryID, string SkillCategory, string description)
         {
-            services.EditSkillCategory(SkillCategoryID, SkillCategory, description);
+            services.UpdateSkillCategory(SkillCategoryID, SkillCategory, description);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
             return Json(new { Url = redirectUrl, SkillCategory = SkillCategory, Description = description }, JsonRequestBehavior.AllowGet);
         }
@@ -482,30 +413,17 @@ namespace InterviewEvaluationSystem.Controllers
         /// <returns></returns>
         public ActionResult Skill()
         {
-            // Select all the skill categories which are not deleted.
-            var itemlist = services.GetSkillCategories();
-            List<SelectListItem> selectedlist = new List<SelectListItem>();
-            // Store the skill categories and corresponding ID's in a list.
-            foreach (var skillitem in itemlist)
-            {
-                SelectListItem selectlistitem = new SelectListItem
-                {
-                    Text = skillitem.SkillCategory,
-                    Value = skillitem.SkillCategoryID.ToString()
-                };
-                selectedlist.Add(selectlistitem);
-            }
-            ViewBag.category = selectedlist;
+            ViewBag.category = services.GetSkillCategoryDropdown();
             // Join both the tables and select all the fields which are required in the gridview.
             var result = services.GetSkillsWithCategory();
-            if (!result.Any()) //If no values exist based on the condition pass 'null'.
-            {
-                ViewBag.Skillcategories = null;
-            }
-
-            else // Pass result.
+            if (result.Any())
             {
                 ViewBag.Skillcategories = result;
+            }
+            //If no values exist based on the condition, pass 'null'.
+            else
+            {
+                ViewBag.Skillcategories = null;
 
             }
             return View();
@@ -540,15 +458,8 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult IsSkillExist(string SkillName)
         {
             // Check if the skill entered already exist in dataabse and store the value returned to a variable.
-            var validateScale = services.ValidateSkill(SkillName);
-            if (validateScale != null)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
+            bool IsExists = services.ValidateSkill(SkillName);
+            return Json(!IsExists, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -561,7 +472,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public JsonResult SkillEdit(int SkillID, string Skillname, int CategoryID)
         {
-            services.EditSkill(SkillID, CategoryID, Skillname, Convert.ToInt32(Session["UserID"]));
+            services.UpdateSkill(SkillID, CategoryID, Skillname, Convert.ToInt32(Session["UserID"]));
             // Set skillcategory based on the value selected from dropdown and update skillcategry in databse for that skill.
             string SkillCategory = services.GetSkillCategoryByID(CategoryID);
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
@@ -903,35 +814,8 @@ namespace InterviewEvaluationSystem.Controllers
                 candidateProceed.Name = Name;
                 candidateProceed.Email = Email;
                 TempData["CandidateID"] = CandidateID;
-                List<SelectListItem> selectedlistround = new List<SelectListItem>();
-
-                //stored procedure to list all the rounds that the candidates have not attended yet.
-                //This is assigned to ViewBag.round
-                List<CandidateRoundViewModel> CandidateRound = services.GetCandidateRound(CandidateID);
-                foreach (CandidateRoundViewModel round1 in CandidateRound)
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = round1.RoundName,
-                        Value = round1.RoundID.ToString()
-                    };
-                    selectedlistround.Add(selectlistitem);
-                }
-                ViewBag.round = selectedlistround;
-
-                //Used to fill the drop down with interviewers that have not taken interview for particular candidate.
-                List<SelectListItem> selectedlist = new List<SelectListItem>();
-                List<CandidateInterviewersViewModel> interviewers = services.GetCandidateInterviewers(CandidateID);
-                foreach (CandidateInterviewersViewModel interviewer in interviewers)
-                {
-                    SelectListItem selectlistitem = new SelectListItem
-                    {
-                        Text = interviewer.UserName,
-                        Value = interviewer.UserID.ToString()
-                    };
-                    selectedlist.Add(selectlistitem);
-                }
-                ViewBag.interviewers = selectedlist;
+                ViewBag.round = services.GetRoundDropdown(CandidateID);
+                ViewBag.interviewers = services.GetCandidateInterviewersDropdown(CandidateID);
                 return PartialView("NotificationProceed", candidateProceed);
             }
             catch (Exception ex)
@@ -1015,7 +899,6 @@ namespace InterviewEvaluationSystem.Controllers
             {
                 ViewBag.CandidateInterviewersList = services.GetUpdatableInterviews();
                 ViewBag.user = services.GetInterviewerDropdown();
-
                 return View();
             }
             catch (Exception ex)
@@ -1102,16 +985,7 @@ namespace InterviewEvaluationSystem.Controllers
         [HttpPost]
         public ActionResult CandidateStatus(string searchString)
         {
-            List<CurrentStatusViewModel> CurrentStatuses = services.GetCurrentStatus();
-
-            // Check if search string is not empty or null
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                // Get details of candidates whose name or email starts with search string given
-                CurrentStatuses = CurrentStatuses.Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
-                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
-            }
-            return View(CurrentStatuses);
+            return View(services.SearchCurrentStatus(searchString));
         }
 
         #endregion
@@ -1125,43 +999,6 @@ namespace InterviewEvaluationSystem.Controllers
         /// <param name="statusViewModel"></param>
         public ActionResult HREvaluation(StatusViewModel statusViewModel)
         {
-            InterviewEvaluationViewModel interviewEvaluationViewModel = new InterviewEvaluationViewModel();
-            interviewEvaluationViewModel.RatingScale = services.GetRatingScale();
-            interviewEvaluationViewModel.Rounds = services.GetRounds();
-            interviewEvaluationViewModel.SkillCategories = services.GetSkillCategories();
-            interviewEvaluationViewModel.Skills = services.GetSkills();
-            int skillCount = interviewEvaluationViewModel.Skills.Count;
-
-            //Get List of skills by skill category and save in a List<List<Skills>>
-            foreach (var skillCategory in interviewEvaluationViewModel.SkillCategories)
-            {
-                interviewEvaluationViewModel.SkillsByCategory.Add(services.GetSkillsByCategory(skillCategory.SkillCategoryID));
-            }
-
-            //Get List of scores by round and save in a List<List<Scores>>
-            foreach (var round in interviewEvaluationViewModel.Rounds)
-            {
-                List<ScoreEvaluationViewModel> scores = services.GetPreviousRoundScores(statusViewModel.CandidateID, round.RoundID);
-                bool exists;
-                ScoreEvaluationViewModel scoreEvaluationViewModel = new ScoreEvaluationViewModel();
-                foreach (var skill in interviewEvaluationViewModel.Skills)
-                {
-
-                    exists = scores.Exists(item => item.SkillID == skill.SkillID);
-
-                    // Check if score exists for corresponding skill
-                    if (exists == false)
-                    {
-                        scoreEvaluationViewModel.SkillID = skill.SkillID;
-
-                        // If skill is not evaluated in previous round, display score as 0
-                        scoreEvaluationViewModel.RateValue = 0;
-                        scores.Add(scoreEvaluationViewModel);
-                    }
-                }
-                interviewEvaluationViewModel.ScoresByRound.Add(scores);
-            }
-            interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
 
             //Store CandidateID, RoundID, EvaluationID, Recommended in TempData
             TempData["candidateID"] = statusViewModel.CandidateID;
@@ -1178,11 +1015,8 @@ namespace InterviewEvaluationSystem.Controllers
             else
             {
                 TempData["evaluationCompleted"] = true;
-
-                //Get comments from database
-                interviewEvaluationViewModel.Comments = services.GetComments(statusViewModel.CandidateID);
             }
-            return View(interviewEvaluationViewModel);
+            return View(services.GetInterviewEvaluationViewModel(statusViewModel));
         }
 
         /// <summary>
@@ -1200,23 +1034,24 @@ namespace InterviewEvaluationSystem.Controllers
         {
             if (evaluationID != 0)
             {
-                services.InsertScores(evaluationID, ids, values,Convert.ToInt32(Session["UserID"]));
+                services.InsertScores(evaluationID, ids, values, Convert.ToInt32(Session["UserID"]));
                 services.UpdateEvaluation(evaluationID, comments, recommended, Convert.ToInt32(Session["UserID"]));
             }
 
             //Get new Notification count from database and store in session variable
             Session["NotificationsCount"] = services.GetHRNotificationsCount();
-            var redirectUrl = "";
 
+            var redirectAction = "";
             //if recommended is true, redirect to JoinDetails else redirect to HRHomePage 
             if (recommended == true)
             {
-                redirectUrl = new UrlHelper(Request.RequestContext).Action("JoinDetails", "HR");
+                redirectAction = "JoinDetails";
             }
             else
             {
-                redirectUrl = new UrlHelper(Request.RequestContext).Action("HRHomePage", "HR");
+                redirectAction = "HRHomePage";
             }
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action(redirectAction, "HR");
             return Json(new { Url = redirectUrl });
         }
 

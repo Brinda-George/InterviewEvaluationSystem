@@ -153,6 +153,21 @@ namespace DataAccessLayer
                 }).ToList();
         }
 
+        public List<CandidateViewModel> SearchInProgressCandidates(string searchString)
+        {
+            //Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //Get details of candidates whose name or email starts with search string given
+                return GetInProgressCandidates().Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            else
+            {
+                return GetInProgressCandidates();
+            }
+        }
+
         /// <summary>
         /// To get Hired candidates from database
         /// </summary>
@@ -173,6 +188,21 @@ namespace DataAccessLayer
                     OfferedSalary = c.OfferedSalary,
                     DateOfJoining = c.DateOfJoining
                 }).ToList();
+        }
+
+        public List<CandidateViewModel> SearchHiredCandidates(string searchString)
+        {
+            //Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //Get details of candidates whose name or email starts with search string given
+                return GetHiredCandidates().Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            else
+            {
+                return GetHiredCandidates();
+            }
         }
 
         /// <summary>
@@ -207,12 +237,12 @@ namespace DataAccessLayer
             dbContext.SaveChanges();
         }
 
-        public RoundViewModel ValidateRound(string RoundName)
+        public bool ValidateRound(string RoundName)
         {
-            return dbContext.tblRounds.FirstOrDefault(x => x.RoundName == RoundName && x.IsDeleted == false);
+            return dbContext.tblRounds.Where(x => x.RoundName == RoundName && x.IsDeleted == false).Any();
         }
 
-        public void EditRound(int RoundID, string RoundName)
+        public void UpdateRound(int RoundID, string RoundName)
         {
             tblRound round = dbContext.tblRounds.Find(RoundID);
             round.RoundName = RoundName;
@@ -242,18 +272,17 @@ namespace DataAccessLayer
             dbContext.SaveChanges();
         }
 
-        public RatingScaleViewModel ValidateRateScale(string RateScale)
+        public bool ValidateRateScale(string RateScale)
         {
-            return dbContext.tblRatingScales.FirstOrDefault(x => x.RateScale == RateScale && x.IsDeleted == false);
+            return dbContext.tblRatingScales.Where(x => x.RateScale == RateScale && x.IsDeleted == false).Any();
         }
 
-        public RatingScaleViewModel ValidateRateValue(int RateValue)
+        public bool ValidateRateValue(int RateValue)
         {
-            var ratingScale = dbContext.tblRatingScales.FirstOrDefault(x => x.RateValue == RateValue && x.IsDeleted == false);
-            return ratingScale;
+            return dbContext.tblRatingScales.Where(x => x.RateValue == RateValue && x.IsDeleted == false).Any();
         }
 
-        public void EditRatingScale(int RateScaleID, string Ratescale, int Ratevalue, string description)
+        public void UpdateRatingScale(int RateScaleID, string Ratescale, int Ratevalue, string description)
         {
             tblRatingScale rate = dbContext.tblRatingScales.Find(RateScaleID);
             rate.RateScale = Ratescale;
@@ -284,12 +313,12 @@ namespace DataAccessLayer
             dbContext.SaveChanges();
         }
 
-        public SkillCategoryViewModel ValidateSkillCategory(string SkillCategory)
+        public bool ValidateSkillCategory(string SkillCategory)
         {
-            return dbContext.tblSkillCategories.FirstOrDefault(x => x.SkillCategory == SkillCategory && x.IsDeleted == false);
+            return dbContext.tblSkillCategories.Where(x => x.SkillCategory == SkillCategory && x.IsDeleted == false).Any();
         }
 
-        public void EditSkillCategory(int SkillCategoryID, string SkillCategory, string description)
+        public void UpdateSkillCategory(int SkillCategoryID, string SkillCategory, string description)
         {
             tblSkillCategory category = dbContext.tblSkillCategories.Find(SkillCategoryID);
             category.SkillCategory = SkillCategory;
@@ -341,12 +370,12 @@ namespace DataAccessLayer
             dbContext.SaveChanges();
         }
 
-        public SkillViewModel ValidateSkill(string SkillName)
+        public bool ValidateSkill(string SkillName)
         {
-            return dbContext.tblSkills.FirstOrDefault(x => x.SkillName == SkillName && x.IsDeleted == false);
+            return dbContext.tblSkills.Where(x => x.SkillName == SkillName && x.IsDeleted == false).Any();
         }
 
-        public void EditSkill(int SkillID, int CategoryID, string Skillname, int UserID)
+        public void UpdateSkill(int SkillID, int CategoryID, string Skillname, int UserID)
         {
             tblSkill skill = dbContext.tblSkills.Find(SkillID);
             skill.SkillCategoryID = CategoryID;
@@ -459,6 +488,21 @@ namespace DataAccessLayer
                     }).ToList();
         }
 
+        public List<CandidateViewModel> SearchCandidate(string searchString)
+        {
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                return GetCandidates().Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            else
+            {
+                return GetCandidates();
+            }
+        }
+
         public int GetMinimumRoundID()
         {
             return (int)dbContext.spGetMinimumRoundID().Single();
@@ -513,11 +557,6 @@ namespace DataAccessLayer
                 IsDeleted = false
             });
             dbContext.SaveChanges();
-        }
-
-        public List<CandidateViewModel> SearchCandidate(string Name)
-        {
-            return GetCandidates().Where(s => s.Name.ToLower().StartsWith(Name.ToLower())).ToList();
         }
 
         public void UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications, int UserID)
@@ -813,6 +852,21 @@ namespace DataAccessLayer
                     RoundName = c.RoundName
                 }).ToList();
             return CurrentStatuses;
+        }
+
+        public List<CurrentStatusViewModel> SearchCurrentStatus(string searchString)
+        {
+            // Check if search string is not empty or null
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Get details of candidates whose name or email starts with search string given
+                return GetCurrentStatus().Where(s => s.Name.ToLower().StartsWith(searchString.ToLower())
+                                       || s.Email.ToLower().StartsWith(searchString.ToLower())).ToList();
+            }
+            else
+            {
+                return GetCurrentStatus();
+            }
         }
 
         /// <summary>
