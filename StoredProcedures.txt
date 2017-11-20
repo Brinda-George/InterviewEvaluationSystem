@@ -1,0 +1,600 @@
+ALTER PROCEDURE [dbo].[spGetHRDashBoard]
+AS
+BEGIN
+	SELECT *
+	FROM
+	(
+	  SELECT COUNT(*) AS NewCandidateCount FROM tblEvaluation e
+	  INNER JOIN tblCandidate c ON e.CandidateID = c.CandidateID
+	  INNER JOIN tblUser u ON u.UserID = e.UserID
+	  WHERE e.Recommended IS NULL AND u.UserTypeID =1  AND e.IsDeleted = 0 AND u.IsDeleted = 0 AND c.IsDeleted = 0
+	) AS A
+	CROSS JOIN
+	(
+	SELECT COUNT(*) AS NotificationCount
+		FROM [tblEvaluation] e 
+		INNER JOIN (
+			SELECT CandidateID, MAX(RoundID) RoundID
+			FROM [tblEvaluation] WHERE IsDeleted = 0
+			GROUP BY CandidateID
+		) b ON e.CandidateID = b.CandidateID AND e.RoundID = b.RoundID 
+		INNER JOIN [dbo].[tblCandidate] c ON e.CandidateID = c.CandidateID where e.Recommended IS NOT NULL AND c.CandidateStatus IS NULL AND c.IsDeleted= 0 AND e.IsDeleted= 0
+	) AS B
+	CROSS JOIN
+	(
+	  SELECT COUNT(*)AS TodaysInterviewCount FROM tblCandidate c
+	  INNER JOIN [tblEvaluation] e ON e.CandidateID = c.CandidateID
+	  INNER JOIN [tblUser] u ON u.UserTypeID = 1
+	  WHERE c.DateOfInterview = CAST (getdate() AS DATE) AND c.CandidateStatus IS NULL AND e.UserID = u.UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0 AND u.IsDeleted = 0
+	) AS C
+	CROSS JOIN
+	(
+	SELECT COUNT(*) AS AvailableInterviewerCount FROM tblUser WHERE UserTypeID = 2 AND IsDeleted = 0 
+	) AS D
+	CROSS JOIN
+	(
+	SELECT Count(*) AS CandidatesInProgress FROM [dbo].[tblCandidate] WHERE CandidateStatus IS NULL AND IsDeleted = 0
+	) AS E
+	CROSS JOIN
+	(
+	SELECT COUNT(*) as SkillCount FROM tblSkill WHERE IsDeleted = 0
+	) AS F
+	CROSS JOIN
+	(
+	SELECT COUNT(*)as HiredCandidateCount FROM tblCandidate WHERE CandidateStatus = 1 AND IsDeleted = 0
+	) AS G
+	CROSS JOIN
+	(
+	SELECT COUNT(*)as TotalCandidateCount FROM tblCandidate WHERE IsDeleted = 0 
+	) AS H
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spAuthenticate] @Username VARCHAR (100), @PassWord VARCHAR (100)
+AS
+BEGIN
+	DECLARE @returnValue INT;
+	IF EXISTS(SELECT * FROM [dbo].[tblUser] WHERE UserName = @Username AND Password = @PassWord AND IsDeleted = 0)
+	BEGIN
+		SET @returnValue = 1
+	END
+	ELSE
+	BEGIN
+		SET @returnValue = 0
+	END
+	SELECT @returnValue AS returnValue
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spCandidateInterviewers] 
+AS
+BEGIN
+  SELECT c.CandidateID
+  ,c.Name
+  ,c.DateOfInterview
+  ,u.UserName
+  FROM tblCandidate AS c 
+  INNER JOIN tblEvaluation AS e ON c.CandidateID = e.CandidateID 
+  INNER JOIN tblUser AS u ON e.UserID = u.UserID 
+  WHERE e.RoundID= (SELECT min(RoundID) FROM tblRound WHERE IsDeleted = 0) AND c.IsDeleted = 0 AND e.IsDeleted = 0 AND u.IsDeleted = 0
+END
+***************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetCandidateInterviewers] @CandidateID INT
+AS
+BEGIN
+	SELECT u.UserName
+	,u.UserID
+	FROM [dbo].[tblUser] AS u 
+	WHERE NOT EXISTS( 
+		SELECT e.UserID 
+		FROM [dbo].[tblEvaluation] AS e 
+		WHERE u.UserID = e.UserID AND e.CandidateID = @CandidateID AND e.IsDeleted = 0) AND u.IsDeleted = 0
+END
+*****************************************************************************************************
+ALTER procedure [dbo].[spGetCandidateRound] @CandidateID INT
+AS
+BEGIN
+SELECT r.roundName,r.RoundID
+FROM [dbo].[tblRound] AS r 
+WHERE NOT EXISTS ( SELECT e.RoundID
+                   FROM [dbo].[tblEvaluation] AS e
+                   WHERE r.RoundID = e.RoundID AND e.CandidateID = @CandidateID AND e.IsDeleted = 0
+                 )  AND r.IsDeleted = 0 ORDER BY roundName
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetCandidates] 
+AS
+BEGIN
+	SELECT CandidateID
+	,Name
+	,Email
+	,DateOfBirth
+	,PAN
+	,DateOfInterview
+	,Designation
+	,TotalExperience
+	,Qualifications
+	,CandidateStatus
+	 FROM [dbo].[tblCandidate]
+	WHERE IsDeleted = 0 ORDER BY DateOfInterview DESC
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetCandidatesByInterviewer] @UserID INT
+AS
+BEGIN
+	SELECT c.Name
+	,c.Email
+	,c.DateOfInterview
+	,r.RoundName, 
+	e.CandidateID, 
+	e.RoundID,
+	e.EvaluationID,
+	e.Recommended,
+	c.CandidateStatus
+	FROM [dbo].[tblEvaluation] AS e
+	INNER JOIN [dbo].[tblCandidate] AS c ON e.CandidateID = c.CandidateID
+	INNER JOIN [dbo].[tblRound] AS r ON e.RoundID = r.RoundID WHERE e.UserID = @UserID AND e.IsDeleted = 0 AND c.IsDeleted = 0 AND r.IsDeleted = 0
+END
+***************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetCandidatesinHR]
+AS
+BEGIN
+	SELECT c.Name, 
+	c.Email,
+	c.DateOfInterview, 
+	a.RoundID, 
+	r.RoundName,
+	a.EvaluationID, 
+	a.CandidateID, 
+	a.Recommended
+	FROM [tblEvaluation] AS a
+	INNER JOIN (
+		SELECT CandidateID, MAX(RoundID) RoundID
+		FROM [tblEvaluation] WHERE IsDeleted = 0
+		GROUP BY CandidateID
+	) AS b ON a.CandidateID = b.CandidateID AND a.RoundID = b.RoundID 
+	INNER JOIN [dbo].[tblCandidate] c ON a.CandidateID = c.CandidateID 
+	INNER JOIN [dbo].[tblRound] r ON r.RoundID = a.RoundID
+	WHERE a.Recommended is null AND a.RoundID = (SELECT MAX(RoundID) FROM [dbo].[tblRound] WHERE IsDeleted = 0) AND c.IsDeleted = 0 AND a.IsDeleted = 0 AND r.IsDeleted = 0
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetCandidatesInProgress]
+AS
+BEGIN
+SELECT Count(*) AS CandidateInProgress FROM [dbo].[tblCandidate] WHERE CandidateStatus IS NULL AND IsDeleted = 0
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetCloumnChart] @year INT
+AS
+BEGIN
+	SELECT *
+	FROM
+	(
+	  SELECT count(*) AS January FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 1 AND DATEPART(yyyy, DateOfInterview) = @year  AND IsDeleted = 0
+	) AS A
+	CROSS JOIN
+	(
+	  SELECT count(*) AS February FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 2 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS B
+	CROSS JOIN
+	(
+	  SELECT count(*) AS March FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 3 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS C
+	CROSS JOIN
+	(
+	  SELECT count(*) AS April FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 4 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS D
+	CROSS JOIN
+	(
+	  SELECT count(*) AS May FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 5 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS E
+	CROSS JOIN
+	(
+	  SELECT count(*) AS June FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 6 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS F
+	CROSS JOIN
+	(
+	  SELECT count(*) AS July FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 7 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS G
+	CROSS JOIN
+	(
+	  SELECT count(*) AS August FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 8 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS H
+	CROSS JOIN
+	(
+	  SELECT count(*) AS September FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 9 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS I
+	CROSS JOIN
+	(
+	  SELECT count(*) AS October FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 10 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS J
+	CROSS JOIN
+	(
+	  select count(*) AS November FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 11 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS K
+	CROSS JOIN
+	(
+	  select count(*) AS December FROM tblCandidate WHERE DATEPART(m, DateOfInterview) = 12 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS L
+END
+*********************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetComments] @CandidateID INT
+AS
+BEGIN
+	SELECT r.RoundName
+	,u.UserName 
+	,e.Comment
+	,e.Recommended
+	FROM [dbo].[tblEvaluation] AS e
+	INNER JOIN [dbo].[tblCandidate] AS c ON e.CandidateID = c.CandidateID
+	INNER JOIN [dbo].[tblRound] AS r ON e.RoundID = r.RoundID 
+	INNER JOIN [dbo].[tblUser] AS u ON u.UserID = e.UserID WHERE c.CandidateID = @CandidateID AND c.IsDeleted = 0 AND e.IsDeleted = 0 AND r.IsDeleted = 0 AND u.IsDeleted = 0
+END
+*********************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetEmailByUserID] @CandidateID INT, @UserID INT
+AS
+BEGIN
+SELECT *
+	FROM
+	(
+	SELECT u.UserName
+	,u.Email
+	,c.Name
+	FROM [dbo].[tblEvaluation] AS e
+	INNER JOIN [dbo].[tblCandidate] AS c ON e.CandidateID = c.CandidateID
+	INNER JOIN [dbo].[tblUser] AS u ON u.UserID = e.UserID WHERE e.UserID = @UserID AND c.CandidateID = @CandidateID AND e.IsDeleted = 0 AND c.IsDeleted = 0 AND u.IsDeleted = 0 
+	) AS A
+	CROSS JOIN
+	(
+	  SELECT Email AS HREmail FROM tblUser WHERE UserTypeID = 1 AND IsDeleted = 0
+	) AS B
+END
+********************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetCurrentStatus]
+AS
+BEGIN
+	SELECT c.Name, 
+	c.Email,
+	c.DateOfInterview, 
+	a.RoundID, 
+	r.RoundName,
+	a.EvaluationID, 
+	a.CandidateID, 
+	a.Recommended,
+	c.CandidateStatus,
+	(SELECT MAX(RoundID) FROM [dbo].[tblRound] WHERE IsDeleted = 0) AS FinalRound
+	FROM [tblEvaluation] AS a
+	INNER JOIN (
+		SELECT CandidateID, MAX(RoundID) RoundID
+		FROM [tblEvaluation] WHERE IsDeleted = 0
+		GROUP BY CandidateID
+	) AS b ON a.CandidateID = b.CandidateID AND a.RoundID = b.RoundID 
+	INNER JOIN [dbo].[tblCandidate] c ON a.CandidateID = c.CandidateID 
+	INNER JOIN [dbo].[tblRound] r ON r.RoundID = a.RoundID
+	WHERE c.IsDeleted = 0 AND a.IsDeleted = 0 AND r.IsDeleted = 0
+END
+********************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetHiredCandidates] 
+AS
+BEGIN
+	SELECT Name
+	,Email
+	,DateOfBirth
+	,PAN
+	,Designation
+	,DateOfInterview
+	,NoticePeriodInMonths
+	,TotalExperience
+	,Qualifications
+	,OfferedSalary
+	,DateOfJoining
+	 FROM [dbo].[tblCandidate]
+	WHERE IsDeleted = 0 AND CandidateStatus = 1
+END
+*******************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetInProgressCandidates] 
+AS
+BEGIN
+	SELECT Name
+	,Email
+	,DateOfBirth
+	,PAN
+	,Designation
+	,DateOfInterview
+	,TotalExperience
+	,Qualifications
+	 FROM [dbo].[tblCandidate]
+	WHERE IsDeleted = 0 AND CandidateStatus IS NULL
+END
+******************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetEmailNotification] @CandidateID INT, @UserID INT
+AS
+BEGIN
+SELECT *
+	FROM
+	(
+	SELECT c.Name
+	,r.RoundName
+	,c.DateOfInterview
+	FROM [dbo].[tblEvaluation] AS e
+	INNER JOIN [dbo].[tblCandidate] AS c ON e.CandidateID = c.CandidateID
+	INNER JOIN [dbo].[tblRound] AS r ON r.RoundID = e.RoundID
+	INNER JOIN [dbo].[tblUser] AS u ON u.UserID = e.UserID WHERE e.UserID = @UserID AND e.CandidateID = @CandidateID AND e.Recommended IS NULL AND e.IsDeleted = 0 AND c.IsDeleted = 0 AND r.IsDeleted = 0 AND u.IsDeleted = 0 
+	) AS A
+	CROSS JOIN
+	(
+	  SELECT Email AS InterviewerEmail FROM tblUser WHERE UserID = @UserID AND IsDeleted = 0
+	) AS B
+END
+***************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetInterviewerCloumnChart] @UserID int, @year int
+AS
+BEGIN
+	SELECT *
+	FROM
+	(
+	  SELECT COUNT(*) AS January FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 1 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	  
+	) AS A
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS February FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 2 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS B
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS March FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 3 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS C
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS April FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 4 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS D
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS May FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 5 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS E
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS June FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 6 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS F
+	CROSS JOIN
+	(
+	  SELECT count(*) AS July FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 7 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS G
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS August FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 8 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS H
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS September FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 9 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS I
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS October FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 10 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS J
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS November FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 11 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS K
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) AS December FROM tblCandidate AS c INNER JOIN tblEvaluation AS e ON e.CandidateID = c.CandidateID 
+	  WHERE DATEPART(m, c.DateOfInterview) = 12 AND DATEPART(yyyy, c.DateOfInterview) = @year  AND e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS L
+END
+*******************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetSkillsBySkillCategory] @SkillCategoryID INT
+AS
+BEGIN
+	SELECT SkillID, SkillName FROM [dbo].[tblSkill] WHERE SkillCategoryID = @SkillCategoryID AND IsDeleted = 0
+END
+*****************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetRecommendedCandidates] @UserID INT
+AS
+BEGIN
+	SELECT c.Name
+	,c.Email
+	,c.DateOfInterview
+	,r.RoundName, 
+	c.CandidateStatus
+	FROM [dbo].[tblEvaluation] AS e
+	INNER JOIN [dbo].[tblCandidate] AS c ON e.CandidateID = c.CandidateID
+	INNER JOIN [dbo].[tblRound] AS r ON e.RoundID = r.RoundID WHERE e.UserID = @UserID AND e.Recommended = 1 AND e.IsDeleted = 0 AND c.IsDeleted = 0 AND r.IsDeleted = 0
+END
+***************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetPreviousRoundScores] @CandidateID INT, @RoundID INT
+AS
+BEGIN
+
+	SELECT s.SkillID, r.RateValue
+	FROM [dbo].[tblScore] AS s
+	INNER JOIN [dbo].[tblEvaluation] AS e ON s.EvaluationID = e.EvaluationID
+	INNER JOIN [dbo].[tblSkill] AS sk ON sk.SkillID = s.SkillID
+	INNER JOIN [dbo].[tblSkillCategory] AS sc ON sc.SkillCategoryID = sk.SkillCategoryID
+	INNER JOIN [dbo].[tblRatingScale] AS r ON r.RateScaleID = s.RateScaleID
+ 	WHERE e.CandidateID = @CandidateID AND e.RoundID = @RoundID AND e.IsDeleted = 0 AND s.IsDeleted = 0 AND sk.IsDeleted = 0 AND sc.IsDeleted = 0 AND r.IsDeleted = 0
+END
+*****************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetPieChart] @year INT
+AS
+BEGIN
+	SELECT *
+	FROM
+	(
+	  SELECT count(*) AS InProgress FROM tblCandidate WHERE CandidateStatus IS NULL AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS A
+	CROSS JOIN
+	(
+	SELECT count(*) AS Hired FROM tblCandidate WHERE CandidateStatus = 1 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS B
+	CROSS JOIN
+	(
+	  SELECT count(*) AS Rejected FROM tblCandidate WHERE CandidateStatus = 0 AND DATEPART(yyyy, DateOfInterview) = @year AND IsDeleted = 0
+	) AS C
+END
+**************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetMinimumRoundID] 
+AS
+BEGIN
+If EXISTS(SELECT * FROM tblRound WHERE IsDeleted = 0)
+BEGIN
+	SELECT MIN(RoundID) AS Round1ID FROM tblRound WHERE IsDeleted = 0
+END
+else
+BEGIN
+	SELECT 0 AS Round1ID 
+END
+END
+**************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetInterviewersOfCandidate]
+AS
+BEGIN
+	SELECT c.CandidateID,c.Name,c.Email, e.RoundID, u.UserName, e.Recommended
+  	FROM [tblEvaluation] e 
+  	INNER JOIN (
+    	SELECT CandidateID, MAX(RoundID) RoundID
+    	FROM [tblEvaluation] WHERE IsDeleted=0
+    	GROUP BY CandidateID
+  	) b ON e.CandidateID = b.CandidateID AND e.RoundID = b.RoundID 
+  	INNER JOIN [dbo].[tblCandidate] c ON e.CandidateID = c.CandidateID
+  	INNER JOIN [dbo].[tblUser] u ON e.UserID = u.UserID
+  	WHERE c.CandidateStatus IS NULL AND c.IsDeleted=0 AND e.IsDeleted=0 AND u.IsDeleted = 0 ORDER BY c.DateOfInterview DESC
+END
+*************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetInterviewerPieChart] @UserID INT, @year INT
+AS
+BEGIN
+	SELECT *
+	FROM
+	(
+	  SELECT count(*) AS InProgress FROM tblEvaluation e
+	  INNER JOIN tblCandidate c ON c.CandidateID = e.CandidateID
+	  WHERE e.UserID = @UserID AND e.Recommended IS NULL AND DATEPART(yyyy, c.DateOfInterview) = @year AND e.IsDeleted = 0 AND c.IsDeleted = 0
+	) AS A
+	CROSS JOIN
+	(
+	SELECT count(*) AS Hired FROM tblEvaluation e
+	INNER JOIN tblCandidate c ON c.CandidateID = e.CandidateID
+	WHERE e.UserID = @UserID AND e.Recommended = 1 AND DATEPART(yyyy, c.DateOfInterview) = @year AND e.IsDeleted = 0 AND c.IsDeleted = 0
+	) AS B
+	CROSS JOIN
+	(
+	  SELECT count(*) AS Rejected FROM tblEvaluation e
+	  INNER JOIN tblCandidate c ON c.CandidateID = e.CandidateID
+	  WHERE e.UserID = @UserID AND e.Recommended = 0 AND DATEPART(yyyy, c.DateOfInterview) = @year AND e.IsDeleted = 0 AND c.IsDeleted = 0
+	) AS C
+END
+************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetInterviewerDashBoard] @UserID INT
+AS
+BEGIN
+	SELECT *
+	FROM
+	(
+	  SELECT COUNT(*) AS NewCandidateCount FROM tblEvaluation e
+	  INNER JOIN tblCandidate c ON c.CandidateID = e.CandidateID
+	  WHERE e.UserID = @UserID and e.Recommended IS NULL AND e.IsDeleted = 0 AND c.IsDeleted = 0
+	) AS A
+	CROSS JOIN
+	(
+	SELECT COUNT(*) AS TodaysInterviewCount FROM tblCandidate c
+	INNER JOIN tblEvaluation e ON c.CandidateID = e.CandidateID
+	WHERE e.UserID = @UserID AND c.DateOfInterview = CAST (getdate() as DATE) AND c.CandidateStatus IS NULL AND e.Recommended IS NULL AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS B
+	CROSS JOIN
+	(
+	  SELECT COUNT(*) as HiredCandidateCount FROM tblCandidate c
+	INNER JOIN tblEvaluation e ON c.CandidateID = e.CandidateID
+	WHERE e.UserID = @UserID AND e.Recommended = 1 AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS C
+	CROSS JOIN
+	(
+	SELECT COUNT(*) as TotalCandidateCount FROM tblCandidate c
+	INNER JOIN tblEvaluation e ON c.CandidateID = e.CandidateID
+	WHERE e.UserID = @UserID AND c.IsDeleted = 0 AND e.IsDeleted = 0
+	) AS D
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spUpdatePassword] @UserId INT, @OldPassword VARCHAR(100), @NewPassword VARCHAR(100)
+AS
+BEGIN
+	IF EXISTS (SELECT * FROM dbo.tblUser WHERE UserID = @UserId AND Password = @OldPassword AND IsDeleted = 0)
+	BEGIN
+		UPDATE dbo.tblUser SET Password = @NewPassword, ModifiedBy = @UserId, ModifiedDate = GETDATE() WHERE UserID = @UserId AND Password = @OldPassword AND IsDeleted = 0
+		RETURN 1
+	END
+	ELSE
+	BEGIN
+		RETURN 0
+	END
+END
+**************************************************************************************************
+ALTER PROCEDURE [dbo].[spUpdateCandidateInterviewer] @userid INT, @candidateid INT,@RoundID INT
+AS
+BEGIN
+UPDATE tblEvaluation SET UserID=@userid WHERE CandidateID=@candidateid AND IsDeleted = 0 AND RoundID=@RoundID
+END
+***************************************************************************************************
+ALTER PROCEDURE [dbo].[spResetPassword] @Email VARCHAR(100),@NewPassword VARCHAR(100)
+AS
+BEGIN
+	IF EXISTS (SELECT * FROM dbo.tblUser WHERE Email=@Email AND IsDeleted = 0)
+	BEGIN
+		UPDATE dbo.tblUser SET Password = @NewPassword WHERE Email = @Email
+		RETURN 1
+	END
+	ELSE
+	BEGIN 
+		RETURN 0
+	END
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spLogin] @Username VARCHAR (100), @PassWord VARCHAR (100)
+AS 
+BEGIN
+	Select * FROM [dbo].[tblUser] WHERE UserName = @Username AND Password = @PassWord AND IsDeleted = 0
+END
+**************************************************************************************************
+ALTER PROCEDURE [dbo].[spInsertJoinDetails] @UserID INT, @CandidateID INT, @OfferedSalary MONEY, @DateOfJoining DATE
+AS
+BEGIN
+	UPDATE [dbo].[tblCandidate] SET OfferedSalary = @OfferedSalary, DateOfJoining = @DateOfJoining, ModifiedBy = @UserID, ModifiedDate = GETDATE() WHERE CandidateID = @CandidateID AND IsDeleted = 0
+END
+**************************************************************************************************
+ALTER PROCEDURE [dbo].[spHRNotificationGrid]
+AS
+BEGIN
+	SELECT c.CandidateID,c.Name,c.Email, e.RoundID,e.Recommended, (SELECT COUNT(*) FROM tblRound WHERE IsDeleted = 0) AS totalRound
+	FROM [tblEvaluation] e 
+	INNER JOIN (
+		SELECT CandidateID, MAX(RoundID) RoundID
+		FROM [tblEvaluation] WHERE IsDeleted = 0
+		GROUP BY CandidateID
+	) b ON e.CandidateID = b.CandidateID AND e.RoundID = b.RoundID 
+	INNER JOIN [dbo].[tblCandidate] c ON e.CandidateID = c.CandidateID WHERE e.Recommended IS NOT NULL AND c.CandidateStatus IS NULL AND e.IsDeleted=0 AND c.IsDeleted=0
+END
+****************************************************************************************************
+ALTER PROCEDURE [dbo].[spGetStatus] @UserID INT
+AS
+BEGIN
+	SELECT c.Name
+	,c.Email
+	,c.DateOfInterview
+	,r.RoundName, 
+	e.CandidateID, 
+	e.RoundID,
+	e.EvaluationID,
+	e.Recommended
+	FROM [dbo].[tblEvaluation] AS e
+	INNER JOIN [dbo].[tblCandidate] AS c ON e.CandidateID = c.CandidateID
+	INNER JOIN [dbo].[tblRound] AS r ON e.RoundID = r.RoundID WHERE e.UserID = @UserID AND e.Recommended IS NULL AND e.IsDeleted = 0 AND c.IsDeleted = 0 AND r.IsDeleted = 0
+END
