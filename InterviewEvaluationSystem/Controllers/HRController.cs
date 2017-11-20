@@ -231,9 +231,8 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult RoundDelete(int RoundID)
         {
             services.DeleteRound(RoundID, Convert.ToInt32(Session["UserID"]));
-            bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddRound", "HR");
-            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { result = true, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -318,9 +317,8 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult RateDelete(int RateScaleID)
         {
             services.DeleteRatingScale(RateScaleID, Convert.ToInt32(Session["UserID"]));
-            bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("RatingScale", "HR");
-            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { result = true, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -396,9 +394,8 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult CategoryDelete(int SkillCategoryID)
         {
             services.DeleteSkillCategory(SkillCategoryID, Convert.ToInt32(Session["UserID"]));
-            bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("SkillCategory", "HR");
-            return Json(new { result, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
+            return Json(new { result = true, Url = redirectUrl }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -487,9 +484,8 @@ namespace InterviewEvaluationSystem.Controllers
         public JsonResult SkillDelete(int SkillID)
         {
             services.DeleteSkill(SkillID, Convert.ToInt32(Session["UserID"]));
-            bool result = true;
             var redirectUrl = new UrlHelper(Request.RequestContext).Action("Skill", "HR");
-            return Json(new { Url = redirectUrl, result }, JsonRequestBehavior.AllowGet);
+            return Json(new { Url = redirectUrl, result = true }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -524,35 +520,13 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Password, "sha1");
-                var passwordLength = services.GetAppSettingsValue("UserPasswordLength");
-                var userNameLength = services.GetAppSettingsValue("UserNameLength");
-                var employeeIdLength = services.GetAppSettingsValue("EmployeeIdLength");
-                user.UserTypeID = 2;
-                bool flag = false;
                 if (ModelState.IsValid)
                 {
-                    if (user.Password.Length < Convert.ToInt32(passwordLength))
-                    {
-                        flag = true;
-                        ViewBag.PasswordErrorMessage = string.Format(Constants.passwordValidation, passwordLength);
-                    }
-                    if (user.UserName.Length < Convert.ToInt32(userNameLength))
-                    {
-                        flag = true;
-                        ViewBag.UserNameErrorMessage = string.Format(Constants.userNameValidation, userNameLength);
-                    }
-                    if (user.EmployeeId.Length > Convert.ToInt32(employeeIdLength))
-                    {
-                        ViewBag.employeeIdLengthErrorMessage = string.Format(Constants.employeeIDValidation, employeeIdLength);
-                        flag = true;
-                    }
-                    if (flag == false)
-                    {
-                        services.InsertInterviewer(user, hashedPwd, Convert.ToInt32(Session["UserID"]));
-                        ModelState.Clear();
-                        ViewBag.result = Constants.interviewerAdded;
-                    }
+                    string[] results = services.InsertInterviewer(user, Convert.ToInt32(Session["UserID"]));
+                    ViewBag.PasswordErrorMessage = results[0];
+                    ViewBag.UserNameErrorMessage = results[1];
+                    ViewBag.employeeIdLengthErrorMessage = results[2];
+                    ViewBag.result = results[3];
                     ViewBag.Users = services.GetInterviewers();
                     return View();
                 }
@@ -646,11 +620,8 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                CandidateViewModel addCandidateViewModel = new CandidateViewModel();
-                addCandidateViewModel.CandidatesList = services.GetCandidates();
-                addCandidateViewModel.users = services.GetInterviewers();
                 ViewBag.user = services.GetInterviewerDropdown();
-                return View(addCandidateViewModel);
+                return View(services.GetAddCandidateViewModel());
             }
             catch (Exception ex)
             {
@@ -671,33 +642,9 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                //Stored procedure to get the minimum round id.
-                int Round1ID = services.GetMinimumRoundID();
-                string roundErrorMessage = "";
-                if (Round1ID == 0)
-                {
-                    roundErrorMessage = Constants.roundError;
-                }
-                else
-                {
-                    if (user != null)
-                    {
-                        //Insertion into candidate table
-                        int candidateID = services.InsertCandidate(candidateView, Convert.ToInt32(Session["UserID"]));
-                        if (candidateView.TotalExperience > 0)
-                        {
-                            //Insertion into previous company table
-                            services.InsertPreviousCompanies(candidateID, txtBoxes, Convert.ToInt32(Session["UserID"]));
-                        }
-                        //Insertion into evaluation table
-                        services.InsertEvaluation(Convert.ToInt32(user), candidateID, Round1ID, Convert.ToInt32(Session["UserID"]));
-
-                        // Call SentEmailNotification method to sent mail to notify Interviewer
-                        services.SentEmailNotification(candidateID, Convert.ToInt32(user));
-                    }
-                }
+                string message = services.InsertCandidate(candidateView, user, txtBoxes, Convert.ToInt32(Session["UserID"]));
                 var redirectUrl = new UrlHelper(Request.RequestContext).Action("AddCandidate", "HR");
-                return Json(new { Url = redirectUrl, roundErrorMessage = roundErrorMessage });
+                return Json(new { Url = redirectUrl, roundErrorMessage = message });
             }
             catch (Exception ex)
             {
@@ -714,12 +661,9 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                CandidateViewModel CandidateSearchViewModel = new CandidateViewModel();
-                CandidateSearchViewModel.CandidatesList = services.SearchCandidate(Name);
-
                 //To fill the drop down that contain the interviewers
                 ViewBag.user = services.GetInterviewerDropdown();
-                return PartialView("SearchCandidateResultPartial", CandidateSearchViewModel);
+                return PartialView("SearchCandidateResultPartial", services.SearchCandidate(Name));
             }
             catch (Exception ex)
             {
@@ -1032,8 +976,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             if (evaluationID != 0)
             {
-                services.InsertScores(evaluationID, ids, values, Convert.ToInt32(Session["UserID"]));
-                services.UpdateEvaluation(evaluationID, comments, recommended, Convert.ToInt32(Session["UserID"]));
+                services.UpdateEvaluation(evaluationID, ids, values, comments, recommended, Convert.ToInt32(Session["UserID"]));
             }
 
             //Get new Notification count from database and store in session variable

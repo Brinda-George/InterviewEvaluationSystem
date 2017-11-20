@@ -35,52 +35,38 @@ namespace InterviewEvaluationSystem.Controllers
         /// </summary>
         /// <param name="loginUser"></param>
         [HttpPost]
-        public ActionResult Login(UserViewModel loginUser)
+        public ActionResult Login(string UserName, string Password)
         {
             try
             {
-                bool exists = services.ValidateLoginCredentials(loginUser);
-
-                UserViewModel user = new UserViewModel();
-                string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(loginUser.Password, "sha1");
-                if (loginUser.UserName == "hr")
-                {
-                    user = services.GetLoginUserDetails(loginUser.UserName, loginUser.Password);
-                }
-                else
-                {
-                    user = services.GetLoginUserDetails(loginUser.UserName, hashedPwd);
-                }
-
                 //To check if there exist any record in database
-                // where username and password matches with the values entered and storing the entire row in a variable.
-                if (exists == false)
+                bool exists = services.ValidateLoginCredentials(UserName, Password);
+
+                if (exists)
                 {
-                    //Displaying 'invalid credentials' when the user credentials does not match.
-                    ViewBag.Message = Constants.invalidLogin;
-                }
-                else
-                {
-                    loginUser.UserID = user.UserID;
-                    loginUser.UserName = user.UserName;
-                    loginUser.UserTypeID = user.UserTypeID;
-                    Session["UserTypeID"] = loginUser.UserTypeID;
-                    Session["UserName"] = loginUser.UserName;
-                    Session["UserID"] = loginUser.UserID;
+                    UserViewModel user = new UserViewModel();
+                    user = services.GetLoginUserDetails(UserName, Password);
+                    Session["UserTypeID"] = user.UserTypeID;
+                    Session["UserName"] = user.UserName;
+                    Session["UserID"] = user.UserID;
 
                     //Redirect the user to HRHomePage if the usertype is recognised as HR.
-                    if (loginUser.UserTypeID == 1)
+                    if (user.UserTypeID == 1)
                     {
                         Session["NotificationsCount"] = services.GetHRNotificationsCount();
                         return RedirectToAction("HRHomePage", "HR");
                     }
 
                     //Redirect the user to Interviewer HomePage if the user type is recognised as interviewer.
-                    else if (loginUser.UserTypeID == 2)
+                    else if (user.UserTypeID == 2)
                     {
                         return RedirectToAction("HomePage", "Interviewer");
-
                     }
+                }
+                else
+                {
+                    //Displaying 'invalid credentials' when the user credentials does not match.
+                    ViewBag.Message = Constants.invalidLogin;
                 }
                 return View();
             }
@@ -127,8 +113,7 @@ namespace InterviewEvaluationSystem.Controllers
             try
             {
                 //Select the specific user and edit his/her details.
-                services.UpdateProfile(Convert.ToString(Session["UserName"]), user, Convert.ToInt32(Session["UserID"]));
-                ViewBag.result = Constants.profileUpdate;
+                ViewBag.result = services.UpdateProfile(Convert.ToString(Session["UserName"]), user, Convert.ToInt32(Session["UserID"]));
                 return View();
             }
             catch (Exception ex)
@@ -158,40 +143,26 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                int result;
-
                 //Fetch user's details whose Email matches with the Email entered. 
                 bool exists = services.ValidateEmail(email);
-                if (exists != false)
+                if (exists)
                 {
                     Session["Email"] = email;
 
                     // Call GetOtp() method to generate otp
-                    string otp = services.GetOtp();
-                    Session["OTP"] = otp;
-                    MailMessage mailMessage = new MailMessage();
-
-                    //Specify the 'To' address.
-                    mailMessage.To.Add(email);
-
-                    //Specify the subject of Mail.
-                    mailMessage.Subject = "Password Reset";
-
-                    //Specify the mail body.                                        
-                    mailMessage.Body = "Please use the following OTP to change your password. " + "<br/>" + Session["OTP"] + "<br/>" + ".You may change your password after logging in to your account using the credential above";
-                    mailMessage.IsBodyHtml = true;
-                    SmtpClient smtpClient = new SmtpClient();
-                    smtpClient.Send(mailMessage);
-                    result = 1;
+                    Session["OTP"] = services.GetOtp();
+                    string emailBody = "Please use the following OTP to change your password. " + "<br/>" + Session["OTP"] + "<br/>" + ".You may change your password after logging in to your account using the credential above";
+                    
+                    // Sent email using smtp
+                    services.SentEmail(email, "Password Reset", emailBody, true);
 
                     //Pass the redirect URL and result value to ajax.
-                    return Json(new { Url = Url.Action("ResetPartial"), result = result });
+                    return Json(new { Url = Url.Action("ResetPartial"), result = 1 });
                 }
                 else
                 {
-                    result = 2;
                     //Pass the result value to ajax.
-                    return Json(new { result = result });
+                    return Json(new { result = 2 });
                 }
             }
             catch (Exception ex)
@@ -233,7 +204,7 @@ namespace InterviewEvaluationSystem.Controllers
                     var redirectUrl = new UrlHelper(Request.RequestContext).Action("UpdatePassword", "Home");
 
                     //Pass the redirect URL to ajax.
-                    return Json(new { Url = redirectUrl }, JsonRequestBehavior.AllowGet); 
+                    return Json(new { Url = redirectUrl }, JsonRequestBehavior.AllowGet);
                 }
                 return View();
             }
@@ -309,7 +280,7 @@ namespace InterviewEvaluationSystem.Controllers
                 {
                     //Call UpdatePassword method to update old password with new password in database
                     int returnValue = services.UpdatePassword(Convert.ToInt32(Session["UserID"]), changePasswordViewModel);
-                    
+
                     //Check if return value is 1
                     if (returnValue == 1)
                     {
@@ -346,7 +317,7 @@ namespace InterviewEvaluationSystem.Controllers
                 Session["UserName"] = null;
 
                 //Clear the session.
-                Session.Abandon();  
+                Session.Abandon();
                 return RedirectToAction("Login", "Home");
             }
             catch (Exception ex)

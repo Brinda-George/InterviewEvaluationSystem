@@ -187,7 +187,8 @@ namespace DataAccessLayer
                     Designation = user.Designation,
                     Email = user.Email,
                     EmployeeId = user.EmployeeId,
-                    Pincode = user.Pincode
+                    Pincode = user.Pincode,
+                    UserTypeID = user.UserTypeID
                 };
             }
 

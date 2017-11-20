@@ -204,8 +204,7 @@ namespace InterviewEvaluationSystem.Controllers
         {
             try
             {
-                services.InsertScores(evaluationID, ids, values, Convert.ToInt32(Session["UserID"]));
-                int CandidateID = services.UpdateEvaluation(evaluationID, comments, recommended, Convert.ToInt32(Session["UserID"]));
+                int CandidateID = services.UpdateEvaluation(evaluationID, ids, values, comments, recommended, Convert.ToInt32(Session["UserID"]));;
                 
                 // Call SentEmailAfterFeedBack method to sent mail to HR
                 services.SentEmailAfterFeedBack(CandidateID, Convert.ToInt32(Session["UserID"]), comments, recommended);

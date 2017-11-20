@@ -1,8 +1,8 @@
-﻿@model DataAccessLayer.InterviewViewModels.CandidateViewModel
+﻿@model IEnumerable<DataAccessLayer.InterviewViewModels.CandidateViewModel>
 
 @{
     ViewBag.Title = "SearchCandidateResultPartial";
-    var gridCandidate = new WebGrid(Model.CandidatesList, canSort: false, canPage: true, rowsPerPage: 5, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
+    var gridCandidate = new WebGrid(Model, canSort: false, canPage: true, rowsPerPage: 5, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContentCandidate");
     gridCandidate.Pager(WebGridPagerModes.All);
 }
 

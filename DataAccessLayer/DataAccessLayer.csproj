@@ -81,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess.cs" />
-    <Compile Include="InterviewViewModels.cs" />
     <Compile Include="InterviewModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -97,6 +96,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="InterviewViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="spCandidateInterviewers_Result.cs">
       <DependentUpon>InterviewModel.tt</DependentUpon>
@@ -205,17 +205,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="InterviewModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>InterviewModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="InterviewModel.edmx.diagram">
       <DependentUpon>InterviewModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="InterviewModel.Context.tt">
@@ -228,9 +229,6 @@
       <DependentUpon>InterviewModel.edmx</DependentUpon>
       <LastGenOutput>InterviewModel.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

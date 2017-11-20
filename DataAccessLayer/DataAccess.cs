@@ -9,9 +9,9 @@ namespace DataAccessLayer
     {
         InterviewEvaluationDbEntities dbContext = new InterviewEvaluationDbEntities();
 
-        public bool ValidateLoginCredentials(UserViewModel loginUser)
+        public bool ValidateLoginCredentials(string UserName, string Password)
         {
-            return dbContext.tblUsers.Where(s => s.UserName == loginUser.UserName && s.Password == loginUser.Password).Any();
+            return dbContext.tblUsers.Any(s => s.UserName == UserName && s.Password == Password);
         }
 
         public UserViewModel GetLoginUserDetails(string UserName, string Password)
@@ -46,7 +46,7 @@ namespace DataAccessLayer
 
         public bool ValidateEmail(string Email, string newPassword)
         {
-            return dbContext.tblUsers.Where(s => s.Email == Email).Any();
+            return dbContext.tblUsers.Any(s => s.Email == Email);
         }
 
 
@@ -238,7 +238,7 @@ namespace DataAccessLayer
 
         public bool ValidateRound(string RoundName)
         {
-            return dbContext.tblRounds.Where(x => x.RoundName == RoundName && x.IsDeleted == false).Any();
+            return dbContext.tblRounds.Any(x => x.RoundName == RoundName && x.IsDeleted == false);
         }
 
         public void UpdateRound(int RoundID, string RoundName)
@@ -273,12 +273,12 @@ namespace DataAccessLayer
 
         public bool ValidateRateScale(string RateScale)
         {
-            return dbContext.tblRatingScales.Where(x => x.RateScale == RateScale && x.IsDeleted == false).Any();
+            return dbContext.tblRatingScales.Any(x => x.RateScale == RateScale && x.IsDeleted == false);
         }
 
         public bool ValidateRateValue(int RateValue)
         {
-            return dbContext.tblRatingScales.Where(x => x.RateValue == RateValue && x.IsDeleted == false).Any();
+            return dbContext.tblRatingScales.Any(x => x.RateValue == RateValue && x.IsDeleted == false);
         }
 
         public void UpdateRatingScale(int RateScaleID, string Ratescale, int Ratevalue, string description)
@@ -314,7 +314,7 @@ namespace DataAccessLayer
 
         public bool ValidateSkillCategory(string SkillCategory)
         {
-            return dbContext.tblSkillCategories.Where(x => x.SkillCategory == SkillCategory && x.IsDeleted == false).Any();
+            return dbContext.tblSkillCategories.Any(x => x.SkillCategory == SkillCategory && x.IsDeleted == false);
         }
 
         public void UpdateSkillCategory(int SkillCategoryID, string SkillCategory, string description)
@@ -371,7 +371,7 @@ namespace DataAccessLayer
 
         public bool ValidateSkill(string SkillName)
         {
-            return dbContext.tblSkills.Where(x => x.SkillName == SkillName && x.IsDeleted == false).Any();
+            return dbContext.tblSkills.Any(x => x.SkillName == SkillName && x.IsDeleted == false);
         }
 
         public void UpdateSkill(int SkillID, int CategoryID, string Skillname, int UserID)

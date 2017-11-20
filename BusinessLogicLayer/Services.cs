@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Security;
 using static DataAccessLayer.InterviewViewModels;
 
 namespace BusinessLogicLayer
@@ -14,14 +15,22 @@ namespace BusinessLogicLayer
     {
         DataAccess dataAccess = new DataAccess();
 
-        public bool ValidateLoginCredentials(UserViewModel loginUser)
+        public bool ValidateLoginCredentials(string UserName, string Password)
         {
-            return dataAccess.ValidateLoginCredentials(loginUser);
+            return dataAccess.ValidateLoginCredentials(UserName, Password);
         }
 
         public UserViewModel GetLoginUserDetails(string UserName, string Password)
         {
-            return dataAccess.GetLoginUserDetails(UserName, Password);
+            string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(Password, "sha1");
+            if (UserName == "hr")
+            {
+                return dataAccess.GetLoginUserDetails(UserName, Password);
+            }
+            else
+            {
+                return dataAccess.GetLoginUserDetails(UserName, hashedPwd);
+            }
         }
 
         public UserViewModel GetProfile(string name)
@@ -29,9 +38,10 @@ namespace BusinessLogicLayer
             return dataAccess.GetProfile(name);
         }
 
-        public void UpdateProfile(string name, UserViewModel userViewModel, int UserID)
+        public string UpdateProfile(string name, UserViewModel userViewModel, int UserID)
         {
             dataAccess.UpdateProfile(name, userViewModel, UserID);
+            return Constants.profileUpdate;
         }
 
         public int UpdatePassword(int userId, ChangePasswordViewModel changePasswordViewModel)
@@ -47,6 +57,11 @@ namespace BusinessLogicLayer
         public bool ValidateEmail(string Email)
         {
             return dataAccess.ValidateEmail(Email);
+        }
+
+        public void InsertEvaluation(int UserID, int CandidateID, int RoundID, int hrID)
+        {
+            dataAccess.InsertEvaluation(UserID, CandidateID, RoundID, UserID);
         }
 
         public HRDashboardViewModel GetHRDashBoard()
@@ -145,7 +160,7 @@ namespace BusinessLogicLayer
 
         public bool ValidateRound(string RoundName)
         {
-            return dataAccess.ValidateRound(RoundName);;
+            return dataAccess.ValidateRound(RoundName); ;
         }
 
         public void UpdateRound(int RoundID, string RoundName)
@@ -237,11 +252,6 @@ namespace BusinessLogicLayer
             return dataAccess.GetInterviewers();
         }
 
-        public void InsertInterviewer(UserViewModel user, string hashedPwd, int UserID)
-        {
-            dataAccess.InsertInterviewer(user, hashedPwd, UserID);
-        }
-
         public void UpdateInterviewer(int UserID, string UserName, string Email, string Designation, int hrID)
         {
             dataAccess.UpdateInterviewer(UserID, UserName, Email, Designation, hrID);
@@ -303,26 +313,6 @@ namespace BusinessLogicLayer
                 selectedlist.Add(selectlistitem);
             }
             return selectedlist;
-        }
-
-        public int GetMinimumRoundID()
-        {
-            return dataAccess.GetMinimumRoundID();
-        }
-
-        public int InsertCandidate(CandidateViewModel candidateView, int UserID)
-        {
-            return dataAccess.InsertCandidate(candidateView, UserID);
-        }
-
-        public void InsertPreviousCompanies(int CandidateID, string[] txtBoxes, int UserID)
-        {
-            dataAccess.InsertPreviousCompanies(CandidateID, txtBoxes, UserID);
-        }
-
-        public void InsertEvaluation(int UserID, int CandidateID, int RoundID, int hrID)
-        {
-            dataAccess.InsertEvaluation(UserID, CandidateID, RoundID, UserID);
         }
 
         public void UpdateCandidate(int CandidateID, string CandidateName, DateTime DateOfInterview, string email, DateTime dateofbirth, string pan, string designation, decimal experience, string qualifications, int UserID)
@@ -450,13 +440,9 @@ namespace BusinessLogicLayer
             return dataAccess.GetStatus(UserID);
         }
 
-        public void InsertScores(int evaluationID, int[] ids, int[] values, int UserID)
+        public int UpdateEvaluation(int evaluationID, int[] ids, int[] values, string comments, bool recommended, int UserID)
         {
             dataAccess.InsertScores(evaluationID, ids, values, UserID);
-        }
-
-        public int UpdateEvaluation(int evaluationID, string comments, bool recommended, int UserID)
-        {
             return dataAccess.UpdateEvaluation(evaluationID, comments, recommended, UserID);
         }
 
@@ -545,7 +531,7 @@ namespace BusinessLogicLayer
                 interviewEvaluationViewModel.ScoresByRound.Add(scores);
             }
             interviewEvaluationViewModel.CandidateName = statusViewModel.Name;
-            if(statusViewModel.Recommended != null)
+            if (statusViewModel.Recommended != null)
             {
                 //Get comments from database
                 interviewEvaluationViewModel.Comments = GetComments(statusViewModel.CandidateID);
@@ -574,20 +560,14 @@ namespace BusinessLogicLayer
             {
                 status = "not recommended";
             }
-            // Specify subject, body and receiver mail address 
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.To.Add(mailmodel.HREmail);
-            mailMessage.Subject = "Notification";
-            mailMessage.Body = "<b>Interviewer: </b>" + mailmodel.UserName + "<br/>"
+            string emailBody = "<b>Interviewer: </b>" + mailmodel.UserName + "<br/>"
               + "<b>Interviewer Email : </b>" + mailmodel.Email + "<br/>"
               + "<b>Candidate : </b>" + mailmodel.Name + "<br/>"
               + "<b>Status : </b>" + status + "<br/>"
               + "<b>Comments : </b>" + comments;
-            mailMessage.IsBodyHtml = true;
 
-            // Sent mail using smtpClient
-            SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Send(mailMessage);
+            // Sent email using smtp
+            SentEmail(mailmodel.HREmail, "Notification", emailBody, true);
         }
 
         /// <summary>
@@ -598,17 +578,24 @@ namespace BusinessLogicLayer
         {
             // Get Interviewer email, candidate name, round, date of interview from database  
             var mailmodel = dataAccess.GetInterviewerMail(CandidateID, UserID);
-
-            // Specify subject, body, sender and receiver mail address 
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.To.Add(mailmodel.InterviewerEmail);
-            mailMessage.Subject = "Notification";
-            mailMessage.Body = "Hi, <br/>"
+            string emailBody = "Hi, <br/>"
                 + "You have Interview on " + mailmodel.DateOfInterview.ToShortDateString() + "<br/>"
                 + "Details of interview is as follows" + "<br/>"
                 + "<b>Candidate : </b>" + mailmodel.Name + "<br/>"
                 + "<b>Round : </b>" + mailmodel.RoundName;
-            mailMessage.IsBodyHtml = true;
+            // Sent email using smtp
+            SentEmail(mailmodel.InterviewerEmail, "Notification", emailBody, true);
+        }
+
+
+        public void SentEmail(string To,string Subject, string Body, bool IsBodyHtml)
+        {
+            // Specify subject, body, sender and receiver mail address 
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.To.Add(To);
+            mailMessage.Subject = Subject;
+            mailMessage.Body = Body;
+            mailMessage.IsBodyHtml = IsBodyHtml;
 
             // Sent mail using smtpClient
             SmtpClient smtpClient = new SmtpClient();
@@ -653,6 +640,76 @@ namespace BusinessLogicLayer
             }
             otp = builder.ToString();
             return otp;
+        }
+
+        public string[] InsertInterviewer(UserViewModel user, int UserID)
+        {
+            string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Password, "sha1");
+            var passwordLength = GetAppSettingsValue("UserPasswordLength");
+            var userNameLength = GetAppSettingsValue("UserNameLength");
+            var employeeIdLength = GetAppSettingsValue("EmployeeIdLength");
+            user.UserTypeID = 2;
+            bool passwordValid = true, userNameValid = true, employeeIdValid = true;
+            string[] results = new string[4];
+            if (user.Password.Length < Convert.ToInt32(passwordLength))
+            {
+                passwordValid = false;
+                results[0] = string.Format(Constants.passwordValidation, passwordLength);
+            }
+            if (user.UserName.Length < Convert.ToInt32(userNameLength))
+            {
+                userNameValid = false;
+                results[1] = string.Format(Constants.userNameValidation, userNameLength);
+            }
+            if (user.EmployeeId.Length > Convert.ToInt32(employeeIdLength))
+            {
+                employeeIdValid = false;
+                results[2] = string.Format(Constants.employeeIDValidation, employeeIdLength);
+            }
+            if (passwordValid == true && userNameValid == true && employeeIdValid == true)
+            {
+                dataAccess.InsertInterviewer(user, hashedPwd, UserID);
+                results[2] = Constants.interviewerAdded;
+            }
+            return results;
+        }
+
+        public CandidateViewModel GetAddCandidateViewModel()
+        {
+            CandidateViewModel addCandidateViewModel = new CandidateViewModel();
+            addCandidateViewModel.CandidatesList = dataAccess.GetCandidates();
+            addCandidateViewModel.users = dataAccess.GetInterviewers();
+            return addCandidateViewModel;
+        }
+
+        public string InsertCandidate(CandidateViewModel candidateView, string user, string[] txtBoxes, int UserID)
+        {
+            //Stored procedure to get the minimum round id.
+            int Round1ID = dataAccess.GetMinimumRoundID();
+            string message = "";
+            if (Round1ID == 0)
+            {
+                message = Constants.roundError;
+            }
+            else
+            {
+                if (user != null)
+                {
+                    //Insertion into candidate table
+                    int candidateID = dataAccess.InsertCandidate(candidateView, UserID);
+                    if (candidateView.TotalExperience > 0)
+                    {
+                        //Insertion into previous company table
+                        dataAccess.InsertPreviousCompanies(candidateID, txtBoxes, UserID);
+                    }
+                    //Insertion into evaluation table
+                    dataAccess.InsertEvaluation(Convert.ToInt32(user), candidateID, Round1ID, UserID);
+
+                    // Call SentEmailNotification method to sent mail to notify Interviewer
+                    SentEmailNotification(candidateID, Convert.ToInt32(user));
+                }
+            }
+            return message;
         }
     }
 }
